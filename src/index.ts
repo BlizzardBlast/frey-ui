@@ -1,2 +1,2 @@
-export { default as MyComponent } from './MyComponent';
-export type { MyComponentProps } from './MyComponent';
+export { default as Chip } from './Chip';
+export type { ChipProps } from './Chip';
