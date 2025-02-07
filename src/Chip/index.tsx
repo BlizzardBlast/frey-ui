@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import styles from './Chip.module.css';
 
 export type ChipProps = {
@@ -14,4 +13,4 @@ function Chip({ label, onClick }: Readonly<ChipProps>) {
   );
 }
 
-export default memo(Chip);
+export default Chip;
