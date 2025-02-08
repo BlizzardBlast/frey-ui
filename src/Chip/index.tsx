@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import styles from './Chip.module.css';
+import styles from './chip.module.css';
 import React from 'react';
 
 export type Variant = 'default' | 'outlined';
