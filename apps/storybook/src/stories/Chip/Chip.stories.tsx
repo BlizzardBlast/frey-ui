@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import Chip from '../../../../../src/Chip';
-import '../../../../../src/Chip/chip.module.css';
 import { fn } from '@storybook/test';
 
 const meta: Meta<typeof Chip> = {
@@ -14,7 +13,13 @@ const meta: Meta<typeof Chip> = {
 export default meta;
 type Story = StoryObj<typeof Chip>;
 
-export const FirstStory: Story = {
+export const Non_Clickable_Chip: Story = {
+  args: {
+    label: 'Chip'
+  }
+} satisfies Story;
+
+export const Clickable_Chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn()

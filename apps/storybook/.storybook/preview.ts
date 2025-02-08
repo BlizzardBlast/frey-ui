@@ -1,5 +1,3 @@
-import '../../../src/Chip/chip.module.css';
-
 import type { Preview } from '@storybook/react';
 
 const preview: Preview = {

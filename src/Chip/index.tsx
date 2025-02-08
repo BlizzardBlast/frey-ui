@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import styles from './Chip.module.css';
 
 export type ChipProps = {
@@ -7,7 +8,14 @@ export type ChipProps = {
 
 function Chip({ label, onClick }: Readonly<ChipProps>) {
   return (
-    <button className={styles.chip} onClick={onClick} type='button'>
+    <button
+      className={clsx({
+        [styles.chip]: !onClick,
+        [styles.chip_clickable]: onClick
+      })}
+      onClick={onClick}
+      type='button'
+    >
       <span className={styles.chip_text}>{label}</span>
     </button>
   );
