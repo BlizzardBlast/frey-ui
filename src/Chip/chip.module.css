@@ -10,6 +10,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   border: 1px solid grey;
+  cursor: default;
 }
 
 .chip_default {
@@ -24,6 +25,7 @@
   font-size: 0.875rem;
   font-weight: 500;
   border: none;
+  cursor: default;
 }
 
 .chip_default_clickable:hover {
