@@ -22,6 +22,7 @@ jobs:
           node-version: 22.12.0
           cache: 'pnpm'
       - run: pnpm install
+      - run: pnpm dlx build
       - run: cd apps/storybook && pnpm install
       #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@latest
