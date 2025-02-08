@@ -1,6 +1,6 @@
 {
   "name": "frey-ui",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
@@ -8,7 +8,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "pub": "pnpm run build && pnpm publish"
   },
   "peerDependencies": {
     "react": "^18 || ^19",
