@@ -31,6 +31,7 @@ export default defineConfig(
     plugins: [
       postcss({
         plugins: [],
+        modules: true,
         minimize: true
       }),
       external({ includeDependencies: true }),

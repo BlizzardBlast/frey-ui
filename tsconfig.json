@@ -32,6 +32,6 @@
     "noImplicitReturns": true,
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
-  "include": ["src", "*.tsx", "*.ts"],
+  "include": ["src", "*.tsx", "*.ts", "src/types/**/*.d.ts"],
   "exclude": ["coverage", "config", "dist", "node_modules/**"]
 }
