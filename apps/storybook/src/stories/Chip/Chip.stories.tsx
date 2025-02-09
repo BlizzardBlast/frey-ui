@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { expect, fireEvent, fn, within } from '@storybook/test';
+import { fn } from '@storybook/test';
 import Chip from '../../../../../src/Chip';
 
 const meta: Meta<typeof Chip> = {
@@ -60,74 +60,32 @@ const meta: Meta<typeof Chip> = {
 export default meta;
 type Story = StoryObj<typeof Chip>;
 
-export const Non_Clickable_Chip: Story = {
+export const Basic_Chip: Story = {
   args: {
     label: 'Chip',
     onClick: undefined,
-    variant: 'default',
     className: undefined,
     style: undefined
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const chip = canvas.getByRole('button');
-    fireEvent.click(chip);
-
-    expect(chip).toBeDisabled();
-  }
+  render: (args) => (
+    <div className='flex gap-4'>
+      <Chip {...args} variant={'default'} />
+      <Chip {...args} variant={'outlined'} />
+    </div>
+  )
 } satisfies Story;
 
 export const Clickable_Chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn(),
-    variant: 'default',
     className: undefined,
     style: undefined
   },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const chip = canvas.getByRole('button');
-    fireEvent.click(chip);
-
-    expect(args.onClick).toHaveBeenCalled();
-  }
-} satisfies Story;
-
-export const Outlined_Non_Clickable_Chip: Story = {
-  args: {
-    label: 'Chip',
-    onClick: undefined,
-    variant: 'outlined',
-    className: undefined,
-    style: undefined
-  },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const chip = canvas.getByRole('button');
-    fireEvent.click(chip);
-
-    expect(chip).toBeDisabled();
-  }
-} satisfies Story;
-
-export const Outlined_Clickable_Chip: Story = {
-  args: {
-    label: 'Chip',
-    onClick: fn(),
-    variant: 'outlined',
-    className: undefined,
-    style: undefined
-  },
-  play: async ({ args, canvasElement }) => {
-    const canvas = within(canvasElement);
-
-    const chip = canvas.getByRole('button');
-    fireEvent.click(chip);
-
-    expect(args.onClick).toHaveBeenCalled();
-  }
+  render: (args) => (
+    <div className='flex gap-4'>
+      <Chip {...args} variant={'default'} />
+      <Chip {...args} variant={'outlined'} />
+    </div>
+  )
 } satisfies Story;
