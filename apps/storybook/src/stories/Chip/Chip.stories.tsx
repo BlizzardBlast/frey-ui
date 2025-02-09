@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { expect, fireEvent, fn, within } from '@storybook/test';
 import Chip from '../../../../../src/Chip';
-import { fn } from '@storybook/test';
 
 const meta: Meta<typeof Chip> = {
   component: Chip,
@@ -67,6 +67,14 @@ export const Non_Clickable_Chip: Story = {
     variant: 'default',
     className: undefined,
     style: undefined
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const chip = canvas.getByRole('button');
+    fireEvent.click(chip);
+
+    expect(chip).toBeDisabled();
   }
 } satisfies Story;
 
@@ -77,6 +85,14 @@ export const Clickable_Chip: Story = {
     variant: 'default',
     className: undefined,
     style: undefined
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const chip = canvas.getByRole('button');
+    fireEvent.click(chip);
+
+    expect(args.onClick).toHaveBeenCalled();
   }
 } satisfies Story;
 
@@ -87,6 +103,14 @@ export const Outlined_Non_Clickable_Chip: Story = {
     variant: 'outlined',
     className: undefined,
     style: undefined
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const chip = canvas.getByRole('button');
+    fireEvent.click(chip);
+
+    expect(chip).toBeDisabled();
   }
 } satisfies Story;
 
@@ -97,5 +121,13 @@ export const Outlined_Clickable_Chip: Story = {
     variant: 'outlined',
     className: undefined,
     style: undefined
+  },
+  play: async ({ args, canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const chip = canvas.getByRole('button');
+    fireEvent.click(chip);
+
+    expect(args.onClick).toHaveBeenCalled();
   }
 } satisfies Story;

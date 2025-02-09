@@ -41,6 +41,7 @@ function Chip({
       onClick={onClick}
       type='button'
       style={style}
+      disabled={!onClick}
     >
       <span className={styles.chip_text}>{label}</span>
     </button>
