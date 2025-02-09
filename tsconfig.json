@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "declarationDir": "types",
+    "declarationDir": "dist/types",
 
     "noEmit": false,
     "baseUrl": "./src",
@@ -33,5 +33,5 @@
     "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "include": ["src", "*.tsx", "*.ts"],
-  "exclude": ["coverage", "config", "dist", "node_modules/**"]
+  "exclude": ["coverage", "config", "dist", "node_modules/**", "*.config.ts"]
 }
