@@ -1,9 +1,8 @@
 name: Publish to npm
 
 on:
-    push:
-        tags:
-            - "v*"
+    release:
+        types: [published]
 
 permissions:
     contents: read
@@ -25,8 +24,6 @@ jobs:
                   registry-url: "https://registry.npmjs.org"
 
             - run: pnpm install
-            - run: pnpm build
-            # - run: pnpm test
 
             # Publish command
-            - run: pnpm publish --no-git-checks
+            - run: pnpm publish --no-git-checks --access public --provenance
