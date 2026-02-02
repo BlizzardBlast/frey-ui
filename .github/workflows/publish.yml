@@ -11,6 +11,7 @@ permissions:
 jobs:
     build-and-publish:
         runs-on: ubuntu-latest
+        environment: npm-publish
         steps:
             - uses: actions/checkout@v4
             - uses: pnpm/action-setup@v4
