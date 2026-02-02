@@ -1,5 +1,5 @@
 # Workflow name
-name: 'Chromatic Publish'
+name: "Chromatic Publish"
 
 # Event for the workflow
 on: push
@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
-          cache: 'pnpm'
+          cache: "pnpm"
       - run: pnpm install
       - run: cd apps/storybook && pnpm install
       #👇 Adds Chromatic as a step in the workflow
