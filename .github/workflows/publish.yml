@@ -1,0 +1,32 @@
+name: Publish to npm
+
+on:
+    release:
+        types: [published]
+
+permissions:
+    contents: read
+    id-token: write # 👈 This is the key to OIDC
+
+jobs:
+    build-and-publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10
+
+            # This step handles the OIDC Login
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.12.0
+                  registry-url: "https://registry.npmjs.org"
+
+            - run: pnpm install
+
+            # Publish command
+            - run: pnpm publish --no-git-checks --access public --provenance
+              env:
+                  # This is magic: setup-node generates a temporary token and puts it here.
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
