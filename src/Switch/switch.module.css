@@ -1,26 +1,58 @@
-/* From Uiverse.io by gharsh11032000 */
-/* The switch - the box around the slider */
-.switch {
-  font-size: 17px;
-  position: relative;
-  display: inline-block;
-  width: 3.5em;
-  height: 2em;
+.switch_container {
+  --switch-track-inactive: #d4acfb;
+  --switch-track-active: #b84fce;
+  --switch-thumb: white;
+  --switch-focus-ring: #b84fce;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
-/* Hide default HTML checkbox */
+.switch {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: var(--switch-width);
+  height: var(--switch-height);
+}
+
+.switch_sm {
+  font-size: 14px;
+  --switch-width: 2.8em;
+  --switch-height: 1.6em;
+  --thumb-size: 1.1em;
+  --thumb-padding: 0.25em;
+}
+
+.switch_md {
+  font-size: 17px;
+  --switch-width: 3.5em;
+  --switch-height: 2em;
+  --thumb-size: 1.4em;
+  --thumb-padding: 0.3em;
+}
+
+.switch_lg {
+  font-size: 20px;
+  --switch-width: 4em;
+  --switch-height: 2.2em;
+  --thumb-size: 1.6em;
+  --thumb-padding: 0.3em;
+}
+
 .switch input {
   opacity: 0;
   width: 0;
   height: 0;
+  position: absolute;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background: #d4acfb;
+  background: var(--switch-track-inactive);
   border-radius: 50px;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -28,27 +60,58 @@
 .slider:before {
   position: absolute;
   content: '';
-  height: 1.4em;
-  width: 1.4em;
-  left: 0.3em;
-  bottom: 0.3em;
-  background-color: white;
+  height: var(--thumb-size);
+  width: var(--thumb-size);
+  left: var(--thumb-padding);
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--switch-thumb);
   border-radius: 50px;
   box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .switch input:checked + .slider {
-  background: #b84fce;
+  background: var(--switch-track-active);
 }
 
-.switch input:focus + .slider {
-  box-shadow: 0 0 1px #b84fce;
+.switch input:focus-visible + .slider {
+  outline: 2px solid var(--switch-focus-ring);
+  outline-offset: 2px;
 }
 
 .switch input:checked + .slider:before {
-  transform: translateX(1.6em);
-  width: 2em;
-  height: 2em;
-  bottom: 0;
+  left: calc(var(--switch-width) - var(--thumb-size) - var(--thumb-padding));
+  transform: translateY(-50%);
+}
+
+.switch_disabled {
+  cursor: not-allowed;
+}
+
+.switch_disabled .slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.switch_disabled + .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.visually_hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
