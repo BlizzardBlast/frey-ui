@@ -27,6 +27,3 @@ jobs:
 
             # Publish command
             - run: pnpm publish --no-git-checks --access public --provenance
-              env:
-                  # This is magic: setup-node generates a temporary token and puts it here.
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
