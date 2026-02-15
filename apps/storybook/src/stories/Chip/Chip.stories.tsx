@@ -1,10 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import type React from 'react';
 
 import { Chip } from 'frey-ui';
+import type { ChipElement, Variant } from 'frey-ui';
 import { fn } from 'storybook/test';
 
-const meta: Meta<typeof Chip> = {
-  component: Chip,
+type ChipStoryProps = {
+  label: string;
+  variant?: Variant;
+  style?: React.CSSProperties;
+  className?: string;
+  as?: ChipElement;
+  href?: string;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+};
+
+const StoryChip = Chip as unknown as React.ComponentType<ChipStoryProps>;
+
+const meta: Meta<ChipStoryProps> = {
+  component: StoryChip,
   parameters: {
     layout: 'centered'
   },
@@ -73,10 +87,10 @@ const meta: Meta<typeof Chip> = {
       }
     }
   }
-} satisfies Meta<typeof Chip>;
+} satisfies Meta<ChipStoryProps>;
 
 export default meta;
-type Story = StoryObj<typeof Chip>;
+type Story = StoryObj<ChipStoryProps>;
 
 export const Basic_Chip: Story = {
   args: {
@@ -87,8 +101,8 @@ export const Basic_Chip: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <Chip {...args} variant={'default'} />
-      <Chip {...args} variant={'outlined'} />
+      <StoryChip {...args} variant={'default'} />
+      <StoryChip {...args} variant={'outlined'} />
     </div>
   )
 } satisfies Story;
@@ -103,8 +117,8 @@ export const Clickable_Chip: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <Chip {...args} variant={'default'} />
-      <Chip {...args} variant={'outlined'} />
+      <StoryChip {...args} variant={'default'} />
+      <StoryChip {...args} variant={'outlined'} />
     </div>
   )
 } satisfies Story;
@@ -116,5 +130,5 @@ export const Link_Chip: Story = {
     href: 'https://storybook.js.org',
     variant: 'outlined'
   },
-  render: (args) => <Chip {...args} />
+  render: (args) => <StoryChip {...args} />
 } satisfies Story;

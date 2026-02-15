@@ -55,13 +55,15 @@ function ChipInner<E extends ChipElement = 'span'>(
   }: Readonly<ChipProps<E>>,
   ref: React.ForwardedRef<ChipElementNode<E>>
 ) {
-  const element = as ?? (onClick ? 'button' : 'span');
+  const resolvedElement = as ?? (onClick ? 'button' : 'span');
+  const Component = resolvedElement as React.ElementType;
   const href =
-    element === 'a'
+    resolvedElement === 'a'
       ? (elementProps as React.AnchorHTMLAttributes<HTMLAnchorElement>).href
       : undefined;
   const hasHref = typeof href === 'string' && href.trim().length > 0;
-  const isInteractive = Boolean(onClick) || (element === 'a' && hasHref);
+  const isInteractive =
+    Boolean(onClick) || (resolvedElement === 'a' && hasHref);
 
   const classes = clsx(
     VariantDefaultMap[variant],
@@ -71,59 +73,17 @@ function ChipInner<E extends ChipElement = 'span'>(
     className
   );
 
-  if (element === 'button') {
-    return (
-      <button
-        {...(elementProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
-        ref={ref as React.Ref<HTMLButtonElement>}
-        className={classes}
-        onClick={onClick as React.MouseEventHandler<HTMLButtonElement>}
-        style={style}
-        type='button'
-      >
-        <span className={styles.chip_text}>{label}</span>
-      </button>
-    );
-  }
-
-  if (element === 'a') {
-    return (
-      <a
-        {...(elementProps as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-        ref={ref as React.Ref<HTMLAnchorElement>}
-        className={classes}
-        onClick={onClick as React.MouseEventHandler<HTMLAnchorElement>}
-        style={style}
-      >
-        <span className={styles.chip_text}>{label}</span>
-      </a>
-    );
-  }
-
-  if (element === 'div') {
-    return (
-      <div
-        {...(elementProps as React.HTMLAttributes<HTMLDivElement>)}
-        ref={ref as React.Ref<HTMLDivElement>}
-        className={classes}
-        onClick={onClick as React.MouseEventHandler<HTMLDivElement>}
-        style={style}
-      >
-        <span className={styles.chip_text}>{label}</span>
-      </div>
-    );
-  }
-
   return (
-    <span
-      {...(elementProps as React.HTMLAttributes<HTMLSpanElement>)}
-      ref={ref as React.Ref<HTMLSpanElement>}
+    <Component
+      {...elementProps}
+      ref={ref}
       className={classes}
-      onClick={onClick as React.MouseEventHandler<HTMLSpanElement>}
+      onClick={onClick}
       style={style}
+      type={resolvedElement === 'button' ? 'button' : undefined}
     >
       <span className={styles.chip_text}>{label}</span>
-    </span>
+    </Component>
   );
 }
 

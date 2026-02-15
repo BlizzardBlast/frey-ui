@@ -9,6 +9,11 @@ import dts from 'rollup-plugin-dts';
 import typescriptEngine from 'typescript';
 
 const packageJson = JSON.parse(readFileSync('./package.json'));
+const externalPackages = [
+  ...Object.keys(packageJson.dependencies || {}),
+  ...Object.keys(packageJson.peerDependencies || {}),
+  'react/jsx-runtime'
+];
 
 export default defineConfig(
   {
@@ -36,6 +41,7 @@ export default defineConfig(
         banner: "'use client';"
       }
     ],
+    external: externalPackages,
     plugins: [
       postcss({
         plugins: [],

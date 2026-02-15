@@ -10,7 +10,8 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@chromatic-com/storybook',
     '@storybook/addon-a11y',
-    '@storybook/addon-docs'
+    '@storybook/addon-docs',
+    '@storybook/addon-themes'
   ],
   framework: {
     name: '@storybook/react-vite',
