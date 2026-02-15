@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { readFileSync } from 'node:fs';
 import { defineConfig } from 'rollup';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -17,22 +17,26 @@ export default defineConfig(
       {
         file: packageJson.main,
         format: 'cjs',
-        sourcemap: false,
+        sourcemap: true,
         exports: 'named',
-        name: packageJson.name
+        name: packageJson.name,
+        banner: "'use client';"
       },
       {
         file: packageJson.module,
         format: 'es',
         exports: 'named',
-        sourcemap: false
+        sourcemap: true,
+        banner: "'use client';"
       }
     ],
     plugins: [
       postcss({
         plugins: [],
         modules: true,
-        minimize: true
+        minimize: true,
+        extract: 'styles.css',
+        sourceMap: true
       }),
       external({ includeDependencies: true }),
       resolve(),
@@ -40,7 +44,7 @@ export default defineConfig(
       typescript({
         tsconfig: './tsconfig.json',
         typescript: typescriptEngine,
-        sourceMap: false,
+        sourceMap: true,
         exclude: [
           'coverage',
           '.storybook',
@@ -66,7 +70,7 @@ export default defineConfig(
     ]
   },
   {
-    input: 'dist/esm/types/src/index.d.ts',
+    input: 'dist/types/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     external: [/\.(sc|sa|c)ss$/],
     plugins: [dts()]

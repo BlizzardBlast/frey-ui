@@ -4,6 +4,15 @@
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/types/index.d.ts",
+  "style": "dist/styles.css",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./style.css": "./dist/styles.css"
+  },
   "files": [
     "dist"
   ],
