@@ -28,6 +28,4 @@ jobs:
             # Publish command
             - run: pnpm publish --no-git-checks --access public --provenance
               env:
-                  # We do NOT pass the secret here.
-                  # We let OIDC handle the actual publishing authentication.
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
