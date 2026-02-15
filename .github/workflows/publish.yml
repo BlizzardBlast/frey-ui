@@ -6,10 +6,10 @@ on:
             - main
 
 permissions:
-    contents: write # 👈 Required to commit the changelog back to the repo
-    issues: write # Required to comment on released issues
+    contents: write
+    issues: write
     pull-requests: write
-    id-token: write # Required for provenance (optional)
+    id-token: write
 
 jobs:
     release:
@@ -19,8 +19,8 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
               with:
-                  fetch-depth: 0 # Critical: semantic-release needs full history to calculate versions
-                  persist-credentials: false # We use a special token for the push back
+                  fetch-depth: 0
+                  persist-credentials: false
 
             - name: Setup pnpm
               uses: pnpm/action-setup@v4
@@ -41,8 +41,7 @@ jobs:
 
             - name: Semantic Release
               env:
-                  # This token lets the bot commit the CHANGELOG.md back to main
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  # This token lets the bot publish to npm
                   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  HUSKY: 0
               run: npx semantic-release
