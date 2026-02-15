@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
-import Switch from '../../../../../src/Switch';
+import { Switch } from 'frey-ui';
 
 const meta: Meta<typeof Switch> = {
   component: Switch,

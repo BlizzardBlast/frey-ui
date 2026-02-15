@@ -6,17 +6,27 @@ export type Variant = 'default' | 'outlined';
 
 export type ChipElement = 'button' | 'div' | 'span' | 'a';
 
-export type ChipProps = {
+type ChipBaseProps = {
   label: string;
-  onClick?: React.MouseEventHandler<HTMLElement>;
-  as?: ChipElement;
+  variant?: Variant;
   style?: React.CSSProperties;
   className?: string;
-  variant?: Variant;
-} & Omit<React.HTMLAttributes<HTMLElement>, 'onClick' | 'className' | 'style'> &
-  Omit<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    'onClick' | 'className' | 'style'
+};
+
+type ChipElementNode<E extends ChipElement> = E extends 'button'
+  ? HTMLButtonElement
+  : E extends 'a'
+    ? HTMLAnchorElement
+    : E extends 'div'
+      ? HTMLDivElement
+      : HTMLSpanElement;
+
+export type ChipProps<E extends ChipElement = 'span'> = ChipBaseProps & {
+  as?: E;
+  onClick?: React.MouseEventHandler<ChipElementNode<E>>;
+} & Omit<
+    React.ComponentPropsWithoutRef<E>,
+    'as' | 'children' | 'className' | 'style' | 'onClick'
   >;
 
 const VariantDefaultMap: Record<Variant, string> = {
@@ -29,7 +39,11 @@ const VariantClickableMap: Record<Variant, string> = {
   outlined: styles.chip_outlined_clickable
 };
 
-const Chip = React.forwardRef<HTMLElement, Readonly<ChipProps>>(function Chip(
+type ChipComponent = <E extends ChipElement = 'span'>(
+  props: Readonly<ChipProps<E>> & { ref?: React.Ref<ChipElementNode<E>> }
+) => React.ReactElement | null;
+
+function ChipInner<E extends ChipElement = 'span'>(
   {
     label,
     onClick,
@@ -38,14 +52,16 @@ const Chip = React.forwardRef<HTMLElement, Readonly<ChipProps>>(function Chip(
     className,
     variant = 'default',
     ...elementProps
-  },
-  ref
+  }: Readonly<ChipProps<E>>,
+  ref: React.ForwardedRef<ChipElementNode<E>>
 ) {
-  const hasHref =
-    typeof elementProps.href === 'string' &&
-    elementProps.href.trim().length > 0;
-  const isInteractive = Boolean(onClick) || (as === 'a' && hasHref);
-  const element = as ?? (isInteractive ? 'button' : 'span');
+  const element = as ?? (onClick ? 'button' : 'span');
+  const href =
+    element === 'a'
+      ? (elementProps as React.AnchorHTMLAttributes<HTMLAnchorElement>).href
+      : undefined;
+  const hasHref = typeof href === 'string' && href.trim().length > 0;
+  const isInteractive = Boolean(onClick) || (element === 'a' && hasHref);
 
   const classes = clsx(
     VariantDefaultMap[variant],
@@ -109,8 +125,12 @@ const Chip = React.forwardRef<HTMLElement, Readonly<ChipProps>>(function Chip(
       <span className={styles.chip_text}>{label}</span>
     </span>
   );
-});
+}
 
-Chip.displayName = 'Chip';
+const ForwardedChip = React.forwardRef(ChipInner);
+
+ForwardedChip.displayName = 'Chip';
+
+const Chip = ForwardedChip as ChipComponent;
 
 export default Chip;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
+import { Chip } from 'frey-ui';
 import { fn } from 'storybook/test';
-import Chip from '../../../../../src/Chip';
 
 const meta: Meta<typeof Chip> = {
   component: Chip,
