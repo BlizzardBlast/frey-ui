@@ -1,0 +1,14 @@
+:root {
+  --frey-color-surface: #ffffff;
+  --frey-color-surface-subtle: #f1f1f1;
+  --frey-color-surface-subtle-hover: #e9e9e9;
+  --frey-color-text-primary: #111827;
+  --frey-color-border-muted: #9ca3af;
+
+  --frey-switch-track-inactive: #d4acfb;
+  --frey-switch-track-active: #b84fce;
+  --frey-switch-thumb: #ffffff;
+  --frey-focus-ring: #b84fce;
+
+  --frey-shadow-thumb: 0 0 20px rgb(0 0 0 / 40%);
+}

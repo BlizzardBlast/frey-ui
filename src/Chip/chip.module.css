@@ -5,11 +5,11 @@
   padding: 0.5rem 0.75rem;
   margin: auto;
   border-radius: 1rem;
-  background-color: white;
-  color: black;
+  background-color: var(--frey-color-surface);
+  color: var(--frey-color-text-primary);
   font-size: 0.875rem;
   font-weight: 500;
-  border: 1px solid grey;
+  border: 1px solid var(--frey-color-border-muted);
   cursor: default;
   transition: background-color 0.3s;
 }
@@ -21,8 +21,8 @@
   padding: 0.5rem 0.75rem;
   margin: auto;
   border-radius: 1rem;
-  background-color: #f1f1f1;
-  color: black;
+  background-color: var(--frey-color-surface-subtle);
+  color: var(--frey-color-text-primary);
   font-size: 0.875rem;
   font-weight: 500;
   border: none;
@@ -32,12 +32,12 @@
 
 .chip_default_clickable:hover {
   cursor: pointer;
-  background-color: #e9e9e9;
+  background-color: var(--frey-color-surface-subtle-hover);
 }
 
 .chip_outlined_clickable:hover {
   cursor: pointer;
-  background-color: #f1f1f1;
+  background-color: var(--frey-color-surface-subtle);
 }
 
 .chip_text {

@@ -20,6 +20,24 @@ const meta: Meta<typeof Chip> = {
       description: 'The event handler for the click event',
       action: 'clicked'
     },
+    as: {
+      description: 'The HTML element to render for the chip',
+      table: {
+        type: {
+          summary: "'button' | 'div' | 'span' | 'a'"
+        }
+      },
+      control: {
+        type: 'select'
+      },
+      options: ['button', 'div', 'span', 'a']
+    },
+    href: {
+      description: 'URL when rendering as an anchor chip',
+      control: {
+        type: 'text'
+      }
+    },
     variant: {
       description: 'The variant of the chip',
       table: {
@@ -79,6 +97,7 @@ export const Clickable_Chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn(),
+    as: 'button',
     className: undefined,
     style: undefined
   },
@@ -88,4 +107,14 @@ export const Clickable_Chip: Story = {
       <Chip {...args} variant={'outlined'} />
     </div>
   )
+} satisfies Story;
+
+export const Link_Chip: Story = {
+  args: {
+    label: 'Read docs',
+    as: 'a',
+    href: 'https://storybook.js.org',
+    variant: 'outlined'
+  },
+  render: (args) => <Chip {...args} />
 } satisfies Story;

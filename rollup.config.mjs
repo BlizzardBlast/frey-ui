@@ -15,18 +15,24 @@ export default defineConfig(
     input: './src/index.ts',
     output: [
       {
-        file: packageJson.main,
+        dir: 'dist',
         format: 'cjs',
         sourcemap: true,
         exports: 'named',
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: 'cjs/[name].js',
         name: packageJson.name,
         banner: "'use client';"
       },
       {
-        file: packageJson.module,
+        dir: 'dist',
         format: 'es',
         exports: 'named',
         sourcemap: true,
+        preserveModules: true,
+        preserveModulesRoot: 'src',
+        entryFileNames: 'esm/[name].js',
         banner: "'use client';"
       }
     ],

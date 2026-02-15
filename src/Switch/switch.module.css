@@ -1,9 +1,4 @@
 .switch_container {
-  --switch-track-inactive: #d4acfb;
-  --switch-track-active: #b84fce;
-  --switch-thumb: white;
-  --switch-focus-ring: #b84fce;
-
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -52,7 +47,7 @@
   position: absolute;
   cursor: pointer;
   inset: 0;
-  background: var(--switch-track-inactive);
+  background: var(--switch-track-inactive, var(--frey-switch-track-inactive));
   border-radius: 50px;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
@@ -65,18 +60,18 @@
   left: var(--thumb-padding);
   top: 50%;
   transform: translateY(-50%);
-  background-color: var(--switch-thumb);
+  background-color: var(--switch-thumb, var(--frey-switch-thumb));
   border-radius: 50px;
-  box-shadow: 0 0px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--frey-shadow-thumb);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .switch input:checked + .slider {
-  background: var(--switch-track-active);
+  background: var(--switch-track-active, var(--frey-switch-track-active));
 }
 
 .switch input:focus-visible + .slider {
-  outline: 2px solid var(--switch-focus-ring);
+  outline: 2px solid var(--switch-focus-ring, var(--frey-focus-ring));
   outline-offset: 2px;
 }
 
