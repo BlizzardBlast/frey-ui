@@ -1,31 +1,48 @@
-name: Publish to npm
+name: Release
 
 on:
-    release:
-        types: [published]
+    push:
+        branches:
+            - main
 
 permissions:
-    contents: read
-    id-token: write # 👈 This is the key to OIDC
+    contents: write # 👈 Required to commit the changelog back to the repo
+    issues: write # Required to comment on released issues
+    pull-requests: write
+    id-token: write # Required for provenance (optional)
 
 jobs:
-    build-and-publish:
+    release:
+        name: Release
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v4
-            - uses: pnpm/action-setup@v4
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0 # Critical: semantic-release needs full history to calculate versions
+                  persist-credentials: false # We use a special token for the push back
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v4
               with:
                   version: 10
 
-            # This step handles the OIDC Login
-            - uses: actions/setup-node@v4
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
               with:
                   node-version: 22.15.1
                   registry-url: "https://registry.npmjs.org"
 
-            - run: pnpm install --frozen-lockfile
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-            # Publish command
-            - run: pnpm publish --no-git-checks --access public
+            - name: Build
+              run: pnpm build
+
+            - name: Semantic Release
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                  # This token lets the bot commit the CHANGELOG.md back to main
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  # This token lets the bot publish to npm
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: npx semantic-release
