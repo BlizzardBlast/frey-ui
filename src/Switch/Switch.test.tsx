@@ -35,6 +35,36 @@ describe('Switch', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
+  it('does not use disabled attribute on wrapper span', () => {
+    const { container } = render(<Switch label='Disabled test' disabled />);
+
+    const wrapper = container.querySelector('span[class]');
+
+    expect(wrapper).not.toHaveAttribute('disabled');
+    expect(wrapper).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('prevents interaction when disabled', async () => {
+    const onChange = vi.fn();
+    const user = userEvent.setup();
+
+    render(<Switch label='No click' disabled onChange={onChange} />);
+
+    const input = screen.getByRole('switch', { name: 'No click' });
+    await user.click(input);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(input).toBeDisabled();
+  });
+
+  it('does not set aria-disabled when not disabled', () => {
+    const { container } = render(<Switch label='Enabled test' />);
+
+    const wrapper = container.querySelector('span[class]');
+
+    expect(wrapper).not.toHaveAttribute('aria-disabled');
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(<Switch label='A11y switch' />);
     const results = await axe(container);

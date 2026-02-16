@@ -41,9 +41,13 @@
 
 .switch input {
   opacity: 0;
-  width: 0;
-  height: 0;
+  width: 100%;
+  height: 100%;
   position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+  margin: 0;
 }
 
 .slider {
@@ -71,6 +75,10 @@
 
 .switch-disabled .slider {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.switch-disabled input {
   cursor: not-allowed;
 }
 
@@ -109,7 +117,7 @@
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }

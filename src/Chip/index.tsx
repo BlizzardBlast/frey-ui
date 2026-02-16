@@ -6,13 +6,6 @@ export type Variant = 'default' | 'outlined';
 
 export type ChipElement = 'button' | 'div' | 'span' | 'a';
 
-type ChipBaseProps = {
-  label: string;
-  variant?: Variant;
-  style?: React.CSSProperties;
-  className?: string;
-};
-
 type ChipElementNode<E extends ChipElement> = E extends 'button'
   ? HTMLButtonElement
   : E extends 'a'
@@ -21,12 +14,19 @@ type ChipElementNode<E extends ChipElement> = E extends 'button'
       ? HTMLDivElement
       : HTMLSpanElement;
 
+type ChipBaseProps = {
+  label: string;
+  variant?: Variant;
+  style?: React.CSSProperties;
+  className?: string;
+};
+
 export type ChipProps<E extends ChipElement = 'span'> = ChipBaseProps & {
   as?: E;
   onClick?: React.MouseEventHandler<ChipElementNode<E>>;
 } & Omit<
-    React.ComponentPropsWithoutRef<E>,
-    'as' | 'children' | 'className' | 'style' | 'onClick'
+    React.ComponentPropsWithRef<E>,
+    'as' | 'children' | 'className' | 'style' | 'onClick' | 'ref'
   >;
 
 const VariantDefaultMap: Record<Variant, string> = {
@@ -67,6 +67,18 @@ function ChipInner<E extends ChipElement = 'span'>(
     (resolvedElement === 'a' && hasHref) ||
     Boolean(onClick);
 
+  const isNonNativeInteractive =
+    isInteractive && resolvedElement !== 'button' && resolvedElement !== 'a';
+
+  const handleKeyDown = isNonNativeInteractive
+    ? (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          (event.currentTarget as HTMLElement).click();
+        }
+      }
+    : undefined;
+
   const classes = clsx(
     VariantDefaultMap[variant],
     {
@@ -83,6 +95,9 @@ function ChipInner<E extends ChipElement = 'span'>(
       onClick={onClick}
       style={style}
       type={resolvedElement === 'button' ? 'button' : undefined}
+      role={isNonNativeInteractive ? 'button' : undefined}
+      tabIndex={isNonNativeInteractive ? 0 : undefined}
+      onKeyDown={isNonNativeInteractive ? handleKeyDown : undefined}
     >
       <span className={styles['chip-text']}>{label}</span>
     </Component>

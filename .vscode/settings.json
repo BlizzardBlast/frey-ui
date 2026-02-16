@@ -7,7 +7,6 @@
   },
   "stylelint.enable": true,
   "stylelint.packageManager": "pnpm",
-  "stylelint.stylelintPath": "../stylelint.config.mjs",
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false

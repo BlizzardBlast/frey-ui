@@ -3,7 +3,7 @@ import type React from 'react';
 
 import { Chip } from 'frey-ui';
 import type { ChipElement, Variant } from 'frey-ui';
-import { fn } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 type ChipStoryProps = {
   label: string;
@@ -131,4 +131,40 @@ export const Link_Chip: Story = {
     variant: 'outlined'
   },
   render: (args) => <StoryChip {...args} />
+} satisfies Story;
+
+export const Interactive_Flow: Story = {
+  args: {
+    label: 'Click me',
+    onClick: fn()
+  },
+  render: (args) => <StoryChip {...args} />,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const chip = canvas.getByRole('button', { name: 'Click me' });
+
+    await userEvent.click(chip);
+
+    expect(args.onClick).toHaveBeenCalledTimes(1);
+  }
+} satisfies Story;
+
+export const Keyboard_Navigation: Story = {
+  args: {
+    label: 'Keyboard chip',
+    as: 'div',
+    onClick: fn()
+  },
+  render: (args) => <StoryChip {...args} />,
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const chip = canvas.getByRole('button', { name: 'Keyboard chip' });
+
+    expect(chip).toHaveAttribute('tabindex', '0');
+
+    chip.focus();
+    await userEvent.keyboard('{Enter}');
+
+    expect(args.onClick).toHaveBeenCalledTimes(1);
+  }
 } satisfies Story;

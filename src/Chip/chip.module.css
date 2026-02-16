@@ -40,6 +40,12 @@
   background-color: var(--frey-color-surface-subtle);
 }
 
+.chip-default-clickable:focus-visible,
+.chip-outlined-clickable:focus-visible {
+  outline: 2px solid var(--frey-focus-ring, #6366f1);
+  outline-offset: 2px;
+}
+
 .chip-text {
   display: inline-block;
   max-width: 100%;

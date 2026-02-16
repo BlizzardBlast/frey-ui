@@ -4,6 +4,7 @@ import type React from 'react';
 
 import { Switch } from 'frey-ui';
 import type { SwitchProps } from 'frey-ui';
+import { expect, userEvent, within } from 'storybook/test';
 
 type SwitchStoryProps = SwitchProps;
 
@@ -113,4 +114,63 @@ export const Custom_Colors: Story = {
       }
     />
   )
+} satisfies Story;
+
+export const Toggle_Interaction: Story = {
+  args: {
+    label: 'Interactive switch'
+  },
+  render: (args) => <StorySwitch {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole('switch', { name: 'Interactive switch' });
+
+    expect(toggle).not.toBeChecked();
+
+    await userEvent.click(toggle);
+
+    expect(toggle).toBeChecked();
+
+    await userEvent.click(toggle);
+
+    expect(toggle).not.toBeChecked();
+  }
+} satisfies Story;
+
+export const Keyboard_Toggle: Story = {
+  args: {
+    label: 'Keyboard switch'
+  },
+  render: (args) => <StorySwitch {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole('switch', { name: 'Keyboard switch' });
+
+    toggle.focus();
+    await userEvent.keyboard('{Enter}');
+
+    expect(toggle).toBeChecked();
+
+    await userEvent.keyboard(' ');
+
+    expect(toggle).not.toBeChecked();
+  }
+} satisfies Story;
+
+export const Disabled_Interaction: Story = {
+  args: {
+    label: 'Disabled switch',
+    disabled: true
+  },
+  render: (args) => <StorySwitch {...args} />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const toggle = canvas.getByRole('switch', { name: 'Disabled switch' });
+
+    expect(toggle).toBeDisabled();
+
+    await userEvent.click(toggle);
+
+    expect(toggle).not.toBeChecked();
+  }
 } satisfies Story;

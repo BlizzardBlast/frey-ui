@@ -66,6 +66,7 @@ const Switch = React.forwardRef<HTMLInputElement, Readonly<SwitchProps>>(
           className={clsx(styles.switch, SizeClassMap[size], {
             [styles['switch-disabled']]: disabled
           })}
+          aria-disabled={disabled || undefined}
         >
           <input
             type='checkbox'
