@@ -16,9 +16,9 @@ export type SwitchProps = Omit<
 };
 
 const SizeClassMap: Record<SwitchSize, string> = {
-  sm: styles.switch_sm,
-  md: styles.switch_md,
-  lg: styles.switch_lg
+  sm: styles['switch-sm'],
+  md: styles['switch-md'],
+  lg: styles['switch-lg']
 };
 
 const Switch = React.forwardRef<HTMLInputElement, Readonly<SwitchProps>>(
@@ -58,10 +58,13 @@ const Switch = React.forwardRef<HTMLInputElement, Readonly<SwitchProps>>(
     };
 
     return (
-      <div className={clsx(styles.switch_container, className)} style={style}>
+      <div
+        className={clsx(styles['switch-container'], className)}
+        style={style}
+      >
         <span
           className={clsx(styles.switch, SizeClassMap[size], {
-            [styles.switch_disabled]: disabled
+            [styles['switch-disabled']]: disabled
           })}
         >
           <input
@@ -80,7 +83,7 @@ const Switch = React.forwardRef<HTMLInputElement, Readonly<SwitchProps>>(
         <label
           htmlFor={inputId}
           className={clsx(styles.label, {
-            [styles.visually_hidden]: hideLabel
+            [styles['visually-hidden']]: hideLabel
           })}
         >
           {label}

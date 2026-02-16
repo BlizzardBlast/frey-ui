@@ -1,4 +1,4 @@
-.chip_outlined {
+.chip-outlined {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,7 @@
   transition: background-color 0.3s;
 }
 
-.chip_default {
+.chip-default {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,17 +30,17 @@
   transition: background-color 0.3s;
 }
 
-.chip_default_clickable:hover {
+.chip-default-clickable:hover {
   cursor: pointer;
   background-color: var(--frey-color-surface-subtle-hover);
 }
 
-.chip_outlined_clickable:hover {
+.chip-outlined-clickable:hover {
   cursor: pointer;
   background-color: var(--frey-color-surface-subtle);
 }
 
-.chip_text {
+.chip-text {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;

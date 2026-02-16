@@ -1,4 +1,14 @@
 {
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "eslint.useFlatConfig": true
+  "eslint.useFlatConfig": true,
+  "stylelint.validate": ["css", "postcss", "scss"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "stylelint.enable": true,
+  "stylelint.packageManager": "pnpm",
+  "stylelint.stylelintPath": "../stylelint.config.mjs",
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
 }

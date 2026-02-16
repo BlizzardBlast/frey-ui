@@ -54,7 +54,7 @@ export default defineConfig(
       resolve(),
       commonjs(),
       typescript({
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.lib.json',
         typescript: typescriptEngine,
         sourceMap: true,
         exclude: [

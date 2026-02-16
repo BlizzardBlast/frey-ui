@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "baseUrl": ".",
+    "paths": {
+      "frey-ui": ["./src/index.ts"],
+      "frey-ui/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "vitest.setup.ts", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist", "coverage"]
+}

@@ -35,9 +35,12 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",
+    "typecheck": "tsc -b",
     "pub": "pnpm run build && pnpm publish",
     "prepare": "husky",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "pnpm lint:ts && pnpm lint:styles",
+    "lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:styles": "stylelint \"**/*.css\" --allow-empty-input",
     "test": "vitest run"
   },
   "peerDependencies": {
@@ -62,12 +65,14 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@types/jest-axe": "^3.5.9",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.3.0",
     "husky": "^9.1.7",
+    "jest-axe": "^10.0.0",
     "jsdom": "^28.1.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -77,9 +82,10 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-typescript2": "^0.36.0",
+    "stylelint": "^16.26.0",
+    "stylelint-config-standard": "^39.0.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.55.0",
-    "typescript-plugin-css-modules": "^5.2.0",
     "vitest": "^4.0.18"
   }
 }

@@ -1,4 +1,4 @@
-.switch_container {
+.switch-container {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -12,24 +12,27 @@
   height: var(--switch-height);
 }
 
-.switch_sm {
+.switch-sm {
   font-size: 14px;
+
   --switch-width: 2.8em;
   --switch-height: 1.6em;
   --thumb-size: 1.1em;
   --thumb-padding: 0.25em;
 }
 
-.switch_md {
+.switch-md {
   font-size: 17px;
+
   --switch-width: 3.5em;
   --switch-height: 2em;
   --thumb-size: 1.4em;
   --thumb-padding: 0.3em;
 }
 
-.switch_lg {
+.switch-lg {
   font-size: 20px;
+
   --switch-width: 4em;
   --switch-height: 2.2em;
   --thumb-size: 1.6em;
@@ -52,7 +55,7 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.slider:before {
+.slider::before {
   position: absolute;
   content: '';
   height: var(--thumb-size);
@@ -66,6 +69,11 @@
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+.switch-disabled .slider {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .switch input:checked + .slider {
   background: var(--switch-track-active, var(--frey-switch-track-active));
 }
@@ -75,17 +83,12 @@
   outline-offset: 2px;
 }
 
-.switch input:checked + .slider:before {
+.switch input:checked + .slider::before {
   left: calc(var(--switch-width) - var(--thumb-size) - var(--thumb-padding));
   transform: translateY(-50%);
 }
 
-.switch_disabled {
-  cursor: not-allowed;
-}
-
-.switch_disabled .slider {
-  opacity: 0.5;
+.switch-disabled {
   cursor: not-allowed;
 }
 
@@ -94,12 +97,12 @@
   user-select: none;
 }
 
-.switch_disabled + .label {
+.switch-disabled + .label {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.visually_hidden {
+.visually-hidden {
   position: absolute;
   width: 1px;
   height: 1px;

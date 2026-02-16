@@ -1,3 +1,7 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title='Introduction' />
+
 # Frey UI
 
 A strict, accessible design system library for internal applications.
@@ -12,7 +16,7 @@ npm install frey-ui
 
 ## Setup
 
-Import the CSS once in your root file (for example `App.tsx` or `layout.tsx`):
+Import the CSS once in your root file:
 
 ```tsx
 import 'frey-ui/style.css';
@@ -31,4 +35,18 @@ function App() {
     </ThemeProvider>
   );
 }
+```
+
+## Nested Theming
+
+`ThemeProvider` uses `data-frey-theme`, so nested light/dark regions are supported:
+
+```tsx
+<ThemeProvider theme='light'>
+  <main>
+    <ThemeProvider theme='dark'>
+      <Switch label='Dark panel setting' />
+    </ThemeProvider>
+  </main>
+</ThemeProvider>
 ```

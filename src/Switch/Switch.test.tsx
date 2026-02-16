@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { axe } from 'jest-axe';
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import Switch from './index';
@@ -32,5 +33,12 @@ describe('Switch', () => {
     await user.keyboard('{Enter}');
 
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no accessibility violations', async () => {
+    const { container } = render(<Switch label='A11y switch' />);
+    const results = await axe(container);
+
+    expect(results).toHaveNoViolations();
   });
 });

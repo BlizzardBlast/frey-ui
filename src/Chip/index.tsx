@@ -30,13 +30,13 @@ export type ChipProps<E extends ChipElement = 'span'> = ChipBaseProps & {
   >;
 
 const VariantDefaultMap: Record<Variant, string> = {
-  default: styles.chip_default,
-  outlined: styles.chip_outlined
+  default: styles['chip-default'],
+  outlined: styles['chip-outlined']
 };
 
 const VariantClickableMap: Record<Variant, string> = {
-  default: styles.chip_default_clickable,
-  outlined: styles.chip_outlined_clickable
+  default: styles['chip-default-clickable'],
+  outlined: styles['chip-outlined-clickable']
 };
 
 type ChipComponent = <E extends ChipElement = 'span'>(
@@ -63,7 +63,9 @@ function ChipInner<E extends ChipElement = 'span'>(
       : undefined;
   const hasHref = typeof href === 'string' && href.trim().length > 0;
   const isInteractive =
-    Boolean(onClick) || (resolvedElement === 'a' && hasHref);
+    resolvedElement === 'button' ||
+    (resolvedElement === 'a' && hasHref) ||
+    Boolean(onClick);
 
   const classes = clsx(
     VariantDefaultMap[variant],
@@ -82,7 +84,7 @@ function ChipInner<E extends ChipElement = 'span'>(
       style={style}
       type={resolvedElement === 'button' ? 'button' : undefined}
     >
-      <span className={styles.chip_text}>{label}</span>
+      <span className={styles['chip-text']}>{label}</span>
     </Component>
   );
 }
