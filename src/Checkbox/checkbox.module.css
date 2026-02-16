@@ -1,0 +1,135 @@
+.checkbox-container {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+}
+
+.checkbox-sm {
+  --checkbox-size: 1rem;
+}
+
+.checkbox-md {
+  --checkbox-size: 1.25rem;
+}
+
+.checkbox-lg {
+  --checkbox-size: 1.5rem;
+}
+
+.checkbox input {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-box {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--frey-checkbox-border);
+  border-radius: 0.1875rem;
+  background-color: var(--frey-color-surface);
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox-disabled input {
+  cursor: not-allowed;
+}
+
+.checkbox-disabled .checkbox-box {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkbox input:checked + .checkbox-box {
+  background-color: var(--frey-checkbox-checked-bg);
+  border-color: var(--frey-checkbox-checked-border);
+}
+
+.checkbox input:indeterminate + .checkbox-box {
+  background-color: var(--frey-checkbox-checked-bg);
+  border-color: var(--frey-checkbox-checked-border);
+}
+
+.checkbox input:focus-visible + .checkbox-box {
+  outline: 2px solid var(--frey-focus-ring);
+  outline-offset: 2px;
+}
+
+.check-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 70%;
+  height: 70%;
+  color: var(--frey-checkbox-check-color);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.checkbox input:checked + .checkbox-box .check-icon {
+  opacity: 1;
+}
+
+.indeterminate-icon {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 60%;
+  height: 60%;
+  color: var(--frey-checkbox-check-color);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.checkbox input:indeterminate + .checkbox-box .indeterminate-icon {
+  opacity: 1;
+}
+
+.checkbox input:checked + .checkbox-box .indeterminate-icon {
+  opacity: 0;
+}
+
+.label {
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
+  color: var(--frey-color-text-primary);
+  padding-top: 0.0625rem;
+}
+
+.checkbox-disabled + .label {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}

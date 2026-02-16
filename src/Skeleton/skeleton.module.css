@@ -1,0 +1,29 @@
+.skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--frey-skeleton-base) 25%,
+    var(--frey-skeleton-highlight) 50%,
+    var(--frey-skeleton-base) 75%
+  );
+  background-size: 200% 100%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-rectangle {
+  border-radius: 0.25rem;
+}
+
+.skeleton-circle {
+  border-radius: 50%;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
