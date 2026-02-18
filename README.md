@@ -56,6 +56,63 @@ function App() {
 
 ## Components
 
+Frey UI currently exports:
+
+- `Alert`
+- `Button`
+- `Checkbox`
+- `Chip`
+- `Skeleton`
+- `Switch`
+- `TextInput`
+- `ThemeProvider`
+
+### `Alert`
+
+Inline status and feedback messaging.
+
+| Prop        | Type                                           | Default  | Description                                      |
+| ----------- | ---------------------------------------------- | -------- | ------------------------------------------------ |
+| `variant`   | `'error' \| 'success' \| 'warning' \| 'info'` | `'info'` | Visual style and live-region semantics.          |
+| `title`     | `string`                                       | —        | Optional short heading rendered above the body.  |
+| `children`  | `ReactNode`                                    | —        | **Required.** Main alert message content.        |
+| `className` | `string`                                       | —        | Additional CSS class.                            |
+| `style`     | `CSSProperties`                                | —        | Inline styles / CSS variable overrides.          |
+
+### `Button`
+
+Polymorphic action control with loading and disabled states.
+
+| Prop        | Type                                              | Default     | Description                                                                             |
+| ----------- | ------------------------------------------------- | ----------- | --------------------------------------------------------------------------------------- |
+| `as`        | `'button' \| 'a'`                                 | `'button'`  | HTML element to render.                                                                 |
+| `variant`   | `'primary' \| 'secondary' \| 'ghost' \| 'destructive'` | `'primary'` | Visual style variant.                                                                   |
+| `size`      | `'sm' \| 'md' \| 'lg'`                            | `'md'`      | Size variant.                                                                           |
+| `loading`   | `boolean`                                         | `false`     | Shows spinner and marks element as busy.                                                |
+| `disabled`  | `boolean`                                         | `false`     | Disables native buttons; for anchors sets `aria-disabled`.                              |
+| `className` | `string`                                          | —           | Additional CSS class.                                                                   |
+| `style`     | `CSSProperties`                                   | —           | Inline styles / CSS variable overrides.                                                 |
+| `ref`       | `Ref<HTMLButtonElement \| HTMLAnchorElement>`     | —           | Forwarded ref to the underlying element.                                                |
+
+Component-specific native attributes are supported based on `as` (`button` or `a`).
+
+### `Checkbox`
+
+Accessible checkbox with optional indeterminate state.
+
+| Prop            | Type                                   | Default | Description                                                     |
+| --------------- | -------------------------------------- | ------- | --------------------------------------------------------------- |
+| `label`         | `string`                               | —       | **Required.** Accessible label text.                            |
+| `hideLabel`     | `boolean`                              | `false` | Visually hide the label (remains accessible to screen readers). |
+| `size`          | `'sm' \| 'md' \| 'lg'`                 | `'md'`  | Size variant.                                                   |
+| `indeterminate` | `boolean`                              | `false` | Shows mixed state and sets `aria-checked="mixed"`.             |
+| `disabled`      | `boolean`                              | `false` | Disables the checkbox.                                          |
+| `className`     | `string`                               | —       | Additional CSS class.                                           |
+| `style`         | `CSSProperties`                        | —       | Inline styles / CSS variable overrides.                         |
+| `ref`           | `Ref<HTMLInputElement>`                | —       | Forwarded ref to the native input.                              |
+
+All standard `<input>` attributes (except `type`, `size`) are also supported and spread onto the underlying element.
+
 ### `Chip`
 
 A polymorphic label / action component.
@@ -71,6 +128,18 @@ A polymorphic label / action component.
 | `ref`       | `Ref`                                | —                                                   | Forwarded ref to the underlying element.                                 |
 
 Non-native interactive chips (`as="div"` with `onClick`) automatically receive `role="button"`, `tabIndex={0}`, and keyboard support (Enter / Space).
+
+### `Skeleton`
+
+Loading placeholder for pending UI states.
+
+| Prop        | Type                            | Default       | Description                                           |
+| ----------- | ------------------------------- | ------------- | ----------------------------------------------------- |
+| `width`     | `string \| number`              | —             | Placeholder width (for circles, can infer from height). |
+| `height`    | `string \| number`              | —             | Placeholder height (for circles, can infer from width). |
+| `shape`     | `'rectangle' \| 'circle'`       | `'rectangle'` | Skeleton shape.                                       |
+| `className` | `string`                        | —             | Additional CSS class.                                 |
+| `style`     | `CSSProperties`                 | —             | Inline styles / CSS variable overrides.               |
 
 ### `Switch`
 
@@ -90,6 +159,24 @@ An accessible toggle switch built on a native `<input type="checkbox" role="swit
 | `ref`            | `Ref<HTMLInputElement>`                | —       | Forwarded ref to the native input.                              |
 
 All standard `<input>` attributes (except `type`, `size`) are also supported and spread onto the underlying element.
+
+### `TextInput`
+
+Accessible text field with helper and error messaging.
+
+| Prop         | Type                                                                    | Default  | Description                                                     |
+| ------------ | ----------------------------------------------------------------------- | -------- | --------------------------------------------------------------- |
+| `label`      | `string`                                                                | —        | **Required.** Accessible label text.                            |
+| `hideLabel`  | `boolean`                                                               | `false`  | Visually hide the label (remains accessible to screen readers). |
+| `type`       | `'text' \| 'email' \| 'password' \| 'search' \| 'tel' \| 'url'`        | `'text'` | Input type.                                                     |
+| `error`      | `string`                                                                | —        | Error message text; sets `aria-invalid` and `role="alert"`.    |
+| `helperText` | `string`                                                                | —        | Helper text shown below the input.                              |
+| `disabled`   | `boolean`                                                               | `false`  | Disables the input.                                             |
+| `className`  | `string`                                                                | —        | Additional CSS class.                                           |
+| `style`      | `CSSProperties`                                                         | —        | Inline styles / CSS variable overrides.                         |
+| `ref`        | `Ref<HTMLInputElement>`                                                 | —        | Forwarded ref to the native input.                              |
+
+All standard `<input>` attributes (except `type`) are also supported and spread onto the underlying element.
 
 ### `ThemeProvider`
 
