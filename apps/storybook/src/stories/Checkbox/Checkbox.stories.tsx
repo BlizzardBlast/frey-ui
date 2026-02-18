@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
-import type React from 'react';
-
-import { Checkbox } from 'frey-ui';
 import type { CheckboxProps } from 'frey-ui';
+import { Checkbox } from 'frey-ui';
+import type React from 'react';
+import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 const StoryCheckbox = Checkbox as unknown as React.ComponentType<CheckboxProps>;

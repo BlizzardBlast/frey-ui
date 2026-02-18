@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { Alert } from 'frey-ui';
 import type { AlertProps } from 'frey-ui';
+import { Alert } from 'frey-ui';
 
 const meta: Meta<AlertProps> = {
   component: Alert,

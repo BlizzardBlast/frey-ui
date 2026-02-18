@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { Skeleton } from 'frey-ui';
 import type { SkeletonProps } from 'frey-ui';
+import { Skeleton } from 'frey-ui';
 
 const meta: Meta<SkeletonProps> = {
   component: Skeleton,

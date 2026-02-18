@@ -3,8 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import Chip from './index';
 import styles from './chip.module.css';
+import Chip from './index';
 
 describe('Chip', () => {
   it('renders non-interactive chip as text element when onClick is missing', () => {
@@ -82,7 +82,7 @@ describe('Chip', () => {
   it('does not add role or tabIndex to non-interactive elements', () => {
     render(<Chip as='div' label='Static div' />);
 
-    const chip = screen.getByText('Static div').closest('div')!;
+    const chip = screen.getByText('Static div').closest('div');
 
     expect(chip).not.toHaveAttribute('role');
     expect(chip).not.toHaveAttribute('tabindex');

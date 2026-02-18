@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
-import type React from 'react';
-
-import { Switch } from 'frey-ui';
 import type { SwitchProps } from 'frey-ui';
+import { Switch } from 'frey-ui';
+import type React from 'react';
+import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 type SwitchStoryProps = SwitchProps;

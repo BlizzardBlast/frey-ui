@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import type React from 'react';
 import styles from './skeleton.module.css';
 
 export type SkeletonShape = 'rectangle' | 'circle';

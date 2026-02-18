@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { Button } from 'frey-ui';
 import type { ButtonElement, ButtonSize, ButtonVariant } from 'frey-ui';
+import { Button } from 'frey-ui';
 import { expect, fn, userEvent, within } from 'storybook/test';
 
 type ButtonStoryProps = {

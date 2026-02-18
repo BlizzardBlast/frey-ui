@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type React from 'react';
+import type { ChipElement, Variant } from 'frey-ui';
 
 import { Chip } from 'frey-ui';
-import type { ChipElement, Variant } from 'frey-ui';
+import type React from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 
 type ChipStoryProps = {

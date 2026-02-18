@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import type React from 'react';
 import styles from './alert.module.css';
 
 export type AlertVariant = 'error' | 'success' | 'warning' | 'info';
