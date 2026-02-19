@@ -31,14 +31,24 @@ jobs:
           node-version: 22.15.1
           cache: "pnpm"
       - name: Check if Storybook is affected
-        id: turbo-ignore
-        continue-on-error: true
-        run: pnpm dlx turbo-ignore --task=build-storybook @frey-ui/storybook
+        id: affected
+        run: |
+          set +e
+          pnpm dlx turbo-ignore --task=build-storybook @frey-ui/storybook
+          CODE=$?
+          if [ "$CODE" -eq 1 ]; then
+            echo "storybook_affected=true" >> "$GITHUB_OUTPUT"
+          elif [ "$CODE" -eq 0 ]; then
+            echo "storybook_affected=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unexpected turbo-ignore exit code: $CODE"
+            exit "$CODE"
+          fi
       - name: Skip deploy (unaffected)
-        if: steps.turbo-ignore.outcome == 'success'
+        if: steps.affected.outputs.storybook_affected == 'false'
         run: echo "No Storybook changes detected. Skipping GitHub Pages deploy."
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
-        if: steps.turbo-ignore.outcome == 'failure'
+        if: steps.affected.outputs.storybook_affected == 'true'
         with:
           install_command: pnpm install --frozen-lockfile
           build_command: pnpm turbo run build-storybook --filter=@frey-ui/storybook
