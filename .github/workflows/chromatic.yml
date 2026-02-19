@@ -28,6 +28,7 @@ jobs:
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - run: pnpm turbo run build-storybook --filter=@frey-ui/storybook
+      - run: test -f apps/storybook/storybook-static/preview-stats.json
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}

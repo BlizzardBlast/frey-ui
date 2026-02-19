@@ -35,6 +35,7 @@
     "access": "public"
   },
   "scripts": {
+    "dev": "rollup -c -w",
     "build": "rimraf dist && rollup -c",
     "typecheck": "tsc -b --noEmit",
     "lint": "biome lint .",

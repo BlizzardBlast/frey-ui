@@ -30,8 +30,15 @@ jobs:
         with:
           node-version: 22.15.1
           cache: "pnpm"
-      - run: pnpm install --frozen-lockfile
+      - name: Check if Storybook is affected
+        id: turbo-ignore
+        continue-on-error: true
+        run: pnpm dlx turbo-ignore --task=build-storybook @frey-ui/storybook
+      - name: Skip deploy (unaffected)
+        if: steps.turbo-ignore.outcome == 'success'
+        run: echo "No Storybook changes detected. Skipping GitHub Pages deploy."
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+        if: steps.turbo-ignore.outcome == 'failure'
         with:
           install_command: pnpm install --frozen-lockfile
           build_command: pnpm turbo run build-storybook --filter=@frey-ui/storybook

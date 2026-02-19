@@ -7,14 +7,14 @@
     "dev": "vite",
     "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
-    "build": "tsc -b && storybook build",
+    "build": "tsc -b && storybook build --stats-json",
     "typecheck": "tsc -b",
     "lint": "biome lint src .storybook vite.config.ts vitest.setup.ts",
     "format": "biome format --write src .storybook vite.config.ts vitest.setup.ts",
     "format:check": "biome format src .storybook vite.config.ts vitest.setup.ts",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build --stats-json"
   },
   "dependencies": {
     "frey-ui": "workspace:*",

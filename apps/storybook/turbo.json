@@ -3,6 +3,12 @@
   "tasks": {
     "dev": {
       "dependsOn": ["^build"],
+      "with": ["frey-ui#dev"],
+      "cache": false,
+      "persistent": true
+    },
+    "storybook": {
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
