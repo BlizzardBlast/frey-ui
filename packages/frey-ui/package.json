@@ -36,7 +36,7 @@
   },
   "scripts": {
     "dev": "rollup -c -w",
-    "build": "rimraf dist && rollup -c",
+    "build": "rimraf dist tsconfig.lib.tsbuildinfo && rollup -c",
     "typecheck": "tsc -b --noEmit",
     "lint": "biome lint .",
     "format": "biome format --write .",

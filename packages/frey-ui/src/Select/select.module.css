@@ -1,0 +1,75 @@
+.select_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+  color: var(--frey-color-text-primary);
+  background-color: var(--frey-color-surface);
+  border: 1px solid var(--frey-color-border, #d1d5db);
+  border-radius: 0.375rem;
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+  box-sizing: border-box;
+  font-family: inherit;
+  appearance: none;
+  padding-right: 2.25rem;
+}
+
+.select:focus-visible {
+  border-color: var(--frey-focus-ring);
+  box-shadow: 0 0 0 2px var(--frey-focus-ring);
+}
+
+.select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--frey-color-surface-subtle, #f1f1f1);
+}
+
+.select_error {
+  border-color: var(--frey-color-error, #dc2626);
+}
+
+.select_error:focus-visible {
+  border-color: var(--frey-color-error, #dc2626);
+  box-shadow: 0 0 0 2px var(--frey-color-error, #dc2626);
+}
+
+.select_sm {
+  min-height: 2rem;
+  padding-block: 0.25rem;
+  padding-inline: 0.5rem 2rem;
+  font-size: 0.8125rem;
+}
+
+.select_md {
+  min-height: 2.5rem;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem 2rem;
+  font-size: 0.875rem;
+}
+
+.select_lg {
+  min-height: 2.875rem;
+  padding-block: 0.625rem;
+  padding-inline: 0.875rem 2rem;
+  font-size: 0.9375rem;
+}
+
+.select_multiple {
+  min-height: 7rem;
+  padding-right: 0.75rem;
+}
+
+.select_icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--frey-color-text-secondary, #6b7280);
+}

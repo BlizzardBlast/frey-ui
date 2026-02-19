@@ -62,10 +62,66 @@ Frey UI currently exports:
 - `Button`
 - `Checkbox`
 - `Chip`
+- `Field`
+- `RadioGroup`
+- `Select`
 - `Skeleton`
 - `Switch`
+- `Textarea`
 - `TextInput`
 - `ThemeProvider`
+
+### `Field`
+
+Shared form field wrapper for labels, helper text, and error messaging.
+
+- `label` (`string`, required): field label text.
+- `hideLabel` (`boolean`, default `false`): visually hide label while keeping it accessible.
+- `error` (`string`): error text rendered with `role='alert'`.
+- `helperText` (`string`): helper text shown below control content.
+- `required` (`boolean`, default `false`): shows required indicator.
+- `disabled` (`boolean`, default `false`): applies disabled label styling.
+- `children` (`(props: FieldRenderProps) => ReactNode`, required): render function with generated ids + validation state.
+- `className` (`string`): additional CSS class.
+- `style` (`CSSProperties`): inline style / CSS variable overrides.
+
+### `RadioGroup`
+
+Accessible grouped radios with controlled and uncontrolled support.
+
+- `label` (`string`, required): group label text.
+- `options` (`ReadonlyArray<RadioOption>`, required): radio options.
+- `value` (`string`): controlled selected value.
+- `defaultValue` (`string`): initial value for uncontrolled usage.
+- `onChange` (`ChangeEventHandler<HTMLInputElement>`): native change handler.
+- `orientation` (`'vertical' | 'horizontal'`, default `'vertical'`): options layout direction.
+- `error` (`string`): error text for validation state.
+- `helperText` (`string`): helper text below group.
+- `disabled` (`boolean`, default `false`): disables all options.
+
+### `Select`
+
+Accessible native `<select>` with helper/error messages and size variants.
+
+- `label` (`string`, required): accessible label text.
+- `placeholder` (`string`): placeholder option for single-select usage.
+- `size` (`'sm' | 'md' | 'lg'`, default `'md'`): visual size variant.
+- `error` (`string`): error text and invalid state.
+- `helperText` (`string`): helper text below control.
+- `children` (`ReactNode`): `<option>` / `<optgroup>` content.
+- `disabled` (`boolean`, default `false`): disables the control.
+
+### `Textarea`
+
+Accessible multiline text input with helper/error messaging.
+
+- `label` (`string`, required): accessible label text.
+- `resize` (`'none' | 'vertical' | 'horizontal' | 'both'`, default `'vertical'`): resize behavior.
+- `error` (`string`): error text and invalid state.
+- `helperText` (`string`): helper text below control.
+- `disabled` (`boolean`, default `false`): disables the textarea.
+- `className` (`string`): additional CSS class.
+- `style` (`CSSProperties`): inline style / CSS variable overrides.
 
 ### `Alert`
 

@@ -34,6 +34,19 @@ For install, usage, API, accessibility details, and theming docs, see:
 
 - [`packages/frey-ui/README.md`](./packages/frey-ui/README.md)
 
+## Roadmap Progress
+
+Currently in implementation:
+
+- Form Controls Pack (in progress): `Field`, `Textarea`, `Select`, `RadioGroup`
+- Storybook usage patterns (in progress): forms, settings page, auth form, table filters
+
+Planned next:
+
+- Overlay primitives (`Dialog`, `Popover`, `Tooltip`, `DropdownMenu`)
+- Async feedback (`Toast`, `Progress`, `Spinner`)
+- Theming v2 (`system` mode, semantic token tiers, high-contrast)
+
 ## Storybook
 
 - Local: `pnpm storybook`
