@@ -15,7 +15,7 @@ const externalPackages = [
   'react/jsx-runtime'
 ];
 
-export default defineConfig(
+export default defineConfig([
   {
     input: './src/index.ts',
     output: [
@@ -82,9 +82,9 @@ export default defineConfig(
     ]
   },
   {
-    input: 'dist/types/index.d.ts',
+    input: 'dist/types/src/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     external: [/\.(sc|sa|c)ss$/],
     plugins: [dts()]
   }
-);
+]);

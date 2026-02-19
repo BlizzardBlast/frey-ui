@@ -13,6 +13,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
     steps:
       - uses: actions/checkout@v4
@@ -26,10 +29,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.12.0
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:
-          install_command: cd apps/storybook && pnpm install
-          build_command: pnpm build-storybook
+          install_command: pnpm install --frozen-lockfile
+          build_command: pnpm turbo run build-storybook --filter=@frey-ui/storybook
           path: apps/storybook/storybook-static
           checkout: false

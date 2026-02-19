@@ -17,11 +17,11 @@ Build a small, accessible React component library.
 
 ## Component structure
 
-- New components live in `src/ComponentName/`.
+- New components live in `packages/frey-ui/src/ComponentName/`.
 - Files:
-  - `src/ComponentName/index.tsx`
-  - `src/ComponentName/componentname.module.css` (lowercase)
-- Re-export from `src/index.ts` (default export + prop/type exports).
+  - `packages/frey-ui/src/ComponentName/index.tsx`
+  - `packages/frey-ui/src/ComponentName/componentname.module.css` (lowercase)
+- Re-export from `packages/frey-ui/src/index.ts` (default export + prop/type exports).
 
 ## React + TypeScript patterns
 
@@ -88,10 +88,10 @@ Build a small, accessible React component library.
 
 ## Testing
 
-- If you add tests, use the existing setup in `apps/storybook/` (Vitest + Testing Library).
+- If you add tests, use the existing setup in `packages/frey-ui/` (Vitest + Testing Library).
 - Focus on: renders label/text, keyboard/focus behavior, disabled behavior.
 
 ## Packaging
 
 - Keep public exports stable (Rollup publishes CJS + ESM + types).
-- Never import Storybook-only code into `src/`.
+- Never import Storybook-only code into `packages/frey-ui/src/`.

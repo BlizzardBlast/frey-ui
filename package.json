@@ -1,88 +1,33 @@
 {
-  "name": "frey-ui",
-  "version": "1.0.8",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
-  "style": "dist/styles.css",
-  "license": "MIT",
-  "sideEffects": [
-    "**/*.css",
-    "**/*.module.css"
-  ],
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./*": {
-      "types": "./dist/types/*/index.d.ts",
-      "import": "./dist/esm/*/index.js",
-      "require": "./dist/cjs/*/index.js"
-    },
-    "./style.css": "./dist/styles.css"
-  },
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BlizzardBlast/frey-ui.git"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+  "name": "frey-ui-monorepo",
+  "private": true,
+  "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
   "scripts": {
-    "build": "rimraf dist && rollup -c",
-    "typecheck": "tsc -b",
-    "pub": "pnpm run build && pnpm publish",
-    "prepare": "husky",
-    "lint": "biome lint .",
+    "build": "turbo run build",
+    "build:storybook": "turbo run build-storybook --filter=@frey-ui/storybook",
+    "dev": "turbo run dev",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
     "format": "biome format --write .",
     "format:check": "biome format .",
     "check": "biome check .",
     "check:staged": "biome check --write --staged --no-errors-on-unmatched",
     "check:changed": "biome ci --changed --since=origin/main --no-errors-on-unmatched .",
-    "test": "vitest run"
-  },
-  "peerDependencies": {
-    "react": "^18 || ^19",
-    "react-dom": "^18 || ^19"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "tslib": "^2.8.1"
+    "test": "turbo run test",
+    "storybook": "turbo run storybook --filter=@frey-ui/storybook",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "changeset publish",
+    "ci:changed": "turbo run lint typecheck test build --affected",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.7",
     "@biomejs/biome": "^2.4.2",
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@commitlint/types": "^20.4.0",
-    "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-json": "^6.1.0",
-    "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-typescript": "^12.3.0",
-    "@rollup/plugin-url": "^8.0.2",
-    "@svgr/rollup": "^8.1.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/jest-axe": "^3.5.9",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
     "husky": "^9.1.7",
-    "jest-axe": "^10.0.0",
-    "jsdom": "^28.1.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "rimraf": "^6.1.2",
-    "rollup": "^4.57.1",
-    "rollup-plugin-dts": "^6.3.0",
-    "rollup-plugin-peer-deps-external": "^2.2.4",
-    "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.18"
+    "turbo": "^2.0.6"
   }
 }

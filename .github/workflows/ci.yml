@@ -1,9 +1,13 @@
-name: "Chromatic Publish"
+name: CI
 
-on: push
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
-  test:
+  checks:
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -17,12 +21,8 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version: 22.15.1
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build --filter=frey-ui
-      - uses: chromaui/action@latest
-        with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          workingDir: apps/storybook
+      - name: Run affected-package checks
+        run: pnpm turbo run lint typecheck test build --affected

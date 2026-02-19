@@ -1,5 +1,5 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
-import '../../../src/theme.css';
+import 'frey-ui/style.css';
 import '../tailwind.css';
 
 import type { Preview } from '@storybook/react-vite';
