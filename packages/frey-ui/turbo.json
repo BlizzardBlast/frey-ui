@@ -5,7 +5,7 @@
       "outputs": ["dist/**"]
     },
     "typecheck": {
-      "outputs": []
+      "outputs": ["*.tsbuildinfo"]
     },
     "lint": {
       "outputs": []

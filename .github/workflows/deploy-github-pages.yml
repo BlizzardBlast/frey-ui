@@ -28,7 +28,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version: 22.15.1
+          cache: "pnpm"
       - run: pnpm install --frozen-lockfile
       - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
         with:

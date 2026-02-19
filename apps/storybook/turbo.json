@@ -1,6 +1,11 @@
 {
   "extends": ["//"],
   "tasks": {
+    "dev": {
+      "dependsOn": ["^build"],
+      "cache": false,
+      "persistent": true
+    },
     "build": {
       "outputs": ["storybook-static/**"]
     },
@@ -8,13 +13,18 @@
       "outputs": ["storybook-static/**"]
     },
     "typecheck": {
-      "outputs": []
+      "dependsOn": ["^typecheck", "^build"],
+      "outputs": [
+        "node_modules/.tmp/tsconfig.app.tsbuildinfo",
+        "node_modules/.tmp/tsconfig.node.tsbuildinfo"
+      ]
     },
     "lint": {
       "outputs": []
     },
     "test": {
-      "outputs": []
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**", "html/**"]
     }
   }
 }

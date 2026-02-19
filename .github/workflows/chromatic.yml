@@ -1,6 +1,13 @@
 name: "Chromatic Publish"
 
-on: push
+on:
+  push:
+    paths:
+      - "apps/storybook/**"
+      - "packages/frey-ui/**"
+      - "pnpm-lock.yaml"
+      - "turbo.json"
+      - ".github/workflows/chromatic.yml"
 
 jobs:
   test:
@@ -17,12 +24,14 @@ jobs:
           version: "10.30.0"
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.12.0
+          node-version: 22.15.1
           cache: "pnpm"
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build --filter=frey-ui
+      - run: pnpm turbo run build-storybook --filter=@frey-ui/storybook
       - uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
           workingDir: apps/storybook
+          storybookBuildDir: storybook-static
+          onlyChanged: true

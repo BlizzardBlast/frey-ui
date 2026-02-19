@@ -2,6 +2,9 @@
   "name": "frey-ui-monorepo",
   "private": true,
   "packageManager": "pnpm@10.30.0",
+  "engines": {
+    "node": "22.15.1"
+  },
   "scripts": {
     "build": "turbo run build",
     "build:storybook": "turbo run build-storybook --filter=@frey-ui/storybook",

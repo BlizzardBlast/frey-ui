@@ -36,7 +36,7 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",
-    "typecheck": "tsc -b",
+    "typecheck": "tsc -b --noEmit",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "format:check": "biome format .",
