@@ -1,52 +1,47 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 
-<Meta title='Introduction' />
+<Meta title='Getting Started' />
 
 # Frey UI
 
 A strict, accessible design system library for internal applications.
 
-## Installation
+## What this Storybook is for
+
+- Browse live component examples and states
+- Verify behavior across light and dark themes
+- Use Controls and a11y checks while developing
+
+## Quick start
 
 ```bash
 pnpm add frey-ui
-# OR
-npm install frey-ui
 ```
-
-## Setup
-
-Import the CSS once in your root file:
 
 ```tsx
 import 'frey-ui/style.css';
-```
+import { ThemeProvider, Button } from 'frey-ui';
 
-## Usage
-
-```tsx
-import { Chip, Switch, ThemeProvider } from 'frey-ui';
-
-function App() {
+export function Example() {
   return (
     <ThemeProvider theme='light'>
-      <Chip label='Status' variant='outlined' />
-      <Switch label='Enable Dark Mode' />
+      <Button>Save changes</Button>
     </ThemeProvider>
   );
 }
 ```
 
-## Nested Theming
+## Components in this library
 
-`ThemeProvider` uses `data-frey-theme`, so nested light/dark regions are supported:
+- Alert
+- Button
+- Checkbox
+- Chip
+- Skeleton
+- Switch
+- TextInput
+- ThemeProvider
 
-```tsx
-<ThemeProvider theme='light'>
-  <main>
-    <ThemeProvider theme='dark'>
-      <Switch label='Dark panel setting' />
-    </ThemeProvider>
-  </main>
-</ThemeProvider>
-```
+## Full package docs
+
+For full API and usage documentation, see `packages/frey-ui/README.md`.
