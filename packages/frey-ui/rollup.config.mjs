@@ -23,6 +23,12 @@ export default defineConfig([
         dir: 'dist',
         format: 'cjs',
         sourcemap: true,
+        sourcemapPathTransform: (relativeSourcePath) => {
+          return relativeSourcePath.replace(
+            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
+            '../../../src/'
+          );
+        },
         exports: 'named',
         preserveModules: true,
         preserveModulesRoot: 'src',
@@ -35,6 +41,12 @@ export default defineConfig([
         format: 'es',
         exports: 'named',
         sourcemap: true,
+        sourcemapPathTransform: (relativeSourcePath) => {
+          return relativeSourcePath.replace(
+            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
+            '../../../src/'
+          );
+        },
         preserveModules: true,
         preserveModulesRoot: 'src',
         entryFileNames: 'esm/[name].js',

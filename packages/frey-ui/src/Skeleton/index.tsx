@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type React from 'react';
+import React from 'react';
 import styles from './skeleton.module.css';
 
 export type SkeletonShape = 'rectangle' | 'circle';
@@ -17,29 +17,32 @@ const ShapeClassMap: Record<SkeletonShape, string> = {
   circle: styles['skeleton-circle']
 };
 
-function Skeleton({
-  width,
-  height,
-  shape = 'rectangle',
-  className,
-  style
-}: Readonly<SkeletonProps>) {
-  const resolvedWidth = shape === 'circle' && !width && height ? height : width;
-  const resolvedHeight =
-    shape === 'circle' && !height && width ? width : height;
+const Skeleton = React.forwardRef<HTMLSpanElement, Readonly<SkeletonProps>>(
+  function Skeleton(
+    { width, height, shape = 'rectangle', className, style },
+    ref
+  ) {
+    const resolvedWidth =
+      shape === 'circle' && !width && height ? height : width;
+    const resolvedHeight =
+      shape === 'circle' && !height && width ? width : height;
 
-  return (
-    <span
-      className={clsx(styles.skeleton, ShapeClassMap[shape], className)}
-      style={{
-        width: resolvedWidth,
-        height: resolvedHeight,
-        ...style
-      }}
-      aria-hidden='true'
-      role='presentation'
-    />
-  );
-}
+    return (
+      <span
+        ref={ref}
+        className={clsx(styles.skeleton, ShapeClassMap[shape], className)}
+        style={{
+          width: resolvedWidth,
+          height: resolvedHeight,
+          ...style
+        }}
+        aria-hidden='true'
+        role='presentation'
+      />
+    );
+  }
+);
+
+Skeleton.displayName = 'Skeleton';
 
 export default Skeleton;

@@ -39,11 +39,11 @@ const VariantClickableMap: Record<Variant, string> = {
   outlined: styles['chip-outlined-clickable']
 };
 
-type ChipComponent = <E extends ChipElement = 'span'>(
+type ChipComponent = (<E extends ChipElement = 'span'>(
   props: Readonly<ChipProps<E>> & { ref?: React.Ref<ChipElementNode<E>> }
-) => React.ReactElement | null;
+) => React.ReactElement | null) & { displayName?: string };
 
-function ChipInner<E extends ChipElement = 'span'>(
+const Chip = React.forwardRef(function Chip<E extends ChipElement = 'span'>(
   {
     label,
     onClick,
@@ -53,7 +53,7 @@ function ChipInner<E extends ChipElement = 'span'>(
     variant = 'default',
     ...elementProps
   }: Readonly<ChipProps<E>>,
-  ref: React.ForwardedRef<ChipElementNode<E>>
+  ref: React.ForwardedRef<unknown>
 ) {
   const resolvedElement = as ?? (onClick ? 'button' : 'span');
   const Component = resolvedElement as React.ElementType;
@@ -102,12 +102,8 @@ function ChipInner<E extends ChipElement = 'span'>(
       <span className={styles['chip-text']}>{label}</span>
     </Component>
   );
-}
+}) as ChipComponent;
 
-const ForwardedChip = React.forwardRef(ChipInner);
-
-ForwardedChip.displayName = 'Chip';
-
-const Chip = ForwardedChip as ChipComponent;
+Chip.displayName = 'Chip';
 
 export default Chip;

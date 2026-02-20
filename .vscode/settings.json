@@ -1,5 +1,5 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.tsdk": "packages/frey-ui/node_modules/typescript/lib",
   "eslint.enable": false,
   "eslint.validate": [],
   "prettier.enable": false,

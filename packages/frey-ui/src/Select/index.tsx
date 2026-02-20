@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
+import { ChevronDownIcon } from '../Icons';
 import styles from './select.module.css';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
@@ -92,9 +93,7 @@ const Select = React.forwardRef<HTMLSelectElement, Readonly<SelectProps>>(
                 {children}
               </select>
               {!multiple && (
-                <span className={styles.select_icon} aria-hidden='true'>
-                  ▾
-                </span>
+                <ChevronDownIcon className={styles.select_icon} size={16} />
               )}
             </div>
           );

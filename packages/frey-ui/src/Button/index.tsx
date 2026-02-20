@@ -23,11 +23,11 @@ export type ButtonProps<E extends ButtonElement = 'button'> =
       'as' | 'className' | 'style' | 'ref' | 'disabled'
     >;
 
-type ButtonComponent = <E extends ButtonElement = 'button'>(
+type ButtonComponent = (<E extends ButtonElement = 'button'>(
   props: Readonly<ButtonProps<E>> & {
     ref?: React.Ref<E extends 'a' ? HTMLAnchorElement : HTMLButtonElement>;
   }
-) => React.ReactElement | null;
+) => React.ReactElement | null) & { displayName?: string };
 
 const VariantClassMap: Record<ButtonVariant, string> = {
   primary: styles['button-primary'],
@@ -42,7 +42,9 @@ const SizeClassMap: Record<ButtonSize, string> = {
   lg: styles['button-lg']
 };
 
-function ButtonInner<E extends ButtonElement = 'button'>(
+const Button = React.forwardRef(function Button<
+  E extends ButtonElement = 'button'
+>(
   {
     as,
     variant = 'primary',
@@ -54,7 +56,7 @@ function ButtonInner<E extends ButtonElement = 'button'>(
     children,
     ...restProps
   }: Readonly<ButtonProps<E>>,
-  ref: React.ForwardedRef<E extends 'a' ? HTMLAnchorElement : HTMLButtonElement>
+  ref: React.ForwardedRef<unknown>
 ) {
   const Component = (as ?? 'button') as React.ElementType;
   const isButton = (as ?? 'button') === 'button';
@@ -80,12 +82,8 @@ function ButtonInner<E extends ButtonElement = 'button'>(
       {children}
     </Component>
   );
-}
+}) as ButtonComponent;
 
-const ForwardedButton = React.forwardRef(ButtonInner);
-
-ForwardedButton.displayName = 'Button';
-
-const Button = ForwardedButton as ButtonComponent;
+Button.displayName = 'Button';
 
 export default Button;

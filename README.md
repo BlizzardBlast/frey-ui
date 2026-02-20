@@ -39,12 +39,13 @@ For install, usage, API, accessibility details, and theming docs, see:
 Currently in implementation:
 
 - Form Controls Pack (in progress): `Field`, `Textarea`, `Select`, `RadioGroup`
+- Overlay primitives (in progress): `Dialog`, `Popover`, `Tooltip`, `DropdownMenu`
+- Shared icons (in progress): tokenized sizes/strokes + alert/checkbox glyph set
+- Async feedback (in progress): `ToastProvider/useToast`, `Progress`, `Spinner`
 - Storybook usage patterns (in progress): forms, settings page, auth form, table filters
 
 Planned next:
 
-- Overlay primitives (`Dialog`, `Popover`, `Tooltip`, `DropdownMenu`)
-- Async feedback (`Toast`, `Progress`, `Spinner`)
 - Theming v2 (`system` mode, semantic token tiers, high-contrast)
 
 ## Storybook

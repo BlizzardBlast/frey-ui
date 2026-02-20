@@ -37,13 +37,21 @@ export function Example() {
 - Button
 - Checkbox
 - Chip
+- Dialog
+- DropdownMenu
 - Field
+- Icons
+- Popover
 - RadioGroup
+- Progress
 - Select
 - Skeleton
+- Spinner
 - Switch
 - Textarea
 - TextInput
+- Toast (`ToastProvider` + `useToast`)
+- Tooltip
 - ThemeProvider
 
 ## Usage patterns
@@ -54,6 +62,23 @@ Explore practical composition examples in `Patterns/Usage Patterns`:
 - Settings page
 - Auth form
 - Table filters
+
+## Dialog pattern
+
+Dialog examples use an explicit trigger button and controlled `open` state. This keeps the dialog closed by default and matches native `<dialog>` usage (`showModal()` + close actions).
+
+## Overlay and feedback primitives
+
+- `Popover`, `Tooltip`, and `DropdownMenu` use trigger-first patterns with keyboard support and outside-dismiss defaults.
+- `ToastProvider` + `useToast` expose an imperative API for notifications.
+- `Progress` and `Spinner` provide accessible loading and completion feedback states.
+
+## Icon tokens
+
+`Icons` support named size/stroke tokens and numeric overrides:
+
+- `size`: `xs` | `sm` | `md` | `lg` | `xl` or a number
+- `strokeWidth`: `thin` | `regular` | `bold` or a number
 
 ## Full package docs
 

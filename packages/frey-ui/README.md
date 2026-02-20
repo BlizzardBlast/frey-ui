@@ -62,13 +62,21 @@ Frey UI currently exports:
 - `Button`
 - `Checkbox`
 - `Chip`
+- `Dialog`
+- `DropdownMenu`
 - `Field`
+- `Icons` (`CloseIcon`, `ChevronDownIcon`, `CheckIcon`, `MinusIcon`, `CircleXIcon`, `CircleCheckIcon`, `TriangleAlertIcon`, `CircleInfoIcon`)
+- `Popover`
 - `RadioGroup`
+- `Progress`
 - `Select`
 - `Skeleton`
+- `Spinner`
 - `Switch`
 - `Textarea`
 - `TextInput`
+- `ToastProvider` + `useToast`
+- `Tooltip`
 - `ThemeProvider`
 
 ### `Field`
@@ -84,6 +92,106 @@ Shared form field wrapper for labels, helper text, and error messaging.
 - `children` (`(props: FieldRenderProps) => ReactNode`, required): render function with generated ids + validation state.
 - `className` (`string`): additional CSS class.
 - `style` (`CSSProperties`): inline style / CSS variable overrides.
+
+### `Dialog`
+
+Accessible modal dialog primitive for confirmation and settings flows.
+
+Recommended usage: pair it with a trigger button and controlled `open` state.
+
+- `open` (`boolean`, required): controls visibility.
+- `title` (`string`, required): dialog heading used as accessible name.
+- `children` (`ReactNode`): body content.
+- `description` (`string`): optional secondary description text.
+- `onOpenChange` (`(open: boolean) => void`): state change callback for close actions.
+- `closeOnEscape` (`boolean`, default `true`): close when Escape is pressed.
+- `closeOnOverlayClick` (`boolean`, default `true`): close when backdrop is clicked.
+- `closeLabel` (`string`, default `'Close dialog'`): accessible label for close button.
+- `className` / `style`: overlay/dialog root customization.
+- `contentClassName` / `contentStyle`: dialog panel customization.
+
+### `DropdownMenu`
+
+Trigger-based menu for compact actions.
+
+- `trigger` (`ReactElement`, required): trigger control.
+- `items` (`ReadonlyArray<DropdownMenuItem>`, required): menu options.
+- `onSelect` (`(value: string) => void`): item selection callback.
+- `open` / `defaultOpen` / `onOpenChange`: controlled/uncontrolled state.
+- `placement` (`'top' | 'right' | 'bottom' | 'left'`, default `'bottom'`): menu placement.
+- `closeOnEscape` (`boolean`, default `true`): close with Escape key.
+- `closeOnOutsideClick` (`boolean`, default `true`): outside click dismiss.
+
+### `Icons`
+
+Shared SVG icon primitives used by Frey UI components.
+
+- `CloseIcon`, `ChevronDownIcon`, `CheckIcon`, `MinusIcon`
+- `CircleXIcon`, `CircleCheckIcon`, `TriangleAlertIcon`, `CircleInfoIcon`
+
+Both icons support:
+
+- `size` (`'xs' | 'sm' | 'md' | 'lg' | 'xl' | number`, default `'md'`): icon size token or numeric override.
+- `strokeWidth` (`'thin' | 'regular' | 'bold' | number`, default `'regular'`): stroke token or numeric override.
+- `title` (`string`): accessible name when you want semantic/icon-only meaning.
+- `className` / `style`: visual customization.
+
+### `Popover`
+
+Non-modal floating surface anchored to a trigger.
+
+- `trigger` (`ReactElement`, required): trigger control.
+- `children` (`ReactNode`, required): popover content.
+- `open` / `defaultOpen` / `onOpenChange`: controlled/uncontrolled state.
+- `placement` (`'top' | 'right' | 'bottom' | 'left'`, default `'bottom'`): popover placement.
+- `closeOnEscape` (`boolean`, default `true`) and `closeOnOutsideClick` (`boolean`, default `true`).
+
+### `Progress`
+
+Progress indicator for determinate or indeterminate loading.
+
+- `value` (`number`, default `0`) and `max` (`number`, default `100`).
+- `indeterminate` (`boolean`, default `false`): animated loading state.
+- `label` (`string`): accessible and visible label.
+- `showValue` (`boolean`, default `false`): show percentage text.
+- `size` (`'sm' | 'md' | 'lg'`, default `'md'`).
+
+### `Spinner`
+
+Compact busy indicator for short background operations.
+
+- `size` (`'sm' | 'md' | 'lg' | number`, default `'md'`).
+- `label` (`string`, default `'Loading'`): status label for assistive tech.
+- `className` / `style`: visual overrides.
+
+### `ToastProvider` + `useToast`
+
+Imperative notification system for transient messages.
+
+- Wrap app sections with `ToastProvider`.
+- Use `useToast()` to access:
+  - `toast(options)`
+  - `dismiss(id)`
+  - `dismissAll()`
+
+`ToastProvider` props:
+
+- `placement` (`'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'`, default `'top-right'`)
+- `limit` (`number`, default `4`)
+
+`toast(options)` supports:
+
+- `title`, `description` (required), `variant`, `duration`, and optional action button.
+
+### `Tooltip`
+
+Accessible hint text on hover/focus.
+
+- `children` (`ReactElement`, required): trigger element.
+- `content` (`ReactNode`, required): tooltip text/content.
+- `open` / `defaultOpen` / `onOpenChange`: controlled/uncontrolled state.
+- `placement` (`'top' | 'right' | 'bottom' | 'left'`, default `'top'`).
+- `delay` (`number`, default `120` ms): show delay on hover/focus.
 
 ### `RadioGroup`
 
