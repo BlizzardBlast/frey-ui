@@ -1,31 +1,43 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import { createPortal } from 'react-dom';
 import styles from './popover.module.css';
 
 export type PopoverPlacement = 'top' | 'right' | 'bottom' | 'left';
 
-export type PopoverProps = {
-  trigger: React.ReactElement;
-  children: React.ReactNode;
-  open?: boolean;
-  defaultOpen?: boolean;
-  onOpenChange?: (open: boolean) => void;
-  placement?: PopoverPlacement;
-  offset?: number;
-  closeOnEscape?: boolean;
-  closeOnOutsideClick?: boolean;
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  contentClassName?: string;
-  contentStyle?: React.CSSProperties;
-};
-
 type Position = {
   top: number;
   left: number;
 };
+
+type PopoverContextValue = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  placement: PopoverPlacement;
+  offset: number;
+  idPrefix: string;
+  triggerRef: React.RefObject<HTMLElement | null>;
+  closeOnEscape: boolean;
+  closeOnOutsideClick: boolean;
+};
+
+const PopoverContext = createContext<PopoverContextValue | null>(null);
+
+function usePopoverContext() {
+  const context = useContext(PopoverContext);
+  if (!context) {
+    throw new Error('Popover components must be wrapped in <Popover>');
+  }
+  return context;
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
@@ -49,9 +61,18 @@ function mergeRefs<T>(
   };
 }
 
-function Popover({
-  trigger,
-  children,
+export type PopoverProps = {
+  open?: boolean;
+  defaultOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  placement?: PopoverPlacement;
+  offset?: number;
+  closeOnEscape?: boolean;
+  closeOnOutsideClick?: boolean;
+  children: React.ReactNode;
+};
+
+const PopoverRoot = function Popover({
   open,
   defaultOpen = false,
   onOpenChange,
@@ -59,37 +80,109 @@ function Popover({
   offset = 8,
   closeOnEscape = true,
   closeOnOutsideClick = true,
-  id,
-  className,
-  style,
-  contentClassName,
-  contentStyle
+  children
 }: Readonly<PopoverProps>) {
-  const generatedId = React.useId();
-  const contentId = id ?? `${generatedId}-popover`;
-  const triggerRef = React.useRef<HTMLElement | null>(null);
-  const contentRef = React.useRef<HTMLDivElement | null>(null);
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const [position, setPosition] = React.useState<Position>({ top: 0, left: 0 });
+  const idPrefix = useId();
+  const triggerRef = useRef<HTMLElement | null>(null);
 
-  const isControlled = typeof open === 'boolean';
-  const isOpen = isControlled ? open : internalOpen;
+  const isControlled = open !== undefined;
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
 
-  const setOpen = React.useCallback(
+  const currentOpen = isControlled ? open : uncontrolledOpen;
+
+  const handleOpenChange = React.useCallback(
     (nextOpen: boolean) => {
       if (!isControlled) {
-        setInternalOpen(nextOpen);
+        setUncontrolledOpen(nextOpen);
       }
-
       onOpenChange?.(nextOpen);
     },
     [isControlled, onOpenChange]
   );
 
+  const contextValue = React.useMemo(
+    () => ({
+      open: currentOpen,
+      onOpenChange: handleOpenChange,
+      placement,
+      offset,
+      idPrefix,
+      triggerRef,
+      closeOnEscape,
+      closeOnOutsideClick
+    }),
+    [
+      currentOpen,
+      handleOpenChange,
+      placement,
+      offset,
+      idPrefix,
+      closeOnEscape,
+      closeOnOutsideClick
+    ]
+  );
+
+  return (
+    <PopoverContext.Provider value={contextValue}>
+      {children}
+    </PopoverContext.Provider>
+  );
+};
+PopoverRoot.displayName = 'Popover';
+
+export type PopoverTriggerProps = {
+  children: React.ReactElement;
+  asChild?: boolean;
+};
+
+const PopoverTrigger = React.forwardRef<
+  HTMLElement,
+  Readonly<PopoverTriggerProps>
+>(function PopoverTrigger({ children }, ref) {
+  const { open, onOpenChange, idPrefix, triggerRef } = usePopoverContext();
+
+  const triggerProps = children.props as {
+    onClick?: React.MouseEventHandler;
+    ref?: React.Ref<HTMLElement>;
+  };
+
+  return React.cloneElement(children, {
+    ref: mergeRefs(triggerProps.ref, ref, triggerRef),
+    onClick: (event: React.MouseEvent<HTMLElement>) => {
+      triggerProps.onClick?.(event);
+      if (!event.defaultPrevented) {
+        onOpenChange(!open);
+      }
+    },
+    'aria-haspopup': 'dialog',
+    'aria-expanded': open,
+    'aria-controls': `${idPrefix}-content`
+  } as Record<string, unknown>);
+});
+PopoverTrigger.displayName = 'Popover.Trigger';
+
+export type PopoverContentProps = React.HTMLAttributes<HTMLDivElement>;
+
+const PopoverContent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<PopoverContentProps>
+>(function PopoverContent({ className, style, children, ...props }, ref) {
+  const {
+    open,
+    onOpenChange,
+    placement,
+    offset,
+    idPrefix,
+    triggerRef,
+    closeOnEscape,
+    closeOnOutsideClick
+  } = usePopoverContext();
+
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const [position, setPosition] = useState<Position>({ top: 0, left: 0 });
+
   const updatePosition = React.useCallback(() => {
-    if (!isOpen || !triggerRef.current || !contentRef.current) {
-      return;
-    }
+    if (!open || !triggerRef.current || !contentRef.current) return;
 
     const triggerRect = triggerRef.current.getBoundingClientRect();
     const contentRect = contentRef.current.getBoundingClientRect();
@@ -102,14 +195,10 @@ function Popover({
 
     if (placement === 'top') {
       top = triggerRect.top - contentRect.height - offset;
-    }
-
-    if (placement === 'left') {
+    } else if (placement === 'left') {
       top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
       left = triggerRect.left - contentRect.width - offset;
-    }
-
-    if (placement === 'right') {
+    } else if (placement === 'right') {
       top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
       left = triggerRect.right + offset;
     }
@@ -132,20 +221,16 @@ function Popover({
     );
 
     setPosition({ top, left });
-  }, [isOpen, offset, placement]);
+  }, [open, offset, placement, triggerRef]);
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     updatePosition();
   }, [updatePosition]);
 
-  React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
+  useEffect(() => {
+    if (!open) return;
 
-    const handleReposition = () => {
-      updatePosition();
-    };
+    const handleReposition = () => updatePosition();
 
     window.addEventListener('resize', handleReposition);
     window.addEventListener('scroll', handleReposition, true);
@@ -154,104 +239,63 @@ function Popover({
       window.removeEventListener('resize', handleReposition);
       window.removeEventListener('scroll', handleReposition, true);
     };
-  }, [isOpen, updatePosition]);
+  }, [open, updatePosition]);
 
-  React.useEffect(() => {
-    if (!isOpen || !closeOnOutsideClick) {
-      return;
-    }
+  useEffect(() => {
+    if (!open || !closeOnOutsideClick) return;
 
     const handlePointerDown = (event: MouseEvent) => {
       const targetNode = event.target as Node;
+      if (triggerRef.current?.contains(targetNode)) return;
+      if (contentRef.current?.contains(targetNode)) return;
 
-      if (triggerRef.current?.contains(targetNode)) {
-        return;
-      }
-
-      if (contentRef.current?.contains(targetNode)) {
-        return;
-      }
-
-      setOpen(false);
+      onOpenChange(false);
     };
 
     document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [closeOnOutsideClick, open, onOpenChange, triggerRef]);
 
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown);
-    };
-  }, [closeOnOutsideClick, isOpen, setOpen]);
-
-  React.useEffect(() => {
-    if (!isOpen || !closeOnEscape) {
-      return;
-    }
+  useEffect(() => {
+    if (!open || !closeOnEscape) return;
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        setOpen(false);
+        onOpenChange(false);
+        triggerRef.current?.focus();
       }
     };
 
     document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [closeOnEscape, open, onOpenChange, triggerRef]);
 
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [closeOnEscape, isOpen, setOpen]);
+  if (!open || typeof document === 'undefined') return null;
 
-  const triggerProps = trigger.props as {
-    onClick?: React.MouseEventHandler;
-    ref?: React.Ref<HTMLElement>;
-  };
-
-  const triggerElement = React.cloneElement(trigger, {
-    ref: mergeRefs<HTMLElement>(triggerProps.ref, triggerRef),
-    onClick: (event: React.MouseEvent<HTMLElement>) => {
-      triggerProps.onClick?.(event);
-
-      if (!event.defaultPrevented) {
-        setOpen(!isOpen);
-      }
-    },
-    'aria-haspopup': 'dialog',
-    'aria-controls': contentId,
-    'aria-expanded': isOpen
-  } as Record<string, unknown>);
-
-  if (typeof document === 'undefined') {
-    return triggerElement;
-  }
-
-  return (
-    <>
-      {triggerElement}
-
-      {isOpen &&
-        createPortal(
-          <div
-            id={contentId}
-            ref={contentRef}
-            aria-live='polite'
-            className={clsx(
-              styles.popover_content,
-              contentClassName,
-              className
-            )}
-            style={{
-              top: position.top,
-              left: position.left,
-              ...style,
-              ...contentStyle
-            }}
-          >
-            {children}
-          </div>,
-          document.body
-        )}
-    </>
+  return createPortal(
+    <div
+      id={`${idPrefix}-content`}
+      ref={mergeRefs(contentRef, ref)}
+      aria-live='polite'
+      className={clsx(styles.popover_content, className)}
+      style={{
+        top: position.top,
+        left: position.left,
+        ...style
+      }}
+      {...props}
+    >
+      {children}
+    </div>,
+    document.body
   );
-}
+});
+PopoverContent.displayName = 'Popover.Content';
+
+export const Popover = Object.assign(PopoverRoot, {
+  Trigger: PopoverTrigger,
+  Content: PopoverContent
+});
 
 export default Popover;

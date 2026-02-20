@@ -1,20 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, DropdownMenu, type DropdownMenuProps } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StoryDropdownMenu =
-  DropdownMenu as unknown as React.ComponentType<DropdownMenuProps>;
-
-const menuItems: DropdownMenuProps['items'] = [
-  { label: 'Rename', value: 'rename' },
-  { label: 'Duplicate', value: 'duplicate' },
-  { label: 'Move to archive', value: 'archive' },
-  { label: 'Delete project', value: 'delete', destructive: true }
-];
-
 const meta: Meta<DropdownMenuProps> = {
-  component: StoryDropdownMenu,
+  component: DropdownMenu,
   parameters: {
     layout: 'centered'
   },
@@ -38,11 +27,25 @@ type Story = StoryObj<DropdownMenuProps>;
 
 export const basic_menu: Story = {
   render: (args) => (
-    <StoryDropdownMenu
-      {...args}
-      trigger={<Button variant='secondary'>Actions</Button>}
-      items={menuItems}
-    />
+    <DropdownMenu {...args}>
+      <DropdownMenu.Trigger>
+        <Button variant='secondary'>Actions</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item onSelect={() => console.log('Rename')}>
+          Rename
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => console.log('Duplicate')}>
+          Duplicate
+        </DropdownMenu.Item>
+        <DropdownMenu.Item onSelect={() => console.log('Archive')}>
+          Move to archive
+        </DropdownMenu.Item>
+        <DropdownMenu.Item destructive onSelect={() => console.log('Delete')}>
+          Delete project
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu>
   ),
   args: {
     placement: 'bottom',
@@ -53,14 +56,22 @@ export const basic_menu: Story = {
 
 export const with_disabled_item: Story = {
   render: () => (
-    <DropdownMenu
-      trigger={<Button variant='secondary'>File menu</Button>}
-      items={[
-        { label: 'New file', value: 'new' },
-        { label: 'Rename file', value: 'rename', disabled: true },
-        { label: 'Delete file', value: 'delete', destructive: true }
-      ]}
-    />
+    <DropdownMenu>
+      <DropdownMenu.Trigger>
+        <Button variant='secondary'>File menu</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Item onSelect={() => console.log('New')}>
+          New file
+        </DropdownMenu.Item>
+        <DropdownMenu.Item disabled onSelect={() => console.log('Rename')}>
+          Rename file
+        </DropdownMenu.Item>
+        <DropdownMenu.Item destructive onSelect={() => console.log('Delete')}>
+          Delete file
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu>
   )
 } satisfies Story;
 
@@ -71,14 +82,28 @@ export const controlled_menu: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 10, justifyItems: 'center' }}>
-        <StoryDropdownMenu
-          {...args}
-          open={open}
-          onOpenChange={setOpen}
-          trigger={<Button>Project options</Button>}
-          items={menuItems}
-          onSelect={(value) => setSelection(value)}
-        />
+        <DropdownMenu {...args} open={open} onOpenChange={setOpen}>
+          <DropdownMenu.Trigger>
+            <Button>Project options</Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item onSelect={() => setSelection('Rename')}>
+              Rename
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onSelect={() => setSelection('Duplicate')}>
+              Duplicate
+            </DropdownMenu.Item>
+            <DropdownMenu.Item onSelect={() => setSelection('Archive')}>
+              Move to archive
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              destructive
+              onSelect={() => setSelection('Delete')}
+            >
+              Delete project
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu>
 
         <small>
           Last selection: {selection ?? 'none'} | Menu is{' '}

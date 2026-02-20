@@ -1,24 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Dialog, type DialogProps } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StoryDialog = Dialog as unknown as React.ComponentType<DialogProps>;
-
 const meta: Meta<DialogProps> = {
-  component: StoryDialog,
+  component: Dialog,
   parameters: {
     layout: 'centered'
-  },
-  argTypes: {
-    closeOnEscape: {
-      control: { type: 'boolean' },
-      description: 'Whether Escape closes the dialog'
-    },
-    closeOnOverlayClick: {
-      control: { type: 'boolean' },
-      description: 'Whether backdrop click closes the dialog'
-    }
   }
 } satisfies Meta<DialogProps>;
 
@@ -27,87 +14,73 @@ export default meta;
 type Story = StoryObj<DialogProps>;
 
 export const basic_dialog: Story = {
-  render: function BasicDialogStory(args) {
-    const [open, setOpen] = useState(false);
-
+  render: function BasicDialogStory() {
     return (
-      <div style={{ display: 'grid', gap: 12 }}>
-        <Button onClick={() => setOpen(true)}>Open dialog</Button>
-        {open && (
-          <StoryDialog
-            {...args}
-            open={open}
-            onOpenChange={setOpen}
-            title='Delete this project?'
-          >
-            This action cannot be undone.
-          </StoryDialog>
-        )}
-      </div>
+      <Dialog>
+        <Dialog.Trigger>
+          <Button>Open dialog</Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Delete this project?</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>This action cannot be undone.</Dialog.Body>
+          <Dialog.Footer>
+            <Button variant='secondary'>Cancel</Button>
+            <Button variant='primary'>Delete</Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
     );
-  },
-  args: {
-    closeOnEscape: true,
-    closeOnOverlayClick: true
   }
 } satisfies Story;
 
 export const with_description: Story = {
-  render: function WithDescriptionStory(args) {
-    const [open, setOpen] = useState(false);
-
+  render: function WithDescriptionStory() {
     return (
-      <div style={{ display: 'grid', gap: 12 }}>
-        <Button onClick={() => setOpen(true)}>Invite collaborator</Button>
-        {open && (
-          <StoryDialog
-            {...args}
-            open={open}
-            onOpenChange={setOpen}
-            title='Invite collaborator'
-            description='They will receive an email invitation immediately.'
-          >
+      <Dialog>
+        <Dialog.Trigger>
+          <Button>Invite collaborator</Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Invite collaborator</Dialog.Title>
+            <Dialog.Description>
+              They will receive an email invitation immediately.
+            </Dialog.Description>
+          </Dialog.Header>
+          <Dialog.Body>
             Use a valid company email address to continue.
-          </StoryDialog>
-        )}
-      </div>
+          </Dialog.Body>
+        </Dialog.Content>
+      </Dialog>
     );
-  },
-  args: {
-    closeOnEscape: true,
-    closeOnOverlayClick: true
   }
 } satisfies Story;
 
 export const controlled_dialog: Story = {
-  render: function ControlledDialogStory(args) {
+  render: function ControlledDialogStory() {
     const [open, setOpen] = useState(false);
 
     return (
       <div style={{ display: 'grid', gap: 12 }}>
-        <Button onClick={() => setOpen(true)}>Open dialog</Button>
-        {open && (
-          <StoryDialog
-            {...args}
-            open={open}
-            onOpenChange={setOpen}
-            title='Settings saved'
-            description='Your workspace preferences have been updated.'
-          >
-            <div
-              style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}
-            >
+        <Button onClick={() => setOpen(true)}>Open controlled dialog</Button>
+        <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Settings saved</Dialog.Title>
+              <Dialog.Description>
+                Your workspace preferences have been updated.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Footer>
               <Button variant='secondary' onClick={() => setOpen(false)}>
                 Close
               </Button>
-            </div>
-          </StoryDialog>
-        )}
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog>
       </div>
     );
-  },
-  args: {
-    closeOnEscape: true,
-    closeOnOverlayClick: true
   }
 } satisfies Story;
