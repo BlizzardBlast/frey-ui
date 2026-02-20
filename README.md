@@ -43,10 +43,11 @@ Currently in implementation:
 - Shared icons (in progress): tokenized sizes/strokes + alert/checkbox glyph set
 - Async feedback (in progress): `ToastProvider/useToast`, `Progress`, `Spinner`
 - Storybook usage patterns (in progress): forms, settings page, auth form, table filters
+- Theming v2 (completed): `system` mode, semantic token tiers, high-contrast
 
 Planned next:
 
-- Theming v2 (`system` mode, semantic token tiers, high-contrast)
+- Additional UI components
 
 ## Storybook
 

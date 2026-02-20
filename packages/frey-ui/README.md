@@ -344,15 +344,16 @@ All standard `<input>` attributes (except `type`) are also supported and spread 
 
 ### `ThemeProvider`
 
-Wraps children with theme CSS variables.
+Wraps children with theme CSS variables and controls semantic token mapping.
 
-| Prop        | Type                | Default   | Description                  |
-| ----------- | ------------------- | --------- | ---------------------------- |
-| `children`  | `ReactNode`         | —         | **Required.** Child content. |
-| `theme`     | `'light' \| 'dark'` | `'light'` | Active theme.                |
-| `id`        | `string`            | —         | Container id.                |
-| `className` | `string`            | —         | Additional CSS class.        |
-| `style`     | `CSSProperties`     | —         | Inline styles.               |
+| Prop           | Type                           | Default   | Description                                           |
+| -------------- | ------------------------------ | --------- | ----------------------------------------------------- |
+| `children`     | `ReactNode`                    | —         | **Required.** Child content.                          |
+| `theme`        | `'light' \| 'dark' \| 'system'`| `'light'` | Active theme. `'system'` follows OS preferences.      |
+| `highContrast` | `boolean`                      | `false`   | Enables high-contrast mode for better accessibility.  |
+| `id`           | `string`                       | —         | Container id.                                         |
+| `className`    | `string`                       | —         | Additional CSS class.                                 |
+| `style`        | `CSSProperties`                | —         | Inline styles.                                        |
 
 ## Theming
 

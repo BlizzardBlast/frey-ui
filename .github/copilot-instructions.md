@@ -66,7 +66,7 @@ Build a small, accessible React component library.
 
 - Use CSS Modules only (`*.module.css`), filenames lowercase.
 - Class names are `snake_case` and scoped to the component.
-- Prefer theming via CSS custom properties on the container; allow overrides via `style`.
+- Prefer theming via semantic CSS custom properties (e.g., `--frey-color-surface`) and allow overrides via `style`. Use global palette tokens internally when possible.
 - Always include:
   - `:focus-visible` styles for keyboard users.
   - True disabled styling + cursor.
