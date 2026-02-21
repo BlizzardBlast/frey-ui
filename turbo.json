@@ -21,6 +21,10 @@
     "test": {
       "dependsOn": ["transit"]
     },
+    "test:coverage:blob": {
+      "dependsOn": ["transit"],
+      "outputs": [".vitest-reports/**", ".junit-reports/**"]
+    },
     "transit": {
       "dependsOn": ["^transit"]
     },

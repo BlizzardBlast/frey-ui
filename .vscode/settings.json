@@ -3,7 +3,6 @@
   "eslint.enable": false,
   "eslint.validate": [],
   "prettier.enable": false,
-  "vitest.nodeExecutable": "/opt/homebrew/bin/node",
   "editor.defaultFormatter": "biomejs.biome",
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
