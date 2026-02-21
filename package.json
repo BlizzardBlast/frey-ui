@@ -17,7 +17,7 @@
     "check:staged": "biome check --write --staged --no-errors-on-unmatched",
     "check:changed": "biome ci --changed --since=origin/main --no-errors-on-unmatched .",
     "test": "turbo run test",
-    "test:coverage": "turbo run test:coverage:blob && node scripts/collect-reports.mjs && vitest --mergeReports .vitest-reports --coverage.enabled=true --reporter=default --run --passWithNoTests && jrm test-report.junit.xml \"packages/*/.junit-reports/*.xml\" \"apps/*/.junit-reports/*.xml\"",
+    "test:coverage": "turbo run test:coverage:blob && node scripts/collect-reports.mjs && vitest --mergeReports .vitest-reports --coverage.enabled=true --reporter=default --run --passWithNoTests && jrm test-report.junit.xml \"packages/*/.junit-reports/*.xml\" \"apps/*/.junit-reports/*.xml\" && rm -rf packages/*/.junit-reports apps/*/.junit-reports",
     "storybook": "turbo run storybook --filter=@frey-ui/storybook",
     "changeset": "changeset",
     "version-packages": "changeset version",
