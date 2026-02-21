@@ -74,9 +74,7 @@ describe('Dialog', () => {
       </Dialog>
     );
 
-    // The overlay should be the element right before the content, or just a generic div without role dialog
-    // We can click the region just outside the dialog itself
-    await user.click(document.body);
+    await user.click(screen.getByRole('dialog'));
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
