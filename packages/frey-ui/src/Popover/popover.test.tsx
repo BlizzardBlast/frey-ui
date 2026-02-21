@@ -10,8 +10,13 @@ describe('Popover', () => {
     const user = userEvent.setup();
 
     render(
-      <Popover trigger={<Button>Open details</Button>}>
-        <p>Popover body</p>
+      <Popover>
+        <Popover.Trigger>
+          <Button>Open details</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <p>Popover body</p>
+        </Popover.Content>
       </Popover>
     );
 
@@ -26,7 +31,12 @@ describe('Popover', () => {
     render(
       <div>
         <button type='button'>Outside</button>
-        <Popover trigger={<Button>Open popover</Button>}>Content</Popover>
+        <Popover>
+          <Popover.Trigger>
+            <Button>Open popover</Button>
+          </Popover.Trigger>
+          <Popover.Content>Content</Popover.Content>
+        </Popover>
       </div>
     );
 
@@ -43,11 +53,11 @@ describe('Popover', () => {
     render(
       <div>
         <button type='button'>Outside</button>
-        <Popover
-          trigger={<Button>Persistent popover</Button>}
-          closeOnOutsideClick={false}
-        >
-          Content
+        <Popover closeOnOutsideClick={false}>
+          <Popover.Trigger>
+            <Button>Persistent popover</Button>
+          </Popover.Trigger>
+          <Popover.Content>Content</Popover.Content>
         </Popover>
       </div>
     );
@@ -65,15 +75,14 @@ describe('Popover', () => {
     const onOpenChange = vi.fn();
 
     render(
-      <Popover
-        trigger={<Button>Open popover</Button>}
-        onOpenChange={onOpenChange}
-      >
-        Content
+      <Popover open onOpenChange={onOpenChange}>
+        <Popover.Trigger>
+          <Button>Open popover</Button>
+        </Popover.Trigger>
+        <Popover.Content>Content</Popover.Content>
       </Popover>
     );
 
-    await user.click(screen.getByRole('button', { name: 'Open popover' }));
     await user.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
@@ -81,8 +90,13 @@ describe('Popover', () => {
 
   it('has no accessibility violations', async () => {
     const { container } = render(
-      <Popover trigger={<Button>Open popover</Button>} defaultOpen>
-        <p>A11y content</p>
+      <Popover defaultOpen>
+        <Popover.Trigger>
+          <Button>Open popover</Button>
+        </Popover.Trigger>
+        <Popover.Content>
+          <p>A11y content</p>
+        </Popover.Content>
       </Popover>
     );
 

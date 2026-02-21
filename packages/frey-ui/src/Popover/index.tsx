@@ -1,13 +1,36 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, { useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
+import { useControllableState } from '../hooks/useControllableState';
+import { useDismiss } from '../hooks/useDismiss';
+import { useFloatingPosition } from '../hooks/useFloatingPosition';
+import { mergeRefs } from '../utils/mergeRefs';
 import styles from './popover.module.css';
 
 export type PopoverPlacement = 'top' | 'right' | 'bottom' | 'left';
 
+type PopoverContextValue = {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  placement: PopoverPlacement;
+  offset: number;
+  idPrefix: string;
+  triggerRef: React.RefObject<HTMLElement | null>;
+  closeOnEscape: boolean;
+  closeOnOutsideClick: boolean;
+};
+
+const PopoverContext = React.createContext<PopoverContextValue | null>(null);
+
+function usePopoverContext() {
+  const context = React.useContext(PopoverContext);
+  if (!context) {
+    throw new Error('Popover components must be wrapped in <Popover>');
+  }
+  return context;
+}
+
 export type PopoverProps = {
-  trigger: React.ReactElement;
-  children: React.ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -15,43 +38,10 @@ export type PopoverProps = {
   offset?: number;
   closeOnEscape?: boolean;
   closeOnOutsideClick?: boolean;
-  id?: string;
-  className?: string;
-  style?: React.CSSProperties;
-  contentClassName?: string;
-  contentStyle?: React.CSSProperties;
+  children: React.ReactNode;
 };
 
-type Position = {
-  top: number;
-  left: number;
-};
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
-
-function mergeRefs<T>(
-  ...refs: Array<React.Ref<T> | undefined>
-): React.RefCallback<T> {
-  return (node) => {
-    refs.forEach((ref) => {
-      if (!ref) {
-        return;
-      }
-
-      if (typeof ref === 'function') {
-        ref(node);
-      } else {
-        (ref as { current: T | null }).current = node;
-      }
-    });
-  };
-}
-
-function Popover({
-  trigger,
-  children,
+const PopoverRoot = function Popover({
   open,
   defaultOpen = false,
   onOpenChange,
@@ -59,199 +49,138 @@ function Popover({
   offset = 8,
   closeOnEscape = true,
   closeOnOutsideClick = true,
-  id,
-  className,
-  style,
-  contentClassName,
-  contentStyle
+  children
 }: Readonly<PopoverProps>) {
-  const generatedId = React.useId();
-  const contentId = id ?? `${generatedId}-popover`;
-  const triggerRef = React.useRef<HTMLElement | null>(null);
-  const contentRef = React.useRef<HTMLDivElement | null>(null);
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const [position, setPosition] = React.useState<Position>({ top: 0, left: 0 });
-
-  const isControlled = typeof open === 'boolean';
-  const isOpen = isControlled ? open : internalOpen;
-
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isControlled) {
-        setInternalOpen(nextOpen);
-      }
-
-      onOpenChange?.(nextOpen);
-    },
-    [isControlled, onOpenChange]
+  const idPrefix = useId();
+  const triggerRef = useRef<HTMLElement | null>(null);
+  const [currentOpen, handleOpenChange] = useControllableState(
+    open,
+    defaultOpen,
+    onOpenChange
   );
 
-  const updatePosition = React.useCallback(() => {
-    if (!isOpen || !triggerRef.current || !contentRef.current) {
-      return;
-    }
+  const contextValue = React.useMemo(
+    () => ({
+      open: currentOpen,
+      onOpenChange: handleOpenChange,
+      placement,
+      offset,
+      idPrefix,
+      triggerRef,
+      closeOnEscape,
+      closeOnOutsideClick
+    }),
+    [
+      currentOpen,
+      handleOpenChange,
+      placement,
+      offset,
+      idPrefix,
+      closeOnEscape,
+      closeOnOutsideClick
+    ]
+  );
 
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const contentRect = contentRef.current.getBoundingClientRect();
-    const viewportPadding = 8;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+  return (
+    <PopoverContext.Provider value={contextValue}>
+      {children}
+    </PopoverContext.Provider>
+  );
+};
+PopoverRoot.displayName = 'Popover';
 
-    let top = triggerRect.bottom + offset;
-    let left = triggerRect.left + (triggerRect.width - contentRect.width) / 2;
+export type PopoverTriggerProps = {
+  children: React.ReactElement;
+  asChild?: boolean;
+};
 
-    if (placement === 'top') {
-      top = triggerRect.top - contentRect.height - offset;
-    }
+const PopoverTrigger = React.forwardRef<
+  HTMLElement,
+  Readonly<PopoverTriggerProps>
+>(function PopoverTrigger({ children }, ref) {
+  const { open, onOpenChange, idPrefix, triggerRef } = usePopoverContext();
 
-    if (placement === 'left') {
-      top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
-      left = triggerRect.left - contentRect.width - offset;
-    }
-
-    if (placement === 'right') {
-      top = triggerRect.top + (triggerRect.height - contentRect.height) / 2;
-      left = triggerRect.right + offset;
-    }
-
-    top = clamp(
-      top,
-      viewportPadding,
-      Math.max(
-        viewportPadding,
-        viewportHeight - contentRect.height - viewportPadding
-      )
-    );
-    left = clamp(
-      left,
-      viewportPadding,
-      Math.max(
-        viewportPadding,
-        viewportWidth - contentRect.width - viewportPadding
-      )
-    );
-
-    setPosition({ top, left });
-  }, [isOpen, offset, placement]);
-
-  React.useLayoutEffect(() => {
-    updatePosition();
-  }, [updatePosition]);
-
-  React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleReposition = () => {
-      updatePosition();
-    };
-
-    window.addEventListener('resize', handleReposition);
-    window.addEventListener('scroll', handleReposition, true);
-
-    return () => {
-      window.removeEventListener('resize', handleReposition);
-      window.removeEventListener('scroll', handleReposition, true);
-    };
-  }, [isOpen, updatePosition]);
-
-  React.useEffect(() => {
-    if (!isOpen || !closeOnOutsideClick) {
-      return;
-    }
-
-    const handlePointerDown = (event: MouseEvent) => {
-      const targetNode = event.target as Node;
-
-      if (triggerRef.current?.contains(targetNode)) {
-        return;
-      }
-
-      if (contentRef.current?.contains(targetNode)) {
-        return;
-      }
-
-      setOpen(false);
-    };
-
-    document.addEventListener('mousedown', handlePointerDown);
-
-    return () => {
-      document.removeEventListener('mousedown', handlePointerDown);
-    };
-  }, [closeOnOutsideClick, isOpen, setOpen]);
-
-  React.useEffect(() => {
-    if (!isOpen || !closeOnEscape) {
-      return;
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [closeOnEscape, isOpen, setOpen]);
-
-  const triggerProps = trigger.props as {
+  const triggerProps = children.props as {
     onClick?: React.MouseEventHandler;
     ref?: React.Ref<HTMLElement>;
   };
 
-  const triggerElement = React.cloneElement(trigger, {
-    ref: mergeRefs<HTMLElement>(triggerProps.ref, triggerRef),
+  return React.cloneElement(children, {
+    ref: mergeRefs(triggerProps.ref, ref, triggerRef),
     onClick: (event: React.MouseEvent<HTMLElement>) => {
       triggerProps.onClick?.(event);
-
       if (!event.defaultPrevented) {
-        setOpen(!isOpen);
+        onOpenChange(!open);
       }
     },
     'aria-haspopup': 'dialog',
-    'aria-controls': contentId,
-    'aria-expanded': isOpen
+    'aria-expanded': open,
+    'aria-controls': `${idPrefix}-content`
   } as Record<string, unknown>);
+});
+PopoverTrigger.displayName = 'Popover.Trigger';
 
-  if (typeof document === 'undefined') {
-    return triggerElement;
-  }
+export type PopoverContentProps = React.HTMLAttributes<HTMLDivElement>;
 
-  return (
-    <>
-      {triggerElement}
+const PopoverContent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<PopoverContentProps>
+>(function PopoverContent({ className, style, children, ...props }, ref) {
+  const {
+    open,
+    onOpenChange,
+    placement,
+    offset,
+    idPrefix,
+    triggerRef,
+    closeOnEscape,
+    closeOnOutsideClick
+  } = usePopoverContext();
 
-      {isOpen &&
-        createPortal(
-          <div
-            id={contentId}
-            ref={contentRef}
-            aria-live='polite'
-            className={clsx(
-              styles.popover_content,
-              contentClassName,
-              className
-            )}
-            style={{
-              top: position.top,
-              left: position.left,
-              ...style,
-              ...contentStyle
-            }}
-          >
-            {children}
-          </div>,
-          document.body
-        )}
-    </>
+  const contentRef = useRef<HTMLDivElement | null>(null);
+
+  const position = useFloatingPosition(triggerRef, contentRef, {
+    open,
+    placement,
+    offset,
+    align: 'center'
+  });
+
+  useDismiss({
+    open,
+    onClose: () => onOpenChange(false),
+    triggerRef,
+    contentRef,
+    closeOnEscape,
+    closeOnOutsideClick,
+    returnFocusOnClose: true
+  });
+
+  if (!open || typeof document === 'undefined') return null;
+
+  return createPortal(
+    <div
+      id={`${idPrefix}-content`}
+      ref={mergeRefs(contentRef, ref)}
+      aria-live='polite'
+      className={clsx(styles.popover_content, className)}
+      style={{
+        top: position.top,
+        left: position.left,
+        ...style
+      }}
+      {...props}
+    >
+      {children}
+    </div>,
+    document.body
   );
-}
+});
+PopoverContent.displayName = 'Popover.Content';
+
+export const Popover = Object.assign(PopoverRoot, {
+  Trigger: PopoverTrigger,
+  Content: PopoverContent
+});
 
 export default Popover;

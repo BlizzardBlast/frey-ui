@@ -5,42 +5,59 @@ import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import DropdownMenu from './index';
 
-const items = [
-  { label: 'Rename', value: 'rename' },
-  { label: 'Duplicate', value: 'duplicate' },
-  { label: 'Delete', value: 'delete', destructive: true }
-];
-
 describe('DropdownMenu', () => {
   it('opens from trigger click', async () => {
     const user = userEvent.setup();
 
-    render(<DropdownMenu trigger={<Button>Open menu</Button>} items={items} />);
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <Button>Open menu</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item>Delete</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
 
     await user.click(screen.getByRole('button', { name: 'Open menu' }));
 
-    expect(screen.getByRole('button', { name: 'Rename' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'Rename' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: 'Delete' })
+    ).toBeInTheDocument();
   });
 
   it('calls onSelect and closes on item click', async () => {
     const user = userEvent.setup();
-    const onSelect = vi.fn();
+    const onSelectRename = vi.fn();
+    const onSelectDuplicate = vi.fn();
 
     render(
-      <DropdownMenu
-        trigger={<Button>Actions</Button>}
-        items={items}
-        onSelect={onSelect}
-      />
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <Button>Actions</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item onSelect={onSelectRename}>
+            Rename
+          </DropdownMenu.Item>
+          <DropdownMenu.Item onSelect={onSelectDuplicate}>
+            Duplicate
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
     );
 
     await user.click(screen.getByRole('button', { name: 'Actions' }));
-    await user.click(screen.getByRole('button', { name: 'Duplicate' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Duplicate' }));
 
-    expect(onSelect).toHaveBeenCalledWith('duplicate');
+    expect(onSelectDuplicate).toHaveBeenCalled();
     expect(
-      screen.queryByRole('button', { name: 'Rename' })
+      screen.queryByRole('menuitem', { name: 'Rename' })
     ).not.toBeInTheDocument();
   });
 
@@ -49,17 +66,20 @@ describe('DropdownMenu', () => {
     const onSelect = vi.fn();
 
     render(
-      <DropdownMenu
-        trigger={<Button>Actions</Button>}
-        items={[
-          { label: 'Disabled action', value: 'disabled', disabled: true }
-        ]}
-        onSelect={onSelect}
-      />
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <Button>Actions</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item disabled onSelect={onSelect}>
+            Disabled action
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
     );
 
     await user.click(screen.getByRole('button', { name: 'Actions' }));
-    await user.click(screen.getByRole('button', { name: 'Disabled action' }));
+    await user.click(screen.getByRole('menuitem', { name: 'Disabled action' }));
 
     expect(onSelect).not.toHaveBeenCalled();
   });
@@ -67,12 +87,22 @@ describe('DropdownMenu', () => {
   it('supports arrow key navigation', async () => {
     const user = userEvent.setup();
 
-    render(<DropdownMenu trigger={<Button>Open menu</Button>} items={items} />);
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>
+          <Button>Open menu</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
 
     await user.click(screen.getByRole('button', { name: 'Open menu' }));
 
-    const rename = screen.getByRole('button', { name: 'Rename' });
-    const duplicate = screen.getByRole('button', { name: 'Duplicate' });
+    const rename = screen.getByRole('menuitem', { name: 'Rename' });
+    const duplicate = screen.getByRole('menuitem', { name: 'Duplicate' });
 
     expect(rename).toHaveFocus();
 
@@ -82,11 +112,15 @@ describe('DropdownMenu', () => {
 
   it('has no accessibility violations', async () => {
     const { container } = render(
-      <DropdownMenu
-        trigger={<Button>A11y menu</Button>}
-        items={items}
-        defaultOpen
-      />
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger>
+          <Button>A11y menu</Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item destructive>Delete</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
     );
 
     const results = await axe(container);

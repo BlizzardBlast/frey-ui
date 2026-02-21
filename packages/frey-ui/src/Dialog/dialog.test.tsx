@@ -7,8 +7,13 @@ import Dialog from './index';
 describe('Dialog', () => {
   it('renders title and content when open', () => {
     render(
-      <Dialog open title='Delete item'>
-        Are you sure?
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Delete item</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Are you sure?</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
@@ -21,8 +26,13 @@ describe('Dialog', () => {
 
   it('does not render when closed', () => {
     render(
-      <Dialog open={false} title='Closed dialog'>
-        Hidden
+      <Dialog open={false}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Closed dialog</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Hidden</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
@@ -34,8 +44,13 @@ describe('Dialog', () => {
     const onOpenChange = vi.fn();
 
     render(
-      <Dialog open title='Close action' onOpenChange={onOpenChange}>
-        Body
+      <Dialog open onOpenChange={onOpenChange}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Close action</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
@@ -49,8 +64,13 @@ describe('Dialog', () => {
     const onOpenChange = vi.fn();
 
     render(
-      <Dialog open title='Backdrop close' onOpenChange={onOpenChange}>
-        Body
+      <Dialog open onOpenChange={onOpenChange}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Backdrop close</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
@@ -59,23 +79,22 @@ describe('Dialog', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('does not close from overlay when closeOnOverlayClick is false', async () => {
+  it('does not close from overlay when closeOnOutsideClick is false', async () => {
     const onOpenChange = vi.fn();
     const user = userEvent.setup();
 
     render(
-      <Dialog
-        open
-        title='No overlay close'
-        onOpenChange={onOpenChange}
-        closeOnOverlayClick={false}
-      >
-        Body
+      <Dialog open onOpenChange={onOpenChange}>
+        <Dialog.Content closeOnOverlayClick={false}>
+          <Dialog.Header>
+            <Dialog.Title>No overlay close</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
-    const dialog = screen.getByRole('dialog');
-    await user.click(dialog);
+    await user.click(document.body);
 
     expect(onOpenChange).not.toHaveBeenCalled();
   });
@@ -85,8 +104,13 @@ describe('Dialog', () => {
     const onOpenChange = vi.fn();
 
     render(
-      <Dialog open title='Escape close' onOpenChange={onOpenChange}>
-        Body
+      <Dialog open onOpenChange={onOpenChange}>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Escape close</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 
@@ -97,8 +121,14 @@ describe('Dialog', () => {
 
   it('has no accessibility violations', async () => {
     const { container } = render(
-      <Dialog open title='A11y dialog' description='Optional description'>
-        Body content
+      <Dialog open>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>A11y dialog</Dialog.Title>
+            <Dialog.Description>Optional description</Dialog.Description>
+          </Dialog.Header>
+          <Dialog.Body>Body content</Dialog.Body>
+        </Dialog.Content>
       </Dialog>
     );
 

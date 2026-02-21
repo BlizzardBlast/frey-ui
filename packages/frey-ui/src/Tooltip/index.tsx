@@ -1,6 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
+import { useControllableState } from '../hooks/useControllableState';
+import { useFloatingPosition } from '../hooks/useFloatingPosition';
+import { mergeRefs } from '../utils/mergeRefs';
 import styles from './tooltip.module.css';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
@@ -18,33 +21,6 @@ export type TooltipProps = {
   className?: string;
   style?: React.CSSProperties;
 };
-
-type Position = {
-  top: number;
-  left: number;
-};
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
-
-function mergeRefs<T>(
-  ...refs: Array<React.Ref<T> | undefined>
-): React.RefCallback<T> {
-  return (node) => {
-    refs.forEach((ref) => {
-      if (!ref) {
-        return;
-      }
-
-      if (typeof ref === 'function') {
-        ref(node);
-      } else {
-        (ref as { current: T | null }).current = node;
-      }
-    });
-  };
-}
 
 function Tooltip({
   children,
@@ -66,22 +42,19 @@ function Tooltip({
   const delayTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
     null
   );
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const [position, setPosition] = React.useState<Position>({ top: 0, left: 0 });
 
-  const isControlled = typeof open === 'boolean';
-  const isOpen = isControlled ? open : internalOpen;
-
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isControlled) {
-        setInternalOpen(nextOpen);
-      }
-
-      onOpenChange?.(nextOpen);
-    },
-    [isControlled, onOpenChange]
+  const [isOpen, setOpen] = useControllableState(
+    open,
+    defaultOpen,
+    onOpenChange
   );
+
+  const position = useFloatingPosition(triggerRef, tooltipRef, {
+    open: isOpen,
+    placement,
+    offset,
+    align: 'center'
+  });
 
   const hideImmediately = React.useCallback(() => {
     if (delayTimerRef.current) {
@@ -100,76 +73,6 @@ function Tooltip({
       setOpen(true);
     }, delay);
   }, [delay, setOpen]);
-
-  const updatePosition = React.useCallback(() => {
-    if (!isOpen || !triggerRef.current || !tooltipRef.current) {
-      return;
-    }
-
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const tooltipRect = tooltipRef.current.getBoundingClientRect();
-    const viewportPadding = 8;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-
-    let top = triggerRect.top - tooltipRect.height - offset;
-    let left = triggerRect.left + (triggerRect.width - tooltipRect.width) / 2;
-
-    if (placement === 'bottom') {
-      top = triggerRect.bottom + offset;
-    }
-
-    if (placement === 'left') {
-      top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
-      left = triggerRect.left - tooltipRect.width - offset;
-    }
-
-    if (placement === 'right') {
-      top = triggerRect.top + (triggerRect.height - tooltipRect.height) / 2;
-      left = triggerRect.right + offset;
-    }
-
-    top = clamp(
-      top,
-      viewportPadding,
-      Math.max(
-        viewportPadding,
-        viewportHeight - tooltipRect.height - viewportPadding
-      )
-    );
-    left = clamp(
-      left,
-      viewportPadding,
-      Math.max(
-        viewportPadding,
-        viewportWidth - tooltipRect.width - viewportPadding
-      )
-    );
-
-    setPosition({ top, left });
-  }, [isOpen, offset, placement]);
-
-  React.useLayoutEffect(() => {
-    updatePosition();
-  }, [updatePosition]);
-
-  React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleReposition = () => {
-      updatePosition();
-    };
-
-    window.addEventListener('resize', handleReposition);
-    window.addEventListener('scroll', handleReposition, true);
-
-    return () => {
-      window.removeEventListener('resize', handleReposition);
-      window.removeEventListener('scroll', handleReposition, true);
-    };
-  }, [isOpen, updatePosition]);
 
   React.useEffect(() => {
     return () => {

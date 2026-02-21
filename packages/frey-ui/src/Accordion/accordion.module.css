@@ -1,0 +1,80 @@
+.accordion {
+  width: 100%;
+}
+
+.accordion_item {
+  border-bottom: 1px solid var(--frey-color-border-subtle);
+}
+
+.accordion_item:last-child {
+  border-bottom: none;
+}
+
+.accordion_header {
+  display: flex;
+}
+
+.accordion_trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+  font-weight: 500;
+  font-size: 0.875rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--frey-color-text);
+  transition: all 0.2s ease-in-out;
+  text-align: left;
+  outline: none;
+}
+
+.accordion_trigger:hover {
+  text-decoration: underline;
+}
+
+.accordion_trigger:focus-visible {
+  border-radius: var(--frey-radius-sm);
+  box-shadow:
+    0 0 0 2px var(--frey-color-surface),
+    0 0 0 4px var(--frey-color-focus-ring);
+}
+
+.accordion_chevron {
+  transition: transform 0.2s ease-in-out;
+  color: var(--frey-color-text-muted);
+}
+
+.accordion_chevron_open {
+  transform: rotate(180deg);
+}
+
+/* 
+  CSS Grid trick for animating height 
+  Transitions from 0fr to 1fr
+*/
+.accordion_content_wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.2s ease-out;
+}
+
+.accordion_content_wrapper_open {
+  grid-template-rows: 1fr;
+}
+
+.accordion_content {
+  overflow: hidden; /* Important for grid animation to hide contents when 0fr */
+  padding-bottom: 1rem;
+  color: var(--frey-color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Remove padding if closed to avoid seeing whitespace inside 0fr */
+.accordion_content_wrapper:not(.accordion_content_wrapper_open)
+.accordion_content {
+  padding-bottom: 0;
+}
