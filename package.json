@@ -17,6 +17,7 @@
     "check:staged": "biome check --write --staged --no-errors-on-unmatched",
     "check:changed": "biome ci --changed --since=origin/main --no-errors-on-unmatched .",
     "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage:blob && node scripts/collect-reports.mjs && vitest --mergeReports .vitest-reports --coverage.enabled=true --reporter=default --run --passWithNoTests && jrm test-report.junit.xml \"packages/*/.junit-reports/*.xml\" \"apps/*/.junit-reports/*.xml\"",
     "storybook": "turbo run storybook --filter=@frey-ui/storybook",
     "changeset": "changeset",
     "version-packages": "changeset version",
@@ -25,12 +26,16 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.27.7",
     "@biomejs/biome": "^2.4.2",
+    "@changesets/cli": "^2.27.7",
     "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^20.4.1",
     "@commitlint/types": "^20.4.0",
+    "@vitest/coverage-v8": "4.0.18",
     "husky": "^9.1.7",
-    "turbo": "^2.0.6"
+    "jsdom": "28.1.0",
+    "junit-report-merger": "9.0.3",
+    "turbo": "^2.0.6",
+    "vitest": "^4.0.18"
   }
 }
