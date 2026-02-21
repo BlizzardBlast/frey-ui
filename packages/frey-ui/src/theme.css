@@ -48,6 +48,12 @@
   --frey-palette-blue-300: #93c5fd;
   --frey-palette-blue-400: #60a5fa;
   --frey-palette-blue-600: #2563eb;
+
+  /* Global Layout Tokens */
+  --frey-radius-sm: 0.25rem;
+  --frey-radius-md: 0.375rem;
+  --frey-radius-lg: 0.5rem;
+  --frey-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 
 .frey-theme-provider,
@@ -57,10 +63,18 @@
   --frey-color-surface: var(--frey-palette-white);
   --frey-color-surface-subtle: #f1f1f1;
   --frey-color-surface-subtle-hover: #e9e9e9;
+  --frey-color-surface-hover: var(--frey-palette-gray-100);
+  --frey-color-surface-active: var(--frey-palette-gray-200);
   --frey-color-text-primary: var(--frey-palette-gray-900);
   --frey-color-text-secondary: var(--frey-palette-gray-500);
+  --frey-color-text: var(--frey-palette-gray-900);
+  --frey-color-text-title: var(--frey-palette-gray-900);
+  --frey-color-text-muted: var(--frey-palette-gray-500);
   --frey-color-border: var(--frey-palette-gray-300);
   --frey-color-border-muted: var(--frey-palette-gray-400);
+  --frey-color-border-subtle: var(--frey-palette-gray-200);
+  --frey-color-primary: var(--frey-palette-purple-600);
+  --frey-color-focus-ring: var(--frey-palette-purple-600);
 
   /* Component Tokens */
   --frey-switch-track-inactive: var(--frey-palette-purple-200);
@@ -114,10 +128,18 @@
   --frey-color-surface: var(--frey-palette-gray-800);
   --frey-color-surface-subtle: var(--frey-palette-gray-700);
   --frey-color-surface-subtle-hover: var(--frey-palette-gray-600);
+  --frey-color-surface-hover: var(--frey-palette-gray-700);
+  --frey-color-surface-active: var(--frey-palette-gray-600);
   --frey-color-text-primary: var(--frey-palette-gray-50);
   --frey-color-text-secondary: var(--frey-palette-gray-400);
+  --frey-color-text: var(--frey-palette-gray-50);
+  --frey-color-text-title: var(--frey-palette-gray-50);
+  --frey-color-text-muted: var(--frey-palette-gray-400);
   --frey-color-border: var(--frey-palette-gray-600);
   --frey-color-border-muted: var(--frey-palette-gray-500);
+  --frey-color-border-subtle: var(--frey-palette-gray-700);
+  --frey-color-primary: var(--frey-palette-purple-500);
+  --frey-color-focus-ring: var(--frey-palette-purple-500);
 
   /* Component Tokens */
   --frey-switch-track-inactive: #4c1d95; /* purple-900 mostly */

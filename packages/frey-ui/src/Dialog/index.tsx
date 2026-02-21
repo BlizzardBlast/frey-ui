@@ -138,6 +138,7 @@ const DialogContent = React.forwardRef<
   const { open, onOpenChange, idPrefix } = useDialogContext();
   const dialogRef = React.useRef<HTMLDialogElement | null>(null);
   const previousFocusedElementRef = React.useRef<HTMLElement | null>(null);
+  const [mounted, setMounted] = React.useState(open);
 
   const dialogId = `${idPrefix}-dialog`;
   const titleId = `${idPrefix}-title`;
@@ -145,6 +146,7 @@ const DialogContent = React.forwardRef<
 
   React.useEffect(() => {
     if (open) {
+      setMounted(true);
       if (document.activeElement instanceof HTMLElement) {
         previousFocusedElementRef.current = document.activeElement;
       }
@@ -155,6 +157,7 @@ const DialogContent = React.forwardRef<
   }, [open]);
 
   React.useEffect(() => {
+    if (!mounted) return;
     const dialogElement = dialogRef.current;
     if (!dialogElement) return;
 
@@ -178,7 +181,10 @@ const DialogContent = React.forwardRef<
         dialogElement.removeAttribute('open');
       }
     }
-  }, [open]);
+
+    const timer = setTimeout(() => setMounted(false), 250);
+    return () => clearTimeout(timer);
+  }, [open, mounted]);
 
   React.useEffect(() => {
     if (!open || !closeOnEscape) return;
@@ -225,7 +231,7 @@ const DialogContent = React.forwardRef<
     return () => dialogElement.removeEventListener('click', handleDialogClick);
   }, [closeOnOverlayClick, onOpenChange]);
 
-  if (typeof document === 'undefined') return null;
+  if (typeof document === 'undefined' || !mounted) return null;
 
   return createPortal(
     <dialog

@@ -7,6 +7,7 @@
   overflow: hidden;
   user-select: none;
   border-radius: 9999px;
+  border: 1px solid var(--frey-color-border-subtle);
   background-color: var(--frey-color-surface-hover);
   color: var(--frey-color-text);
 }
