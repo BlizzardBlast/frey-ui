@@ -47,7 +47,7 @@ jobs:
       - name: Skip deploy (unaffected)
         if: steps.affected.outputs.storybook_affected == 'false'
         run: echo "No Storybook changes detected. Skipping GitHub Pages deploy."
-      - uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+      - uses: bitovi/github-actions-storybook-to-github-pages@ddd9d35f670cceedd2bfc444be681001b0709730 # v1.0.4
         if: steps.affected.outputs.storybook_affected == 'true'
         with:
           install_command: pnpm install --frozen-lockfile
