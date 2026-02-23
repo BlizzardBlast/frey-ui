@@ -17,8 +17,10 @@
     "declarationDir": "dist/types",
     "noEmit": false,
     "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "isolatedDeclarations": true,
+    "declarationMap": true,
+    "verbatimModuleSyntax": true
   },
   "include": ["src"],
   "exclude": [

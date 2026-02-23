@@ -15,84 +15,84 @@ export type SwitchProps = Omit<
   style?: React.CSSProperties;
 };
 
+type SwitchComponent = React.ForwardRefExoticComponent<
+  Readonly<SwitchProps> & React.RefAttributes<HTMLInputElement>
+>;
+
 const SizeClassMap: Record<SwitchSize, string> = {
   sm: styles['switch-sm'],
   md: styles['switch-md'],
   lg: styles['switch-lg']
 };
 
-const Switch = React.forwardRef<HTMLInputElement, Readonly<SwitchProps>>(
-  function Switch(
-    {
-      label,
-      hideLabel = false,
-      size = 'md',
-      className,
-      style,
-      id,
-      disabled = false,
-      onChange,
-      onKeyDown,
-      ...inputProps
-    },
-    ref
-  ) {
-    const generatedId = useId();
-    const inputId = id ?? generatedId;
+const Switch: SwitchComponent = React.forwardRef<
+  HTMLInputElement,
+  Readonly<SwitchProps>
+>(function Switch(
+  {
+    label,
+    hideLabel = false,
+    size = 'md',
+    className,
+    style,
+    id,
+    disabled = false,
+    onChange,
+    onKeyDown,
+    ...inputProps
+  },
+  ref
+) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
 
-    const handleChange: React.ChangeEventHandler<HTMLInputElement> = (
-      event
-    ) => {
-      onChange?.(event);
-    };
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    onChange?.(event);
+  };
 
-    const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
-      event
-    ) => {
-      if (event.key === 'Enter' && !disabled) {
-        event.preventDefault();
-        event.currentTarget.click();
-      }
+  const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    if (event.key === 'Enter' && !disabled) {
+      event.preventDefault();
+      event.currentTarget.click();
+    }
 
-      onKeyDown?.(event);
-    };
+    onKeyDown?.(event);
+  };
 
-    return (
-      <div
-        className={clsx(styles['switch-container'], className)}
-        style={style}
+  return (
+    <div className={clsx(styles['switch-container'], className)} style={style}>
+      <span
+        className={clsx(styles.switch, SizeClassMap[size], {
+          [styles['switch-disabled']]: disabled
+        })}
+        aria-disabled={disabled || undefined}
       >
-        <span
-          className={clsx(styles.switch, SizeClassMap[size], {
-            [styles['switch-disabled']]: disabled
-          })}
-          aria-disabled={disabled || undefined}
-        >
-          <input
-            type='checkbox'
-            role='switch'
-            id={inputId}
-            onChange={handleChange}
-            onKeyDown={handleKeyDown}
-            disabled={disabled}
-            aria-checked={inputProps.checked}
-            ref={ref}
-            {...inputProps}
-          />
-          <span className={styles.slider} aria-hidden='true'></span>
-        </span>
-        <label
-          htmlFor={inputId}
-          className={clsx(styles.label, {
-            [styles['visually-hidden']]: hideLabel
-          })}
-        >
-          {label}
-        </label>
-      </div>
-    );
-  }
-);
+        <input
+          type='checkbox'
+          role='switch'
+          id={inputId}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          disabled={disabled}
+          aria-checked={inputProps.checked}
+          ref={ref}
+          {...inputProps}
+        />
+        <span className={styles.slider} aria-hidden='true'></span>
+      </span>
+      <label
+        htmlFor={inputId}
+        className={clsx(styles.label, {
+          [styles['visually-hidden']]: hideLabel
+        })}
+      >
+        {label}
+      </label>
+    </div>
+  );
+});
 
 Switch.displayName = 'Switch';
 

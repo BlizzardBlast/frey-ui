@@ -21,7 +21,7 @@ function ThemeProvider({
   id,
   className,
   style
-}: Readonly<ThemeProviderProps>) {
+}: Readonly<ThemeProviderProps>): React.JSX.Element {
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {

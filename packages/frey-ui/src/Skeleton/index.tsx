@@ -12,36 +12,40 @@ export type SkeletonProps = {
   style?: React.CSSProperties;
 };
 
+type SkeletonComponent = React.ForwardRefExoticComponent<
+  Readonly<SkeletonProps> & React.RefAttributes<HTMLSpanElement>
+>;
+
 const ShapeClassMap: Record<SkeletonShape, string> = {
   rectangle: styles['skeleton-rectangle'],
   circle: styles['skeleton-circle']
 };
 
-const Skeleton = React.forwardRef<HTMLSpanElement, Readonly<SkeletonProps>>(
-  function Skeleton(
-    { width, height, shape = 'rectangle', className, style },
-    ref
-  ) {
-    const resolvedWidth =
-      shape === 'circle' && !width && height ? height : width;
-    const resolvedHeight =
-      shape === 'circle' && !height && width ? width : height;
+const Skeleton: SkeletonComponent = React.forwardRef<
+  HTMLSpanElement,
+  Readonly<SkeletonProps>
+>(function Skeleton(
+  { width, height, shape = 'rectangle', className, style },
+  ref
+) {
+  const resolvedWidth = shape === 'circle' && !width && height ? height : width;
+  const resolvedHeight =
+    shape === 'circle' && !height && width ? width : height;
 
-    return (
-      <span
-        ref={ref}
-        className={clsx(styles.skeleton, ShapeClassMap[shape], className)}
-        style={{
-          width: resolvedWidth,
-          height: resolvedHeight,
-          ...style
-        }}
-        aria-hidden='true'
-        role='presentation'
-      />
-    );
-  }
-);
+  return (
+    <span
+      ref={ref}
+      className={clsx(styles.skeleton, ShapeClassMap[shape], className)}
+      style={{
+        width: resolvedWidth,
+        height: resolvedHeight,
+        ...style
+      }}
+      aria-hidden='true'
+      role='presentation'
+    />
+  );
+});
 
 Skeleton.displayName = 'Skeleton';
 

@@ -41,7 +41,12 @@ export type PopoverProps = {
   children: React.ReactNode;
 };
 
-const PopoverRoot = function Popover({
+type PopoverRootComponent = {
+  (props: Readonly<PopoverProps>): React.JSX.Element;
+  displayName?: string;
+};
+
+const PopoverRoot: PopoverRootComponent = function Popover({
   open,
   defaultOpen = false,
   onOpenChange,
@@ -50,7 +55,7 @@ const PopoverRoot = function Popover({
   closeOnEscape = true,
   closeOnOutsideClick = true,
   children
-}: Readonly<PopoverProps>) {
+}: Readonly<PopoverProps>): React.JSX.Element {
   const idPrefix = useId();
   const triggerRef = useRef<HTMLElement | null>(null);
   const [currentOpen, handleOpenChange] = useControllableState(
@@ -94,7 +99,11 @@ export type PopoverTriggerProps = {
   asChild?: boolean;
 };
 
-const PopoverTrigger = React.forwardRef<
+type PopoverTriggerComponent = React.ForwardRefExoticComponent<
+  Readonly<PopoverTriggerProps> & React.RefAttributes<HTMLElement>
+>;
+
+const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<PopoverTriggerProps>
 >(function PopoverTrigger({ children }, ref) {
@@ -122,7 +131,11 @@ PopoverTrigger.displayName = 'Popover.Trigger';
 
 export type PopoverContentProps = React.HTMLAttributes<HTMLDivElement>;
 
-const PopoverContent = React.forwardRef<
+type PopoverContentComponent = React.ForwardRefExoticComponent<
+  Readonly<PopoverContentProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const PopoverContent: PopoverContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<PopoverContentProps>
 >(function PopoverContent({ className, style, children, ...props }, ref) {
@@ -178,7 +191,12 @@ const PopoverContent = React.forwardRef<
 });
 PopoverContent.displayName = 'Popover.Content';
 
-export const Popover = Object.assign(PopoverRoot, {
+type PopoverComponent = typeof PopoverRoot & {
+  Trigger: typeof PopoverTrigger;
+  Content: typeof PopoverContent;
+};
+
+export const Popover: PopoverComponent = Object.assign(PopoverRoot, {
   Trigger: PopoverTrigger,
   Content: PopoverContent
 });

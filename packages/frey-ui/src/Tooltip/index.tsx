@@ -34,7 +34,7 @@ function Tooltip({
   id,
   className,
   style
-}: Readonly<TooltipProps>) {
+}: Readonly<TooltipProps>): React.JSX.Element {
   const generatedId = React.useId();
   const tooltipId = id ?? `${generatedId}-tooltip`;
   const triggerRef = React.useRef<HTMLElement | null>(null);

@@ -11,6 +11,10 @@ export type SpinnerProps = {
   style?: React.CSSProperties;
 };
 
+type SpinnerComponent = React.ForwardRefExoticComponent<
+  Readonly<SpinnerProps> & React.RefAttributes<HTMLOutputElement>
+>;
+
 const SpinnerSizeMap: Record<SpinnerSize, number> = {
   sm: 14,
   md: 18,
@@ -25,29 +29,30 @@ function resolveSize(size: SpinnerSize | number | undefined) {
   return SpinnerSizeMap[size ?? 'md'];
 }
 
-const Spinner = React.forwardRef<HTMLOutputElement, Readonly<SpinnerProps>>(
-  function Spinner({ size = 'md', label = 'Loading', className, style }, ref) {
-    const resolvedSize = resolveSize(size);
+const Spinner: SpinnerComponent = React.forwardRef<
+  HTMLOutputElement,
+  Readonly<SpinnerProps>
+>(function Spinner({ size = 'md', label = 'Loading', className, style }, ref) {
+  const resolvedSize = resolveSize(size);
 
-    return (
-      <output
-        ref={ref}
-        className={clsx(styles.spinner_root, className)}
-        style={
-          {
-            '--spinner-size': `${resolvedSize}px`,
-            ...style
-          } as React.CSSProperties
-        }
-        aria-live='polite'
-        aria-label={label}
-      >
-        <span className={styles.spinner_circle} aria-hidden='true' />
-        <span className={styles.visually_hidden}>{label}</span>
-      </output>
-    );
-  }
-);
+  return (
+    <output
+      ref={ref}
+      className={clsx(styles.spinner_root, className)}
+      style={
+        {
+          '--spinner-size': `${resolvedSize}px`,
+          ...style
+        } as React.CSSProperties
+      }
+      aria-live='polite'
+      aria-label={label}
+    >
+      <span className={styles.spinner_circle} aria-hidden='true' />
+      <span className={styles.visually_hidden}>{label}</span>
+    </output>
+  );
+});
 
 Spinner.displayName = 'Spinner';
 

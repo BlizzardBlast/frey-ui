@@ -46,7 +46,11 @@ export type AccordionProps = React.HTMLAttributes<HTMLDivElement> & {
   onValueChange?: (value: string | string[]) => void;
 };
 
-const AccordionRoot = React.forwardRef<
+type AccordionRootComponent = React.ForwardRefExoticComponent<
+  Readonly<AccordionProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const AccordionRoot: AccordionRootComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<AccordionProps>
 >(function Accordion(
@@ -116,7 +120,11 @@ export type AccordionItemProps = React.HTMLAttributes<HTMLDivElement> & {
   value: string;
 };
 
-const AccordionItem = React.forwardRef<
+type AccordionItemComponent = React.ForwardRefExoticComponent<
+  Readonly<AccordionItemProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const AccordionItem: AccordionItemComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<AccordionItemProps>
 >(function AccordionItem({ value, className, ...props }, ref) {
@@ -147,7 +155,11 @@ AccordionItem.displayName = 'Accordion.Item';
 export type AccordionTriggerProps =
   React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const AccordionTrigger = React.forwardRef<
+type AccordionTriggerComponent = React.ForwardRefExoticComponent<
+  Readonly<AccordionTriggerProps> & React.RefAttributes<HTMLButtonElement>
+>;
+
+const AccordionTrigger: AccordionTriggerComponent = React.forwardRef<
   HTMLButtonElement,
   Readonly<AccordionTriggerProps>
 >(function AccordionTrigger({ className, children, ...props }, ref) {
@@ -181,7 +193,11 @@ AccordionTrigger.displayName = 'Accordion.Trigger';
 
 export type AccordionContentProps = React.HTMLAttributes<HTMLDivElement>;
 
-const AccordionContent = React.forwardRef<
+type AccordionContentComponent = React.ForwardRefExoticComponent<
+  Readonly<AccordionContentProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const AccordionContent: AccordionContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<AccordionContentProps>
 >(function AccordionContent({ className, children, ...props }, ref) {
@@ -206,7 +222,13 @@ const AccordionContent = React.forwardRef<
 });
 AccordionContent.displayName = 'Accordion.Content';
 
-export const Accordion = Object.assign(AccordionRoot, {
+type AccordionComponent = typeof AccordionRoot & {
+  Item: typeof AccordionItem;
+  Trigger: typeof AccordionTrigger;
+  Content: typeof AccordionContent;
+};
+
+export const Accordion: AccordionComponent = Object.assign(AccordionRoot, {
   Item: AccordionItem,
   Trigger: AccordionTrigger,
   Content: AccordionContent

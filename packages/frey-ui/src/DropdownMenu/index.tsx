@@ -44,7 +44,12 @@ export type DropdownMenuProps = {
   children: React.ReactNode;
 };
 
-const DropdownMenuRoot = function DropdownMenu({
+type DropdownMenuRootComponent = {
+  (props: Readonly<DropdownMenuProps>): React.JSX.Element;
+  displayName?: string;
+};
+
+const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
   open,
   defaultOpen = false,
   onOpenChange,
@@ -53,7 +58,7 @@ const DropdownMenuRoot = function DropdownMenu({
   closeOnEscape = true,
   closeOnOutsideClick = true,
   children
-}: Readonly<DropdownMenuProps>) {
+}: Readonly<DropdownMenuProps>): React.JSX.Element {
   const idPrefix = useId();
   const triggerRef = useRef<HTMLElement | null>(null);
   const [currentOpen, handleOpenChange] = useControllableState(
@@ -97,7 +102,11 @@ export type DropdownMenuTriggerProps = {
   asChild?: boolean;
 };
 
-const DropdownMenuTrigger = React.forwardRef<
+type DropdownMenuTriggerComponent = React.ForwardRefExoticComponent<
+  Readonly<DropdownMenuTriggerProps> & React.RefAttributes<HTMLElement>
+>;
+
+const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<DropdownMenuTriggerProps>
 >(function DropdownMenuTrigger({ children }, ref) {
@@ -125,7 +134,11 @@ DropdownMenuTrigger.displayName = 'DropdownMenu.Trigger';
 
 export type DropdownMenuContentProps = React.HTMLAttributes<HTMLMenuElement>;
 
-const DropdownMenuContent = React.forwardRef<
+type DropdownMenuContentComponent = React.ForwardRefExoticComponent<
+  Readonly<DropdownMenuContentProps> & React.RefAttributes<HTMLMenuElement>
+>;
+
+const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
   HTMLMenuElement,
   Readonly<DropdownMenuContentProps>
 >(function DropdownMenuContent({ className, style, children, ...props }, ref) {
@@ -235,7 +248,11 @@ export type DropdownMenuItemProps =
     onSelect?: () => void;
   };
 
-const DropdownMenuItem = React.forwardRef<
+type DropdownMenuItemComponent = React.ForwardRefExoticComponent<
+  Readonly<DropdownMenuItemProps> & React.RefAttributes<HTMLButtonElement>
+>;
+
+const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
   HTMLButtonElement,
   Readonly<DropdownMenuItemProps>
 >(function DropdownMenuItem(
@@ -272,10 +289,19 @@ const DropdownMenuItem = React.forwardRef<
 });
 DropdownMenuItem.displayName = 'DropdownMenu.Item';
 
-export const DropdownMenu = Object.assign(DropdownMenuRoot, {
-  Trigger: DropdownMenuTrigger,
-  Content: DropdownMenuContent,
-  Item: DropdownMenuItem
-});
+type DropdownMenuComponent = typeof DropdownMenuRoot & {
+  Trigger: typeof DropdownMenuTrigger;
+  Content: typeof DropdownMenuContent;
+  Item: typeof DropdownMenuItem;
+};
+
+export const DropdownMenu: DropdownMenuComponent = Object.assign(
+  DropdownMenuRoot,
+  {
+    Trigger: DropdownMenuTrigger,
+    Content: DropdownMenuContent,
+    Item: DropdownMenuItem
+  }
+);
 
 export default DropdownMenu;

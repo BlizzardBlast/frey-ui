@@ -45,12 +45,17 @@ export type DialogProps = {
   children: React.ReactNode;
 };
 
-const DialogRoot = function Dialog({
+type DialogRootComponent = {
+  (props: Readonly<DialogProps>): React.JSX.Element;
+  displayName?: string;
+};
+
+const DialogRoot: DialogRootComponent = function Dialog({
   open,
   defaultOpen = false,
   onOpenChange,
   children
-}: Readonly<DialogProps>) {
+}: Readonly<DialogProps>): React.JSX.Element {
   const idPrefix = useId();
   const isControlled = open !== undefined;
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
@@ -85,7 +90,11 @@ export type DialogTriggerProps = {
   asChild?: boolean;
 };
 
-const DialogTrigger = React.forwardRef<
+type DialogTriggerComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogTriggerProps> & React.RefAttributes<HTMLElement>
+>;
+
+const DialogTrigger: DialogTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<DialogTriggerProps>
 >(function DialogTrigger({ children }, ref) {
@@ -119,7 +128,11 @@ export type DialogContentProps = React.HTMLAttributes<HTMLDivElement> & {
   containerClassName?: string;
 };
 
-const DialogContent = React.forwardRef<
+type DialogContentComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogContentProps> & React.RefAttributes<HTMLDialogElement>
+>;
+
+const DialogContent: DialogContentComponent = React.forwardRef<
   HTMLDialogElement,
   Readonly<DialogContentProps>
 >(function DialogContent(
@@ -279,7 +292,11 @@ DialogContent.displayName = 'Dialog.Content';
 
 export type DialogHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
-const DialogHeader = React.forwardRef<
+type DialogHeaderComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogHeaderProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const DialogHeader: DialogHeaderComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<DialogHeaderProps>
 >(function DialogHeader({ className, ...props }, ref) {
@@ -295,7 +312,11 @@ DialogHeader.displayName = 'Dialog.Header';
 
 export type DialogTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
 
-const DialogTitle = React.forwardRef<
+type DialogTitleComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogTitleProps> & React.RefAttributes<HTMLHeadingElement>
+>;
+
+const DialogTitle: DialogTitleComponent = React.forwardRef<
   HTMLHeadingElement,
   Readonly<DialogTitleProps>
 >(function DialogTitle({ className, children, ...props }, ref) {
@@ -315,7 +336,11 @@ DialogTitle.displayName = 'Dialog.Title';
 
 export type DialogDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
 
-const DialogDescription = React.forwardRef<
+type DialogDescriptionComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogDescriptionProps> & React.RefAttributes<HTMLParagraphElement>
+>;
+
+const DialogDescription: DialogDescriptionComponent = React.forwardRef<
   HTMLParagraphElement,
   Readonly<DialogDescriptionProps>
 >(function DialogDescription({ className, children, ...props }, ref) {
@@ -335,22 +360,27 @@ DialogDescription.displayName = 'Dialog.Description';
 
 export type DialogBodyProps = React.HTMLAttributes<HTMLDivElement>;
 
-const DialogBody = React.forwardRef<HTMLDivElement, Readonly<DialogBodyProps>>(
-  function DialogBody({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={clsx(styles.dialog_body, className)}
-        {...props}
-      />
-    );
-  }
-);
+type DialogBodyComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogBodyProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const DialogBody: DialogBodyComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<DialogBodyProps>
+>(function DialogBody({ className, ...props }, ref) {
+  return (
+    <div ref={ref} className={clsx(styles.dialog_body, className)} {...props} />
+  );
+});
 DialogBody.displayName = 'Dialog.Body';
 
 export type DialogFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
-const DialogFooter = React.forwardRef<
+type DialogFooterComponent = React.ForwardRefExoticComponent<
+  Readonly<DialogFooterProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const DialogFooter: DialogFooterComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<DialogFooterProps>
 >(function DialogFooter({ className, ...props }, ref) {
@@ -371,7 +401,17 @@ const DialogFooter = React.forwardRef<
 });
 DialogFooter.displayName = 'Dialog.Footer';
 
-export const Dialog = Object.assign(DialogRoot, {
+type DialogComponent = typeof DialogRoot & {
+  Trigger: typeof DialogTrigger;
+  Content: typeof DialogContent;
+  Header: typeof DialogHeader;
+  Title: typeof DialogTitle;
+  Description: typeof DialogDescription;
+  Body: typeof DialogBody;
+  Footer: typeof DialogFooter;
+};
+
+export const Dialog: DialogComponent = Object.assign(DialogRoot, {
   Trigger: DialogTrigger,
   Content: DialogContent,
   Header: DialogHeader,

@@ -26,69 +26,83 @@ export type TabsProps = React.HTMLAttributes<HTMLDivElement> & {
   onValueChange?: (value: string) => void;
 };
 
-const TabsRoot = React.forwardRef<HTMLDivElement, Readonly<TabsProps>>(
-  function Tabs(
-    { value, defaultValue, onValueChange, className, ...props },
-    ref
-  ) {
-    const idPrefix = useId();
-    const isControlled = value !== undefined;
-    const [uncontrolledValue, setUncontrolledValue] = useState(
-      defaultValue ?? ''
-    );
+type TabsRootComponent = React.ForwardRefExoticComponent<
+  Readonly<TabsProps> & React.RefAttributes<HTMLDivElement>
+>;
 
-    const currentValue = isControlled ? value : uncontrolledValue;
+const TabsRoot: TabsRootComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<TabsProps>
+>(function Tabs(
+  { value, defaultValue, onValueChange, className, ...props },
+  ref
+) {
+  const idPrefix = useId();
+  const isControlled = value !== undefined;
+  const [uncontrolledValue, setUncontrolledValue] = useState(
+    defaultValue ?? ''
+  );
 
-    const handleValueChange = React.useCallback(
-      (nextValue: string) => {
-        if (!isControlled) {
-          setUncontrolledValue(nextValue);
-        }
+  const currentValue = isControlled ? value : uncontrolledValue;
 
-        onValueChange?.(nextValue);
-      },
-      [isControlled, onValueChange]
-    );
+  const handleValueChange = React.useCallback(
+    (nextValue: string) => {
+      if (!isControlled) {
+        setUncontrolledValue(nextValue);
+      }
 
-    const contextValue = React.useMemo(
-      () => ({
-        value: currentValue,
-        onValueChange: handleValueChange,
-        idPrefix
-      }),
-      [currentValue, handleValueChange, idPrefix]
-    );
+      onValueChange?.(nextValue);
+    },
+    [isControlled, onValueChange]
+  );
 
-    return (
-      <TabsContext.Provider value={contextValue}>
-        <div ref={ref} className={clsx(styles.tabs, className)} {...props} />
-      </TabsContext.Provider>
-    );
-  }
-);
+  const contextValue = React.useMemo(
+    () => ({
+      value: currentValue,
+      onValueChange: handleValueChange,
+      idPrefix
+    }),
+    [currentValue, handleValueChange, idPrefix]
+  );
+
+  return (
+    <TabsContext.Provider value={contextValue}>
+      <div ref={ref} className={clsx(styles.tabs, className)} {...props} />
+    </TabsContext.Provider>
+  );
+});
 TabsRoot.displayName = 'Tabs';
 
 export type TabsListProps = React.HTMLAttributes<HTMLDivElement>;
 
-const TabsList = React.forwardRef<HTMLDivElement, Readonly<TabsListProps>>(
-  function TabsList({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        role='tablist'
-        className={clsx(styles.tabs_list, className)}
-        {...props}
-      />
-    );
-  }
-);
+type TabsListComponent = React.ForwardRefExoticComponent<
+  Readonly<TabsListProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const TabsList: TabsListComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<TabsListProps>
+>(function TabsList({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      role='tablist'
+      className={clsx(styles.tabs_list, className)}
+      {...props}
+    />
+  );
+});
 TabsList.displayName = 'Tabs.List';
 
 export type TabsTriggerProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   value: string;
 };
 
-const TabsTrigger = React.forwardRef<
+type TabsTriggerComponent = React.ForwardRefExoticComponent<
+  Readonly<TabsTriggerProps> & React.RefAttributes<HTMLButtonElement>
+>;
+
+const TabsTrigger: TabsTriggerComponent = React.forwardRef<
   HTMLButtonElement,
   Readonly<TabsTriggerProps>
 >(function TabsTrigger({ value: triggerValue, className, ...props }, ref) {
@@ -143,7 +157,11 @@ export type TabsContentProps = React.HTMLAttributes<HTMLDivElement> & {
   value: string;
 };
 
-const TabsContent = React.forwardRef<
+type TabsContentComponent = React.ForwardRefExoticComponent<
+  Readonly<TabsContentProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const TabsContent: TabsContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<TabsContentProps>
 >(function TabsContent(
@@ -172,7 +190,13 @@ const TabsContent = React.forwardRef<
 });
 TabsContent.displayName = 'Tabs.Content';
 
-export const Tabs = Object.assign(TabsRoot, {
+type TabsComponent = typeof TabsRoot & {
+  List: typeof TabsList;
+  Trigger: typeof TabsTrigger;
+  Content: typeof TabsContent;
+};
+
+export const Tabs: TabsComponent = Object.assign(TabsRoot, {
   List: TabsList,
   Trigger: TabsTrigger,
   Content: TabsContent

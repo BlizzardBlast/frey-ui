@@ -18,6 +18,10 @@ export type TextareaProps = Omit<
   style?: React.CSSProperties;
 };
 
+type TextareaComponent = React.ForwardRefExoticComponent<
+  Readonly<TextareaProps> & React.RefAttributes<HTMLTextAreaElement>
+>;
+
 const ResizeClassMap: Record<TextareaResize, string> = {
   none: styles.resize_none,
   vertical: styles.resize_vertical,
@@ -25,65 +29,65 @@ const ResizeClassMap: Record<TextareaResize, string> = {
   both: styles.resize_both
 };
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, Readonly<TextareaProps>>(
-  function Textarea(
-    {
-      label,
-      hideLabel = false,
-      error,
-      helperText,
-      resize = 'vertical',
-      className,
-      style,
-      id,
-      disabled = false,
-      required = false,
-      'aria-describedby': ariaDescribedBy,
-      'aria-invalid': ariaInvalid,
-      ...textareaProps
-    },
-    ref
-  ) {
-    return (
-      <Field
-        label={label}
-        hideLabel={hideLabel}
-        error={error}
-        helperText={helperText}
-        disabled={disabled}
-        required={required}
-        id={id}
-        className={className}
-        style={style}
-      >
-        {({ inputId, describedBy, hasError }) => {
-          const mergedDescribedBy =
-            [describedBy, ariaDescribedBy].filter(Boolean).join(' ') ||
-            undefined;
-          const isInvalid =
-            hasError || ariaInvalid === true || ariaInvalid === 'true';
+const Textarea: TextareaComponent = React.forwardRef<
+  HTMLTextAreaElement,
+  Readonly<TextareaProps>
+>(function Textarea(
+  {
+    label,
+    hideLabel = false,
+    error,
+    helperText,
+    resize = 'vertical',
+    className,
+    style,
+    id,
+    disabled = false,
+    required = false,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
+    ...textareaProps
+  },
+  ref
+) {
+  return (
+    <Field
+      label={label}
+      hideLabel={hideLabel}
+      error={error}
+      helperText={helperText}
+      disabled={disabled}
+      required={required}
+      id={id}
+      className={className}
+      style={style}
+    >
+      {({ inputId, describedBy, hasError }) => {
+        const mergedDescribedBy =
+          [describedBy, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
+        const isInvalid =
+          hasError || ariaInvalid === true || ariaInvalid === 'true';
 
-          return (
-            <textarea
-              id={inputId}
-              ref={ref}
-              disabled={disabled}
-              required={required}
-              aria-invalid={isInvalid || undefined}
-              aria-describedby={mergedDescribedBy}
-              className={clsx(
-                styles.textarea,
-                ResizeClassMap[resize],
-                hasError && styles.textarea_error
-              )}
-              {...textareaProps}
-            />
-          );
-        }}
-      </Field>
-    );
-  }
-);
+        return (
+          <textarea
+            id={inputId}
+            ref={ref}
+            disabled={disabled}
+            required={required}
+            aria-invalid={isInvalid || undefined}
+            aria-describedby={mergedDescribedBy}
+            className={clsx(
+              styles.textarea,
+              ResizeClassMap[resize],
+              hasError && styles.textarea_error
+            )}
+            {...textareaProps}
+          />
+        );
+      }}
+    </Field>
+  );
+});
 
 Textarea.displayName = 'Textarea';
 

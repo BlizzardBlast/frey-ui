@@ -18,6 +18,10 @@ export type AlertProps = {
   style?: React.CSSProperties;
 };
 
+type AlertComponent = React.ForwardRefExoticComponent<
+  Readonly<AlertProps> & React.RefAttributes<HTMLDivElement>
+>;
+
 const VariantClassMap: Record<AlertVariant, string> = {
   error: styles['alert-error'],
   success: styles['alert-success'],
@@ -63,24 +67,25 @@ const icons: Record<AlertVariant, React.ReactNode> = {
   )
 };
 
-const Alert = React.forwardRef<HTMLDivElement, Readonly<AlertProps>>(
-  function Alert({ variant = 'info', title, children, className, style }, ref) {
-    return (
-      <div
-        ref={ref}
-        role={VariantRoleMap[variant]}
-        className={clsx(styles.alert, VariantClassMap[variant], className)}
-        style={style}
-      >
-        <span className={styles['alert-icon']}>{icons[variant]}</span>
-        <div className={styles['alert-content']}>
-          {title && <p className={styles['alert-title']}>{title}</p>}
-          <p className={styles['alert-message']}>{children}</p>
-        </div>
+const Alert: AlertComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<AlertProps>
+>(function Alert({ variant = 'info', title, children, className, style }, ref) {
+  return (
+    <div
+      ref={ref}
+      role={VariantRoleMap[variant]}
+      className={clsx(styles.alert, VariantClassMap[variant], className)}
+      style={style}
+    >
+      <span className={styles['alert-icon']}>{icons[variant]}</span>
+      <div className={styles['alert-content']}>
+        {title && <p className={styles['alert-title']}>{title}</p>}
+        <p className={styles['alert-message']}>{children}</p>
       </div>
-    );
-  }
-);
+    </div>
+  );
+});
 
 Alert.displayName = 'Alert';
 

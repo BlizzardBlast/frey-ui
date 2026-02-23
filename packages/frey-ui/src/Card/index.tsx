@@ -4,33 +4,41 @@ import styles from './card.module.css';
 
 export type CardProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardRoot = React.forwardRef<HTMLDivElement, Readonly<CardProps>>(
-  function Card({ className, ...props }, ref) {
-    return (
-      <div ref={ref} className={clsx(styles.card, className)} {...props} />
-    );
-  }
-);
+type CardRootComponent = React.ForwardRefExoticComponent<
+  Readonly<CardProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const CardRoot: CardRootComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<CardProps>
+>(function Card({ className, ...props }, ref) {
+  return <div ref={ref} className={clsx(styles.card, className)} {...props} />;
+});
 CardRoot.displayName = 'Card';
 
 export type CardHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardHeader = React.forwardRef<HTMLDivElement, Readonly<CardHeaderProps>>(
-  function CardHeader({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={clsx(styles.card_header, className)}
-        {...props}
-      />
-    );
-  }
-);
+type CardHeaderComponent = React.ForwardRefExoticComponent<
+  Readonly<CardHeaderProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const CardHeader: CardHeaderComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<CardHeaderProps>
+>(function CardHeader({ className, ...props }, ref) {
+  return (
+    <div ref={ref} className={clsx(styles.card_header, className)} {...props} />
+  );
+});
 CardHeader.displayName = 'Card.Header';
 
 export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
 
-const CardTitle = React.forwardRef<
+type CardTitleComponent = React.ForwardRefExoticComponent<
+  Readonly<CardTitleProps> & React.RefAttributes<HTMLHeadingElement>
+>;
+
+const CardTitle: CardTitleComponent = React.forwardRef<
   HTMLHeadingElement,
   Readonly<CardTitleProps>
 >(function CardTitle({ className, children, ...props }, ref) {
@@ -44,7 +52,11 @@ CardTitle.displayName = 'Card.Title';
 
 export type CardContentProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardContent = React.forwardRef<
+type CardContentComponent = React.ForwardRefExoticComponent<
+  Readonly<CardContentProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const CardContent: CardContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<CardContentProps>
 >(function CardContent({ className, ...props }, ref) {
@@ -60,20 +72,28 @@ CardContent.displayName = 'Card.Content';
 
 export type CardFooterProps = React.HTMLAttributes<HTMLDivElement>;
 
-const CardFooter = React.forwardRef<HTMLDivElement, Readonly<CardFooterProps>>(
-  function CardFooter({ className, ...props }, ref) {
-    return (
-      <div
-        ref={ref}
-        className={clsx(styles.card_footer, className)}
-        {...props}
-      />
-    );
-  }
-);
+type CardFooterComponent = React.ForwardRefExoticComponent<
+  Readonly<CardFooterProps> & React.RefAttributes<HTMLDivElement>
+>;
+
+const CardFooter: CardFooterComponent = React.forwardRef<
+  HTMLDivElement,
+  Readonly<CardFooterProps>
+>(function CardFooter({ className, ...props }, ref) {
+  return (
+    <div ref={ref} className={clsx(styles.card_footer, className)} {...props} />
+  );
+});
 CardFooter.displayName = 'Card.Footer';
 
-export const Card = Object.assign(CardRoot, {
+type CardComponent = typeof CardRoot & {
+  Header: typeof CardHeader;
+  Title: typeof CardTitle;
+  Content: typeof CardContent;
+  Footer: typeof CardFooter;
+};
+
+export const Card: CardComponent = Object.assign(CardRoot, {
   Header: CardHeader,
   Title: CardTitle,
   Content: CardContent,

@@ -97,7 +97,7 @@ export function CloseIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -118,7 +118,7 @@ export function ChevronDownIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -138,7 +138,7 @@ export function CheckIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -158,7 +158,7 @@ export function MinusIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -178,7 +178,7 @@ export function CircleXIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -200,7 +200,7 @@ export function CircleCheckIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -221,7 +221,7 @@ export function TriangleAlertIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -243,7 +243,7 @@ export function CircleInfoIcon({
   title,
   className,
   style
-}: Readonly<IconProps>) {
+}: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg
       size={size}
@@ -259,7 +259,18 @@ export function CircleInfoIcon({
   );
 }
 
-const Icons = {
+type IconsMap = {
+  CloseIcon: typeof CloseIcon;
+  ChevronDownIcon: typeof ChevronDownIcon;
+  CheckIcon: typeof CheckIcon;
+  MinusIcon: typeof MinusIcon;
+  CircleXIcon: typeof CircleXIcon;
+  CircleCheckIcon: typeof CircleCheckIcon;
+  TriangleAlertIcon: typeof TriangleAlertIcon;
+  CircleInfoIcon: typeof CircleInfoIcon;
+};
+
+const Icons: IconsMap = {
   CloseIcon,
   ChevronDownIcon,
   CheckIcon,

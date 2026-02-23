@@ -13,6 +13,10 @@ export type AvatarProps = React.HTMLAttributes<HTMLSpanElement> & {
   status?: AvatarStatus;
 };
 
+type AvatarComponent = React.ForwardRefExoticComponent<
+  Readonly<AvatarProps> & React.RefAttributes<HTMLSpanElement>
+>;
+
 const SizeClassMap: Record<AvatarSize, string> = {
   sm: styles.avatar_sm,
   md: styles.avatar_md,
@@ -58,38 +62,39 @@ const useImageLoadingStatus = (src?: string) => {
   return loadingStatus;
 };
 
-const Avatar = React.forwardRef<HTMLSpanElement, Readonly<AvatarProps>>(
-  function Avatar(
-    { src, alt, fallback, size = 'md', status, className, ...props },
-    ref
-  ) {
-    const imageLoadingStatus = useImageLoadingStatus(src);
+const Avatar: AvatarComponent = React.forwardRef<
+  HTMLSpanElement,
+  Readonly<AvatarProps>
+>(function Avatar(
+  { src, alt, fallback, size = 'md', status, className, ...props },
+  ref
+) {
+  const imageLoadingStatus = useImageLoadingStatus(src);
 
-    return (
-      <span
-        ref={ref}
-        className={clsx(styles.avatar, SizeClassMap[size], className)}
-        {...props}
-      >
-        {imageLoadingStatus === 'loaded' && src ? (
-          <img src={src} alt={alt} className={styles.avatar_image} />
-        ) : (
-          <span className={styles.avatar_fallback}>{fallback}</span>
-        )}
+  return (
+    <span
+      ref={ref}
+      className={clsx(styles.avatar, SizeClassMap[size], className)}
+      {...props}
+    >
+      {imageLoadingStatus === 'loaded' && src ? (
+        <img src={src} alt={alt} className={styles.avatar_image} />
+      ) : (
+        <span className={styles.avatar_fallback}>{fallback}</span>
+      )}
 
-        {status && (
-          <span
-            className={clsx(
-              styles.avatar_status_indicator,
-              StatusClassMap[status]
-            )}
-            title={status}
-          />
-        )}
-      </span>
-    );
-  }
-);
+      {status && (
+        <span
+          className={clsx(
+            styles.avatar_status_indicator,
+            StatusClassMap[status]
+          )}
+          title={status}
+        />
+      )}
+    </span>
+  );
+});
 
 Avatar.displayName = 'Avatar';
 

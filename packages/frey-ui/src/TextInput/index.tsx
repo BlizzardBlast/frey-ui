@@ -15,75 +15,80 @@ export type TextInputProps = Omit<
   style?: React.CSSProperties;
 };
 
-const TextInput = React.forwardRef<HTMLInputElement, Readonly<TextInputProps>>(
-  function TextInput(
-    {
-      label,
-      hideLabel = false,
-      error,
-      helperText,
-      type = 'text',
-      className,
-      style,
-      id,
-      disabled = false,
-      ...inputProps
-    },
-    ref
-  ) {
-    const generatedId = useId();
-    const inputId = id ?? generatedId;
-    const errorId = `${inputId}-error`;
-    const helperId = `${inputId}-helper`;
+type TextInputComponent = React.ForwardRefExoticComponent<
+  Readonly<TextInputProps> & React.RefAttributes<HTMLInputElement>
+>;
 
-    const hasError = typeof error === 'string' && error.length > 0;
-    const hasHelper = typeof helperText === 'string' && helperText.length > 0;
+const TextInput: TextInputComponent = React.forwardRef<
+  HTMLInputElement,
+  Readonly<TextInputProps>
+>(function TextInput(
+  {
+    label,
+    hideLabel = false,
+    error,
+    helperText,
+    type = 'text',
+    className,
+    style,
+    id,
+    disabled = false,
+    ...inputProps
+  },
+  ref
+) {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-error`;
+  const helperId = `${inputId}-helper`;
 
-    const describedBy =
-      [hasError ? errorId : undefined, hasHelper ? helperId : undefined]
-        .filter(Boolean)
-        .join(' ') || undefined;
+  const hasError = typeof error === 'string' && error.length > 0;
+  const hasHelper = typeof helperText === 'string' && helperText.length > 0;
 
-    return (
-      <div
-        className={clsx(styles['text-input-container'], className)}
-        style={style}
+  const describedBy =
+    [hasError ? errorId : undefined, hasHelper ? helperId : undefined]
+      .filter(Boolean)
+      .join(' ') || undefined;
+
+  return (
+    <div
+      className={clsx(styles['text-input-container'], className)}
+      style={style}
+    >
+      <label
+        htmlFor={inputId}
+        className={clsx(styles.label, {
+          [styles['label-disabled']]: disabled,
+          [styles['visually-hidden']]: hideLabel
+        })}
       >
-        <label
-          htmlFor={inputId}
-          className={clsx(styles.label, {
-            [styles['label-disabled']]: disabled,
-            [styles['visually-hidden']]: hideLabel
-          })}
-        >
-          {label}
-        </label>
-        <input
-          ref={ref}
-          id={inputId}
-          type={type}
-          disabled={disabled}
-          aria-invalid={hasError || undefined}
-          aria-describedby={describedBy}
-          className={clsx(styles.input, {
-            [styles['input-error']]: hasError
-          })}
-          {...inputProps}
-        />
-        {hasError && (
-          <p id={errorId} className={styles['error-text']} role='alert'>
-            {error}
-          </p>
-        )}
-        {hasHelper && (
-          <p id={helperId} className={styles['helper-text']}>
-            {helperText}
-          </p>
-        )}
-      </div>
-    );
-  }
-);
+        {label}
+      </label>
+      <input
+        ref={ref}
+        id={inputId}
+        type={type}
+        disabled={disabled}
+        aria-invalid={hasError || undefined}
+        aria-describedby={describedBy}
+        className={clsx(styles.input, {
+          [styles['input-error']]: hasError
+        })}
+        {...inputProps}
+      />
+      {hasError && (
+        <p id={errorId} className={styles['error-text']} role='alert'>
+          {error}
+        </p>
+      )}
+      {hasHelper && (
+        <p id={helperId} className={styles['helper-text']}>
+          {helperText}
+        </p>
+      )}
+    </div>
+  );
+});
 
 TextInput.displayName = 'TextInput';
 

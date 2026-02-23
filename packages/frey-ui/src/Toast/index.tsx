@@ -69,7 +69,7 @@ const PlacementClassMap: Record<ToastPlacement, string> = {
   'bottom-left': styles.toast_viewport_bottom_left
 };
 
-function generateToastId() {
+function generateToastId(): string {
   if (
     typeof crypto !== 'undefined' &&
     typeof crypto.randomUUID === 'function'
@@ -86,7 +86,7 @@ export function ToastProvider({
   limit = 4,
   className,
   style
-}: Readonly<ToastProviderProps>) {
+}: Readonly<ToastProviderProps>): React.JSX.Element {
   const [toasts, setToasts] = React.useState<ReadonlyArray<ToastRecord>>([]);
   const timersRef = React.useRef<Record<string, ReturnType<typeof setTimeout>>>(
     {}
@@ -251,7 +251,7 @@ export function ToastProvider({
   );
 }
 
-export function useToast() {
+export function useToast(): ToastContextValue {
   const contextValue = React.useContext(ToastContext);
 
   if (!contextValue) {

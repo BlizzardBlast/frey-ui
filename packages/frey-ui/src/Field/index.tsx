@@ -35,7 +35,7 @@ function Field({
   className,
   style,
   labelElement = 'label'
-}: Readonly<FieldProps>) {
+}: Readonly<FieldProps>): ReactNode {
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const labelId = `${inputId}-label`;
