@@ -9,11 +9,10 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
-    reporters: ['html'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      enabled: true,
+      enabled: false,
       exclude: [
         ...coverageConfigDefaults.exclude,
         '**/.storybook/**',

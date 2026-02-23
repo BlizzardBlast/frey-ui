@@ -1,14 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { CheckboxProps } from 'frey-ui';
 import { Checkbox } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
-const StoryCheckbox = Checkbox as unknown as React.ComponentType<CheckboxProps>;
-
 const meta: Meta<CheckboxProps> = {
-  component: StoryCheckbox,
+  component: Checkbox,
   parameters: {
     layout: 'centered'
   },
@@ -49,9 +46,9 @@ export const basic_checkbox: Story = {
 export const sizes: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
-      <StoryCheckbox label='Small' size='sm' />
-      <StoryCheckbox label='Medium (default)' size='md' />
-      <StoryCheckbox label='Large' size='lg' />
+      <Checkbox label='Small' size='sm' />
+      <Checkbox label='Medium (default)' size='md' />
+      <Checkbox label='Large' size='lg' />
     </div>
   )
 } satisfies Story;
@@ -59,8 +56,8 @@ export const sizes: Story = {
 export const disabled_checkbox: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
-      <StoryCheckbox label='Disabled unchecked' disabled />
-      <StoryCheckbox label='Disabled checked' disabled defaultChecked />
+      <Checkbox label='Disabled unchecked' disabled />
+      <Checkbox label='Disabled checked' disabled defaultChecked />
     </div>
   )
 } satisfies Story;
@@ -77,7 +74,7 @@ export const indeterminate: Story = {
 
     return (
       <div className='flex flex-col gap-2'>
-        <StoryCheckbox
+        <Checkbox
           label='Select all'
           checked={allChecked}
           indeterminate={someChecked}
@@ -85,7 +82,7 @@ export const indeterminate: Story = {
         />
         <div className='flex flex-col gap-1' style={{ paddingLeft: '1.5rem' }}>
           {items.map((checked, i) => (
-            <StoryCheckbox
+            <Checkbox
               key={i}
               label={`Item ${i + 1}`}
               checked={checked}
@@ -107,7 +104,7 @@ export const controlled: Story = {
     const [checked, setChecked] = useState(false);
     return (
       <div className='flex flex-col gap-4 items-center'>
-        <StoryCheckbox
+        <Checkbox
           label='Subscribe to newsletter'
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}

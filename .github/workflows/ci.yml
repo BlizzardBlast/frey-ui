@@ -26,3 +26,5 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Run affected-package checks
         run: pnpm turbo run lint typecheck test build --affected
+      - name: Run Storybook API docs coverage check
+        run: pnpm docs:check

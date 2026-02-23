@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
-  "globalDependencies": ["biome.json"],
+  "globalDependencies": ["biome.json", "tsconfig.json"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
@@ -10,23 +10,18 @@
         "!CHANGELOG.md",
         "!**/*.test.*",
         "!**/*.spec.*"
-      ]
+      ],
+      "outputs": ["dist/**", "storybook-static/**"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["^typecheck"],
+      "outputs": ["node_modules/.tmp/tsconfig.tsbuildinfo"]
     },
     "lint": {
-      "dependsOn": ["transit"]
+      "outputs": []
     },
     "test": {
-      "dependsOn": ["transit"]
-    },
-    "test:coverage:blob": {
-      "dependsOn": ["transit"],
-      "outputs": [".vitest-reports/**", ".junit-reports/**"]
-    },
-    "transit": {
-      "dependsOn": ["^transit"]
+      "outputs": []
     },
     "dev": {
       "cache": false,

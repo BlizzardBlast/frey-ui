@@ -5,7 +5,6 @@ import {
   type ToastProviderProps,
   useToast
 } from 'frey-ui';
-import type React from 'react';
 
 function ToastDemo() {
   const { toast, dismissAll } = useToast();
@@ -75,11 +74,8 @@ function ToastDemo() {
   );
 }
 
-const StoryToastProvider =
-  ToastProvider as unknown as React.ComponentType<ToastProviderProps>;
-
 const meta: Meta<ToastProviderProps> = {
-  component: StoryToastProvider,
+  component: ToastProvider,
   parameters: {
     layout: 'centered'
   },
@@ -100,9 +96,9 @@ type Story = StoryObj<ToastProviderProps>;
 
 export const basic_toast: Story = {
   render: (args) => (
-    <StoryToastProvider {...args}>
+    <ToastProvider {...args}>
       <ToastDemo />
-    </StoryToastProvider>
+    </ToastProvider>
   ),
   args: {
     placement: 'top-right',

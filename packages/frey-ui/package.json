@@ -43,7 +43,7 @@
     "format:check": "biome format .",
     "check": "biome check .",
     "test": "vitest run",
-    "test:coverage:blob": "vitest run --coverage.enabled=true --reporter=blob --outputFile.blob=./.vitest-reports/blob.json --reporter=junit --outputFile.junit=./.junit-reports/junit.xml"
+    "test:coverage": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=../../test-report.junit.xml"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

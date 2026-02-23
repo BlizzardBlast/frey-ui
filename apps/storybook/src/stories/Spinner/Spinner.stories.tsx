@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Spinner, type SpinnerProps } from 'frey-ui';
-import type React from 'react';
-
-const StorySpinner = Spinner as unknown as React.ComponentType<SpinnerProps>;
 
 const meta: Meta<SpinnerProps> = {
-  component: StorySpinner,
+  component: Spinner,
   parameters: {
     layout: 'centered'
   },

@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Tooltip, type TooltipProps } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StoryTooltip = Tooltip as unknown as React.ComponentType<TooltipProps>;
-
 const meta: Meta<TooltipProps> = {
-  component: StoryTooltip,
+  component: Tooltip,
   parameters: {
     layout: 'centered'
   },
@@ -27,9 +24,9 @@ type Story = StoryObj<TooltipProps>;
 
 export const basic_tooltip: Story = {
   render: (args) => (
-    <StoryTooltip {...args} content='Copy to clipboard'>
+    <Tooltip {...args} content='Copy to clipboard'>
       <Button variant='secondary'>Hover or focus me</Button>
-    </StoryTooltip>
+    </Tooltip>
   ),
   args: {
     placement: 'top',
@@ -60,14 +57,14 @@ export const controlled_tooltip: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 10, justifyItems: 'center' }}>
-        <StoryTooltip
+        <Tooltip
           {...args}
           content='Controlled tooltip'
           open={open}
           onOpenChange={setOpen}
         >
           <Button variant='secondary'>Controlled target</Button>
-        </StoryTooltip>
+        </Tooltip>
 
         <Button variant='ghost' onClick={() => setOpen((current) => !current)}>
           Toggle tooltip

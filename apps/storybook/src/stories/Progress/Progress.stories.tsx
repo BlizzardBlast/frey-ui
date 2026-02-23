@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ProgressProps } from 'frey-ui';
 import { Progress } from 'frey-ui';
-import type React from 'react';
-
-const StoryProgress = Progress as unknown as React.ComponentType<ProgressProps>;
 
 const meta: Meta<ProgressProps> = {
-  component: StoryProgress,
+  component: Progress,
   parameters: {
     layout: 'centered'
   },

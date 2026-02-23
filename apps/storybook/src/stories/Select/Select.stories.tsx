@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { SelectProps } from 'frey-ui';
 import { Select } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StorySelect = Select as unknown as React.ComponentType<SelectProps>;
-
 const meta: Meta<SelectProps> = {
-  component: StorySelect,
+  component: Select,
   parameters: {
     layout: 'centered'
   },
@@ -26,11 +23,11 @@ type Story = StoryObj<SelectProps>;
 
 export const basic_select: Story = {
   render: (args) => (
-    <StorySelect {...args}>
+    <Select {...args}>
       <option value='product'>Product</option>
       <option value='engineering'>Engineering</option>
       <option value='design'>Design</option>
-    </StorySelect>
+    </Select>
   ),
   args: {
     label: 'Team',
@@ -40,11 +37,11 @@ export const basic_select: Story = {
 
 export const with_helper_text: Story = {
   render: (args) => (
-    <StorySelect {...args}>
+    <Select {...args}>
       <option value='id'>Indonesia</option>
       <option value='sg'>Singapore</option>
       <option value='jp'>Japan</option>
-    </StorySelect>
+    </Select>
   ),
   args: {
     label: 'Country',
@@ -54,10 +51,10 @@ export const with_helper_text: Story = {
 
 export const with_error: Story = {
   render: (args) => (
-    <StorySelect {...args}>
+    <Select {...args}>
       <option value='owner'>Owner</option>
       <option value='member'>Member</option>
-    </StorySelect>
+    </Select>
   ),
   args: {
     label: 'Role',
@@ -68,15 +65,15 @@ export const with_error: Story = {
 export const sizes: Story = {
   render: () => (
     <div style={{ display: 'grid', gap: 12, width: 320 }}>
-      <StorySelect label='Small' size='sm'>
+      <Select label='Small' size='sm'>
         <option value='sm'>Small</option>
-      </StorySelect>
-      <StorySelect label='Medium' size='md'>
+      </Select>
+      <Select label='Medium' size='md'>
         <option value='md'>Medium</option>
-      </StorySelect>
-      <StorySelect label='Large' size='lg'>
+      </Select>
+      <Select label='Large' size='lg'>
         <option value='lg'>Large</option>
-      </StorySelect>
+      </Select>
     </div>
   )
 } satisfies Story;
@@ -87,7 +84,7 @@ export const controlled: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 8 }}>
-        <StorySelect
+        <Select
           label='Permission level'
           value={value}
           onChange={(event) => setValue(event.target.value)}
@@ -95,7 +92,7 @@ export const controlled: Story = {
           <option value='owner'>Owner</option>
           <option value='editor'>Editor</option>
           <option value='viewer'>Viewer</option>
-        </StorySelect>
+        </Select>
         <small>Selected: {value}</small>
       </div>
     );

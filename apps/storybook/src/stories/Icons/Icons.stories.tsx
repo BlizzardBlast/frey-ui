@@ -10,12 +10,9 @@ import {
   MinusIcon,
   TriangleAlertIcon
 } from 'frey-ui';
-import type React from 'react';
-
-const StoryCloseIcon = CloseIcon as unknown as React.ComponentType<IconProps>;
 
 const meta: Meta<IconProps> = {
-  component: StoryCloseIcon,
+  component: CloseIcon,
   parameters: {
     layout: 'centered'
   },

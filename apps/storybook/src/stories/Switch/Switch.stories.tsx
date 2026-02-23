@@ -1,16 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { SwitchProps } from 'frey-ui';
 import { Switch } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
 type SwitchStoryProps = SwitchProps;
 
-const StorySwitch = Switch as unknown as React.ComponentType<SwitchStoryProps>;
-
 const meta: Meta<SwitchStoryProps> = {
-  component: StorySwitch,
+  component: Switch,
   parameters: {
     layout: 'centered'
   },
@@ -49,7 +46,7 @@ export const Basic_Switch: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <StorySwitch {...args} />
+      <Switch {...args} />
     </div>
   )
 } satisfies Story;
@@ -59,15 +56,15 @@ export const Hidden_Label: Story = {
     label: 'Toggle feature',
     hideLabel: true
   },
-  render: (args) => <StorySwitch {...args} />
+  render: (args) => <Switch {...args} />
 } satisfies Story;
 
 export const Sizes: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
-      <StorySwitch label='Small' size='sm' />
-      <StorySwitch label='Medium (default)' size='md' />
-      <StorySwitch label='Large' size='lg' />
+      <Switch label='Small' size='sm' />
+      <Switch label='Medium (default)' size='md' />
+      <Switch label='Large' size='lg' />
     </div>
   )
 } satisfies Story;
@@ -75,8 +72,8 @@ export const Sizes: Story = {
 export const Disabled: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
-      <StorySwitch label='Disabled unchecked' disabled />
-      <StorySwitch label='Disabled checked' disabled defaultChecked />
+      <Switch label='Disabled unchecked' disabled />
+      <Switch label='Disabled checked' disabled defaultChecked />
     </div>
   )
 } satisfies Story;
@@ -86,7 +83,7 @@ export const Controlled: Story = {
     const [checked, setChecked] = useState(false);
     return (
       <div className='flex flex-col gap-4 items-center'>
-        <StorySwitch
+        <Switch
           label='Dark mode'
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
@@ -102,7 +99,7 @@ export const Custom_Colors: Story = {
     label: 'Custom themed switch'
   },
   render: (args) => (
-    <StorySwitch
+    <Switch
       {...args}
       style={
         {
@@ -119,7 +116,7 @@ export const Toggle_Interaction: Story = {
   args: {
     label: 'Interactive switch'
   },
-  render: (args) => <StorySwitch {...args} />,
+  render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const toggle = canvas.getByRole('switch', { name: 'Interactive switch' });
@@ -140,7 +137,7 @@ export const Keyboard_Toggle: Story = {
   args: {
     label: 'Keyboard switch'
   },
-  render: (args) => <StorySwitch {...args} />,
+  render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const toggle = canvas.getByRole('switch', { name: 'Keyboard switch' });
@@ -161,7 +158,7 @@ export const Disabled_Interaction: Story = {
     label: 'Disabled switch',
     disabled: true
   },
-  render: (args) => <StorySwitch {...args} />,
+  render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const toggle = canvas.getByRole('switch', { name: 'Disabled switch' });

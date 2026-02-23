@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { TextareaProps } from 'frey-ui';
 import { Textarea } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StoryTextarea = Textarea as unknown as React.ComponentType<TextareaProps>;
-
 const meta: Meta<TextareaProps> = {
-  component: StoryTextarea,
+  component: Textarea,
   parameters: {
     layout: 'centered'
   },
@@ -60,7 +57,7 @@ export const controlled: Story = {
     const [value, setValue] = useState('');
 
     return (
-      <StoryTextarea
+      <Textarea
         label='Release notes'
         value={value}
         onChange={(event) => setValue(event.target.value)}

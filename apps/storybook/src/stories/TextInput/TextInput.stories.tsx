@@ -1,15 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { TextInputProps } from 'frey-ui';
 import { TextInput } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
-const StoryTextInput =
-  TextInput as unknown as React.ComponentType<TextInputProps>;
-
 const meta: Meta<TextInputProps> = {
-  component: StoryTextInput,
+  component: TextInput,
   parameters: {
     layout: 'centered'
   },
@@ -111,7 +107,7 @@ export const controlled: Story = {
     const [value, setValue] = useState('');
     return (
       <div style={{ width: 320 }}>
-        <StoryTextInput
+        <TextInput
           label='Username'
           value={value}
           onChange={(e) => setValue(e.target.value)}

@@ -16,10 +16,8 @@ type ButtonStoryProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
-const StoryButton = Button as unknown as React.ComponentType<ButtonStoryProps>;
-
 const meta: Meta<ButtonStoryProps> = {
-  component: StoryButton,
+  component: Button,
   parameters: {
     layout: 'centered'
   },
@@ -54,10 +52,10 @@ export const basic_button: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <StoryButton {...args} variant='primary' />
-      <StoryButton {...args} variant='secondary' />
-      <StoryButton {...args} variant='ghost' />
-      <StoryButton {...args} variant='destructive' />
+      <Button {...args} variant='primary' />
+      <Button {...args} variant='secondary' />
+      <Button {...args} variant='ghost' />
+      <Button {...args} variant='destructive' />
     </div>
   )
 } satisfies Story;
@@ -65,9 +63,9 @@ export const basic_button: Story = {
 export const sizes: Story = {
   render: () => (
     <div className='flex items-center gap-4'>
-      <StoryButton size='sm'>Small</StoryButton>
-      <StoryButton size='md'>Medium</StoryButton>
-      <StoryButton size='lg'>Large</StoryButton>
+      <Button size='sm'>Small</Button>
+      <Button size='md'>Medium</Button>
+      <Button size='lg'>Large</Button>
     </div>
   )
 } satisfies Story;
@@ -75,13 +73,13 @@ export const sizes: Story = {
 export const disabled_button: Story = {
   render: () => (
     <div className='flex gap-4'>
-      <StoryButton disabled>Primary</StoryButton>
-      <StoryButton variant='secondary' disabled>
+      <Button disabled>Primary</Button>
+      <Button variant='secondary' disabled>
         Secondary
-      </StoryButton>
-      <StoryButton variant='destructive' disabled>
+      </Button>
+      <Button variant='destructive' disabled>
         Destructive
-      </StoryButton>
+      </Button>
     </div>
   )
 } satisfies Story;
@@ -89,10 +87,10 @@ export const disabled_button: Story = {
 export const loading_button: Story = {
   render: () => (
     <div className='flex gap-4'>
-      <StoryButton loading>Submitting...</StoryButton>
-      <StoryButton variant='secondary' loading>
+      <Button loading>Submitting...</Button>
+      <Button variant='secondary' loading>
         Loading
-      </StoryButton>
+      </Button>
     </div>
   )
 } satisfies Story;
@@ -102,9 +100,7 @@ export const as_link: Story = {
     children: 'Visit docs',
     variant: 'secondary'
   },
-  render: (args) => (
-    <StoryButton {...args} as='a' href='https://storybook.js.org' />
-  )
+  render: (args) => <Button {...args} as='a' href='https://storybook.js.org' />
 } satisfies Story;
 
 export const click_interaction: Story = {
@@ -112,7 +108,7 @@ export const click_interaction: Story = {
     children: 'Click me',
     onClick: fn()
   },
-  render: (args) => <StoryButton {...args} />,
+  render: (args) => <Button {...args} />,
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: 'Click me' });
@@ -129,7 +125,7 @@ export const disabled_interaction: Story = {
     disabled: true,
     onClick: fn()
   },
-  render: (args) => <StoryButton {...args} />,
+  render: (args) => <Button {...args} />,
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const button = canvas.getByRole('button', { name: 'Disabled' });

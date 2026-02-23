@@ -32,9 +32,6 @@ importers:
       jsdom:
         specifier: 28.1.0
         version: 28.1.0
-      junit-report-merger:
-        specifier: 9.0.3
-        version: 9.0.3
       turbo:
         specifier: ^2.0.6
         version: 2.8.10
@@ -2476,11 +2473,6 @@ packages:
 
   jsonfile@6.2.0:
     resolution: {integrity: sha512-FGuPw30AdOIUTRMC2OMRtQV+jkVj2cfPqSeWXv1NEAJ1qZ5zb1X6z1mFhbfOB/iy3ssJCD+3KuZ8r8C3uVFlAg==}
-
-  junit-report-merger@9.0.3:
-    resolution: {integrity: sha512-Z7r4qCVp2w/SwmcJPWseA4jgzlcAw6xgbd665tWlMHQGu5RGAo+fr/4tT93/VFgD+elP8gkFqidBcDwk2SQZcg==}
-    engines: {node: '>=20'}
-    hasBin: true
 
   less@4.5.1:
     resolution: {integrity: sha512-UKgI3/KON4u6ngSsnDADsUERqhZknsVZbnuzlRZXLQCmfC/MDld42fTydUE9B+Mla1AL6SJ/Pp6SlEFi/AVGfw==}
@@ -5959,12 +5951,6 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
-
-  junit-report-merger@9.0.3:
-    dependencies:
-      commander: 14.0.3
-      tinyglobby: 0.2.15
-      xmlbuilder2: 4.0.1
 
   less@4.5.1:
     dependencies:

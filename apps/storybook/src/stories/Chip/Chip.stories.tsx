@@ -15,10 +15,8 @@ type ChipStoryProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
-const StoryChip = Chip as unknown as React.ComponentType<ChipStoryProps>;
-
 const meta: Meta<ChipStoryProps> = {
-  component: StoryChip,
+  component: Chip,
   parameters: {
     layout: 'centered'
   },
@@ -101,8 +99,8 @@ export const Basic_Chip: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <StoryChip {...args} variant={'default'} />
-      <StoryChip {...args} variant={'outlined'} />
+      <Chip {...args} variant={'default'} />
+      <Chip {...args} variant={'outlined'} />
     </div>
   )
 } satisfies Story;
@@ -117,8 +115,8 @@ export const Clickable_Chip: Story = {
   },
   render: (args) => (
     <div className='flex gap-4'>
-      <StoryChip {...args} variant={'default'} />
-      <StoryChip {...args} variant={'outlined'} />
+      <Chip {...args} variant={'default'} />
+      <Chip {...args} variant={'outlined'} />
     </div>
   )
 } satisfies Story;
@@ -130,7 +128,7 @@ export const Link_Chip: Story = {
     href: 'https://storybook.js.org',
     variant: 'outlined'
   },
-  render: (args) => <StoryChip {...args} />
+  render: (args) => <Chip {...args} />
 } satisfies Story;
 
 export const Interactive_Flow: Story = {
@@ -138,7 +136,7 @@ export const Interactive_Flow: Story = {
     label: 'Click me',
     onClick: fn()
   },
-  render: (args) => <StoryChip {...args} />,
+  render: (args) => <Chip {...args} />,
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('button', { name: 'Click me' });
@@ -155,7 +153,7 @@ export const Keyboard_Navigation: Story = {
     as: 'div',
     onClick: fn()
   },
-  render: (args) => <StoryChip {...args} />,
+  render: (args) => <Chip {...args} />,
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const chip = canvas.getByRole('button', { name: 'Keyboard chip' });

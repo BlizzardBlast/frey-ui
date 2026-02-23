@@ -1,14 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { RadioGroupProps } from 'frey-ui';
 import { RadioGroup } from 'frey-ui';
-import type React from 'react';
 import { useState } from 'react';
 
-const StoryRadioGroup =
-  RadioGroup as unknown as React.ComponentType<RadioGroupProps>;
-
 const meta: Meta<RadioGroupProps> = {
-  component: StoryRadioGroup,
+  component: RadioGroup,
   parameters: {
     layout: 'centered'
   },
@@ -89,7 +85,7 @@ export const controlled: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 8 }}>
-        <StoryRadioGroup
+        <RadioGroup
           label='Selected plan'
           options={planOptions}
           value={value}

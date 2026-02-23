@@ -7,7 +7,6 @@
     "dev": "vite",
     "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
-    "test:coverage:blob": "vitest run --passWithNoTests --coverage.enabled=true --reporter=blob --outputFile.blob=./.vitest-reports/blob.json --reporter=junit --outputFile.junit=./.junit-reports/junit.xml",
     "build": "tsc -b && storybook build --stats-json",
     "typecheck": "tsc -b",
     "lint": "biome lint src .storybook vite.config.ts vitest.setup.ts",
