@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4
         with:
           version: "10.30.0"
 
@@ -31,7 +31,7 @@ jobs:
         run: pnpm run test:coverage
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: test_results
