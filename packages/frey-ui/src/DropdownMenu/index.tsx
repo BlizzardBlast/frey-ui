@@ -5,6 +5,7 @@ import { useControllableState } from '../hooks/useControllableState';
 import { useDismiss } from '../hooks/useDismiss';
 import { useFloatingPosition } from '../hooks/useFloatingPosition';
 import { mergeRefs } from '../utils/mergeRefs';
+import { Slot } from '../utils/slot';
 import styles from './dropdownmenu.module.css';
 
 export type DropdownMenuPlacement = 'top' | 'right' | 'bottom' | 'left';
@@ -98,9 +99,9 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
 DropdownMenuRoot.displayName = 'DropdownMenu';
 
 export type DropdownMenuTriggerProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
   asChild?: boolean;
-};
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;
 
 type DropdownMenuTriggerComponent = React.ForwardRefExoticComponent<
   Readonly<DropdownMenuTriggerProps> & React.RefAttributes<HTMLElement>
@@ -109,26 +110,53 @@ type DropdownMenuTriggerComponent = React.ForwardRefExoticComponent<
 const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<DropdownMenuTriggerProps>
->(function DropdownMenuTrigger({ children }, ref) {
+>(function DropdownMenuTrigger(
+  { children, asChild = false, onClick, type, ...triggerProps },
+  ref
+) {
   const { open, onOpenChange, idPrefix, triggerRef } = useDropdownMenuContext();
-
-  const triggerProps = children.props as {
-    onClick?: React.MouseEventHandler;
-    ref?: React.Ref<HTMLElement>;
+  const mergedRef = mergeRefs(ref, triggerRef);
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
+    onClick?.(event as React.MouseEvent<HTMLButtonElement>);
+    if (!event.defaultPrevented) {
+      onOpenChange(!open);
+    }
   };
 
-  return React.cloneElement(children, {
-    ref: mergeRefs(triggerProps.ref, ref, triggerRef),
-    onClick: (event: React.MouseEvent<HTMLElement>) => {
-      triggerProps.onClick?.(event);
-      if (!event.defaultPrevented) {
-        onOpenChange(!open);
-      }
-    },
-    'aria-haspopup': 'menu',
-    'aria-expanded': open,
-    'aria-controls': `${idPrefix}-menu`
-  } as Record<string, unknown>);
+  if (asChild) {
+    if (!React.isValidElement(children)) {
+      throw new Error(
+        'DropdownMenu.Trigger with asChild expects a single valid React element child.'
+      );
+    }
+
+    return (
+      <Slot
+        ref={mergedRef}
+        {...triggerProps}
+        onClick={handleClick}
+        aria-haspopup='menu'
+        aria-expanded={open}
+        aria-controls={`${idPrefix}-menu`}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
+  return (
+    <button
+      ref={mergedRef as React.Ref<HTMLButtonElement>}
+      {...triggerProps}
+      type={type ?? 'button'}
+      onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
+      aria-haspopup='menu'
+      aria-expanded={open}
+      aria-controls={`${idPrefix}-menu`}
+    >
+      {children}
+    </button>
+  );
 });
 DropdownMenuTrigger.displayName = 'DropdownMenu.Trigger';
 

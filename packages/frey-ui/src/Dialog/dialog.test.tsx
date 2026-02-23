@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
+import Button from '../Button';
 import Dialog from './index';
 
 describe('Dialog', () => {
@@ -35,6 +36,56 @@ describe('Dialog', () => {
         </Dialog.Content>
       </Dialog>
     );
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('opens from the default native trigger button', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dialog>
+        <Dialog.Trigger>Open dialog</Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Native trigger dialog</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body content</Dialog.Body>
+        </Dialog.Content>
+      </Dialog>
+    );
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Open dialog' }));
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('does not open when asChild trigger click is defaultPrevented', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+            }}
+          >
+            Prevent open
+          </Button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Prevented dialog</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.Body>Body content</Dialog.Body>
+        </Dialog.Content>
+      </Dialog>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Prevent open' }));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });

@@ -6,14 +6,12 @@ import Button from '../Button';
 import Popover from './index';
 
 describe('Popover', () => {
-  it('toggles content from trigger click', async () => {
+  it('toggles content from default native trigger button', async () => {
     const user = userEvent.setup();
 
     render(
       <Popover>
-        <Popover.Trigger>
-          <Button>Open details</Button>
-        </Popover.Trigger>
+        <Popover.Trigger>Open details</Popover.Trigger>
         <Popover.Content>
           <p>Popover body</p>
         </Popover.Content>
@@ -25,6 +23,29 @@ describe('Popover', () => {
     expect(screen.getByText('Popover body')).toBeInTheDocument();
   });
 
+  it('does not open when asChild trigger click is defaultPrevented', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+            }}
+          >
+            Prevent popover
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content>Content</Popover.Content>
+      </Popover>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Prevent popover' }));
+
+    expect(screen.queryByText('Content')).not.toBeInTheDocument();
+  });
+
   it('closes when clicking outside by default', async () => {
     const user = userEvent.setup();
 
@@ -32,7 +53,7 @@ describe('Popover', () => {
       <div>
         <button type='button'>Outside</button>
         <Popover>
-          <Popover.Trigger>
+          <Popover.Trigger asChild>
             <Button>Open popover</Button>
           </Popover.Trigger>
           <Popover.Content>Content</Popover.Content>
@@ -54,7 +75,7 @@ describe('Popover', () => {
       <div>
         <button type='button'>Outside</button>
         <Popover closeOnOutsideClick={false}>
-          <Popover.Trigger>
+          <Popover.Trigger asChild>
             <Button>Persistent popover</Button>
           </Popover.Trigger>
           <Popover.Content>Content</Popover.Content>
@@ -76,7 +97,7 @@ describe('Popover', () => {
 
     render(
       <Popover open onOpenChange={onOpenChange}>
-        <Popover.Trigger>
+        <Popover.Trigger asChild>
           <Button>Open popover</Button>
         </Popover.Trigger>
         <Popover.Content>Content</Popover.Content>
@@ -91,7 +112,7 @@ describe('Popover', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(
       <Popover defaultOpen>
-        <Popover.Trigger>
+        <Popover.Trigger asChild>
           <Button>Open popover</Button>
         </Popover.Trigger>
         <Popover.Content>

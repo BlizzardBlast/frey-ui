@@ -9,7 +9,12 @@ export default defineConfig({
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
     coverage: {
       exclude: [
+        'src/index.ts',
+        'src/types/**',
         'src/**/*.module.css',
+        '**/*.mdx',
+        '**/*.story.*',
+        '**/*.stories.*',
         ...(configDefaults.coverage.exclude || [])
       ]
     }

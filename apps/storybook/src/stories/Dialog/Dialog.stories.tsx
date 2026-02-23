@@ -17,7 +17,7 @@ export const basic_dialog: Story = {
   render: function BasicDialogStory() {
     return (
       <Dialog>
-        <Dialog.Trigger>
+        <Dialog.Trigger asChild>
           <Button>Open dialog</Button>
         </Dialog.Trigger>
         <Dialog.Content>
@@ -39,7 +39,7 @@ export const with_description: Story = {
   render: function WithDescriptionStory() {
     return (
       <Dialog>
-        <Dialog.Trigger>
+        <Dialog.Trigger asChild>
           <Button>Invite collaborator</Button>
         </Dialog.Trigger>
         <Dialog.Content>

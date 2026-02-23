@@ -1,5 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
+import type {
+  PolymorphicComponentProps,
+  PolymorphicRef
+} from '../types/polymorphic';
 import styles from './button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
@@ -16,17 +20,10 @@ type ButtonBaseProps = {
 };
 
 export type ButtonProps<E extends ButtonElement = 'button'> =
-  ButtonBaseProps & {
-    as?: E;
-  } & Omit<
-      React.ComponentPropsWithRef<E>,
-      'as' | 'className' | 'style' | 'ref' | 'disabled'
-    >;
+  PolymorphicComponentProps<E, ButtonBaseProps>;
 
 type ButtonComponent = (<E extends ButtonElement = 'button'>(
-  props: Readonly<ButtonProps<E>> & {
-    ref?: React.Ref<E extends 'a' ? HTMLAnchorElement : HTMLButtonElement>;
-  }
+  props: Readonly<ButtonProps<E>> & { ref?: PolymorphicRef<E> }
 ) => React.ReactElement | null) & { displayName?: string };
 
 const VariantClassMap: Record<ButtonVariant, string> = {
@@ -56,7 +53,7 @@ const Button = React.forwardRef(function Button<
     children,
     ...restProps
   }: Readonly<ButtonProps<E>>,
-  ref: React.ForwardedRef<unknown>
+  ref: PolymorphicRef<E>
 ) {
   const Component = (as ?? 'button') as React.ElementType;
   const isButton = (as ?? 'button') === 'button';

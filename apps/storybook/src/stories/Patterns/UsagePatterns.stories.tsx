@@ -389,7 +389,7 @@ export const overlay_actions: Story = {
               </p>
               <div style={actionRowStyle}>
                 <DropdownMenu>
-                  <DropdownMenu.Trigger>
+                  <DropdownMenu.Trigger asChild>
                     <Button variant='secondary'>Row actions</Button>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content>

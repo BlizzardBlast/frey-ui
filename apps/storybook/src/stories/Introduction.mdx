@@ -76,11 +76,20 @@ Explore practical form + overlay + feedback composition examples in
 
 ## Dialog pattern
 
-Dialog examples use an explicit trigger button and controlled `open` state. This keeps the dialog closed by default and matches native `<dialog>` usage (`showModal()` + close actions).
+Dialog, DropdownMenu, Popover, and Tooltip use explicit trigger delegation.
+When you pass a custom trigger element (for example `Button`), use `asChild`:
+
+```tsx
+<Dialog.Trigger asChild>
+  <Button>Open dialog</Button>
+</Dialog.Trigger>
+```
+
+Without `asChild`, trigger components render a native `<button>` by default.
 
 ## Overlay and feedback primitives
 
-- `Popover`, `Tooltip`, and `DropdownMenu` use trigger-first patterns with keyboard support and outside-dismiss defaults.
+- `Popover`, `Tooltip`, and `DropdownMenu` use trigger-first patterns, `asChild` trigger delegation, keyboard support, and outside-dismiss defaults.
 - `ToastProvider` + `useToast` expose an imperative API for notifications.
 - `Progress` and `Spinner` provide accessible loading and completion feedback states.
 
