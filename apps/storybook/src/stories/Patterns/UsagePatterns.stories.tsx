@@ -1,14 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  Alert,
   Button,
+  Card,
   Checkbox,
+  Dialog,
+  DropdownMenu,
+  Progress,
   RadioGroup,
   Select,
+  Spinner,
   Switch,
   Textarea,
-  TextInput
+  TextInput,
+  ToastProvider,
+  useToast
 } from 'frey-ui';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const meta: Meta = {
   title: 'Patterns/Usage Patterns',
@@ -17,7 +25,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Practical composition examples for real product UI flows using Frey UI form controls.'
+          'Practical form, overlay, and feedback composition examples for real product UI flows using Frey UI.'
       }
     }
   }
@@ -26,11 +34,174 @@ const meta: Meta = {
 export default meta;
 
 type Story = StoryObj;
+type SyncStatus = 'idle' | 'running' | 'success' | 'error';
+
+const basePatternStyle = {
+  display: 'grid',
+  gap: 16
+} as const;
+
+const headingBlockStyle = {
+  display: 'grid',
+  gap: 4
+} as const;
+
+const titleStyle = {
+  margin: 0
+} as const;
+
+const subtitleStyle = {
+  margin: 0,
+  color: 'var(--frey-color-text-muted, #64748b)',
+  fontSize: 14
+} as const;
+
+const actionRowStyle = {
+  display: 'flex',
+  gap: 8,
+  flexWrap: 'wrap',
+  alignItems: 'center'
+} as const;
+
+function AsyncFeedbackFlow() {
+  const { toast } = useToast();
+  const [status, setStatus] = useState<SyncStatus>('idle');
+  const [progressValue, setProgressValue] = useState(0);
+  const timeoutsRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+
+  const clearTimers = useCallback(() => {
+    for (const timeoutId of timeoutsRef.current) {
+      clearTimeout(timeoutId);
+    }
+    timeoutsRef.current = [];
+  }, []);
+
+  const schedule = useCallback((delay: number, callback: () => void) => {
+    const timeoutId = setTimeout(callback, delay);
+    timeoutsRef.current.push(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearTimers();
+    };
+  }, [clearTimers]);
+
+  const runSync = (shouldFail: boolean) => {
+    clearTimers();
+    setStatus('running');
+    setProgressValue(0);
+
+    schedule(250, () => setProgressValue(25));
+    schedule(700, () => setProgressValue(55));
+    schedule(1200, () => setProgressValue(85));
+    schedule(1700, () => {
+      if (shouldFail) {
+        setStatus('error');
+        setProgressValue(72);
+        toast({
+          variant: 'error',
+          title: 'Sync failed',
+          description: 'Could not sync all records. Please retry.'
+        });
+        return;
+      }
+
+      setStatus('success');
+      setProgressValue(100);
+      toast({
+        variant: 'success',
+        title: 'Sync complete',
+        description: 'All records are now up to date.'
+      });
+    });
+  };
+
+  const alertContent = {
+    idle: null,
+    running: (
+      <Alert variant='info' title='Sync in progress'>
+        Keep this tab open while records are being synced.
+      </Alert>
+    ),
+    success: (
+      <Alert variant='success' title='Sync completed'>
+        New updates are available to your team.
+      </Alert>
+    ),
+    error: (
+      <Alert variant='error' title='Sync failed'>
+        We could not sync every record. Please run it again.
+      </Alert>
+    )
+  } as const;
+
+  return (
+    <section style={{ ...basePatternStyle, maxWidth: 680 }}>
+      <div style={headingBlockStyle}>
+        <h3 style={titleStyle}>Async Feedback</h3>
+        <p style={subtitleStyle}>
+          Compose loading, completion, and error feedback with progress, toasts,
+          and alerts.
+        </p>
+      </div>
+
+      <Card>
+        <Card.Header>
+          <Card.Title>Daily customer sync</Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <div style={{ display: 'grid', gap: 12 }}>
+            <Progress
+              label={
+                status === 'running' ? 'Sync in progress' : 'Most recent sync'
+              }
+              value={progressValue}
+              showValue
+            />
+
+            {status === 'running' && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Spinner size='sm' />
+                <small>Syncing records...</small>
+              </div>
+            )}
+
+            {alertContent[status]}
+          </div>
+        </Card.Content>
+        <Card.Footer style={actionRowStyle}>
+          <Button
+            disabled={status === 'running'}
+            onClick={() => runSync(false)}
+          >
+            Run sync
+          </Button>
+          <Button
+            disabled={status === 'running'}
+            variant='secondary'
+            onClick={() => runSync(true)}
+          >
+            Run failing sync
+          </Button>
+        </Card.Footer>
+      </Card>
+    </section>
+  );
+}
 
 export const forms: Story = {
   render: function FormsPattern() {
     return (
-      <form style={{ maxWidth: 520, display: 'grid', gap: 16 }}>
+      <form style={{ ...basePatternStyle, maxWidth: 520 }}>
+        <div style={headingBlockStyle}>
+          <h3 style={titleStyle}>Forms</h3>
+          <p style={subtitleStyle}>
+            Build consistent form layouts with shared label, helper, and action
+            patterns.
+          </p>
+        </div>
+
         <TextInput label='Project name' placeholder='Frey UI v2' required />
         <Textarea
           label='Description'
@@ -51,7 +222,12 @@ export const forms: Story = {
             { label: 'Public', value: 'public' }
           ]}
         />
-        <Button type='submit'>Create project</Button>
+        <div style={actionRowStyle}>
+          <Button variant='secondary' type='button'>
+            Save draft
+          </Button>
+          <Button type='submit'>Create project</Button>
+        </div>
       </form>
     );
   }
@@ -60,8 +236,15 @@ export const forms: Story = {
 export const settings_page: Story = {
   render: function SettingsPattern() {
     return (
-      <section style={{ maxWidth: 640, display: 'grid', gap: 20 }}>
-        <h3 style={{ margin: 0 }}>Workspace Settings</h3>
+      <section style={{ ...basePatternStyle, maxWidth: 640 }}>
+        <div style={headingBlockStyle}>
+          <h3 style={titleStyle}>Settings Page</h3>
+          <p style={subtitleStyle}>
+            Combine toggles and selection controls for organization-level
+            preferences.
+          </p>
+        </div>
+
         <Switch label='Enable notifications' defaultChecked />
         <Checkbox label='Send weekly report emails' defaultChecked />
         <Select label='Default timezone' defaultValue='asia-jakarta'>
@@ -73,7 +256,7 @@ export const settings_page: Story = {
           label='Support note'
           helperText='Shown only to organization admins.'
         />
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={actionRowStyle}>
           <Button variant='secondary'>Cancel</Button>
           <Button>Save settings</Button>
         </div>
@@ -87,8 +270,15 @@ export const auth_form: Story = {
     const [rememberMe, setRememberMe] = useState(true);
 
     return (
-      <form style={{ maxWidth: 360, display: 'grid', gap: 12 }}>
-        <h3 style={{ margin: 0 }}>Sign in</h3>
+      <form style={{ ...basePatternStyle, maxWidth: 360 }}>
+        <div style={headingBlockStyle}>
+          <h3 style={titleStyle}>Auth Form</h3>
+          <p style={subtitleStyle}>
+            Keep sign-in flows concise while preserving controlled checkbox
+            behavior.
+          </p>
+        </div>
+
         <TextInput
           label='Email'
           type='email'
@@ -101,7 +291,12 @@ export const auth_form: Story = {
           checked={rememberMe}
           onChange={(event) => setRememberMe(event.target.checked)}
         />
-        <Button type='submit'>Continue</Button>
+        <div style={actionRowStyle}>
+          <Button variant='secondary' type='button'>
+            Need help?
+          </Button>
+          <Button type='submit'>Continue</Button>
+        </div>
       </form>
     );
   }
@@ -112,8 +307,15 @@ export const table_filters: Story = {
     const [includeArchived, setIncludeArchived] = useState(false);
 
     return (
-      <section style={{ maxWidth: 880, display: 'grid', gap: 16 }}>
-        <h3 style={{ margin: 0 }}>Table Filters</h3>
+      <section style={{ ...basePatternStyle, maxWidth: 880 }}>
+        <div style={headingBlockStyle}>
+          <h3 style={titleStyle}>Table Filters</h3>
+          <p style={subtitleStyle}>
+            Combine search, segmented choices, and controlled toggles for
+            discoverability.
+          </p>
+        </div>
+
         <div
           style={{
             display: 'grid',
@@ -152,11 +354,120 @@ export const table_filters: Story = {
           checked={includeArchived}
           onChange={(event) => setIncludeArchived(event.target.checked)}
         />
-        <div style={{ display: 'flex', gap: 8 }}>
+        <div style={actionRowStyle}>
           <Button variant='secondary'>Reset</Button>
           <Button>Apply filters</Button>
         </div>
       </section>
     );
   }
+} satisfies Story;
+
+export const overlay_actions: Story = {
+  render: function OverlayActionsPattern() {
+    const [menuSelection, setMenuSelection] = useState<string | null>(null);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    return (
+      <section style={{ ...basePatternStyle, maxWidth: 680 }}>
+        <div style={headingBlockStyle}>
+          <h3 style={titleStyle}>Overlay Actions</h3>
+          <p style={subtitleStyle}>
+            Use a trigger-first menu for row actions and escalate destructive
+            steps to a controlled dialog.
+          </p>
+        </div>
+
+        <Card>
+          <Card.Header>
+            <Card.Title>Project row actions</Card.Title>
+          </Card.Header>
+          <Card.Content>
+            <div style={{ display: 'grid', gap: 12 }}>
+              <p style={{ margin: 0 }}>
+                Project: <strong>Growth Dashboard</strong>
+              </p>
+              <div style={actionRowStyle}>
+                <DropdownMenu>
+                  <DropdownMenu.Trigger>
+                    <Button variant='secondary'>Row actions</Button>
+                  </DropdownMenu.Trigger>
+                  <DropdownMenu.Content>
+                    <DropdownMenu.Item
+                      onSelect={() => setMenuSelection('Renamed project')}
+                    >
+                      Rename
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      onSelect={() =>
+                        setMenuSelection('Duplicated configuration')
+                      }
+                    >
+                      Duplicate
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      onSelect={() => setMenuSelection('Archived project')}
+                    >
+                      Archive
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item
+                      destructive
+                      onSelect={() => setIsDeleteDialogOpen(true)}
+                    >
+                      Delete project
+                    </DropdownMenu.Item>
+                  </DropdownMenu.Content>
+                </DropdownMenu>
+              </div>
+            </div>
+          </Card.Content>
+          <Card.Footer>
+            <small>Last action: {menuSelection ?? 'none'}</small>
+          </Card.Footer>
+        </Card>
+
+        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+          <Dialog.Content>
+            <Dialog.Header>
+              <Dialog.Title>Delete project?</Dialog.Title>
+              <Dialog.Description>
+                This action permanently removes all project data.
+              </Dialog.Description>
+            </Dialog.Header>
+            <Dialog.Body>
+              Are you sure you want to delete <strong>Growth Dashboard</strong>?
+            </Dialog.Body>
+            <Dialog.Footer style={actionRowStyle}>
+              <Button
+                variant='secondary'
+                onClick={() => {
+                  setMenuSelection('Delete cancelled');
+                  setIsDeleteDialogOpen(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant='destructive'
+                onClick={() => {
+                  setMenuSelection('Deleted project');
+                  setIsDeleteDialogOpen(false);
+                }}
+              >
+                Delete project
+              </Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog>
+      </section>
+    );
+  }
+} satisfies Story;
+
+export const async_feedback: Story = {
+  render: () => (
+    <ToastProvider placement='top-right' limit={4}>
+      <AsyncFeedbackFlow />
+    </ToastProvider>
+  )
 } satisfies Story;
