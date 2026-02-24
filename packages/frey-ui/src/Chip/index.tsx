@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
+import type { PolymorphicComponentProps } from '../types/polymorphic';
 import styles from './chip.module.css';
 
 export type Variant = 'default' | 'outlined';
@@ -21,12 +22,13 @@ type ChipBaseProps = {
   className?: string;
 };
 
-export type ChipProps<E extends ChipElement = 'span'> = ChipBaseProps & {
-  as?: E;
-  onClick?: React.MouseEventHandler<ChipElementNode<E>>;
-} & Omit<
-    React.ComponentPropsWithRef<E>,
-    'as' | 'children' | 'className' | 'style' | 'onClick' | 'ref'
+export type ChipProps<E extends ChipElement = 'span'> =
+  PolymorphicComponentProps<
+    E,
+    ChipBaseProps & {
+      onClick?: React.MouseEventHandler<ChipElementNode<E>>;
+      children?: never;
+    }
   >;
 
 const VariantDefaultMap: Record<Variant, string> = {

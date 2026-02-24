@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import React, { createContext, useContext, useId, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { CloseIcon } from '../Icons';
+import { mergeRefs } from '../utils/mergeRefs';
+import { Slot } from '../utils/slot';
 import styles from './dialog.module.css';
 
 export type DialogContextValue = {
@@ -18,24 +20,6 @@ function useDialogContext() {
     throw new Error('Dialog components must be wrapped in <Dialog>');
   }
   return context;
-}
-
-function mergeRefs<T>(
-  ...refs: Array<React.Ref<T> | undefined>
-): React.RefCallback<T> {
-  return (node) => {
-    refs.forEach((ref) => {
-      if (!ref) {
-        return;
-      }
-
-      if (typeof ref === 'function') {
-        ref(node);
-      } else {
-        (ref as { current: T | null }).current = node;
-      }
-    });
-  };
 }
 
 export type DialogProps = {
@@ -86,9 +70,9 @@ const DialogRoot: DialogRootComponent = function Dialog({
 DialogRoot.displayName = 'Dialog';
 
 export type DialogTriggerProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
   asChild?: boolean;
-};
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'>;
 
 type DialogTriggerComponent = React.ForwardRefExoticComponent<
   Readonly<DialogTriggerProps> & React.RefAttributes<HTMLElement>
@@ -97,26 +81,53 @@ type DialogTriggerComponent = React.ForwardRefExoticComponent<
 const DialogTrigger: DialogTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<DialogTriggerProps>
->(function DialogTrigger({ children }, ref) {
+>(function DialogTrigger(
+  { children, asChild = false, onClick, type, ...triggerProps },
+  ref
+) {
   const { open, onOpenChange, idPrefix } = useDialogContext();
 
-  const triggerProps = children.props as {
-    onClick?: React.MouseEventHandler;
-    ref?: React.Ref<HTMLElement>;
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
+    onClick?.(event as React.MouseEvent<HTMLButtonElement>);
+    if (!event.defaultPrevented) {
+      onOpenChange(!open);
+    }
   };
 
-  return React.cloneElement(children, {
-    ref: mergeRefs(triggerProps.ref, ref),
-    onClick: (event: React.MouseEvent<HTMLElement>) => {
-      triggerProps.onClick?.(event);
-      if (!event.defaultPrevented) {
-        onOpenChange(!open);
-      }
-    },
-    'aria-haspopup': 'dialog',
-    'aria-expanded': open,
-    'aria-controls': `${idPrefix}-dialog`
-  } as Record<string, unknown>);
+  if (asChild) {
+    if (!React.isValidElement(children)) {
+      throw new Error(
+        'Dialog.Trigger with asChild expects a single valid React element child.'
+      );
+    }
+
+    return (
+      <Slot
+        ref={ref}
+        {...triggerProps}
+        onClick={handleClick}
+        aria-haspopup='dialog'
+        aria-expanded={open}
+        aria-controls={`${idPrefix}-dialog`}
+      >
+        {children}
+      </Slot>
+    );
+  }
+
+  return (
+    <button
+      ref={ref as React.Ref<HTMLButtonElement>}
+      {...triggerProps}
+      type={type ?? 'button'}
+      onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
+      aria-haspopup='dialog'
+      aria-expanded={open}
+      aria-controls={`${idPrefix}-dialog`}
+    >
+      {children}
+    </button>
+  );
 });
 DialogTrigger.displayName = 'Dialog.Trigger';
 
@@ -249,14 +260,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
   return createPortal(
     <dialog
       id={dialogId}
-      ref={(node) => {
-        dialogRef.current = node;
-        if (typeof ref === 'function') {
-          ref(node);
-        } else if (ref) {
-          ref.current = node;
-        }
-      }}
+      ref={mergeRefs(dialogRef, ref)}
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
       className={clsx(styles.dialog_root, containerClassName)}

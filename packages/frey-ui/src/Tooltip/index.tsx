@@ -3,13 +3,14 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { useControllableState } from '../hooks/useControllableState';
 import { useFloatingPosition } from '../hooks/useFloatingPosition';
-import { mergeRefs } from '../utils/mergeRefs';
+import { Slot } from '../utils/slot';
 import styles from './tooltip.module.css';
 
 export type TooltipPlacement = 'top' | 'right' | 'bottom' | 'left';
 
 export type TooltipProps = {
-  children: React.ReactElement;
+  children: React.ReactNode;
+  asChild?: boolean;
   content: React.ReactNode;
   open?: boolean;
   defaultOpen?: boolean;
@@ -24,6 +25,7 @@ export type TooltipProps = {
 
 function Tooltip({
   children,
+  asChild = false,
   content,
   open,
   defaultOpen = false,
@@ -101,42 +103,67 @@ function Tooltip({
     };
   }, [hideImmediately, isOpen]);
 
-  const childProps = children.props as {
-    onMouseEnter?: React.MouseEventHandler;
-    onMouseLeave?: React.MouseEventHandler;
-    onFocus?: React.FocusEventHandler;
-    onBlur?: React.FocusEventHandler;
-    onKeyDown?: React.KeyboardEventHandler;
-    ref?: React.Ref<HTMLElement>;
-  };
-
-  const triggerElement = React.cloneElement(children, {
-    ref: mergeRefs<HTMLElement>(childProps.ref, triggerRef),
-    onMouseEnter: (event: React.MouseEvent<HTMLElement>) => {
-      childProps.onMouseEnter?.(event);
+  const triggerProps = {
+    onMouseEnter: () => {
       showWithDelay();
     },
-    onMouseLeave: (event: React.MouseEvent<HTMLElement>) => {
-      childProps.onMouseLeave?.(event);
+    onMouseLeave: () => {
       hideImmediately();
     },
-    onFocus: (event: React.FocusEvent<HTMLElement>) => {
-      childProps.onFocus?.(event);
+    onFocus: () => {
       showWithDelay();
     },
-    onBlur: (event: React.FocusEvent<HTMLElement>) => {
-      childProps.onBlur?.(event);
+    onBlur: () => {
       hideImmediately();
     },
     onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-      childProps.onKeyDown?.(event);
-
       if (!event.defaultPrevented && event.key === 'Escape') {
         hideImmediately();
       }
     },
     'aria-describedby': isOpen ? tooltipId : undefined
-  } as Record<string, unknown>);
+  } satisfies React.HTMLAttributes<HTMLElement>;
+
+  let triggerElement: React.ReactElement;
+
+  if (asChild) {
+    if (!React.isValidElement(children)) {
+      throw new Error(
+        'Tooltip with asChild expects a single valid React element child.'
+      );
+    }
+
+    triggerElement = (
+      <Slot ref={triggerRef} {...triggerProps}>
+        {children}
+      </Slot>
+    );
+  } else {
+    triggerElement = (
+      <button
+        ref={triggerRef as React.Ref<HTMLButtonElement>}
+        type='button'
+        onMouseEnter={
+          triggerProps.onMouseEnter as React.MouseEventHandler<HTMLButtonElement>
+        }
+        onMouseLeave={
+          triggerProps.onMouseLeave as React.MouseEventHandler<HTMLButtonElement>
+        }
+        onFocus={
+          triggerProps.onFocus as React.FocusEventHandler<HTMLButtonElement>
+        }
+        onBlur={
+          triggerProps.onBlur as React.FocusEventHandler<HTMLButtonElement>
+        }
+        onKeyDown={
+          triggerProps.onKeyDown as React.KeyboardEventHandler<HTMLButtonElement>
+        }
+        aria-describedby={triggerProps['aria-describedby']}
+      >
+        {children}
+      </button>
+    );
+  }
 
   if (typeof document === 'undefined') {
     return triggerElement;

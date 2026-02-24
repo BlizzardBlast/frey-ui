@@ -24,7 +24,7 @@ type Story = StoryObj<TooltipProps>;
 
 export const basic_tooltip: Story = {
   render: (args) => (
-    <Tooltip {...args} content='Copy to clipboard'>
+    <Tooltip {...args} asChild content='Copy to clipboard'>
       <Button variant='secondary'>Hover or focus me</Button>
     </Tooltip>
   ),
@@ -40,6 +40,7 @@ export const placement_variants: Story = {
       {(['top', 'right', 'bottom', 'left'] as const).map((placement) => (
         <Tooltip
           key={placement}
+          asChild
           placement={placement}
           delay={0}
           content={`Placement: ${placement}`}
@@ -59,6 +60,7 @@ export const controlled_tooltip: Story = {
       <div style={{ display: 'grid', gap: 10, justifyItems: 'center' }}>
         <Tooltip
           {...args}
+          asChild
           content='Controlled tooltip'
           open={open}
           onOpenChange={setOpen}

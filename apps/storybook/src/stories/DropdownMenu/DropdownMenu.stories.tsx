@@ -28,7 +28,7 @@ type Story = StoryObj<DropdownMenuProps>;
 export const basic_menu: Story = {
   render: (args) => (
     <DropdownMenu {...args}>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger asChild>
         <Button variant='secondary'>Actions</Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
@@ -57,7 +57,7 @@ export const basic_menu: Story = {
 export const with_disabled_item: Story = {
   render: () => (
     <DropdownMenu>
-      <DropdownMenu.Trigger>
+      <DropdownMenu.Trigger asChild>
         <Button variant='secondary'>File menu</Button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Content>
@@ -83,7 +83,7 @@ export const controlled_menu: Story = {
     return (
       <div style={{ display: 'grid', gap: 10, justifyItems: 'center' }}>
         <DropdownMenu {...args} open={open} onOpenChange={setOpen}>
-          <DropdownMenu.Trigger>
+          <DropdownMenu.Trigger asChild>
             <Button>Project options</Button>
           </DropdownMenu.Trigger>
           <DropdownMenu.Content>

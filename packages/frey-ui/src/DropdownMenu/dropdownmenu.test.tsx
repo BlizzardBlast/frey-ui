@@ -6,14 +6,12 @@ import Button from '../Button';
 import DropdownMenu from './index';
 
 describe('DropdownMenu', () => {
-  it('opens from trigger click', async () => {
+  it('opens from default native trigger button', async () => {
     const user = userEvent.setup();
 
     render(
       <DropdownMenu>
-        <DropdownMenu.Trigger>
-          <Button>Open menu</Button>
-        </DropdownMenu.Trigger>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Item>Rename</DropdownMenu.Item>
           <DropdownMenu.Item>Delete</DropdownMenu.Item>
@@ -31,6 +29,33 @@ describe('DropdownMenu', () => {
     ).toBeInTheDocument();
   });
 
+  it('does not open when asChild trigger click is defaultPrevented', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger asChild>
+          <Button
+            onClick={(event) => {
+              event.preventDefault();
+            }}
+          >
+            Prevent menu
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Prevent menu' }));
+
+    expect(
+      screen.queryByRole('menuitem', { name: 'Rename' })
+    ).not.toBeInTheDocument();
+  });
+
   it('calls onSelect and closes on item click', async () => {
     const user = userEvent.setup();
     const onSelectRename = vi.fn();
@@ -38,7 +63,7 @@ describe('DropdownMenu', () => {
 
     render(
       <DropdownMenu>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild>
           <Button>Actions</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -67,7 +92,7 @@ describe('DropdownMenu', () => {
 
     render(
       <DropdownMenu>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild>
           <Button>Actions</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -89,7 +114,7 @@ describe('DropdownMenu', () => {
 
     render(
       <DropdownMenu>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild>
           <Button>Open menu</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
@@ -113,7 +138,7 @@ describe('DropdownMenu', () => {
   it('has no accessibility violations', async () => {
     const { container } = render(
       <DropdownMenu defaultOpen>
-        <DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild>
           <Button>A11y menu</Button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>

@@ -28,7 +28,7 @@ type Story = StoryObj<PopoverProps>;
 export const basic_popover: Story = {
   render: (args) => (
     <Popover {...args}>
-      <Popover.Trigger>
+      <Popover.Trigger asChild>
         <Button variant='secondary'>Open popover</Button>
       </Popover.Trigger>
       <Popover.Content>
@@ -53,7 +53,7 @@ export const placement_variants: Story = {
     <div style={{ display: 'flex', gap: 10 }}>
       {(['top', 'right', 'bottom', 'left'] as const).map((placement) => (
         <Popover key={placement} placement={placement}>
-          <Popover.Trigger>
+          <Popover.Trigger asChild>
             <Button variant='ghost'>{placement}</Button>
           </Popover.Trigger>
           <Popover.Content>
@@ -72,7 +72,7 @@ export const controlled_popover: Story = {
     return (
       <div style={{ display: 'grid', gap: 10 }}>
         <Popover {...args} open={open} onOpenChange={setOpen}>
-          <Popover.Trigger>
+          <Popover.Trigger asChild>
             <Button>Toggle settings</Button>
           </Popover.Trigger>
           <Popover.Content>
