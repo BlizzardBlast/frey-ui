@@ -1,7 +1,7 @@
 {
   "name": "frey-ui-monorepo",
   "private": true,
-  "packageManager": "pnpm@10.30.1",
+  "packageManager": "pnpm@10.30.2",
   "engines": {
     "node": "22.15.1"
   },
