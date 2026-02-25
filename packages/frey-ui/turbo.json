@@ -9,7 +9,7 @@
       "outputs": ["dist/**"]
     },
     "typecheck": {
-      "outputs": ["*.tsbuildinfo"]
+      "outputs": ["node_modules/.tmp/*.tsbuildinfo"]
     },
     "lint": {
       "outputs": []
