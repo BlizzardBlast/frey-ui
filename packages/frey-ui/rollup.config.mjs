@@ -64,7 +64,7 @@ export default defineConfig([
           generateScopedName: (name, filename, _css) => {
             if (filename.endsWith('theme.css')) return name;
             const hash = crypto
-              .createHash('md5')
+              .createHash('sha256')
               .update(filename + name)
               .digest('hex')
               .substring(0, 8);
