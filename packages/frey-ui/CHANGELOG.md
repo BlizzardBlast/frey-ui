@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.11
+
+### Patch Changes
+
+- 51bdcc5: Normalize package module outputs to explicit `.mjs`/`.cjs`, replace wildcard subpath exports with explicit component-only exports, and remove the unused root Turborepo `tsconfig.json` global dependency.
+
 ## 1.0.10
 
 ### Patch Changes
