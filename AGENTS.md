@@ -59,4 +59,3 @@ pnpm build
 
 - pre-commit runs `pnpm check:staged`
 - commit-msg runs `pnpm exec commitlint --edit $1`
-

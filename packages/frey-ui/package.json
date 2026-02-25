@@ -1,8 +1,8 @@
 {
   "name": "frey-ui",
   "version": "1.0.10",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
   "types": "dist/index.d.ts",
   "style": "dist/styles.css",
   "license": "MIT",
@@ -13,15 +13,130 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./Accordion": {
+      "types": "./dist/types/src/Accordion/index.d.ts",
+      "import": "./dist/esm/Accordion/index.mjs",
+      "require": "./dist/cjs/Accordion/index.cjs"
+    },
+    "./Alert": {
+      "types": "./dist/types/src/Alert/index.d.ts",
+      "import": "./dist/esm/Alert/index.mjs",
+      "require": "./dist/cjs/Alert/index.cjs"
+    },
+    "./Avatar": {
+      "types": "./dist/types/src/Avatar/index.d.ts",
+      "import": "./dist/esm/Avatar/index.mjs",
+      "require": "./dist/cjs/Avatar/index.cjs"
+    },
+    "./Button": {
+      "types": "./dist/types/src/Button/index.d.ts",
+      "import": "./dist/esm/Button/index.mjs",
+      "require": "./dist/cjs/Button/index.cjs"
+    },
+    "./Card": {
+      "types": "./dist/types/src/Card/index.d.ts",
+      "import": "./dist/esm/Card/index.mjs",
+      "require": "./dist/cjs/Card/index.cjs"
+    },
+    "./Checkbox": {
+      "types": "./dist/types/src/Checkbox/index.d.ts",
+      "import": "./dist/esm/Checkbox/index.mjs",
+      "require": "./dist/cjs/Checkbox/index.cjs"
+    },
+    "./Chip": {
+      "types": "./dist/types/src/Chip/index.d.ts",
+      "import": "./dist/esm/Chip/index.mjs",
+      "require": "./dist/cjs/Chip/index.cjs"
+    },
+    "./Dialog": {
+      "types": "./dist/types/src/Dialog/index.d.ts",
+      "import": "./dist/esm/Dialog/index.mjs",
+      "require": "./dist/cjs/Dialog/index.cjs"
+    },
+    "./DropdownMenu": {
+      "types": "./dist/types/src/DropdownMenu/index.d.ts",
+      "import": "./dist/esm/DropdownMenu/index.mjs",
+      "require": "./dist/cjs/DropdownMenu/index.cjs"
+    },
+    "./Field": {
+      "types": "./dist/types/src/Field/index.d.ts",
+      "import": "./dist/esm/Field/index.mjs",
+      "require": "./dist/cjs/Field/index.cjs"
+    },
+    "./Icons": {
+      "types": "./dist/types/src/Icons/index.d.ts",
+      "import": "./dist/esm/Icons/index.mjs",
+      "require": "./dist/cjs/Icons/index.cjs"
+    },
+    "./Popover": {
+      "types": "./dist/types/src/Popover/index.d.ts",
+      "import": "./dist/esm/Popover/index.mjs",
+      "require": "./dist/cjs/Popover/index.cjs"
+    },
+    "./Progress": {
+      "types": "./dist/types/src/Progress/index.d.ts",
+      "import": "./dist/esm/Progress/index.mjs",
+      "require": "./dist/cjs/Progress/index.cjs"
+    },
+    "./RadioGroup": {
+      "types": "./dist/types/src/RadioGroup/index.d.ts",
+      "import": "./dist/esm/RadioGroup/index.mjs",
+      "require": "./dist/cjs/RadioGroup/index.cjs"
+    },
+    "./Select": {
+      "types": "./dist/types/src/Select/index.d.ts",
+      "import": "./dist/esm/Select/index.mjs",
+      "require": "./dist/cjs/Select/index.cjs"
+    },
+    "./Skeleton": {
+      "types": "./dist/types/src/Skeleton/index.d.ts",
+      "import": "./dist/esm/Skeleton/index.mjs",
+      "require": "./dist/cjs/Skeleton/index.cjs"
+    },
+    "./Spinner": {
+      "types": "./dist/types/src/Spinner/index.d.ts",
+      "import": "./dist/esm/Spinner/index.mjs",
+      "require": "./dist/cjs/Spinner/index.cjs"
+    },
+    "./Switch": {
+      "types": "./dist/types/src/Switch/index.d.ts",
+      "import": "./dist/esm/Switch/index.mjs",
+      "require": "./dist/cjs/Switch/index.cjs"
+    },
+    "./Tabs": {
+      "types": "./dist/types/src/Tabs/index.d.ts",
+      "import": "./dist/esm/Tabs/index.mjs",
+      "require": "./dist/cjs/Tabs/index.cjs"
+    },
+    "./TextInput": {
+      "types": "./dist/types/src/TextInput/index.d.ts",
+      "import": "./dist/esm/TextInput/index.mjs",
+      "require": "./dist/cjs/TextInput/index.cjs"
+    },
+    "./Textarea": {
+      "types": "./dist/types/src/Textarea/index.d.ts",
+      "import": "./dist/esm/Textarea/index.mjs",
+      "require": "./dist/cjs/Textarea/index.cjs"
+    },
+    "./ThemeProvider": {
+      "types": "./dist/types/src/ThemeProvider/index.d.ts",
+      "import": "./dist/esm/ThemeProvider/index.mjs",
+      "require": "./dist/cjs/ThemeProvider/index.cjs"
+    },
+    "./Toast": {
+      "types": "./dist/types/src/Toast/index.d.ts",
+      "import": "./dist/esm/Toast/index.mjs",
+      "require": "./dist/cjs/Toast/index.cjs"
+    },
+    "./Tooltip": {
+      "types": "./dist/types/src/Tooltip/index.d.ts",
+      "import": "./dist/esm/Tooltip/index.mjs",
+      "require": "./dist/cjs/Tooltip/index.cjs"
     },
     "./package.json": "./package.json",
-    "./*": {
-      "types": "./dist/types/src/*/index.d.ts",
-      "import": "./dist/esm/*/index.js",
-      "require": "./dist/cjs/*/index.js"
-    },
     "./style.css": "./dist/styles.css"
   },
   "files": [

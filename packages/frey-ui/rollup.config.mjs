@@ -32,7 +32,8 @@ export default defineConfig([
         exports: 'named',
         preserveModules: true,
         preserveModulesRoot: 'src',
-        entryFileNames: 'cjs/[name].js',
+        entryFileNames: 'cjs/[name].cjs',
+        chunkFileNames: 'cjs/[name]-[hash].cjs',
         name: packageJson.name,
         banner: "'use client';"
       },
@@ -49,7 +50,8 @@ export default defineConfig([
         },
         preserveModules: true,
         preserveModulesRoot: 'src',
-        entryFileNames: 'esm/[name].js',
+        entryFileNames: 'esm/[name].mjs',
+        chunkFileNames: 'esm/[name]-[hash].mjs',
         banner: "'use client';"
       }
     ],

@@ -37,6 +37,17 @@ Import the stylesheet once in your app root (for example `App.tsx` or `layout.ts
 import 'frey-ui/style.css';
 ```
 
+## Public Subpath Imports
+
+Frey UI supports component-level JavaScript subpath imports only.
+
+```tsx
+import Button from 'frey-ui/Button';
+import Tooltip from 'frey-ui/Tooltip';
+```
+
+Non-component subpaths such as `frey-ui/hooks/*` and `frey-ui/utils/*` are internal and not part of the public API contract.
+
 ## Basic Usage
 
 ```tsx
