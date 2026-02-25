@@ -60,7 +60,6 @@ export {
   CircleInfoIcon,
   CircleXIcon,
   CloseIcon,
-  default as Icons,
   MinusIcon,
   TriangleAlertIcon
 } from './Icons';

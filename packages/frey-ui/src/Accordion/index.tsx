@@ -69,7 +69,7 @@ const AccordionRoot: AccordionRootComponent = React.forwardRef<
 
   const handleValueChange = React.useCallback(
     (nextValue: string) => {
-      let resolvedValue: string | string[] = nextValue;
+      let resolvedValue: string | string[];
 
       if (type === 'single') {
         const valueAsStr = typeof currentValue === 'string' ? currentValue : '';

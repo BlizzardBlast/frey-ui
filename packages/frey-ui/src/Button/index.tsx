@@ -51,6 +51,7 @@ const Button = React.forwardRef(function Button<
     className,
     style,
     children,
+    onClick,
     ...restProps
   }: Readonly<ButtonProps<E>>,
   ref: PolymorphicRef<E>
@@ -73,6 +74,13 @@ const Button = React.forwardRef(function Button<
       aria-disabled={!isButton && (disabled || loading) ? true : undefined}
       type={isButton ? 'button' : undefined}
       aria-busy={loading || undefined}
+      onClick={(e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
+        if (!isButton && (disabled || loading)) {
+          e.preventDefault();
+          return;
+        }
+        (onClick as React.MouseEventHandler<HTMLElement>)?.(e);
+      }}
       {...restProps}
     >
       {loading && <span className={styles.spinner} aria-hidden='true' />}

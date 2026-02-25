@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
@@ -59,7 +60,17 @@ export default defineConfig([
     plugins: [
       postcss({
         plugins: [],
-        modules: true,
+        modules: {
+          generateScopedName: (name, filename, _css) => {
+            if (filename.endsWith('theme.css')) return name;
+            const hash = crypto
+              .createHash('md5')
+              .update(filename + name)
+              .digest('hex')
+              .substring(0, 8);
+            return `${name}_${hash}`;
+          }
+        },
         minimize: true,
         extract: 'styles.css',
         sourceMap: true

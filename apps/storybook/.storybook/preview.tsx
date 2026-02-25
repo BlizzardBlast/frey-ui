@@ -1,7 +1,6 @@
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import 'frey-ui/style.css';
 import '../tailwind.css';
-
 import type { Preview } from '@storybook/react-vite';
 
 const preview: Preview = {
@@ -33,7 +32,12 @@ const preview: Preview = {
       },
       defaultTheme: 'light',
       attributeName: 'data-theme'
-    })
+    }),
+    (Story) => (
+      <div className='frey-theme-provider'>
+        <Story />
+      </div>
+    )
   ],
   tags: ['autodocs']
 };

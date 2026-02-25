@@ -112,9 +112,9 @@ const TabsTrigger: TabsTriggerComponent = React.forwardRef<
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     // Basic Arrow Right / Arrow Left navigation handling
     if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-      const triggerElements = Array.from(
+      const triggerElements: HTMLButtonElement[] = Array.from(
         e.currentTarget.parentElement?.querySelectorAll('[role="tab"]') ?? []
-      ) as HTMLButtonElement[];
+      );
 
       const currentIndex = triggerElements.indexOf(e.currentTarget);
       if (currentIndex === -1) return;

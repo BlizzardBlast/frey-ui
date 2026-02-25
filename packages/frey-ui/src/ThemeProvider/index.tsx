@@ -43,7 +43,11 @@ function ThemeProvider({
   return (
     <div
       id={id}
-      className={clsx(styles['frey-theme-provider'], className)}
+      className={clsx(
+        'frey-theme-provider',
+        styles['frey-theme-provider'],
+        className
+      )}
       style={style}
       data-frey-theme={resolvedTheme}
       data-frey-high-contrast={highContrast}
