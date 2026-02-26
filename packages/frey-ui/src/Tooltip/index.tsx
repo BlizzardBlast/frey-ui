@@ -1,8 +1,19 @@
+import {
+  autoUpdate,
+  useDismiss,
+  useFloating,
+  useFocus,
+  useHover,
+  useInteractions
+} from '@floating-ui/react';
 import clsx from 'clsx';
 import React from 'react';
 import { createPortal } from 'react-dom';
+import {
+  createFloatingMiddleware,
+  toFloatingPlacement
+} from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
-import { useFloatingPosition } from '../hooks/useFloatingPosition';
 import { Slot } from '../utils/slot';
 import styles from './tooltip.module.css';
 
@@ -39,90 +50,40 @@ function Tooltip({
 }: Readonly<TooltipProps>): React.JSX.Element {
   const generatedId = React.useId();
   const tooltipId = id ?? `${generatedId}-tooltip`;
-  const triggerRef = React.useRef<HTMLElement | null>(null);
-  const tooltipRef = React.useRef<HTMLDivElement | null>(null);
-  const delayTimerRef = React.useRef<ReturnType<typeof setTimeout> | null>(
-    null
-  );
-
   const [isOpen, setOpen] = useControllableState(
     open,
     defaultOpen,
     onOpenChange
   );
-
-  const position = useFloatingPosition(triggerRef, tooltipRef, {
+  const { refs, floatingStyles, context } = useFloating({
     open: isOpen,
-    placement,
-    offset,
-    align: 'center'
+    onOpenChange: setOpen,
+    placement: toFloatingPlacement(placement, 'center'),
+    middleware: createFloatingMiddleware(offset),
+    strategy: 'fixed',
+    transform: false,
+    whileElementsMounted: autoUpdate
   });
-
-  const hideImmediately = React.useCallback(() => {
-    if (delayTimerRef.current) {
-      clearTimeout(delayTimerRef.current);
-    }
-
-    setOpen(false);
-  }, [setOpen]);
-
-  const showWithDelay = React.useCallback(() => {
-    if (delayTimerRef.current) {
-      clearTimeout(delayTimerRef.current);
-    }
-
-    delayTimerRef.current = setTimeout(() => {
-      setOpen(true);
-    }, delay);
-  }, [delay, setOpen]);
-
-  React.useEffect(() => {
-    return () => {
-      if (delayTimerRef.current) {
-        clearTimeout(delayTimerRef.current);
-      }
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        hideImmediately();
-      }
-    };
-
-    document.addEventListener('keydown', handleEscape);
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape);
-    };
-  }, [hideImmediately, isOpen]);
-
-  const triggerProps = {
-    onMouseEnter: () => {
-      showWithDelay();
+  const hover = useHover(context, {
+    delay: {
+      open: delay,
+      close: 0
     },
-    onMouseLeave: () => {
-      hideImmediately();
-    },
-    onFocus: () => {
-      showWithDelay();
-    },
-    onBlur: () => {
-      hideImmediately();
-    },
-    onKeyDown: (event: React.KeyboardEvent<HTMLElement>) => {
-      if (!event.defaultPrevented && event.key === 'Escape') {
-        hideImmediately();
-      }
-    },
+    move: false
+  });
+  const focus = useFocus(context);
+  const dismiss = useDismiss(context, {
+    escapeKey: true,
+    outsidePress: false
+  });
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    focus,
+    dismiss
+  ]);
+  const referenceProps = getReferenceProps({
     'aria-describedby': isOpen ? tooltipId : undefined
-  } satisfies React.HTMLAttributes<HTMLElement>;
+  }) as React.HTMLAttributes<HTMLElement>;
 
   let triggerElement: React.ReactElement;
 
@@ -134,31 +95,19 @@ function Tooltip({
     }
 
     triggerElement = (
-      <Slot ref={triggerRef} {...triggerProps}>
+      <Slot
+        ref={refs.setReference as React.RefCallback<HTMLElement>}
+        {...referenceProps}
+      >
         {children}
       </Slot>
     );
   } else {
     triggerElement = (
       <button
-        ref={triggerRef as React.Ref<HTMLButtonElement>}
+        ref={refs.setReference as React.Ref<HTMLButtonElement>}
         type='button'
-        onMouseEnter={
-          triggerProps.onMouseEnter as React.MouseEventHandler<HTMLButtonElement>
-        }
-        onMouseLeave={
-          triggerProps.onMouseLeave as React.MouseEventHandler<HTMLButtonElement>
-        }
-        onFocus={
-          triggerProps.onFocus as React.FocusEventHandler<HTMLButtonElement>
-        }
-        onBlur={
-          triggerProps.onBlur as React.FocusEventHandler<HTMLButtonElement>
-        }
-        onKeyDown={
-          triggerProps.onKeyDown as React.KeyboardEventHandler<HTMLButtonElement>
-        }
-        aria-describedby={triggerProps['aria-describedby']}
+        {...(referenceProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
         {children}
       </button>
@@ -169,6 +118,11 @@ function Tooltip({
     return triggerElement;
   }
 
+  const floatingProps = getFloatingProps({
+    id: tooltipId,
+    role: 'tooltip'
+  }) as React.HTMLAttributes<HTMLDivElement>;
+
   return (
     <>
       {triggerElement}
@@ -176,11 +130,13 @@ function Tooltip({
       {isOpen &&
         createPortal(
           <div
-            id={tooltipId}
-            ref={tooltipRef}
-            role='tooltip'
+            ref={refs.setFloating as React.Ref<HTMLDivElement>}
             className={clsx(styles.tooltip, className)}
-            style={{ top: position.top, left: position.left, ...style }}
+            style={{
+              ...floatingStyles,
+              ...style
+            }}
+            {...floatingProps}
           >
             {content}
           </div>,

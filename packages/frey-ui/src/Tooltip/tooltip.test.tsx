@@ -1,9 +1,33 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import Tooltip from './index';
+
+function createMockRect({
+  x = 0,
+  y = 0,
+  width = 0,
+  height = 0
+}: Readonly<{
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}>): DOMRect {
+  return {
+    x,
+    y,
+    width,
+    height,
+    top: y,
+    left: x,
+    right: x + width,
+    bottom: y + height,
+    toJSON: () => ({})
+  } as DOMRect;
+}
 
 describe('Tooltip', () => {
   it('shows tooltip on hover with default native trigger button', async () => {
@@ -55,6 +79,94 @@ describe('Tooltip', () => {
 
     await user.keyboard('{Escape}');
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it('repositions when a scroll container scrolls', async () => {
+    const user = userEvent.setup();
+    let triggerRect = createMockRect({
+      x: 120,
+      y: 160,
+      width: 80,
+      height: 24
+    });
+    const tooltipRect = createMockRect({
+      width: 100,
+      height: 40
+    });
+    const rectSpy = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function getBoundingClientRectMock(
+        this: HTMLElement
+      ) {
+        if (
+          this.tagName === 'BUTTON' &&
+          this.textContent?.includes('Scroll target')
+        ) {
+          return triggerRect;
+        }
+
+        if (this.getAttribute('role') === 'tooltip') {
+          return tooltipRect;
+        }
+
+        return createMockRect({});
+      });
+    const originalInnerHeight = window.innerHeight;
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 400
+    });
+
+    try {
+      render(
+        <div
+          data-testid='scroll-host'
+          style={{ height: 120, overflow: 'auto', width: 300 }}
+        >
+          <div style={{ height: 600 }}>
+            <Tooltip
+              asChild
+              content='Scrollable tooltip'
+              delay={0}
+              placement='top'
+            >
+              <Button>Scroll target</Button>
+            </Tooltip>
+          </div>
+        </div>
+      );
+
+      await user.hover(screen.getByRole('button', { name: 'Scroll target' }));
+
+      const tooltip = screen.getByRole('tooltip');
+
+      await waitFor(() => {
+        const top = Number.parseFloat(tooltip.style.top);
+        expect(top).toBeCloseTo(152, 0);
+      });
+
+      triggerRect = createMockRect({
+        x: 120,
+        y: 120,
+        width: 80,
+        height: 24
+      });
+
+      screen
+        .getByTestId('scroll-host')
+        .dispatchEvent(new Event('scroll', { bubbles: false }));
+
+      await waitFor(() => {
+        const top = Number.parseFloat(tooltip.style.top);
+        expect(top).toBeCloseTo(112, 0);
+      });
+    } finally {
+      rectSpy.mockRestore();
+      Object.defineProperty(window, 'innerHeight', {
+        configurable: true,
+        value: originalInnerHeight
+      });
+    }
   });
 
   it('has no accessibility violations', async () => {

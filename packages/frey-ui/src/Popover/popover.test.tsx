@@ -1,9 +1,33 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import Popover from './index';
+
+function createMockRect({
+  x = 0,
+  y = 0,
+  width = 0,
+  height = 0
+}: Readonly<{
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}>): DOMRect {
+  return {
+    x,
+    y,
+    width,
+    height,
+    top: y,
+    left: x,
+    right: x + width,
+    bottom: y + height,
+    toJSON: () => ({})
+  } as DOMRect;
+}
 
 describe('Popover', () => {
   it('toggles content from default native trigger button', async () => {
@@ -68,6 +92,24 @@ describe('Popover', () => {
     expect(screen.queryByText('Content')).not.toBeInTheDocument();
   });
 
+  it('does not close when clicking on content', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button>Open popover</Button>
+        </Popover.Trigger>
+        <Popover.Content>Content</Popover.Content>
+      </Popover>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open popover' }));
+    await user.click(screen.getByText('Content'));
+
+    expect(screen.getByText('Content')).toBeInTheDocument();
+  });
+
   it('does not close on outside click when disabled', async () => {
     const user = userEvent.setup();
 
@@ -107,6 +149,65 @@ describe('Popover', () => {
     await user.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('flips from bottom to top when there is not enough viewport space', async () => {
+    const user = userEvent.setup();
+    const triggerRect = createMockRect({
+      x: 120,
+      y: 190,
+      width: 80,
+      height: 24
+    });
+    const contentRect = createMockRect({
+      width: 180,
+      height: 100
+    });
+    const rectSpy = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockImplementation(function getBoundingClientRectMock(
+        this: HTMLElement
+      ) {
+        if (this.tagName === 'BUTTON' && this.textContent?.includes('Flip')) {
+          return triggerRect;
+        }
+
+        const id = this.getAttribute('id');
+        if (id?.endsWith('-content')) {
+          return contentRect;
+        }
+
+        return createMockRect({});
+      });
+    const originalInnerHeight = window.innerHeight;
+    Object.defineProperty(window, 'innerHeight', {
+      configurable: true,
+      value: 240
+    });
+
+    try {
+      render(
+        <Popover placement='bottom' offset={8}>
+          <Popover.Trigger>Flip</Popover.Trigger>
+          <Popover.Content>Flipped content</Popover.Content>
+        </Popover>
+      );
+
+      await user.click(screen.getByRole('button', { name: 'Flip' }));
+
+      const content = screen.getByText('Flipped content');
+
+      await waitFor(() => {
+        const top = Number.parseFloat(content.style.top);
+        expect(top).toBeCloseTo(182, 0);
+      });
+    } finally {
+      rectSpy.mockRestore();
+      Object.defineProperty(window, 'innerHeight', {
+        configurable: true,
+        value: originalInnerHeight
+      });
+    }
   });
 
   it('has no accessibility violations', async () => {

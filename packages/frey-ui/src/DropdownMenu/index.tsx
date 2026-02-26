@@ -1,9 +1,20 @@
+import {
+  autoUpdate,
+  type OpenChangeReason,
+  type UseInteractionsReturn,
+  useDismiss,
+  useFloating,
+  useFloatingRootContext,
+  useInteractions
+} from '@floating-ui/react';
 import clsx from 'clsx';
-import React, { useEffect, useId, useRef } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import {
+  createFloatingMiddleware,
+  toFloatingPlacement
+} from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
-import { useDismiss } from '../hooks/useDismiss';
-import { useFloatingPosition } from '../hooks/useFloatingPosition';
 import { mergeRefs } from '../utils/mergeRefs';
 import { Slot } from '../utils/slot';
 import styles from './dropdownmenu.module.css';
@@ -13,12 +24,13 @@ export type DropdownMenuPlacement = 'top' | 'right' | 'bottom' | 'left';
 type DropdownMenuContextValue = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  placement: DropdownMenuPlacement;
-  offset: number;
   idPrefix: string;
   triggerRef: React.RefObject<HTMLElement | null>;
-  closeOnEscape: boolean;
-  closeOnOutsideClick: boolean;
+  setReference: (node: HTMLElement | null) => void;
+  setFloating: (node: HTMLElement | null) => void;
+  floatingStyles: React.CSSProperties;
+  getReferenceProps: UseInteractionsReturn['getReferenceProps'];
+  getFloatingProps: UseInteractionsReturn['getFloatingProps'];
 };
 
 const DropdownMenuContext =
@@ -62,31 +74,88 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
 }: Readonly<DropdownMenuProps>): React.JSX.Element {
   const idPrefix = useId();
   const triggerRef = useRef<HTMLElement | null>(null);
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
+    null
+  );
+  const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(
+    null
+  );
   const [currentOpen, handleOpenChange] = useControllableState(
     open,
     defaultOpen,
     onOpenChange
   );
+  const handleFloatingOpenChange = React.useCallback(
+    (nextOpen: boolean, _event?: Event, reason?: OpenChangeReason) => {
+      handleOpenChange(nextOpen);
 
+      if (!nextOpen && reason === 'escape-key') {
+        triggerRef.current?.focus();
+      }
+    },
+    [handleOpenChange]
+  );
+  const floatingRootContext = useFloatingRootContext({
+    open: currentOpen,
+    onOpenChange: handleFloatingOpenChange,
+    elements: {
+      reference: referenceElement,
+      floating: floatingElement
+    }
+  });
+  const {
+    refs,
+    floatingStyles,
+    context: floatingContext
+  } = useFloating({
+    rootContext: floatingRootContext,
+    placement: toFloatingPlacement(placement, 'start'),
+    middleware: createFloatingMiddleware(offset),
+    strategy: 'fixed',
+    transform: false,
+    whileElementsMounted: autoUpdate
+  });
+  const dismiss = useDismiss(floatingContext, {
+    enabled: currentOpen,
+    escapeKey: closeOnEscape,
+    outsidePress: closeOnOutsideClick
+  });
+  const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
+  const setReference = React.useCallback(
+    (node: HTMLElement | null) => {
+      refs.setReference(node);
+      setReferenceElement(node);
+    },
+    [refs]
+  );
+  const setFloating = React.useCallback(
+    (node: HTMLElement | null) => {
+      refs.setFloating(node);
+      setFloatingElement(node);
+    },
+    [refs]
+  );
   const contextValue = React.useMemo(
     () => ({
       open: currentOpen,
       onOpenChange: handleOpenChange,
-      placement,
-      offset,
       idPrefix,
       triggerRef,
-      closeOnEscape,
-      closeOnOutsideClick
+      setReference,
+      setFloating,
+      floatingStyles,
+      getReferenceProps,
+      getFloatingProps
     }),
     [
       currentOpen,
       handleOpenChange,
-      placement,
-      offset,
       idPrefix,
-      closeOnEscape,
-      closeOnOutsideClick
+      setReference,
+      setFloating,
+      floatingStyles,
+      getReferenceProps,
+      getFloatingProps
     ]
   );
 
@@ -114,14 +183,32 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
   { children, asChild = false, onClick, type, ...triggerProps },
   ref
 ) {
-  const { open, onOpenChange, idPrefix, triggerRef } = useDropdownMenuContext();
-  const mergedRef = mergeRefs(ref, triggerRef);
+  const {
+    open,
+    onOpenChange,
+    idPrefix,
+    triggerRef,
+    setReference,
+    getReferenceProps
+  } = useDropdownMenuContext();
+  const mergedRef = mergeRefs(
+    ref,
+    triggerRef,
+    setReference as React.RefCallback<HTMLElement>
+  );
   const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     onClick?.(event as React.MouseEvent<HTMLButtonElement>);
     if (!event.defaultPrevented) {
       onOpenChange(!open);
     }
   };
+  const referenceProps = getReferenceProps({
+    ...triggerProps,
+    onClick: handleClick,
+    'aria-haspopup': 'menu',
+    'aria-expanded': open,
+    'aria-controls': `${idPrefix}-menu`
+  }) as React.HTMLAttributes<HTMLElement>;
 
   if (asChild) {
     if (!React.isValidElement(children)) {
@@ -131,14 +218,7 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
     }
 
     return (
-      <Slot
-        ref={mergedRef}
-        {...triggerProps}
-        onClick={handleClick}
-        aria-haspopup='menu'
-        aria-expanded={open}
-        aria-controls={`${idPrefix}-menu`}
-      >
+      <Slot ref={mergedRef} {...referenceProps}>
         {children}
       </Slot>
     );
@@ -147,12 +227,8 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
   return (
     <button
       ref={mergedRef as React.Ref<HTMLButtonElement>}
-      {...triggerProps}
       type={type ?? 'button'}
-      onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
-      aria-haspopup='menu'
-      aria-expanded={open}
-      aria-controls={`${idPrefix}-menu`}
+      {...(referenceProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
     >
       {children}
     </button>
@@ -170,36 +246,9 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
   HTMLMenuElement,
   Readonly<DropdownMenuContentProps>
 >(function DropdownMenuContent({ className, style, children, ...props }, ref) {
-  const {
-    open,
-    onOpenChange,
-    placement,
-    offset,
-    idPrefix,
-    triggerRef,
-    closeOnEscape,
-    closeOnOutsideClick
-  } = useDropdownMenuContext();
-
+  const { open, idPrefix, setFloating, floatingStyles, getFloatingProps } =
+    useDropdownMenuContext();
   const menuRef = useRef<HTMLMenuElement | null>(null);
-
-  const position = useFloatingPosition(triggerRef, menuRef, {
-    open,
-    placement,
-    offset,
-    align: 'start'
-  });
-
-  useDismiss({
-    open,
-    onClose: () => onOpenChange(false),
-    triggerRef,
-    contentRef: menuRef,
-    closeOnEscape,
-    closeOnOutsideClick,
-    returnFocusOnClose: true
-  });
-
   useEffect(() => {
     if (!open || !menuRef.current) return;
 
@@ -246,21 +295,27 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
       items.at(-1)?.focus();
     }
   };
+  const floatingProps = getFloatingProps({
+    ...props,
+    onKeyDown: handleKeyDown
+  }) as React.HTMLAttributes<HTMLMenuElement>;
 
   if (!open || typeof document === 'undefined') return null;
 
   return createPortal(
     <menu
       id={`${idPrefix}-menu`}
-      ref={mergeRefs(menuRef, ref)}
+      ref={mergeRefs(
+        menuRef,
+        ref,
+        setFloating as React.RefCallback<HTMLMenuElement>
+      )}
       className={clsx(styles.dropdown_menu, className)}
-      onKeyDown={handleKeyDown}
       style={{
-        top: position.top,
-        left: position.left,
+        ...floatingStyles,
         ...style
       }}
-      {...props}
+      {...floatingProps}
     >
       {children}
     </menu>,
@@ -289,10 +344,10 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
 ) {
   const { onOpenChange, triggerRef } = useDropdownMenuContext();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
     onSelect?.();
-    props.onClick?.(e);
+    props.onClick?.(event);
     onOpenChange(false);
     triggerRef.current?.focus();
   };
