@@ -1,0 +1,57 @@
+.link {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 500;
+  text-underline-offset: 0.2em;
+  transition: color 0.2s ease-in-out;
+}
+
+.link:focus-visible {
+  outline: 2px solid var(--frey-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--frey-radius-sm);
+}
+
+.link-primary {
+  color: var(--frey-color-primary);
+}
+
+.link-text {
+  color: var(--frey-color-text);
+}
+
+.link-muted {
+  color: var(--frey-color-text-muted);
+}
+
+.link-info {
+  color: var(--frey-color-info);
+}
+
+.link-success {
+  color: var(--frey-color-success);
+}
+
+.link-warning {
+  color: var(--frey-color-warning);
+}
+
+.link-error {
+  color: var(--frey-color-error);
+}
+
+.underline-always {
+  text-decoration-line: underline;
+}
+
+.underline-hover {
+  text-decoration-line: none;
+}
+
+.underline-hover:hover {
+  text-decoration-line: underline;
+}
+
+.underline-none {
+  text-decoration-line: none;
+}

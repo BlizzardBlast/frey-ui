@@ -4,7 +4,7 @@ import { Button, Card, ThemeProvider, type ThemeProviderProps } from 'frey-ui';
 function ThemePreview() {
   return (
     <div style={{ display: 'grid', gap: 16 }}>
-      <Card>
+      <Card style={{ padding: '1rem' }}>
         <h3 style={{ marginTop: 0, marginBottom: 8 }}>Workspace Settings</h3>
         <p style={{ marginTop: 0, marginBottom: 12 }}>
           Preview how semantic tokens adapt to different theme modes.

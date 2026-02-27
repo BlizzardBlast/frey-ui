@@ -33,6 +33,8 @@ node -v
 pnpm -v
 ```
 
+Make sure internet is available because turbo needs to upload cache through the internet.
+
 ## Required Validation Before Merge
 
 Run in this exact order. All four commands must pass:

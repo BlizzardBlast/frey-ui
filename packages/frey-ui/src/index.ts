@@ -12,6 +12,23 @@ export type { AlertProps, AlertVariant } from './Alert';
 export { default as Alert } from './Alert';
 export type { AvatarProps, AvatarSize, AvatarStatus } from './Avatar';
 export { default as Avatar } from './Avatar';
+export type { BadgeProps, BadgeSize, BadgeTone, BadgeVariant } from './Badge';
+export { default as Badge } from './Badge';
+export type {
+  BoxProps,
+  ColorToken,
+  RadiusToken,
+  SpaceToken
+} from './Box';
+export { default as Box } from './Box';
+export type {
+  BreadcrumbsCurrentProps,
+  BreadcrumbsItemProps,
+  BreadcrumbsLinkProps,
+  BreadcrumbsListProps,
+  BreadcrumbsProps
+} from './Breadcrumbs';
+export { default as Breadcrumbs } from './Breadcrumbs';
 export type {
   ButtonElement,
   ButtonProps,
@@ -52,6 +69,10 @@ export type {
 export { default as DropdownMenu } from './DropdownMenu';
 export type { FieldProps, FieldRenderProps } from './Field';
 export { default as Field } from './Field';
+export type { FlexProps } from './Flex';
+export { default as Flex } from './Flex';
+export type { GridProps } from './Grid';
+export { default as Grid } from './Grid';
 export type { IconProps, IconSizeToken, IconStrokeToken } from './Icons';
 export {
   CheckIcon,
@@ -63,6 +84,8 @@ export {
   MinusIcon,
   TriangleAlertIcon
 } from './Icons';
+export type { LinkColor, LinkProps, LinkUnderline } from './Link';
+export { default as Link } from './Link';
 export type {
   PopoverContentProps,
   PopoverPlacement,
@@ -84,8 +107,21 @@ export type { SkeletonProps, SkeletonShape } from './Skeleton';
 export { default as Skeleton } from './Skeleton';
 export type { SpinnerProps, SpinnerSize } from './Spinner';
 export { default as Spinner } from './Spinner';
+export type { StackProps } from './Stack';
+export { default as Stack } from './Stack';
 export type { SwitchProps, SwitchSize } from './Switch';
 export { default as Switch } from './Switch';
+export type {
+  TableBodyProps,
+  TableCaptionProps,
+  TableCellProps,
+  TableFooterProps,
+  TableHeaderProps,
+  TableHeadProps,
+  TableProps,
+  TableRowProps
+} from './Table';
+export { default as Table } from './Table';
 export type {
   TabsContentProps,
   TabsListProps,

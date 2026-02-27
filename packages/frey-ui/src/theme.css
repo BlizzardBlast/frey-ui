@@ -50,9 +50,22 @@
   --frey-palette-blue-600: #2563eb;
 
   /* Global Layout Tokens */
+  --frey-space-0: 0;
+  --frey-space-1: 0.25rem;
+  --frey-space-2: 0.5rem;
+  --frey-space-3: 0.75rem;
+  --frey-space-4: 1rem;
+  --frey-space-5: 1.25rem;
+  --frey-space-6: 1.5rem;
+  --frey-space-8: 2rem;
+  --frey-space-10: 2.5rem;
+  --frey-space-12: 3rem;
+  --frey-space-16: 4rem;
+  --frey-radius-none: 0;
   --frey-radius-sm: 0.25rem;
   --frey-radius-md: 0.375rem;
   --frey-radius-lg: 0.5rem;
+  --frey-radius-full: 9999px;
   --frey-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 }
 

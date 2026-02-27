@@ -31,6 +31,21 @@
       "import": "./dist/esm/Avatar/index.mjs",
       "require": "./dist/cjs/Avatar/index.cjs"
     },
+    "./Badge": {
+      "types": "./dist/types/src/Badge/index.d.ts",
+      "import": "./dist/esm/Badge/index.mjs",
+      "require": "./dist/cjs/Badge/index.cjs"
+    },
+    "./Box": {
+      "types": "./dist/types/src/Box/index.d.ts",
+      "import": "./dist/esm/Box/index.mjs",
+      "require": "./dist/cjs/Box/index.cjs"
+    },
+    "./Breadcrumbs": {
+      "types": "./dist/types/src/Breadcrumbs/index.d.ts",
+      "import": "./dist/esm/Breadcrumbs/index.mjs",
+      "require": "./dist/cjs/Breadcrumbs/index.cjs"
+    },
     "./Button": {
       "types": "./dist/types/src/Button/index.d.ts",
       "import": "./dist/esm/Button/index.mjs",
@@ -66,10 +81,25 @@
       "import": "./dist/esm/Field/index.mjs",
       "require": "./dist/cjs/Field/index.cjs"
     },
+    "./Flex": {
+      "types": "./dist/types/src/Flex/index.d.ts",
+      "import": "./dist/esm/Flex/index.mjs",
+      "require": "./dist/cjs/Flex/index.cjs"
+    },
+    "./Grid": {
+      "types": "./dist/types/src/Grid/index.d.ts",
+      "import": "./dist/esm/Grid/index.mjs",
+      "require": "./dist/cjs/Grid/index.cjs"
+    },
     "./Icons": {
       "types": "./dist/types/src/Icons/index.d.ts",
       "import": "./dist/esm/Icons/index.mjs",
       "require": "./dist/cjs/Icons/index.cjs"
+    },
+    "./Link": {
+      "types": "./dist/types/src/Link/index.d.ts",
+      "import": "./dist/esm/Link/index.mjs",
+      "require": "./dist/cjs/Link/index.cjs"
     },
     "./Popover": {
       "types": "./dist/types/src/Popover/index.d.ts",
@@ -101,10 +131,20 @@
       "import": "./dist/esm/Spinner/index.mjs",
       "require": "./dist/cjs/Spinner/index.cjs"
     },
+    "./Stack": {
+      "types": "./dist/types/src/Stack/index.d.ts",
+      "import": "./dist/esm/Stack/index.mjs",
+      "require": "./dist/cjs/Stack/index.cjs"
+    },
     "./Switch": {
       "types": "./dist/types/src/Switch/index.d.ts",
       "import": "./dist/esm/Switch/index.mjs",
       "require": "./dist/cjs/Switch/index.cjs"
+    },
+    "./Table": {
+      "types": "./dist/types/src/Table/index.d.ts",
+      "import": "./dist/esm/Table/index.mjs",
+      "require": "./dist/cjs/Table/index.cjs"
     },
     "./Tabs": {
       "types": "./dist/types/src/Tabs/index.d.ts",
