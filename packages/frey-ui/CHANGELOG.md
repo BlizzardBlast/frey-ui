@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.12
+
+### Patch Changes
+
+- a7ca270: added badge, box, breadcrumbs, flex, grid, link, stack, and table
+
 ## 1.0.11
 
 ### Patch Changes

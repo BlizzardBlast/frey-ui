@@ -1,5 +1,13 @@
 # @frey-ui/storybook
 
+## 1.0.3
+
+### Patch Changes
+
+- a7ca270: added badge, box, breadcrumbs, flex, grid, link, stack, and table
+- Updated dependencies [a7ca270]
+  - frey-ui@1.0.12
+
 ## 1.0.2
 
 ### Patch Changes
