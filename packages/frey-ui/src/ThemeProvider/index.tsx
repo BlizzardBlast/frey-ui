@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import styles from './themeprovider.module.css';
 
 export type FreyTheme = 'light' | 'dark' | 'system';
@@ -13,6 +13,14 @@ export type ThemeProviderProps = {
   className?: string;
   style?: React.CSSProperties;
 };
+
+export type ThemeContextValue = {
+  resolvedTheme: 'light' | 'dark';
+  highContrast: boolean;
+};
+
+export const ThemeContext: React.Context<ThemeContextValue | null> =
+  createContext<ThemeContextValue | null>(null);
 
 function ThemeProvider({
   children,
@@ -39,21 +47,27 @@ function ThemeProvider({
   }, [theme]);
 
   const resolvedTheme = theme === 'system' ? systemTheme : theme;
+  const contextValue = useMemo(
+    () => ({ resolvedTheme, highContrast }),
+    [resolvedTheme, highContrast]
+  );
 
   return (
-    <div
-      id={id}
-      className={clsx(
-        'frey-theme-provider',
-        styles['frey-theme-provider'],
-        className
-      )}
-      style={style}
-      data-frey-theme={resolvedTheme}
-      data-frey-high-contrast={highContrast}
-    >
-      {children}
-    </div>
+    <ThemeContext.Provider value={contextValue}>
+      <div
+        id={id}
+        className={clsx(
+          'frey-theme-provider',
+          styles['frey-theme-provider'],
+          className
+        )}
+        style={style}
+        data-frey-theme={resolvedTheme}
+        data-frey-high-contrast={highContrast}
+      >
+        {children}
+      </div>
+    </ThemeContext.Provider>
   );
 }
 

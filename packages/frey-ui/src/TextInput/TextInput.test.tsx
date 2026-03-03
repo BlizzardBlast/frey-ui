@@ -25,9 +25,12 @@ describe('TextInput', () => {
 
   it('visually hides the label when hideLabel is true', () => {
     render(<TextInput label='Hidden label' hideLabel />);
-    const label = screen.getByText('Hidden label');
-    expect(label).toBeInTheDocument();
-    expect(label.tagName).toBe('LABEL');
+    const labelText = screen.getByText('Hidden label');
+    const label = labelText.closest('label');
+
+    expect(labelText).toBeInTheDocument();
+    expect(label).not.toBeNull();
+    expect(label?.tagName).toBe('LABEL');
   });
 
   it('displays error message and sets aria-invalid', () => {

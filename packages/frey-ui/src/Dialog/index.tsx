@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { createContext, useContext, useId, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { CloseIcon } from '../Icons';
 import { mergeRefs } from '../utils/mergeRefs';
+import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
 import styles from './dialog.module.css';
 
@@ -257,39 +257,40 @@ const DialogContent: DialogContentComponent = React.forwardRef<
 
   if (typeof document === 'undefined' || !mounted) return null;
 
-  return createPortal(
-    <dialog
-      id={dialogId}
-      ref={mergeRefs(dialogRef, ref)}
-      aria-labelledby={titleId}
-      aria-describedby={descriptionId}
-      className={clsx(styles.dialog_root, containerClassName)}
-      onCancel={(event) => {
-        if (!closeOnEscape) {
-          event.preventDefault();
-        }
-      }}
-      onClose={() => {
-        if (open) {
-          onOpenChange(false);
-        }
-      }}
-    >
-      <div className={clsx(styles.dialog_content, className)} {...props}>
-        {!hideCloseButton && (
-          <button
-            type='button'
-            className={styles.dialog_close}
-            onClick={() => onOpenChange(false)}
-            aria-label={closeLabel}
-          >
-            <CloseIcon size={16} className={styles.dialog_close_icon} />
-          </button>
-        )}
-        {children}
-      </div>
-    </dialog>,
-    document.body
+  return (
+    <Portal>
+      <dialog
+        id={dialogId}
+        ref={mergeRefs(dialogRef, ref)}
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        className={clsx(styles.dialog_root, containerClassName)}
+        onCancel={(event) => {
+          if (!closeOnEscape) {
+            event.preventDefault();
+          }
+        }}
+        onClose={() => {
+          if (open) {
+            onOpenChange(false);
+          }
+        }}
+      >
+        <div className={clsx(styles.dialog_content, className)} {...props}>
+          {!hideCloseButton && (
+            <button
+              type='button'
+              className={styles.dialog_close}
+              onClick={() => onOpenChange(false)}
+              aria-label={closeLabel}
+            >
+              <CloseIcon size={16} className={styles.dialog_close_icon} />
+            </button>
+          )}
+          {children}
+        </div>
+      </dialog>
+    </Portal>
   );
 });
 DialogContent.displayName = 'Dialog.Content';

@@ -10,13 +10,13 @@ import {
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useId, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
   createFloatingMiddleware,
   toFloatingPlacement
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
 import { mergeRefs } from '../utils/mergeRefs';
+import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
 import styles from './popover.module.css';
 
@@ -259,33 +259,32 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
     props
   ) as React.HTMLAttributes<HTMLDivElement>;
 
-  if (!open || typeof document === 'undefined') return null;
+  if (!open) return null;
 
-  return createPortal(
-    <FloatingFocusManager
-      context={floatingContext}
-      modal
-      returnFocus
-      outsideElementsInert={false}
-      initialFocus={0}
-    >
-      <div
-        id={`${idPrefix}-content`}
-        role='dialog'
-        aria-modal='true'
-        ref={mergeRefs(ref, setFloating as React.RefCallback<HTMLDivElement>)}
-        aria-live='polite'
-        className={clsx(styles.popover_content, className)}
-        style={{
-          ...floatingStyles,
-          ...style
-        }}
-        {...floatingProps}
+  return (
+    <Portal>
+      <FloatingFocusManager
+        context={floatingContext}
+        modal
+        returnFocus
+        outsideElementsInert={false}
+        initialFocus={0}
       >
-        {children}
-      </div>
-    </FloatingFocusManager>,
-    document.body
+        <div
+          id={`${idPrefix}-content`}
+          ref={mergeRefs(ref, setFloating as React.RefCallback<HTMLDivElement>)}
+          aria-live='polite'
+          className={clsx(styles.popover_content, className)}
+          style={{
+            ...floatingStyles,
+            ...style
+          }}
+          {...floatingProps}
+        >
+          {children}
+        </div>
+      </FloatingFocusManager>
+    </Portal>
   );
 });
 PopoverContent.displayName = 'Popover.Content';

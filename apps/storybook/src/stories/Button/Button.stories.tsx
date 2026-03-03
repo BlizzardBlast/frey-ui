@@ -1,16 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ButtonElement, ButtonSize, ButtonVariant } from 'frey-ui';
+import type { ButtonSize, ButtonVariant } from 'frey-ui';
 import { Button } from 'frey-ui';
 import { expect, fn, userEvent, within } from 'storybook/test';
 
 type ButtonStoryProps = {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
   disabled?: boolean;
-  as?: ButtonElement;
-  href?: string;
+  asChild?: boolean;
   className?: string;
   style?: React.CSSProperties;
   onClick?: React.MouseEventHandler<HTMLElement>;
@@ -100,7 +99,13 @@ export const as_link: Story = {
     children: 'Visit docs',
     variant: 'secondary'
   },
-  render: (args) => <Button {...args} as='a' href='https://storybook.js.org' />
+  render: (args) => (
+    <Button {...args} asChild>
+      <a href='https://storybook.js.org' target='_blank' rel='noreferrer'>
+        {args.children}
+      </a>
+    </Button>
+  )
 } satisfies Story;
 
 export const click_interaction: Story = {

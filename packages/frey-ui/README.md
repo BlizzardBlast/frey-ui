@@ -21,6 +21,12 @@ Frey UI is built with **WCAG 2.1 AA** compliance as a goal:
 
 Automated checks run through [`jest-axe`](https://github.com/nickcolley/jest-axe) in unit tests and [`@storybook/addon-a11y`](https://storybook.js.org/addons/@storybook/addon-a11y) in Storybook.
 
+### Test Environment Notes
+
+Unit tests run in JSDOM, which does not provide a full layout engine. Positioning assertions for portal overlays may require mocked geometry APIs (`getBoundingClientRect`, viewport size), and focus-trap behavior is validated at a best-effort level in unit tests.
+
+As overlay complexity grows, browser E2E coverage (Playwright roadmap) is planned to validate real-world focus management and positioning behavior.
+
 ### Overlay Focus Management
 
 - `Dialog` uses the native `<dialog>` element and modal behavior.

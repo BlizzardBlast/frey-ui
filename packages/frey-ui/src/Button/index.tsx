@@ -1,30 +1,28 @@
 import clsx from 'clsx';
 import React from 'react';
-import type {
-  PolymorphicComponentProps,
-  PolymorphicRef
-} from '../types/polymorphic';
+import { Slot } from '../utils/slot';
 import styles from './button.module.css';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'destructive';
 export type ButtonSize = 'sm' | 'md' | 'lg';
-export type ButtonElement = 'button' | 'a';
 
 type ButtonBaseProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
   disabled?: boolean;
+  asChild?: boolean;
   className?: string;
   style?: React.CSSProperties;
 };
 
-export type ButtonProps<E extends ButtonElement = 'button'> =
-  PolymorphicComponentProps<E, ButtonBaseProps>;
-
-type ButtonComponent = (<E extends ButtonElement = 'button'>(
-  props: Readonly<ButtonProps<E>> & { ref?: PolymorphicRef<E> }
-) => React.ReactElement | null) & { displayName?: string };
+export type ButtonProps = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'children' | 'className' | 'style' | 'disabled'
+> &
+  ButtonBaseProps & {
+    children: React.ReactNode;
+  };
 
 const VariantClassMap: Record<ButtonVariant, string> = {
   primary: styles['button-primary'],
@@ -39,11 +37,16 @@ const SizeClassMap: Record<ButtonSize, string> = {
   lg: styles['button-lg']
 };
 
-const Button = React.forwardRef(function Button<
-  E extends ButtonElement = 'button'
->(
+type ButtonComponent = React.ForwardRefExoticComponent<
+  Readonly<ButtonProps> & React.RefAttributes<HTMLButtonElement>
+>;
+
+const Button: ButtonComponent = React.forwardRef<
+  HTMLButtonElement,
+  Readonly<ButtonProps>
+>(function Button(
   {
-    as,
+    asChild = false,
     variant = 'primary',
     size = 'md',
     loading = false,
@@ -51,43 +54,83 @@ const Button = React.forwardRef(function Button<
     className,
     style,
     children,
+    type,
     onClick,
     ...restProps
-  }: Readonly<ButtonProps<E>>,
-  ref: PolymorphicRef<E>
+  },
+  ref
 ) {
-  const Component = (as ?? 'button') as React.ElementType;
-  const isButton = (as ?? 'button') === 'button';
+  const isDisabled = disabled || loading;
+  const combinedClassName = clsx(
+    styles.button,
+    VariantClassMap[variant],
+    SizeClassMap[size],
+    { [styles['button-loading']]: loading },
+    className
+  );
+  const commonProps = {
+    className: combinedClassName,
+    style,
+    'aria-busy': loading || undefined
+  };
+  const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
+    if (isDisabled) {
+      event.preventDefault();
+      return;
+    }
+
+    (onClick as React.MouseEventHandler<HTMLElement> | undefined)?.(event);
+  };
+
+  if (asChild) {
+    if (!React.isValidElement(children)) {
+      throw new Error(
+        'Button with asChild expects a single valid React element child.'
+      );
+    }
+
+    const childElement = children as React.ReactElement<{
+      children?: React.ReactNode;
+    }>;
+    const slotChild = loading
+      ? React.cloneElement(childElement, {
+          children: (
+            <>
+              <span className={styles.spinner} aria-hidden='true' />
+              {childElement.props.children}
+            </>
+          )
+        })
+      : childElement;
+
+    return (
+      <Slot
+        {...(restProps as React.HTMLAttributes<HTMLElement>)}
+        ref={ref as React.Ref<HTMLElement>}
+        {...commonProps}
+        aria-disabled={isDisabled || undefined}
+        data-disabled={isDisabled ? true : undefined}
+        onClick={handleClick}
+      >
+        {slotChild}
+      </Slot>
+    );
+  }
 
   return (
-    <Component
-      ref={ref}
-      className={clsx(
-        styles.button,
-        VariantClassMap[variant],
-        SizeClassMap[size],
-        { [styles['button-loading']]: loading },
-        className
-      )}
-      style={style}
-      disabled={isButton ? disabled || loading : undefined}
-      aria-disabled={!isButton && (disabled || loading) ? true : undefined}
-      type={isButton ? 'button' : undefined}
-      aria-busy={loading || undefined}
-      onClick={(e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-        if (!isButton && (disabled || loading)) {
-          e.preventDefault();
-          return;
-        }
-        (onClick as React.MouseEventHandler<HTMLElement>)?.(e);
-      }}
+    <button
       {...restProps}
+      ref={ref}
+      {...commonProps}
+      disabled={isDisabled}
+      type={type ?? 'button'}
+      onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
     >
       {loading && <span className={styles.spinner} aria-hidden='true' />}
       {children}
-    </Component>
+    </button>
   );
-}) as ButtonComponent;
+});
 
 Button.displayName = 'Button';
 

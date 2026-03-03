@@ -53,10 +53,10 @@ describe('Button', () => {
     expect(button).toHaveAttribute('aria-busy', 'true');
   });
 
-  it('renders as an anchor when as="a"', () => {
+  it('renders as a child anchor when asChild is true', () => {
     render(
-      <Button as='a' href='https://example.com'>
-        Link
+      <Button asChild>
+        <a href='https://example.com'>Link</a>
       </Button>
     );
     const link = screen.getByRole('link', { name: 'Link' });
@@ -64,14 +64,21 @@ describe('Button', () => {
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
 
-  it('sets aria-disabled on anchor when disabled', () => {
+  it('sets aria-disabled on asChild anchors when disabled', async () => {
+    const user = userEvent.setup();
+    const onClick = vi.fn();
+
     render(
-      <Button as='a' href='#' disabled>
-        Disabled link
+      <Button asChild disabled onClick={onClick}>
+        <a href='https://example.com/disabled'>Disabled link</a>
       </Button>
     );
+
     const link = screen.getByRole('link');
     expect(link).toHaveAttribute('aria-disabled', 'true');
+
+    await user.click(link);
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   it('has no accessibility violations', async () => {

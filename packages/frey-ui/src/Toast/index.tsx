@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import React from 'react';
-import { createPortal } from 'react-dom';
 import {
   CircleCheckIcon,
   CircleInfoIcon,
@@ -8,6 +7,7 @@ import {
   CloseIcon,
   TriangleAlertIcon
 } from '../Icons';
+import Portal from '../utils/Portal';
 import styles from './toast.module.css';
 
 export type ToastVariant = 'info' | 'success' | 'warning' | 'error';
@@ -244,9 +244,7 @@ export function ToastProvider({
   return (
     <ToastContext.Provider value={contextValue}>
       {children}
-      {typeof document === 'undefined'
-        ? viewport
-        : createPortal(viewport, document.body)}
+      {typeof document === 'undefined' ? viewport : <Portal>{viewport}</Portal>}
     </ToastContext.Provider>
   );
 }

@@ -30,7 +30,6 @@ export type {
 } from './Breadcrumbs';
 export { default as Breadcrumbs } from './Breadcrumbs';
 export type {
-  ButtonElement,
   ButtonProps,
   ButtonSize,
   ButtonVariant

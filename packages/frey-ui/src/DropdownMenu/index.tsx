@@ -10,7 +10,6 @@ import {
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useId, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import {
   createFloatingMiddleware,
   toFloatingPlacement
@@ -18,6 +17,7 @@ import {
 import { useControllableState } from '../hooks/useControllableState';
 import { useRovingCollection } from '../hooks/useRovingCollection';
 import { mergeRefs } from '../utils/mergeRefs';
+import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
 import styles from './dropdownmenu.module.css';
 
@@ -309,36 +309,37 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
     onKeyDown: handleKeyDown
   }) as React.HTMLAttributes<HTMLDivElement>;
 
-  if (!open || typeof document === 'undefined') return null;
+  if (!open) return null;
 
-  return createPortal(
-    <FloatingFocusManager
-      context={floatingContext}
-      modal
-      returnFocus
-      outsideElementsInert={false}
-      initialFocus={0}
-    >
-      <div
-        id={`${idPrefix}-menu`}
-        role='menu'
-        aria-orientation='vertical'
-        ref={mergeRefs(
-          menuRef,
-          ref,
-          setFloating as React.RefCallback<HTMLDivElement>
-        )}
-        className={clsx(styles.dropdown_menu, className)}
-        style={{
-          ...floatingStyles,
-          ...style
-        }}
-        {...floatingProps}
+  return (
+    <Portal>
+      <FloatingFocusManager
+        context={floatingContext}
+        modal
+        returnFocus
+        outsideElementsInert={false}
+        initialFocus={0}
       >
-        {children}
-      </div>
-    </FloatingFocusManager>,
-    document.body
+        <div
+          id={`${idPrefix}-menu`}
+          role='menu'
+          aria-orientation='vertical'
+          ref={mergeRefs(
+            menuRef,
+            ref,
+            setFloating as React.RefCallback<HTMLDivElement>
+          )}
+          className={clsx(styles.dropdown_menu, className)}
+          style={{
+            ...floatingStyles,
+            ...style
+          }}
+          {...floatingProps}
+        >
+          {children}
+        </div>
+      </FloatingFocusManager>
+    </Portal>
   );
 });
 DropdownMenuContent.displayName = 'DropdownMenu.Content';
@@ -385,7 +386,7 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
   };
 
   return (
-    <div className={styles.dropdown_menu_item_container} role='presentation'>
+    <div className={styles.dropdown_menu_item_container}>
       <button
         ref={mergedRef}
         type='button'

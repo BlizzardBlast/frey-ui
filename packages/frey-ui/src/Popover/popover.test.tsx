@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
+import ThemeProvider from '../ThemeProvider';
 import Popover from './index';
 
 function createMockRect({
@@ -182,7 +183,31 @@ describe('Popover', () => {
 
     await user.tab();
     expect(outside).not.toHaveFocus();
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('First action')).toBeInTheDocument();
+  });
+
+  it('applies ThemeProvider theme attributes to the portal container', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <ThemeProvider theme='dark' highContrast>
+        <Popover>
+          <Popover.Trigger>Open themed popover</Popover.Trigger>
+          <Popover.Content>Themed content</Popover.Content>
+        </Popover>
+      </ThemeProvider>
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Open themed popover' })
+    );
+
+    const content = screen.getByText('Themed content');
+    const portalContainer = content.closest('[data-frey-portal="true"]');
+
+    expect(portalContainer).toHaveClass('frey-theme-provider');
+    expect(portalContainer).toHaveAttribute('data-frey-theme', 'dark');
+    expect(portalContainer).toHaveAttribute('data-frey-high-contrast', 'true');
   });
 
   it('returns focus to trigger after closing with Escape', async () => {
@@ -235,8 +260,8 @@ describe('Popover', () => {
 
         return createMockRect({});
       });
-    const originalInnerHeight = window.innerHeight;
-    Object.defineProperty(window, 'innerHeight', {
+    const originalInnerHeight = globalThis.innerHeight;
+    Object.defineProperty(globalThis, 'innerHeight', {
       configurable: true,
       value: 240
     });
@@ -259,7 +284,7 @@ describe('Popover', () => {
       });
     } finally {
       rectSpy.mockRestore();
-      Object.defineProperty(window, 'innerHeight', {
+      Object.defineProperty(globalThis, 'innerHeight', {
         configurable: true,
         value: originalInnerHeight
       });

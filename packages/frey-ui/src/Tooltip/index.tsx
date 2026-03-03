@@ -8,12 +8,12 @@ import {
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React from 'react';
-import { createPortal } from 'react-dom';
 import {
   createFloatingMiddleware,
   toFloatingPlacement
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
+import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
 import styles from './tooltip.module.css';
 
@@ -127,8 +127,8 @@ function Tooltip({
     <>
       {triggerElement}
 
-      {isOpen &&
-        createPortal(
+      {isOpen && (
+        <Portal>
           <div
             ref={refs.setFloating as React.Ref<HTMLDivElement>}
             className={clsx(styles.tooltip, className)}
@@ -139,9 +139,9 @@ function Tooltip({
             {...floatingProps}
           >
             {content}
-          </div>,
-          document.body
-        )}
+          </div>
+        </Portal>
+      )}
     </>
   );
 }

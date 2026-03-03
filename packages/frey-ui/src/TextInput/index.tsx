@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import React, { useId } from 'react';
+import React from 'react';
+import Field from '../Field';
 import styles from './textinput.module.css';
 
 export type TextInputProps = Omit<
@@ -33,60 +34,48 @@ const TextInput: TextInputComponent = React.forwardRef<
     style,
     id,
     disabled = false,
+    required = false,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
     ...inputProps
   },
   ref
 ) {
-  const generatedId = useId();
-  const inputId = id ?? generatedId;
-  const errorId = `${inputId}-error`;
-  const helperId = `${inputId}-helper`;
-
-  const hasError = typeof error === 'string' && error.length > 0;
-  const hasHelper = typeof helperText === 'string' && helperText.length > 0;
-
-  const describedBy =
-    [hasError ? errorId : undefined, hasHelper ? helperId : undefined]
-      .filter(Boolean)
-      .join(' ') || undefined;
-
   return (
-    <div
-      className={clsx(styles['text-input-container'], className)}
+    <Field
+      label={label}
+      hideLabel={hideLabel}
+      error={error}
+      helperText={helperText}
+      disabled={disabled}
+      required={required}
+      id={id}
+      className={className}
       style={style}
     >
-      <label
-        htmlFor={inputId}
-        className={clsx(styles.label, {
-          [styles['label-disabled']]: disabled,
-          [styles['visually-hidden']]: hideLabel
-        })}
-      >
-        {label}
-      </label>
-      <input
-        ref={ref}
-        id={inputId}
-        type={type}
-        disabled={disabled}
-        aria-invalid={hasError || undefined}
-        aria-describedby={describedBy}
-        className={clsx(styles.input, {
-          [styles['input-error']]: hasError
-        })}
-        {...inputProps}
-      />
-      {hasError && (
-        <p id={errorId} className={styles['error-text']} role='alert'>
-          {error}
-        </p>
-      )}
-      {hasHelper && (
-        <p id={helperId} className={styles['helper-text']}>
-          {helperText}
-        </p>
-      )}
-    </div>
+      {({ inputId, describedBy, hasError }) => {
+        const mergedDescribedBy =
+          [describedBy, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
+        const isInvalid =
+          hasError || ariaInvalid === true || ariaInvalid === 'true';
+
+        return (
+          <input
+            ref={ref}
+            id={inputId}
+            type={type}
+            disabled={disabled}
+            required={required}
+            aria-invalid={isInvalid || undefined}
+            aria-describedby={mergedDescribedBy}
+            className={clsx(styles.input, {
+              [styles['input-error']]: hasError
+            })}
+            {...inputProps}
+          />
+        );
+      }}
+    </Field>
   );
 });
 
