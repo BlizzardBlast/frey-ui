@@ -52,6 +52,8 @@ pnpm build
 - `pnpm ci:changed`: runs affected-package `lint`, `typecheck`, `test`, and `build`.
 - `pnpm storybook`: runs Storybook locally for `@frey-ui/storybook`.
 - `pnpm build:storybook`: builds static Storybook output for `@frey-ui/storybook`.
+- `pnpm playwright:install`: installs Chromium for Playwright tests in `apps/playwright`.
+- `pnpm test:e2e`: runs Playwright overlay E2E tests against Storybook.
 - Release flow:
   1. `pnpm changeset`
   2. `pnpm version-packages`

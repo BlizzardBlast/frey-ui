@@ -22,6 +22,7 @@ pnpm install
 
 ```bash
 pnpm storybook        # run Storybook locally
+pnpm test:e2e         # run Playwright overlay e2e tests
 pnpm build            # build all workspaces
 pnpm test             # run tests across workspaces
 pnpm lint             # lint all workspaces

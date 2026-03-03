@@ -25,7 +25,7 @@ Automated checks run through [`jest-axe`](https://github.com/nickcolley/jest-axe
 
 Unit tests run in JSDOM, which does not provide a full layout engine. Positioning assertions for portal overlays may require mocked geometry APIs (`getBoundingClientRect`, viewport size), and focus-trap behavior is validated at a best-effort level in unit tests.
 
-As overlay complexity grows, browser E2E coverage (Playwright roadmap) is planned to validate real-world focus management and positioning behavior.
+Browser E2E coverage is available via Playwright in `apps/playwright` for real-world overlay focus and positioning checks, and can be expanded as overlay scenarios grow.
 
 ### Overlay Focus Management
 

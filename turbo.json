@@ -23,6 +23,14 @@
     "test": {
       "outputs": []
     },
+    "test:e2e": {
+      "dependsOn": ["@frey-ui/storybook#build"],
+      "cache": false,
+      "outputs": [
+        "apps/playwright/playwright-report/**",
+        "apps/playwright/test-results/**"
+      ]
+    },
     "dev": {
       "cache": false,
       "persistent": true

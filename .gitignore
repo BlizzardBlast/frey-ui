@@ -133,3 +133,5 @@ dist
 test-report.junit.xml
 .vitest-reports/
 .junit-reports/
+apps/playwright/playwright-report/
+apps/playwright/test-results/
