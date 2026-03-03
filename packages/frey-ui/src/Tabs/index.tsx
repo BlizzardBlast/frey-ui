@@ -1,11 +1,14 @@
 import clsx from 'clsx';
 import React, { createContext, useContext, useId, useState } from 'react';
+import { useRovingCollection } from '../hooks/useRovingCollection';
+import { mergeRefs } from '../utils/mergeRefs';
 import styles from './tabs.module.css';
 
 type TabsContextValue = {
   value: string;
   onValueChange: (value: string) => void;
   idPrefix: string;
+  triggerCollection: ReturnType<typeof useRovingCollection>;
 };
 
 const TabsContext = createContext<TabsContextValue | null>(null);
@@ -38,6 +41,7 @@ const TabsRoot: TabsRootComponent = React.forwardRef<
   ref
 ) {
   const idPrefix = useId();
+  const triggerCollection = useRovingCollection();
   const isControlled = value !== undefined;
   const [uncontrolledValue, setUncontrolledValue] = useState(
     defaultValue ?? ''
@@ -60,9 +64,10 @@ const TabsRoot: TabsRootComponent = React.forwardRef<
     () => ({
       value: currentValue,
       onValueChange: handleValueChange,
-      idPrefix
+      idPrefix,
+      triggerCollection
     }),
-    [currentValue, handleValueChange, idPrefix]
+    [currentValue, handleValueChange, idPrefix, triggerCollection]
   );
 
   return (
@@ -105,45 +110,81 @@ type TabsTriggerComponent = React.ForwardRefExoticComponent<
 const TabsTrigger: TabsTriggerComponent = React.forwardRef<
   HTMLButtonElement,
   Readonly<TabsTriggerProps>
->(function TabsTrigger({ value: triggerValue, className, ...props }, ref) {
-  const { value: selectedValue, onValueChange, idPrefix } = useTabsContext();
+>(function TabsTrigger(
+  { value: triggerValue, className, disabled = false, ...props },
+  ref
+) {
+  const {
+    value: selectedValue,
+    onValueChange,
+    idPrefix,
+    triggerCollection
+  } = useTabsContext();
   const isSelected = selectedValue === triggerValue;
+  const triggerRef = React.useRef<HTMLButtonElement | null>(null);
+  const mergedRef = mergeRefs(ref, triggerRef);
+
+  React.useEffect(() => {
+    triggerCollection.registerItem(triggerValue, triggerRef.current, {
+      disabled,
+      value: triggerValue
+    });
+
+    return () => {
+      triggerCollection.unregisterItem(triggerValue);
+    };
+  }, [triggerCollection, triggerValue, disabled]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    // Basic Arrow Right / Arrow Left navigation handling
-    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-      const triggerElements: HTMLButtonElement[] = Array.from(
-        e.currentTarget.parentElement?.querySelectorAll('[role="tab"]') ?? []
-      );
+    const currentId = triggerCollection.findItemIdByElement(e.currentTarget);
+    if (!currentId) return;
 
-      const currentIndex = triggerElements.indexOf(e.currentTarget);
-      if (currentIndex === -1) return;
-
-      let nextIndex = currentIndex;
-      if (e.key === 'ArrowRight') {
-        nextIndex = (currentIndex + 1) % triggerElements.length;
-      } else if (e.key === 'ArrowLeft') {
-        nextIndex =
-          (currentIndex - 1 + triggerElements.length) % triggerElements.length;
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      const nextId = triggerCollection.focusNext(currentId);
+      if (nextId) {
+        onValueChange(nextId);
       }
+      return;
+    }
 
-      const nextTrigger = triggerElements[nextIndex];
-      if (nextTrigger) {
-        nextTrigger.focus();
-        nextTrigger.click(); // Standard behavior for tabs to switch on arrow focus
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const previousId = triggerCollection.focusPrevious(currentId);
+      if (previousId) {
+        onValueChange(previousId);
+      }
+      return;
+    }
+
+    if (e.key === 'Home') {
+      e.preventDefault();
+      const firstId = triggerCollection.focusFirst();
+      if (firstId) {
+        onValueChange(firstId);
+      }
+      return;
+    }
+
+    if (e.key === 'End') {
+      e.preventDefault();
+      const lastId = triggerCollection.focusLast();
+      if (lastId) {
+        onValueChange(lastId);
       }
     }
   };
 
   return (
     <button
-      ref={ref}
+      ref={mergedRef}
       type='button'
       role='tab'
       id={`${idPrefix}-tab-${triggerValue}`}
       aria-controls={`${idPrefix}-panel-${triggerValue}`}
       aria-selected={isSelected}
       tabIndex={isSelected ? 0 : -1}
+      disabled={disabled}
       onClick={() => onValueChange(triggerValue)}
       onKeyDown={handleKeyDown}
       className={clsx(styles.tabs_trigger, className)}

@@ -21,6 +21,12 @@ Frey UI is built with **WCAG 2.1 AA** compliance as a goal:
 
 Automated checks run through [`jest-axe`](https://github.com/nickcolley/jest-axe) in unit tests and [`@storybook/addon-a11y`](https://storybook.js.org/addons/@storybook/addon-a11y) in Storybook.
 
+### Overlay Focus Management
+
+- `Dialog` uses the native `<dialog>` element and modal behavior.
+- `Popover` and `DropdownMenu` use `FloatingFocusManager` in modal mode.
+- When a `Popover` or `DropdownMenu` is open, keyboard focus is trapped inside the overlay and focus returns to the trigger when it closes.
+
 ## Installation
 
 ```bash
@@ -73,6 +79,28 @@ Storybook is the source of truth for component API docs and usage examples.
 pnpm install
 pnpm storybook
 ```
+
+## Brand Token Generator
+
+Frey UI includes a contributor CLI utility to generate CSS variable overrides from a small set of brand colors.
+
+```bash
+pnpm theme:tokens -- --primary "#0f62fe"
+```
+
+You can optionally override additional semantic colors:
+
+```bash
+pnpm theme:tokens -- --primary "#0f62fe" --success "#198038" --warning "#f1c21b" --error "#da1e28" --info "#0043ce" > brand-theme.css
+```
+
+Then load the generated CSS after `frey-ui/style.css` in your application so your brand tokens override defaults.
+
+## Roadmap Notes
+
+- `Combobox / Autocomplete`: planned to support searchable long-option datasets with robust keyboard semantics.
+- `Drawer / Slide-over`: planned for mobile-first and dense settings workflows.
+- Accordion content animation: current grid-based animation uses `overflow: hidden` on the inner content wrapper, which can clip inner tooltips and extended focus rings. Prefer external tooltip portals and avoid relying on overflow-visible descendants inside accordion content.
 
 ## License
 

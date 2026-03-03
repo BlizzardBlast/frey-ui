@@ -1,5 +1,6 @@
 import {
   autoUpdate,
+  FloatingFocusManager,
   type OpenChangeReason,
   type UseInteractionsReturn,
   useDismiss,
@@ -29,6 +30,7 @@ type PopoverContextValue = {
   setReference: (node: HTMLElement | null) => void;
   setFloating: (node: HTMLElement | null) => void;
   floatingStyles: React.CSSProperties;
+  floatingContext: ReturnType<typeof useFloating>['context'];
   getReferenceProps: UseInteractionsReturn['getReferenceProps'];
   getFloatingProps: UseInteractionsReturn['getFloatingProps'];
 };
@@ -141,6 +143,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
       setReference,
       setFloating,
       floatingStyles,
+      floatingContext,
       getReferenceProps,
       getFloatingProps
     }),
@@ -151,6 +154,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
       setReference,
       setFloating,
       floatingStyles,
+      floatingContext,
       getReferenceProps,
       getFloatingProps
     ]
@@ -243,8 +247,14 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<PopoverContentProps>
 >(function PopoverContent({ className, style, children, ...props }, ref) {
-  const { open, idPrefix, setFloating, floatingStyles, getFloatingProps } =
-    usePopoverContext();
+  const {
+    open,
+    idPrefix,
+    setFloating,
+    floatingStyles,
+    floatingContext,
+    getFloatingProps
+  } = usePopoverContext();
   const floatingProps = getFloatingProps(
     props
   ) as React.HTMLAttributes<HTMLDivElement>;
@@ -252,19 +262,29 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
   if (!open || typeof document === 'undefined') return null;
 
   return createPortal(
-    <div
-      id={`${idPrefix}-content`}
-      ref={mergeRefs(ref, setFloating as React.RefCallback<HTMLDivElement>)}
-      aria-live='polite'
-      className={clsx(styles.popover_content, className)}
-      style={{
-        ...floatingStyles,
-        ...style
-      }}
-      {...floatingProps}
+    <FloatingFocusManager
+      context={floatingContext}
+      modal
+      returnFocus
+      outsideElementsInert={false}
+      initialFocus={0}
     >
-      {children}
-    </div>,
+      <div
+        id={`${idPrefix}-content`}
+        role='dialog'
+        aria-modal='true'
+        ref={mergeRefs(ref, setFloating as React.RefCallback<HTMLDivElement>)}
+        aria-live='polite'
+        className={clsx(styles.popover_content, className)}
+        style={{
+          ...floatingStyles,
+          ...style
+        }}
+        {...floatingProps}
+      >
+        {children}
+      </div>
+    </FloatingFocusManager>,
     document.body
   );
 });

@@ -88,7 +88,7 @@ describe('Popover', () => {
     await user.click(screen.getByRole('button', { name: 'Open popover' }));
     expect(screen.getByText('Content')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Outside' }));
+    await user.click(screen.getByText('Outside'));
     expect(screen.queryByText('Content')).not.toBeInTheDocument();
   });
 
@@ -128,7 +128,7 @@ describe('Popover', () => {
     await user.click(
       screen.getByRole('button', { name: 'Persistent popover' })
     );
-    await user.click(screen.getByRole('button', { name: 'Outside' }));
+    await user.click(screen.getByText('Outside'));
 
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
@@ -149,6 +149,62 @@ describe('Popover', () => {
     await user.keyboard('{Escape}');
 
     expect(onOpenChange).toHaveBeenCalledWith(false);
+  });
+
+  it('traps keyboard focus within popover content when open', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <div>
+        <button type='button'>Outside</button>
+        <Popover>
+          <Popover.Trigger>Open popover</Popover.Trigger>
+          <Popover.Content>
+            <button type='button'>First action</button>
+            <button type='button'>Second action</button>
+          </Popover.Content>
+        </Popover>
+      </div>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open popover' }));
+
+    const firstAction = screen.getByRole('button', { name: 'First action' });
+    const secondAction = screen.getByRole('button', { name: 'Second action' });
+    const outside = screen.getByText('Outside');
+
+    await waitFor(() => {
+      expect(firstAction).toHaveFocus();
+    });
+
+    await user.tab();
+    expect(secondAction).toHaveFocus();
+
+    await user.tab();
+    expect(outside).not.toHaveFocus();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('returns focus to trigger after closing with Escape', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Popover>
+        <Popover.Trigger>Open details</Popover.Trigger>
+        <Popover.Content>
+          <button type='button'>Focusable action</button>
+        </Popover.Content>
+      </Popover>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Open details' });
+
+    await user.click(trigger);
+    await user.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(trigger).toHaveFocus();
+    });
   });
 
   it('flips from bottom to top when there is not enough viewport space', async () => {

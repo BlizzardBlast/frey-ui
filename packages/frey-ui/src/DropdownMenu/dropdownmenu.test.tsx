@@ -100,7 +100,7 @@ describe('DropdownMenu', () => {
       screen.getByRole('menuitem', { name: 'Rename' })
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: 'Outside' }));
+    await user.click(screen.getByText('Outside'));
     expect(
       screen.queryByRole('menuitem', { name: 'Rename' })
     ).not.toBeInTheDocument();
@@ -122,7 +122,7 @@ describe('DropdownMenu', () => {
     );
 
     await user.click(screen.getByRole('button', { name: 'Open menu' }));
-    await user.click(screen.getByRole('button', { name: 'Outside' }));
+    await user.click(screen.getByText('Outside'));
 
     expect(
       screen.getByRole('menuitem', { name: 'Rename' })
@@ -244,6 +244,38 @@ describe('DropdownMenu', () => {
     expect(duplicate).toHaveFocus();
   });
 
+  it('traps keyboard focus within menu content when open', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <div>
+        <button type='button'>Outside</button>
+        <DropdownMenu>
+          <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Item>Rename</DropdownMenu.Item>
+            <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu>
+      </div>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const rename = screen.getByRole('menuitem', { name: 'Rename' });
+    const duplicate = screen.getByRole('menuitem', { name: 'Duplicate' });
+    const outside = screen.getByText('Outside');
+
+    expect(rename).toHaveFocus();
+
+    await user.tab();
+    expect(duplicate).toHaveFocus();
+
+    await user.tab();
+    expect(outside).not.toHaveFocus();
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
+
   it('flips from right to left when there is not enough right-side space', async () => {
     const user = userEvent.setup();
     const triggerRect = createMockRect({
@@ -293,7 +325,7 @@ describe('DropdownMenu', () => {
 
       await user.click(screen.getByRole('button', { name: 'Open right menu' }));
 
-      const menu = screen.getByRole('list');
+      const menu = screen.getByRole('menu');
 
       await waitFor(() => {
         const left = Number.parseFloat(menu.style.left);

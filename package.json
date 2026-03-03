@@ -18,6 +18,7 @@
     "check:changed": "biome ci --changed --since=origin/main --no-errors-on-unmatched .",
     "test": "turbo run test",
     "test:coverage": "pnpm --filter frey-ui run test:coverage",
+    "theme:tokens": "node scripts/generate-theme-tokens.mjs",
     "docs:check": "node scripts/check-storybook-api-coverage.mjs",
     "storybook": "turbo run storybook --filter=@frey-ui/storybook",
     "changeset": "changeset",

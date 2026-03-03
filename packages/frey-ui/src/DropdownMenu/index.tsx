@@ -1,5 +1,6 @@
 import {
   autoUpdate,
+  FloatingFocusManager,
   type OpenChangeReason,
   type UseInteractionsReturn,
   useDismiss,
@@ -15,6 +16,7 @@ import {
   toFloatingPlacement
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
+import { useRovingCollection } from '../hooks/useRovingCollection';
 import { mergeRefs } from '../utils/mergeRefs';
 import { Slot } from '../utils/slot';
 import styles from './dropdownmenu.module.css';
@@ -29,8 +31,10 @@ type DropdownMenuContextValue = {
   setReference: (node: HTMLElement | null) => void;
   setFloating: (node: HTMLElement | null) => void;
   floatingStyles: React.CSSProperties;
+  floatingContext: ReturnType<typeof useFloating>['context'];
   getReferenceProps: UseInteractionsReturn['getReferenceProps'];
   getFloatingProps: UseInteractionsReturn['getFloatingProps'];
+  menuItems: ReturnType<typeof useRovingCollection>;
 };
 
 const DropdownMenuContext =
@@ -73,6 +77,7 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
   children
 }: Readonly<DropdownMenuProps>): React.JSX.Element {
   const idPrefix = useId();
+  const menuItems = useRovingCollection();
   const triggerRef = useRef<HTMLElement | null>(null);
   const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
     null
@@ -144,8 +149,10 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
       setReference,
       setFloating,
       floatingStyles,
+      floatingContext,
       getReferenceProps,
-      getFloatingProps
+      getFloatingProps,
+      menuItems
     }),
     [
       currentOpen,
@@ -154,8 +161,10 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
       setReference,
       setFloating,
       floatingStyles,
+      floatingContext,
       getReferenceProps,
-      getFloatingProps
+      getFloatingProps,
+      menuItems
     ]
   );
 
@@ -236,89 +245,99 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
 });
 DropdownMenuTrigger.displayName = 'DropdownMenu.Trigger';
 
-export type DropdownMenuContentProps = React.HTMLAttributes<HTMLMenuElement>;
+export type DropdownMenuContentProps = React.HTMLAttributes<HTMLDivElement>;
 
 type DropdownMenuContentComponent = React.ForwardRefExoticComponent<
-  Readonly<DropdownMenuContentProps> & React.RefAttributes<HTMLMenuElement>
+  Readonly<DropdownMenuContentProps> & React.RefAttributes<HTMLDivElement>
 >;
 
 const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
-  HTMLMenuElement,
+  HTMLDivElement,
   Readonly<DropdownMenuContentProps>
 >(function DropdownMenuContent({ className, style, children, ...props }, ref) {
-  const { open, idPrefix, setFloating, floatingStyles, getFloatingProps } =
-    useDropdownMenuContext();
-  const menuRef = useRef<HTMLMenuElement | null>(null);
+  const {
+    open,
+    idPrefix,
+    setFloating,
+    floatingStyles,
+    floatingContext,
+    getFloatingProps,
+    menuItems
+  } = useDropdownMenuContext();
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    if (!open || !menuRef.current) return;
+    if (!open) return;
+    menuItems.focusFirst();
+  }, [open, menuItems]);
 
-    // Auto-focus first enabled item
-    const firstItem: HTMLElement | null = menuRef.current.querySelector(
-      '[role="menuitem"]:not([disabled])'
-    );
-
-    if (firstItem) {
-      firstItem.focus();
-    }
-  }, [open]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLMenuElement>) => {
-    if (!menuRef.current) return;
-
-    const items: HTMLElement[] = Array.from(
-      menuRef.current.querySelectorAll('[role="menuitem"]:not([disabled])')
-    );
-
-    if (items.length === 0) return;
-
-    const currentIndex = items.indexOf(document.activeElement as HTMLElement);
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const targetElement =
+      event.target instanceof HTMLElement ? event.target : null;
+    const currentItemId = menuItems.findItemIdByElement(targetElement);
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex]?.focus();
+      if (currentItemId) {
+        menuItems.focusNext(currentItemId);
+      } else {
+        menuItems.focusFirst();
+      }
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      const prevIndex = (currentIndex - 1 + items.length) % items.length;
-      items[prevIndex]?.focus();
+      if (currentItemId) {
+        menuItems.focusPrevious(currentItemId);
+      } else {
+        menuItems.focusLast();
+      }
     }
 
     if (event.key === 'Home') {
       event.preventDefault();
-      items[0]?.focus();
+      menuItems.focusFirst();
     }
 
     if (event.key === 'End') {
       event.preventDefault();
-      items.at(-1)?.focus();
+      menuItems.focusLast();
     }
   };
   const floatingProps = getFloatingProps({
     ...props,
     onKeyDown: handleKeyDown
-  }) as React.HTMLAttributes<HTMLMenuElement>;
+  }) as React.HTMLAttributes<HTMLDivElement>;
 
   if (!open || typeof document === 'undefined') return null;
 
   return createPortal(
-    <menu
-      id={`${idPrefix}-menu`}
-      ref={mergeRefs(
-        menuRef,
-        ref,
-        setFloating as React.RefCallback<HTMLMenuElement>
-      )}
-      className={clsx(styles.dropdown_menu, className)}
-      style={{
-        ...floatingStyles,
-        ...style
-      }}
-      {...floatingProps}
+    <FloatingFocusManager
+      context={floatingContext}
+      modal
+      returnFocus
+      outsideElementsInert={false}
+      initialFocus={0}
     >
-      {children}
-    </menu>,
+      <div
+        id={`${idPrefix}-menu`}
+        role='menu'
+        aria-orientation='vertical'
+        ref={mergeRefs(
+          menuRef,
+          ref,
+          setFloating as React.RefCallback<HTMLDivElement>
+        )}
+        className={clsx(styles.dropdown_menu, className)}
+        style={{
+          ...floatingStyles,
+          ...style
+        }}
+        {...floatingProps}
+      >
+        {children}
+      </div>
+    </FloatingFocusManager>,
     document.body
   );
 });
@@ -342,7 +361,20 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
   { disabled, destructive, onSelect, className, children, ...props },
   ref
 ) {
-  const { onOpenChange, triggerRef } = useDropdownMenuContext();
+  const { onOpenChange, triggerRef, menuItems } = useDropdownMenuContext();
+  const itemRef = useRef<HTMLButtonElement | null>(null);
+  const itemId = useId();
+  const mergedRef = mergeRefs(ref, itemRef);
+
+  useEffect(() => {
+    menuItems.registerItem(itemId, itemRef.current, {
+      disabled: Boolean(disabled)
+    });
+
+    return () => {
+      menuItems.unregisterItem(itemId);
+    };
+  }, [menuItems, itemId, disabled]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (disabled) return;
@@ -353,9 +385,9 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
   };
 
   return (
-    <li className={styles.dropdown_menu_item_container} role='presentation'>
+    <div className={styles.dropdown_menu_item_container} role='presentation'>
       <button
-        ref={ref}
+        ref={mergedRef}
         type='button'
         role='menuitem'
         disabled={disabled}
@@ -367,7 +399,7 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
       >
         {children}
       </button>
-    </li>
+    </div>
   );
 });
 DropdownMenuItem.displayName = 'DropdownMenu.Item';
