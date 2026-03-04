@@ -117,6 +117,22 @@ function cssModulesPlugin() {
   };
 }
 
+function normalizeSourcemapPathsPlugin() {
+  return {
+    name: 'normalize-sourcemap-paths',
+    generateBundle(_outputOptions, bundle) {
+      for (const chunkOrAsset of Object.values(bundle)) {
+        if (chunkOrAsset.type !== 'chunk' || !chunkOrAsset.map?.sources)
+          continue;
+
+        chunkOrAsset.map.sources = chunkOrAsset.map.sources.map((sourcePath) =>
+          sourcePath.replace(/^\.\.\/\.\.\/\.\.\/\.\.\/src\//, '../../../src/')
+        );
+      }
+    }
+  };
+}
+
 export default defineConfig([
   {
     input: './src/index.ts',
@@ -125,6 +141,12 @@ export default defineConfig([
         dir: 'dist',
         format: 'cjs',
         sourcemap: true,
+        sourcemapPathTransform: (relativeSourcePath) => {
+          return relativeSourcePath.replace(
+            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
+            '../../../src/'
+          );
+        },
         exports: 'named',
         preserveModules: true,
         preserveModulesRoot: 'src',
@@ -138,6 +160,12 @@ export default defineConfig([
         format: 'es',
         exports: 'named',
         sourcemap: true,
+        sourcemapPathTransform: (relativeSourcePath) => {
+          return relativeSourcePath.replace(
+            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
+            '../../../src/'
+          );
+        },
         preserveModules: true,
         preserveModulesRoot: 'src',
         entryFileNames: 'esm/[name].mjs',
@@ -176,7 +204,8 @@ export default defineConfig([
           'setupTests.ts',
           'vitest.config.ts'
         ]
-      })
+      }),
+      normalizeSourcemapPathsPlugin()
     ]
   },
   {
