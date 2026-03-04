@@ -46,7 +46,7 @@ npm install frey-ui
 Import the stylesheet once in your app root (for example `App.tsx` or `layout.tsx`):
 
 ```tsx
-import 'frey-ui/style.css';
+import 'frey-ui/theme.css';
 ```
 
 ## Public Subpath Imports
@@ -100,7 +100,7 @@ You can optionally override additional semantic colors:
 pnpm theme:tokens -- --primary "#0f62fe" --success "#198038" --warning "#f1c21b" --error "#da1e28" --info "#0043ce" > brand-theme.css
 ```
 
-Then load the generated CSS after `frey-ui/style.css` in your application so your brand tokens override defaults.
+Then load the generated CSS after `frey-ui/theme.css` in your application so your brand tokens override defaults.
 
 ## Roadmap Notes
 

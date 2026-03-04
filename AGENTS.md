@@ -43,6 +43,7 @@ Run in this exact order. All four commands must pass:
 pnpm typecheck
 pnpm lint
 pnpm test:coverage
+pnpm test:e2e
 pnpm build
 ```
 
