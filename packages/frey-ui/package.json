@@ -180,7 +180,8 @@
     "./theme.css": "./dist/esm/theme.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "!dist/**/*.map"
   ],
   "repository": {
     "type": "git",
