@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.13
+
+### Patch Changes
+
+- a0b6453: refactored code and reduced bundle
+
 ## 1.0.12
 
 ### Patch Changes
