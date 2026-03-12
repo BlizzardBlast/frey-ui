@@ -69,6 +69,8 @@ const PlacementClassMap: Record<ToastPlacement, string> = {
   'bottom-left': styles.toast_viewport_bottom_left
 };
 
+let toastCounter = 0;
+
 function generateToastId(): string {
   if (
     typeof crypto !== 'undefined' &&
@@ -77,7 +79,8 @@ function generateToastId(): string {
     return crypto.randomUUID();
   }
 
-  return `toast-${Math.random().toString(36).slice(2, 11)}`;
+  toastCounter += 1;
+  return `toast-${toastCounter}`;
 }
 
 export function ToastProvider({

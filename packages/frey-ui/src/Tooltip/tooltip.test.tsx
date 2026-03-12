@@ -111,8 +111,8 @@ describe('Tooltip', () => {
 
         return createMockRect({});
       });
-    const originalInnerHeight = window.innerHeight;
-    Object.defineProperty(window, 'innerHeight', {
+    const originalInnerHeight = globalThis.innerHeight;
+    Object.defineProperty(globalThis, 'innerHeight', {
       configurable: true,
       value: 400
     });
@@ -162,7 +162,7 @@ describe('Tooltip', () => {
       });
     } finally {
       rectSpy.mockRestore();
-      Object.defineProperty(window, 'innerHeight', {
+      Object.defineProperty(globalThis, 'innerHeight', {
         configurable: true,
         value: originalInnerHeight
       });

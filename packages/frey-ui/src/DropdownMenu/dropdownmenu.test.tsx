@@ -307,8 +307,8 @@ describe('DropdownMenu', () => {
 
         return createMockRect({});
       });
-    const originalInnerWidth = window.innerWidth;
-    Object.defineProperty(window, 'innerWidth', {
+    const originalInnerWidth = globalThis.innerWidth;
+    Object.defineProperty(globalThis, 'innerWidth', {
       configurable: true,
       value: 360
     });
@@ -333,7 +333,7 @@ describe('DropdownMenu', () => {
       });
     } finally {
       rectSpy.mockRestore();
-      Object.defineProperty(window, 'innerWidth', {
+      Object.defineProperty(globalThis, 'innerWidth', {
         configurable: true,
         value: originalInnerWidth
       });

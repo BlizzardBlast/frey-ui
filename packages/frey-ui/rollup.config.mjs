@@ -25,7 +25,7 @@ function toPosixPath(filePath) {
 
 function prependAfterDirectivePrologue(code, statement) {
   const magicString = new MagicString(code);
-  const directiveRegex = /^(?:\s*['"][^'"\r\n]+['"];\s*(?:\r?\n|$))+/;
+  const directiveRegex = /^(?:[ \t]*['"][^'"\r\n]+['"];[ \t]*(?:\r?\n|$))+/;
   const directiveMatch = code.match(directiveRegex);
   const insertIndex = directiveMatch ? directiveMatch[0].length : 0;
 
@@ -99,7 +99,7 @@ function cssModulesPlugin() {
     },
 
     renderChunk(code, chunk, options) {
-      if (!chunk.facadeModuleId || !chunk.facadeModuleId.endsWith('.css')) {
+      if (!chunk.facadeModuleId?.endsWith('.css')) {
         return null;
       }
 

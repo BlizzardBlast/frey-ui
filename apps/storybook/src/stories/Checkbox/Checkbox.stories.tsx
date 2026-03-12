@@ -64,12 +64,21 @@ export const disabled_checkbox: Story = {
 
 export const indeterminate: Story = {
   render: function IndeterminateDemo() {
-    const [items, setItems] = useState([true, false, true]);
-    const allChecked = items.every(Boolean);
-    const someChecked = items.some(Boolean) && !allChecked;
+    const [items, setItems] = useState([
+      { id: '1', checked: true },
+      { id: '2', checked: false },
+      { id: '3', checked: true }
+    ]);
+    const allChecked = items.every((item) => item.checked);
+    const someChecked = items.some((item) => item.checked) && !allChecked;
 
     const handleSelectAll = () => {
-      setItems(allChecked ? [false, false, false] : [true, true, true]);
+      setItems(
+        items.map((item) => ({
+          ...item,
+          checked: !allChecked
+        }))
+      );
     };
 
     return (
@@ -81,14 +90,14 @@ export const indeterminate: Story = {
           onChange={handleSelectAll}
         />
         <div className='flex flex-col gap-1' style={{ paddingLeft: '1.5rem' }}>
-          {items.map((checked, i) => (
+          {items.map((item, i) => (
             <Checkbox
-              key={i}
+              key={item.id}
               label={`Item ${i + 1}`}
-              checked={checked}
+              checked={item.checked}
               onChange={() => {
                 const next = [...items];
-                next[i] = !next[i];
+                next[i] = { ...next[i], checked: !next[i].checked };
                 setItems(next);
               }}
             />

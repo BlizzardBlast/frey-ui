@@ -22,7 +22,7 @@ function writeError(message) {
 
 function normalizeHex(value, flagName) {
   if (typeof value !== 'string') {
-    throw new Error(`Missing color value for ${flagName}.`);
+    throw new TypeError(`Missing color value for ${flagName}.`);
   }
 
   const trimmed = value.trim();
@@ -86,7 +86,8 @@ function darken(hex, amount) {
 function parseArguments(argv) {
   const parsed = {};
 
-  for (let index = 0; index < argv.length; index += 1) {
+  let index = 0;
+  while (index < argv.length) {
     const flag = argv[index];
 
     if (!SUPPORTED_FLAGS.has(flag)) {
@@ -95,6 +96,7 @@ function parseArguments(argv) {
 
     if (flag === '--help') {
       parsed.help = true;
+      index += 1;
       continue;
     }
 
@@ -105,7 +107,7 @@ function parseArguments(argv) {
     }
 
     parsed[flag.replace(/^--/, '')] = value;
-    index += 1;
+    index += 2;
   }
 
   return parsed;

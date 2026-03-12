@@ -18,7 +18,8 @@ const Stack = React.forwardRef(function Stack<E extends BoxElement = 'div'>(
   { direction, ...restProps }: Readonly<StackProps<E>>,
   ref: PolymorphicRef<E>
 ) {
-  const stackDirection = (direction ?? 'vertical') as 'vertical' | 'horizontal';
+  const rawDirection = direction as 'vertical' | 'horizontal' | undefined;
+  const stackDirection = rawDirection ?? 'vertical';
 
   return (
     <Flex
