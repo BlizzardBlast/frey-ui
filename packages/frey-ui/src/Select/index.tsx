@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
 import { ChevronDownIcon } from '../Icons';
+import { computeAriaProps } from '../utils/aria';
 import styles from './select.module.css';
 
 export type SelectSize = 'sm' | 'md' | 'lg';
@@ -67,11 +68,6 @@ const Select: SelectComponent = React.forwardRef<
       style={style}
     >
       {({ inputId, describedBy, hasError }) => {
-        const mergedDescribedBy =
-          [describedBy, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
-        const isInvalid =
-          hasError || ariaInvalid === true || ariaInvalid === 'true';
-
         return (
           <div className={styles.select_wrapper}>
             <select
@@ -80,13 +76,17 @@ const Select: SelectComponent = React.forwardRef<
               disabled={disabled}
               required={required}
               multiple={multiple}
-              aria-invalid={isInvalid || undefined}
-              aria-describedby={mergedDescribedBy}
               className={clsx(
                 styles.select,
                 SizeClassMap[size],
                 hasError && styles.select_error,
                 multiple && styles.select_multiple
+              )}
+              {...computeAriaProps(
+                hasError,
+                describedBy,
+                ariaDescribedBy,
+                ariaInvalid
               )}
               {...selectProps}
             >

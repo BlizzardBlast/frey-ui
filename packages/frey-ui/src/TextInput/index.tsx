@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
+import { computeAriaProps } from '../utils/aria';
 import styles from './textinput.module.css';
 
 export type TextInputProps = Omit<
@@ -54,11 +55,6 @@ const TextInput: TextInputComponent = React.forwardRef<
       style={style}
     >
       {({ inputId, describedBy, hasError }) => {
-        const mergedDescribedBy =
-          [describedBy, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
-        const isInvalid =
-          hasError || ariaInvalid === true || ariaInvalid === 'true';
-
         return (
           <input
             ref={ref}
@@ -66,11 +62,15 @@ const TextInput: TextInputComponent = React.forwardRef<
             type={type}
             disabled={disabled}
             required={required}
-            aria-invalid={isInvalid || undefined}
-            aria-describedby={mergedDescribedBy}
             className={clsx(styles.input, {
               [styles['input-error']]: hasError
             })}
+            {...computeAriaProps(
+              hasError,
+              describedBy,
+              ariaDescribedBy,
+              ariaInvalid
+            )}
             {...inputProps}
           />
         );

@@ -4,31 +4,8 @@ import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import ThemeProvider from '../ThemeProvider';
+import { createMockRect } from '../utils/testUtils';
 import Popover from './index';
-
-function createMockRect({
-  x = 0,
-  y = 0,
-  width = 0,
-  height = 0
-}: Readonly<{
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-}>): DOMRect {
-  return {
-    x,
-    y,
-    width,
-    height,
-    top: y,
-    left: x,
-    right: x + width,
-    bottom: y + height,
-    toJSON: () => ({})
-  } as DOMRect;
-}
 
 describe('Popover', () => {
   it('toggles content from default native trigger button', async () => {

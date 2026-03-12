@@ -3,31 +3,8 @@ import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
+import { createMockRect } from '../utils/testUtils';
 import DropdownMenu from './index';
-
-function createMockRect({
-  x = 0,
-  y = 0,
-  width = 0,
-  height = 0
-}: Readonly<{
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-}>): DOMRect {
-  return {
-    x,
-    y,
-    width,
-    height,
-    top: y,
-    left: x,
-    right: x + width,
-    bottom: y + height,
-    toJSON: () => ({})
-  } as DOMRect;
-}
 
 describe('DropdownMenu', () => {
   it('opens from default native trigger button', async () => {

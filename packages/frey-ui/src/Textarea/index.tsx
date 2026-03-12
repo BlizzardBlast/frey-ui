@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
+import { computeAriaProps } from '../utils/aria';
 import styles from './textarea.module.css';
 
 export type TextareaResize = 'none' | 'vertical' | 'horizontal' | 'both';
@@ -63,23 +64,22 @@ const Textarea: TextareaComponent = React.forwardRef<
       style={style}
     >
       {({ inputId, describedBy, hasError }) => {
-        const mergedDescribedBy =
-          [describedBy, ariaDescribedBy].filter(Boolean).join(' ') || undefined;
-        const isInvalid =
-          hasError || ariaInvalid === true || ariaInvalid === 'true';
-
         return (
           <textarea
             id={inputId}
             ref={ref}
             disabled={disabled}
             required={required}
-            aria-invalid={isInvalid || undefined}
-            aria-describedby={mergedDescribedBy}
             className={clsx(
               styles.textarea,
               ResizeClassMap[resize],
               hasError && styles.textarea_error
+            )}
+            {...computeAriaProps(
+              hasError,
+              describedBy,
+              ariaDescribedBy,
+              ariaInvalid
             )}
             {...textareaProps}
           />
