@@ -1,5 +1,13 @@
 # @frey-ui/storybook
 
+## 1.0.4
+
+### Patch Changes
+
+- a0b6453: refactored code and reduced bundle
+- Updated dependencies [a0b6453]
+  - frey-ui@1.0.13
+
 ## 1.0.3
 
 ### Patch Changes
