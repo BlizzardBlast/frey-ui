@@ -23,6 +23,12 @@ function toPosixPath(filePath) {
   return filePath.split(path.sep).join('/');
 }
 
+function normalizeSourcemapSourcePath(sourcePath) {
+  return sourcePath
+    .replaceAll('\\', '/')
+    .replace(/^\.\.\/\.\.\/\.\.\/\.\.\/src\//, '../../../src/');
+}
+
 function prependAfterDirectivePrologue(code, statement) {
   const magicString = new MagicString(code);
   const directiveRegex = /^(?:[ \t]*['"][^'"\r\n]+['"];[ \t]*(?:\r?\n|$))+/;
@@ -125,8 +131,8 @@ function normalizeSourcemapPathsPlugin() {
         if (chunkOrAsset.type !== 'chunk' || !chunkOrAsset.map?.sources)
           continue;
 
-        chunkOrAsset.map.sources = chunkOrAsset.map.sources.map((sourcePath) =>
-          sourcePath.replace(/^\.\.\/\.\.\/\.\.\/\.\.\/src\//, '../../../src/')
+        chunkOrAsset.map.sources = chunkOrAsset.map.sources.map(
+          normalizeSourcemapSourcePath
         );
       }
     }
@@ -142,10 +148,7 @@ export default defineConfig([
         format: 'cjs',
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath) => {
-          return relativeSourcePath.replace(
-            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
-            '../../../src/'
-          );
+          return normalizeSourcemapSourcePath(relativeSourcePath);
         },
         exports: 'named',
         preserveModules: true,
@@ -161,10 +164,7 @@ export default defineConfig([
         exports: 'named',
         sourcemap: true,
         sourcemapPathTransform: (relativeSourcePath) => {
-          return relativeSourcePath.replace(
-            /^\.\.\/\.\.\/\.\.\/\.\.\/src\//,
-            '../../../src/'
-          );
+          return normalizeSourcemapSourcePath(relativeSourcePath);
         },
         preserveModules: true,
         preserveModulesRoot: 'src',
