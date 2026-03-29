@@ -20,6 +20,14 @@ describe('Checkbox', () => {
     expect(ref.current?.type).toBe('checkbox');
   });
 
+  it('supports function refs', () => {
+    const refCallback = vi.fn();
+
+    render(<Checkbox label='Function ref checkbox' ref={refCallback} />);
+
+    expect(refCallback).toHaveBeenCalledWith(expect.any(HTMLInputElement));
+  });
+
   it('toggles on click', async () => {
     const onChange = vi.fn();
     const user = userEvent.setup();

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
@@ -7,6 +7,12 @@ import { createMockRect } from '../utils/testUtils';
 import DropdownMenu from './index';
 
 describe('DropdownMenu', () => {
+  it('throws when a compound child is rendered outside DropdownMenu', () => {
+    expect(() => {
+      render(<DropdownMenu.Item>Invalid</DropdownMenu.Item>);
+    }).toThrow('DropdownMenu components must be wrapped in <DropdownMenu>');
+  });
+
   it('opens from default native trigger button', async () => {
     const user = userEvent.setup();
 
@@ -55,6 +61,47 @@ describe('DropdownMenu', () => {
     expect(
       screen.queryByRole('menuitem', { name: 'Rename' })
     ).not.toBeInTheDocument();
+  });
+
+  it('does not open when native trigger click is defaultPrevented', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger
+          onClick={(event) => {
+            event.preventDefault();
+          }}
+        >
+          Prevent native menu
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Prevent native menu' })
+    );
+
+    expect(
+      screen.queryByRole('menuitem', { name: 'Rename' })
+    ).not.toBeInTheDocument();
+  });
+
+  it('throws when asChild trigger receives a non-element child', () => {
+    expect(() => {
+      render(
+        <DropdownMenu>
+          <DropdownMenu.Trigger asChild>
+            Invalid trigger child
+          </DropdownMenu.Trigger>
+        </DropdownMenu>
+      );
+    }).toThrow(
+      'DropdownMenu.Trigger with asChild expects a single valid React element child.'
+    );
   });
 
   it('closes when clicking outside by default', async () => {
@@ -221,6 +268,105 @@ describe('DropdownMenu', () => {
     expect(duplicate).toHaveFocus();
   });
 
+  it('supports ArrowUp navigation from a focused menu item', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const rename = screen.getByRole('menuitem', { name: 'Rename' });
+    const duplicate = screen.getByRole('menuitem', { name: 'Duplicate' });
+
+    await user.keyboard('{ArrowDown}');
+    expect(duplicate).toHaveFocus();
+
+    await user.keyboard('{ArrowUp}');
+    expect(rename).toHaveFocus();
+  });
+
+  it('supports ArrowUp and ArrowDown from menu container without focused item', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const menu = screen.getByRole('menu');
+    const rename = screen.getByRole('menuitem', { name: 'Rename' });
+    const duplicate = screen.getByRole('menuitem', { name: 'Duplicate' });
+
+    fireEvent.keyDown(menu, { key: 'ArrowUp' });
+    expect(duplicate).toHaveFocus();
+
+    fireEvent.keyDown(menu, { key: 'ArrowDown' });
+    expect(rename).toHaveFocus();
+  });
+
+  it('supports Home and End key navigation from menu container', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+          <DropdownMenu.Item>Duplicate</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const menu = screen.getByRole('menu');
+    const rename = screen.getByRole('menuitem', { name: 'Rename' });
+    const duplicate = screen.getByRole('menuitem', { name: 'Duplicate' });
+
+    fireEvent.keyDown(menu, { key: 'End' });
+    expect(duplicate).toHaveFocus();
+
+    fireEvent.keyDown(menu, { key: 'Home' });
+    expect(rename).toHaveFocus();
+  });
+
+  it('handles keydown events that originate from non-HTMLElement targets', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <svg data-testid='menu-icon' />
+          <DropdownMenu.Item>Rename</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const icon = screen.getByTestId('menu-icon');
+
+    fireEvent.keyDown(icon, { key: 'ArrowDown' });
+
+    expect(screen.getByRole('menuitem', { name: 'Rename' })).toHaveFocus();
+  });
+
   it('traps keyboard focus within menu content when open', async () => {
     const user = userEvent.setup();
 
@@ -250,6 +396,44 @@ describe('DropdownMenu', () => {
 
     await user.tab();
     expect(outside).not.toHaveFocus();
+    expect(screen.getByRole('menu')).toBeInTheDocument();
+  });
+
+  it('returns early from item click handler when disabled is true', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+
+    render(
+      <DropdownMenu>
+        <DropdownMenu.Trigger>Open menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item disabled onSelect={onSelect}>
+            Disabled action
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Open menu' }));
+
+    const disabledItem = screen.getByRole('menuitem', {
+      name: 'Disabled action'
+    });
+    const reactPropsKey = Object.keys(disabledItem).find((key) =>
+      key.startsWith('__reactProps$')
+    );
+    const reactProps = reactPropsKey
+      ? ((disabledItem as unknown as Record<string, unknown>)[
+          reactPropsKey
+        ] as {
+          onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+        })
+      : undefined;
+
+    expect(typeof reactProps?.onClick).toBe('function');
+    reactProps?.onClick?.({} as React.MouseEvent<HTMLButtonElement>);
+
+    expect(onSelect).not.toHaveBeenCalled();
     expect(screen.getByRole('menu')).toBeInTheDocument();
   });
 

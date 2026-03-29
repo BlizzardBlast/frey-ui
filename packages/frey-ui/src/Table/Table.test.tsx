@@ -63,6 +63,22 @@ describe('Table', () => {
     expect(table.parentElement).toHaveClass(styles.table_container);
   });
 
+  it('renders footer section semantics', () => {
+    render(
+      <Table>
+        <Table.Footer>
+          <Table.Row>
+            <Table.Cell>Summary</Table.Cell>
+          </Table.Row>
+        </Table.Footer>
+      </Table>
+    );
+
+    const cell = screen.getByRole('cell', { name: 'Summary' });
+
+    expect(cell.closest('tfoot')).toBeInTheDocument();
+  });
+
   it('forwards refs to the table element', () => {
     const ref = React.createRef<HTMLTableElement>();
 

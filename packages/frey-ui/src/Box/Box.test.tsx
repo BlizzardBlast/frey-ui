@@ -89,6 +89,34 @@ describe('Box', () => {
     );
   });
 
+  it('removes token margins and gaps when shorthand overrides are provided', () => {
+    render(
+      <Box
+        data-testid='box'
+        mt='4'
+        mr='4'
+        mb='4'
+        ml='4'
+        rowGap='2'
+        columnGap='2'
+        style={{ margin: '6px', gap: '10px' }}
+      />
+    );
+
+    const box = screen.getByTestId('box');
+    const inlineStyle = box.getAttribute('style') ?? '';
+
+    expect(box.style.getPropertyValue('margin')).toBe('6px');
+    expect(inlineStyle).not.toContain('margin-top');
+    expect(inlineStyle).not.toContain('margin-right');
+    expect(inlineStyle).not.toContain('margin-bottom');
+    expect(inlineStyle).not.toContain('margin-left');
+
+    expect(box.style.getPropertyValue('gap')).toBe('10px');
+    expect(inlineStyle).not.toContain('row-gap');
+    expect(inlineStyle).not.toContain('column-gap');
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(<Box as='section'>Accessible content</Box>);
 

@@ -31,6 +31,17 @@ describe('RadioGroup', () => {
     expect(screen.getByRole('radio', { name: /^Pro/ })).toBeChecked();
   });
 
+  it('updates internal value in uncontrolled mode when selecting another option', async () => {
+    const user = userEvent.setup();
+
+    render(<RadioGroup label='Tier' options={options} defaultValue='basic' />);
+
+    const proRadio = screen.getByRole('radio', { name: /^Pro/ });
+    await user.click(proRadio);
+
+    expect(proRadio).toBeChecked();
+  });
+
   it('supports controlled value with onChange', async () => {
     const onChange = vi.fn();
     const user = userEvent.setup();

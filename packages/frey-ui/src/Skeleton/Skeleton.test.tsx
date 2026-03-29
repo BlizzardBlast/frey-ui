@@ -37,6 +37,14 @@ describe('Skeleton', () => {
     expect(el.style.height).toBe('40px');
   });
 
+  it('infers circle width from height when width is omitted', () => {
+    const { container } = render(<Skeleton shape='circle' height={24} />);
+    const el = container.firstChild as HTMLElement;
+
+    expect(el.style.width).toBe('24px');
+    expect(el.style.height).toBe('24px');
+  });
+
   it('applies custom className', () => {
     const { container } = render(<Skeleton className='custom' />);
     const el = container.firstChild as HTMLElement;

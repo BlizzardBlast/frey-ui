@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import React from 'react';
@@ -33,6 +33,22 @@ describe('Switch', () => {
     await user.keyboard('{Enter}');
 
     expect(onChange).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not toggle with Enter when disabled', () => {
+    const onChange = vi.fn();
+
+    render(
+      <Switch label='Disabled keyboard switch' disabled onChange={onChange} />
+    );
+
+    const input = screen.getByRole('switch', {
+      name: 'Disabled keyboard switch'
+    });
+
+    fireEvent.keyDown(input, { key: 'Enter' });
+
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   it('does not use disabled attribute on wrapper span', () => {

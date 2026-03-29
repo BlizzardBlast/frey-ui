@@ -53,6 +53,22 @@ describe('Chip', () => {
     expect(chip).toHaveAttribute('tabindex', '0');
   });
 
+  it('treats anchors as interactive only when href is a non-empty string', () => {
+    render(
+      <>
+        <Chip as='a' label='Anchor with href' href='https://example.com' />
+        <Chip as='a' label='Anchor without href' href='   ' />
+      </>
+    );
+
+    expect(screen.getByRole('link', { name: 'Anchor with href' })).toHaveClass(
+      styles['chip-default-clickable']
+    );
+
+    const plainAnchor = screen.getByText('Anchor without href').closest('a');
+    expect(plainAnchor).not.toHaveClass(styles['chip-default-clickable']);
+  });
+
   it('handles keyboard Enter on non-native interactive elements', async () => {
     const onClick = vi.fn();
     const user = userEvent.setup();
@@ -77,6 +93,19 @@ describe('Chip', () => {
     await user.keyboard(' ');
 
     expect(onClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('ignores unrelated keys on non-native interactive elements', async () => {
+    const onClick = vi.fn();
+    const user = userEvent.setup();
+
+    render(<Chip as='div' label='Arrow key chip' onClick={onClick} />);
+
+    const chip = screen.getByRole('button', { name: 'Arrow key chip' });
+    chip.focus();
+    await user.keyboard('{ArrowRight}');
+
+    expect(onClick).not.toHaveBeenCalled();
   });
 
   it('does not add role or tabIndex to non-interactive elements', () => {

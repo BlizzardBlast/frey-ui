@@ -30,6 +30,24 @@ describe('Progress', () => {
     ).not.toHaveAttribute('value');
   });
 
+  it('falls back to safe max and safe value for invalid numeric input', () => {
+    render(<Progress value={Number.NaN} max={0} />);
+
+    const progressbar = screen.getByRole('progressbar', { name: 'Progress' });
+
+    expect(progressbar).toHaveAttribute('max', '100');
+    expect(progressbar).toHaveAttribute('value', '0');
+  });
+
+  it('renders value text without label when showValue is true', () => {
+    render(<Progress value={20} showValue />);
+
+    expect(screen.getByText('20%')).toBeInTheDocument();
+    expect(
+      screen.getByRole('progressbar', { name: 'Progress' })
+    ).toBeInTheDocument();
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(
       <Progress label='A11y progress' value={75} showValue />

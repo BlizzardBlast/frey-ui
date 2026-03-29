@@ -32,7 +32,7 @@ function resolveSize(size: SpinnerSize | number | undefined) {
 const Spinner: SpinnerComponent = React.forwardRef<
   HTMLOutputElement,
   Readonly<SpinnerProps>
->(function Spinner({ size = 'md', label = 'Loading', className, style }, ref) {
+>(function Spinner({ size, label = 'Loading', className, style }, ref) {
   const resolvedSize = resolveSize(size);
 
   return (

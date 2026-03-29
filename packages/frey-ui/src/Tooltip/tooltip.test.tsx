@@ -1,12 +1,25 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { renderToString } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import { createMockRect } from '../utils/testUtils';
 import Tooltip from './index';
 
 describe('Tooltip', () => {
+  it('throws when asChild receives a non-element child', () => {
+    expect(() => {
+      render(
+        <Tooltip asChild content='Invalid child'>
+          Invalid child
+        </Tooltip>
+      );
+    }).toThrow(
+      'Tooltip with asChild expects a single valid React element child.'
+    );
+  });
+
   it('shows tooltip on hover with default native trigger button', async () => {
     const user = userEvent.setup();
 
@@ -155,5 +168,18 @@ describe('Tooltip', () => {
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it('returns only the trigger in server mode when document is unavailable', () => {
+    vi.stubGlobal('document', undefined);
+
+    const markup = renderToString(
+      <Tooltip content='Server tooltip'>Server trigger</Tooltip>
+    );
+
+    expect(markup).toContain('Server trigger');
+    expect(markup).not.toContain('role="tooltip"');
+
+    vi.unstubAllGlobals();
   });
 });

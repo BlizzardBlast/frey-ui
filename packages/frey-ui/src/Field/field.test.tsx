@@ -53,6 +53,22 @@ describe('Field', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders required indicator for label and span label variants', () => {
+    render(
+      <>
+        <Field label='Required input' required>
+          {({ inputId }) => <input id={inputId} />}
+        </Field>
+        <Field label='Required group' labelElement='span' required>
+          {({ labelId }) => <fieldset aria-labelledby={labelId} />}
+        </Field>
+      </>
+    );
+
+    const indicators = screen.getAllByText('*');
+    expect(indicators).toHaveLength(2);
+  });
+
   it('has no accessibility violations', async () => {
     const { container } = render(
       <Field label='A11y label' helperText='Helper'>

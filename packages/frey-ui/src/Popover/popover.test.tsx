@@ -8,6 +8,12 @@ import { createMockRect } from '../utils/testUtils';
 import Popover from './index';
 
 describe('Popover', () => {
+  it('throws when a compound child is rendered outside Popover', () => {
+    expect(() => {
+      render(<Popover.Content>Invalid usage</Popover.Content>);
+    }).toThrow('Popover components must be wrapped in <Popover>');
+  });
+
   it('toggles content from default native trigger button', async () => {
     const user = userEvent.setup();
 
@@ -46,6 +52,41 @@ describe('Popover', () => {
     await user.click(screen.getByRole('button', { name: 'Prevent popover' }));
 
     expect(screen.queryByText('Content')).not.toBeInTheDocument();
+  });
+
+  it('does not open when native trigger click is defaultPrevented', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Popover>
+        <Popover.Trigger
+          onClick={(event) => {
+            event.preventDefault();
+          }}
+        >
+          Prevent native open
+        </Popover.Trigger>
+        <Popover.Content>Native content</Popover.Content>
+      </Popover>
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Prevent native open' })
+    );
+
+    expect(screen.queryByText('Native content')).not.toBeInTheDocument();
+  });
+
+  it('throws when asChild trigger receives a non-element child', () => {
+    expect(() => {
+      render(
+        <Popover>
+          <Popover.Trigger asChild>Invalid trigger child</Popover.Trigger>
+        </Popover>
+      );
+    }).toThrow(
+      'Popover.Trigger with asChild expects a single valid React element child.'
+    );
   });
 
   it('closes when clicking outside by default', async () => {

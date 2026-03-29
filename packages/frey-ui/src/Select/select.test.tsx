@@ -40,6 +40,18 @@ describe('Select', () => {
     ).toBeInTheDocument();
   });
 
+  it('does not render placeholder option when multiple is true', () => {
+    render(
+      <Select label='Frameworks' placeholder='Choose frameworks' multiple>
+        <option value='react'>React</option>
+      </Select>
+    );
+
+    expect(
+      screen.queryByText('Choose frameworks', { selector: 'option' })
+    ).not.toBeInTheDocument();
+  });
+
   it('supports controlled value changes', async () => {
     const onChange = vi.fn();
     const user = userEvent.setup();

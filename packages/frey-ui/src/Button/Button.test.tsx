@@ -64,6 +64,27 @@ describe('Button', () => {
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
 
+  it('throws when asChild receives a non-element child', () => {
+    expect(() => {
+      render(<Button asChild>{'Invalid child'}</Button>);
+    }).toThrow(
+      'Button with asChild expects a single valid React element child.'
+    );
+  });
+
+  it('renders spinner content when loading in asChild mode', () => {
+    render(
+      <Button asChild loading>
+        <a href='https://example.com'>Loading link</a>
+      </Button>
+    );
+
+    const link = screen.getByRole('link', { name: 'Loading link' });
+
+    expect(link).toHaveAttribute('aria-disabled', 'true');
+    expect(link.querySelector('span')).toBeInTheDocument();
+  });
+
   it('sets aria-disabled on asChild anchors when disabled', async () => {
     const user = userEvent.setup();
     const onClick = vi.fn();
