@@ -35,6 +35,61 @@ describe('Switch', () => {
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 
+  it('syncs checked state in uncontrolled mode', async () => {
+    const user = userEvent.setup();
+
+    render(<Switch label='Uncontrolled switch' />);
+
+    const input = screen.getByRole('switch', { name: 'Uncontrolled switch' });
+
+    expect(input).not.toBeChecked();
+    expect(input).toHaveAttribute('aria-checked', 'false');
+
+    await user.click(input);
+
+    expect(input).toBeChecked();
+    expect(input).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('syncs checked state in controlled mode without stale aria-checked', () => {
+    const { rerender } = render(
+      <Switch label='Controlled switch' checked={false} />
+    );
+
+    const input = screen.getByRole('switch', { name: 'Controlled switch' });
+
+    expect(input).not.toBeChecked();
+    expect(input).toHaveAttribute('aria-checked', 'false');
+
+    rerender(<Switch label='Controlled switch' checked />);
+
+    expect(input).toBeChecked();
+    expect(input).toHaveAttribute('aria-checked', 'true');
+  });
+
+  it('does not mutate internal checked state in controlled mode on change', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+
+    render(
+      <Switch
+        label='Controlled click switch'
+        checked={false}
+        onChange={onChange}
+      />
+    );
+
+    const input = screen.getByRole('switch', {
+      name: 'Controlled click switch'
+    });
+
+    await user.click(input);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(input).not.toBeChecked();
+    expect(input).toHaveAttribute('aria-checked', 'false');
+  });
+
   it('does not toggle with Enter when disabled', () => {
     const onChange = vi.fn();
 

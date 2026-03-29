@@ -12,6 +12,12 @@ describe('Progress', () => {
     expect(
       screen.getByRole('progressbar', { name: 'Upload progress' })
     ).toHaveAttribute('value', '45');
+    expect(
+      screen.getByRole('progressbar', { name: 'Upload progress' })
+    ).toHaveAttribute('aria-valuenow', '45');
+    expect(
+      screen.getByRole('progressbar', { name: 'Upload progress' })
+    ).toHaveAttribute('aria-valuetext', '45%');
   });
 
   it('clamps values above max', () => {
@@ -25,9 +31,14 @@ describe('Progress', () => {
   it('supports indeterminate mode', () => {
     render(<Progress label='Loading progress' indeterminate />);
 
-    expect(
-      screen.getByRole('progressbar', { name: 'Loading progress' })
-    ).not.toHaveAttribute('value');
+    const progressbar = screen.getByRole('progressbar', {
+      name: 'Loading progress'
+    });
+
+    expect(progressbar).not.toHaveAttribute('value');
+    expect(progressbar).not.toHaveAttribute('aria-valuenow');
+    expect(progressbar).toHaveAttribute('aria-valuetext', 'Loading');
+    expect(progressbar).toHaveAttribute('aria-busy', 'true');
   });
 
   it('falls back to safe max and safe value for invalid numeric input', () => {

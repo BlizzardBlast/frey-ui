@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import type React from 'react';
-import { createContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import styles from './themeprovider.module.css';
 
 export type FreyTheme = 'light' | 'dark' | 'system';
@@ -22,6 +22,16 @@ export type ThemeContextValue = {
 export const ThemeContext: React.Context<ThemeContextValue | null> =
   createContext<ThemeContextValue | null>(null);
 
+export function useTheme(): ThemeContextValue {
+  const context = useContext(ThemeContext);
+
+  if (!context) {
+    throw new Error('useTheme must be used within a ThemeProvider.');
+  }
+
+  return context;
+}
+
 function ThemeProvider({
   children,
   theme = 'light',
@@ -33,7 +43,9 @@ function ThemeProvider({
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
-    if (theme !== 'system') return;
+    if (theme !== 'system' || typeof globalThis.matchMedia !== 'function') {
+      return;
+    }
 
     const mediaQuery = globalThis.matchMedia('(prefers-color-scheme: dark)');
     setSystemTheme(mediaQuery.matches ? 'dark' : 'light');

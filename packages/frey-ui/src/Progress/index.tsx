@@ -80,6 +80,10 @@ const Progress: ProgressComponent = React.forwardRef<
             barClassName
           )}
           aria-label={label ?? 'Progress'}
+          aria-busy={indeterminate || undefined}
+          aria-valuenow={indeterminate ? undefined : safeValue}
+          aria-valuemax={safeMax}
+          aria-valuetext={indeterminate ? 'Loading' : valueText}
           value={indeterminate ? undefined : safeValue}
           max={safeMax}
         />

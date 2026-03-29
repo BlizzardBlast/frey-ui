@@ -209,6 +209,8 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
       ref={ref}
       id={`${idPrefix}-content-${value}`}
       aria-labelledby={`${idPrefix}-trigger-${value}`}
+      aria-hidden={!isOpen}
+      hidden={!isOpen}
       className={clsx(styles.accordion_content_wrapper, {
         [styles.accordion_content_wrapper_open]: isOpen
       })}

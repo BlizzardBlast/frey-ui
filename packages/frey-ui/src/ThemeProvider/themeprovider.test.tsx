@@ -1,10 +1,9 @@
 import { act, render, screen } from '@testing-library/react';
-import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import ThemeProvider, { ThemeContext } from './index';
+import ThemeProvider, { useTheme } from './index';
 
 function ThemeConsumer() {
-  const value = React.useContext(ThemeContext);
+  const value = useTheme();
 
   return (
     <output
@@ -19,6 +18,17 @@ describe('ThemeProvider', () => {
   afterEach(() => {
     vi.restoreAllMocks();
     vi.unstubAllGlobals();
+  });
+
+  it('throws when useTheme is consumed outside ThemeProvider', () => {
+    function InvalidConsumer() {
+      useTheme();
+      return <div>Invalid usage</div>;
+    }
+
+    expect(() => {
+      render(<InvalidConsumer />);
+    }).toThrow('useTheme must be used within a ThemeProvider.');
   });
 
   it('applies static theme props and provides context values', () => {
@@ -131,5 +141,19 @@ describe('ThemeProvider', () => {
     const providerRoot = screen.getByTestId('theme-consumer').parentElement;
 
     expect(providerRoot).toHaveAttribute('data-frey-theme', 'dark');
+  });
+
+  it('does not crash in system mode when matchMedia is unavailable', () => {
+    vi.stubGlobal('matchMedia', undefined);
+
+    render(
+      <ThemeProvider theme='system'>
+        <ThemeConsumer />
+      </ThemeProvider>
+    );
+
+    const providerRoot = screen.getByTestId('theme-consumer').parentElement;
+
+    expect(providerRoot).toHaveAttribute('data-frey-theme', 'light');
   });
 });

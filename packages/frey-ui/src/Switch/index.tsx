@@ -39,14 +39,25 @@ const Switch: SwitchComponent = React.forwardRef<
     disabled = false,
     onChange,
     onKeyDown,
+    checked,
+    defaultChecked,
     ...inputProps
   },
   ref
 ) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
+  const isControlled = checked !== undefined;
+  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(
+    Boolean(defaultChecked)
+  );
+  const currentChecked = isControlled ? Boolean(checked) : uncontrolledChecked;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (!isControlled) {
+      setUncontrolledChecked(event.target.checked);
+    }
+
     onChange?.(event);
   };
 
@@ -73,10 +84,11 @@ const Switch: SwitchComponent = React.forwardRef<
           type='checkbox'
           role='switch'
           id={inputId}
+          checked={currentChecked}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
           disabled={disabled}
-          aria-checked={inputProps.checked}
+          aria-checked={currentChecked}
           ref={ref}
           {...inputProps}
         />

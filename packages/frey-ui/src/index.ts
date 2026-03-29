@@ -132,8 +132,12 @@ export type { TextareaProps, TextareaResize } from './Textarea';
 export { default as Textarea } from './Textarea';
 export type { TextInputProps } from './TextInput';
 export { default as TextInput } from './TextInput';
-export type { FreyTheme, ThemeProviderProps } from './ThemeProvider';
-export { default as ThemeProvider } from './ThemeProvider';
+export type {
+  FreyTheme,
+  ThemeContextValue,
+  ThemeProviderProps
+} from './ThemeProvider';
+export { default as ThemeProvider, useTheme } from './ThemeProvider';
 export type {
   ToastAction,
   ToastOptions,
