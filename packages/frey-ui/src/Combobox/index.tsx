@@ -118,6 +118,7 @@ const Combobox: ComboboxComponent = React.forwardRef<
   const [activeIndex, setActiveIndex] = React.useState(-1);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const suppressOpenOnNextInputChangeRef = React.useRef(false);
 
   const query = currentValue.trim().toLowerCase();
   const filteredOptions = React.useMemo(() => {
@@ -146,6 +147,7 @@ const Combobox: ComboboxComponent = React.forwardRef<
       closeOptions();
 
       if (onChange && inputRef.current) {
+        suppressOpenOnNextInputChangeRef.current = true;
         dispatchInputChangeEvent(inputRef.current, option.label);
       }
     },
@@ -190,13 +192,21 @@ const Combobox: ComboboxComponent = React.forwardRef<
         const listboxId = `${inputId}-listbox`;
         const activeOptionId =
           activeIndex >= 0 ? `${inputId}-option-${activeIndex}` : undefined;
+        const isPopupVisible = open && !disabled;
 
         const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
           event
         ) => {
+          const shouldKeepClosed = suppressOpenOnNextInputChangeRef.current;
+          suppressOpenOnNextInputChangeRef.current = false;
+
           setCurrentValue(event.target.value);
-          setOpen(true);
-          setActiveIndex(-1);
+
+          if (!shouldKeepClosed) {
+            setOpen(true);
+            setActiveIndex(-1);
+          }
+
           onChange?.(event);
         };
 
@@ -304,9 +314,11 @@ const Combobox: ComboboxComponent = React.forwardRef<
                 autoComplete={autoComplete ?? 'off'}
                 aria-autocomplete='list'
                 aria-haspopup='listbox'
-                aria-expanded={open}
-                aria-controls={open ? listboxId : undefined}
-                aria-activedescendant={activeOptionId}
+                aria-expanded={isPopupVisible}
+                aria-controls={isPopupVisible ? listboxId : undefined}
+                aria-activedescendant={
+                  isPopupVisible ? activeOptionId : undefined
+                }
                 className={clsx(
                   styles.combobox_input,
                   SizeClassMap[size],
@@ -328,8 +340,12 @@ const Combobox: ComboboxComponent = React.forwardRef<
               <ChevronDownIcon className={styles.combobox_icon} size={16} />
             </div>
 
-            {open && !disabled && (
-              <div id={listboxId} className={styles.combobox_listbox}>
+            {isPopupVisible && (
+              <div
+                id={listboxId}
+                role='listbox'
+                className={styles.combobox_listbox}
+              >
                 {filteredOptions.length === 0 && (
                   <p className={styles.combobox_empty_state}>{noResultsText}</p>
                 )}
@@ -342,8 +358,10 @@ const Combobox: ComboboxComponent = React.forwardRef<
                       key={option.value}
                       id={`${inputId}-option-${index}`}
                       type='button'
-                      disabled={option.disabled}
-                      aria-pressed={isActive}
+                      role='option'
+                      tabIndex={-1}
+                      aria-selected={isActive}
+                      aria-disabled={option.disabled || undefined}
                       className={clsx(styles.combobox_option, {
                         [styles.combobox_option_active]: isActive,
                         [styles.combobox_option_disabled]: option.disabled
