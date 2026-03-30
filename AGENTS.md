@@ -17,8 +17,8 @@ nvm use 22
 
 Source of truth for Node version:
 
-- `.nvmrc` is `22.22.0`
-- root `package.json` `engines.node` is `22.22.0`
+- `.nvmrc` is `22.22.2`
+- root `package.json` `engines.node` is `22.22.2`
 
 Install dependencies with CI parity:
 
