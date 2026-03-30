@@ -222,7 +222,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "jest-axe": "^10.0.0",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.0.1",
     "magic-string": "0.30.21",
     "postcss": "8.5.8",
     "postcss-modules": "6.0.1",
