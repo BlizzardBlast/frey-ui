@@ -1,5 +1,13 @@
 # @frey-ui/storybook
 
+## 1.0.5
+
+### Patch Changes
+
+- 8375394: feat: added combobox
+- Updated dependencies [8375394]
+  - frey-ui@1.0.14
+
 ## 1.0.4
 
 ### Patch Changes
