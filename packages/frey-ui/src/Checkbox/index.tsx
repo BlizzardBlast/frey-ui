@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React, { useId, useLayoutEffect, useRef } from 'react';
 import { CheckIcon, MinusIcon } from '../Icons';
+import { mergeRefs } from '../utils/mergeRefs';
 import styles from './checkbox.module.css';
 
 export type CheckboxSize = 'sm' | 'md' | 'lg';
@@ -47,24 +48,13 @@ const Checkbox: CheckboxComponent = React.forwardRef<
   const generatedId = useId();
   const inputId = id ?? generatedId;
   const internalRef = useRef<HTMLInputElement | null>(null);
+  const mergedRef = mergeRefs(internalRef, forwardedRef);
 
   useLayoutEffect(() => {
     if (internalRef.current) {
       internalRef.current.indeterminate = indeterminate;
     }
   }, [indeterminate]);
-
-  const setRef = (node: HTMLInputElement | null) => {
-    internalRef.current = node;
-    if (node) {
-      node.indeterminate = indeterminate;
-    }
-    if (typeof forwardedRef === 'function') {
-      forwardedRef(node);
-    } else if (forwardedRef) {
-      forwardedRef.current = node;
-    }
-  };
 
   return (
     <div
@@ -81,7 +71,7 @@ const Checkbox: CheckboxComponent = React.forwardRef<
           type='checkbox'
           id={inputId}
           disabled={disabled}
-          ref={setRef}
+          ref={mergedRef}
           aria-checked={indeterminate ? 'mixed' : undefined}
           {...inputProps}
         />
@@ -101,7 +91,7 @@ const Checkbox: CheckboxComponent = React.forwardRef<
       <label
         htmlFor={inputId}
         className={clsx(styles.label, {
-          [styles['visually-hidden']]: hideLabel
+          [styles.visually_hidden]: hideLabel
         })}
       >
         {label}

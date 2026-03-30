@@ -37,17 +37,17 @@ describe('Accordion', () => {
     const panel = screen.getByText('First content').closest('section');
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(panel).toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'true');
 
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(panel).not.toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'false');
 
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
-    expect(panel).toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('keeps collapsed content out of keyboard tab order', async () => {
@@ -117,18 +117,18 @@ describe('Accordion', () => {
     const firstPanel = screen.getByText('First body').closest('section');
     const secondPanel = screen.getByText('Second body').closest('section');
 
-    expect(firstPanel).not.toHaveAttribute('hidden');
-    expect(secondPanel).toHaveAttribute('hidden');
+    expect(firstPanel).toHaveAttribute('aria-hidden', 'false');
+    expect(secondPanel).toHaveAttribute('aria-hidden', 'true');
 
     await user.click(secondTrigger);
 
-    expect(firstPanel).not.toHaveAttribute('hidden');
-    expect(secondPanel).not.toHaveAttribute('hidden');
+    expect(firstPanel).toHaveAttribute('aria-hidden', 'false');
+    expect(secondPanel).toHaveAttribute('aria-hidden', 'false');
 
     await user.click(firstTrigger);
 
-    expect(firstPanel).toHaveAttribute('hidden');
-    expect(secondPanel).not.toHaveAttribute('hidden');
+    expect(firstPanel).toHaveAttribute('aria-hidden', 'true');
+    expect(secondPanel).toHaveAttribute('aria-hidden', 'false');
   });
 
   it('supports multiple mode without defaultValue', async () => {
@@ -146,11 +146,11 @@ describe('Accordion', () => {
     const trigger = screen.getByRole('button', { name: 'No default multiple' });
     const panel = screen.getByText('No default body').closest('section');
 
-    expect(panel).toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'true');
 
     await user.click(trigger);
 
-    expect(panel).not.toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'false');
   });
 
   it('handles non-string controlled value in single mode defensively', async () => {
@@ -196,7 +196,7 @@ describe('Accordion', () => {
     await user.click(trigger);
 
     expect(onValueChange).toHaveBeenCalledWith(['one']);
-    expect(panel).toHaveAttribute('hidden');
+    expect(panel).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('supports controlled value via onValueChange', async () => {
@@ -223,7 +223,7 @@ describe('Accordion', () => {
     expect(onValueChange).toHaveBeenNthCalledWith(2, 'two');
     expect(
       screen.getByText('First controlled body').closest('section')
-    ).not.toHaveAttribute('hidden');
+    ).toHaveAttribute('aria-hidden', 'false');
   });
 
   it('has no accessibility violations', async () => {

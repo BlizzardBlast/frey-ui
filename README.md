@@ -10,7 +10,7 @@ This repository contains the Frey UI design system package and its Storybook app
 ## Requirements
 
 - Node.js `22.22.0` (see `.nvmrc`)
-- pnpm `10.30.0`
+- pnpm `10.30.2`
 
 ## Getting Started
 

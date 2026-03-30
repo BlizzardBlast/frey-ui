@@ -40,7 +40,7 @@ const meta: Meta<SwitchStoryProps> = {
 export default meta;
 type Story = StoryObj<SwitchStoryProps>;
 
-export const Basic_Switch: Story = {
+export const basic_switch: Story = {
   args: {
     label: 'Enable notifications'
   },
@@ -51,7 +51,7 @@ export const Basic_Switch: Story = {
   )
 } satisfies Story;
 
-export const Hidden_Label: Story = {
+export const hidden_label: Story = {
   args: {
     label: 'Toggle feature',
     hideLabel: true
@@ -59,7 +59,7 @@ export const Hidden_Label: Story = {
   render: (args) => <Switch {...args} />
 } satisfies Story;
 
-export const Sizes: Story = {
+export const sizes: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
       <Switch label='Small' size='sm' />
@@ -69,7 +69,7 @@ export const Sizes: Story = {
   )
 } satisfies Story;
 
-export const Disabled: Story = {
+export const disabled: Story = {
   render: () => (
     <div className='flex flex-col gap-4'>
       <Switch label='Disabled unchecked' disabled />
@@ -78,7 +78,7 @@ export const Disabled: Story = {
   )
 } satisfies Story;
 
-export const Controlled: Story = {
+export const controlled: Story = {
   render: function ControlledSwitch() {
     const [checked, setChecked] = useState(false);
     return (
@@ -94,7 +94,7 @@ export const Controlled: Story = {
   }
 } satisfies Story;
 
-export const Custom_Colors: Story = {
+export const custom_colors: Story = {
   args: {
     label: 'Custom themed switch'
   },
@@ -112,7 +112,7 @@ export const Custom_Colors: Story = {
   )
 } satisfies Story;
 
-export const Toggle_Interaction: Story = {
+export const toggle_interaction: Story = {
   args: {
     label: 'Interactive switch'
   },
@@ -133,7 +133,7 @@ export const Toggle_Interaction: Story = {
   }
 } satisfies Story;
 
-export const Keyboard_Toggle: Story = {
+export const keyboard_toggle: Story = {
   args: {
     label: 'Keyboard switch'
   },
@@ -153,7 +153,7 @@ export const Keyboard_Toggle: Story = {
   }
 } satisfies Story;
 
-export const Disabled_Interaction: Story = {
+export const disabled_interaction: Story = {
   args: {
     label: 'Disabled switch',
     disabled: true

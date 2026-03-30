@@ -273,7 +273,6 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
         <div
           id={`${idPrefix}-content`}
           ref={mergeRefs(ref, setFloating as React.RefCallback<HTMLDivElement>)}
-          aria-live='polite'
           className={clsx(styles.popover_content, className)}
           style={{
             ...floatingStyles,

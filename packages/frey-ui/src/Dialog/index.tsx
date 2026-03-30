@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import React, { createContext, useContext, useId, useState } from 'react';
+import React, { createContext, useContext, useId } from 'react';
+import { useControllableState } from '../hooks/useControllableState';
 import { CloseIcon } from '../Icons';
 import { mergeRefs } from '../utils/mergeRefs';
 import Portal from '../utils/Portal';
@@ -41,19 +42,10 @@ const DialogRoot: DialogRootComponent = function Dialog({
   children
 }: Readonly<DialogProps>): React.JSX.Element {
   const idPrefix = useId();
-  const isControlled = open !== undefined;
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-
-  const currentOpen = isControlled ? open : uncontrolledOpen;
-
-  const handleOpenChange = React.useCallback(
-    (nextOpen: boolean) => {
-      if (!isControlled) {
-        setUncontrolledOpen(nextOpen);
-      }
-      onOpenChange?.(nextOpen);
-    },
-    [isControlled, onOpenChange]
+  const [currentOpen, handleOpenChange] = useControllableState(
+    open,
+    defaultOpen,
+    onOpenChange
   );
 
   const contextValue = React.useMemo(

@@ -84,3 +84,16 @@
     transform: translateX(320%);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .progress_track::-webkit-progress-value,
+  .progress_track::-moz-progress-bar {
+    transition: none;
+  }
+
+  .progress_track_indeterminate::before {
+    animation: none;
+    width: 60%;
+    transform: translateX(0);
+  }
+}

@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React, { useId } from 'react';
+import { useControllableState } from '../hooks/useControllableState';
 import styles from './switch.module.css';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';
@@ -47,16 +48,13 @@ const Switch: SwitchComponent = React.forwardRef<
 ) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
-  const isControlled = checked !== undefined;
-  const [uncontrolledChecked, setUncontrolledChecked] = React.useState(
+  const [currentChecked, setCurrentChecked] = useControllableState(
+    checked,
     Boolean(defaultChecked)
   );
-  const currentChecked = isControlled ? Boolean(checked) : uncontrolledChecked;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    if (!isControlled) {
-      setUncontrolledChecked(event.target.checked);
-    }
+    setCurrentChecked(event.target.checked);
 
     onChange?.(event);
   };
@@ -97,7 +95,7 @@ const Switch: SwitchComponent = React.forwardRef<
       <label
         htmlFor={inputId}
         className={clsx(styles.label, {
-          [styles['visually-hidden']]: hideLabel
+          [styles.visually_hidden]: hideLabel
         })}
       >
         {label}

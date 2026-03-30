@@ -90,7 +90,7 @@ const meta: Meta<ChipStoryProps> = {
 export default meta;
 type Story = StoryObj<ChipStoryProps>;
 
-export const Basic_Chip: Story = {
+export const basic_chip: Story = {
   args: {
     label: 'Chip',
     onClick: undefined,
@@ -105,7 +105,7 @@ export const Basic_Chip: Story = {
   )
 } satisfies Story;
 
-export const Clickable_Chip: Story = {
+export const clickable_chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn(),
@@ -121,7 +121,7 @@ export const Clickable_Chip: Story = {
   )
 } satisfies Story;
 
-export const Link_Chip: Story = {
+export const link_chip: Story = {
   args: {
     label: 'Read docs',
     as: 'a',
@@ -131,7 +131,7 @@ export const Link_Chip: Story = {
   render: (args) => <Chip {...args} />
 } satisfies Story;
 
-export const Interactive_Flow: Story = {
+export const interactive_flow: Story = {
   args: {
     label: 'Click me',
     onClick: fn()
@@ -147,7 +147,7 @@ export const Interactive_Flow: Story = {
   }
 } satisfies Story;
 
-export const Keyboard_Navigation: Story = {
+export const keyboard_navigation: Story = {
   args: {
     label: 'Keyboard chip',
     as: 'div',

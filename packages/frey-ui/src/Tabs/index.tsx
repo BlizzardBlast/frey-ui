@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import React, { createContext, useContext, useId, useState } from 'react';
+import React, { createContext, useContext, useId } from 'react';
+import { useControllableValue } from '../hooks/useControllableState';
 import { useRovingCollection } from '../hooks/useRovingCollection';
 import { mergeRefs } from '../utils/mergeRefs';
 import styles from './tabs.module.css';
@@ -42,22 +43,17 @@ const TabsRoot: TabsRootComponent = React.forwardRef<
 ) {
   const idPrefix = useId();
   const triggerCollection = useRovingCollection();
-  const isControlled = value !== undefined;
-  const [uncontrolledValue, setUncontrolledValue] = useState(
-    defaultValue ?? ''
+  const [currentValue, setCurrentValue] = useControllableValue<string>(
+    value,
+    defaultValue ?? '',
+    onValueChange
   );
-
-  const currentValue = isControlled ? value : uncontrolledValue;
 
   const handleValueChange = React.useCallback(
     (nextValue: string) => {
-      if (!isControlled) {
-        setUncontrolledValue(nextValue);
-      }
-
-      onValueChange?.(nextValue);
+      setCurrentValue(nextValue);
     },
-    [isControlled, onValueChange]
+    [setCurrentValue]
   );
 
   const contextValue = React.useMemo(

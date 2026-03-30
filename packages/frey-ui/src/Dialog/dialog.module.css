@@ -142,3 +142,16 @@
 .dialog_body {
   margin-top: 0.875rem;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog_root,
+  .dialog_root::backdrop,
+  .dialog_content,
+  .dialog_close {
+    transition: none;
+  }
+
+  .dialog_content {
+    transform: none;
+  }
+}

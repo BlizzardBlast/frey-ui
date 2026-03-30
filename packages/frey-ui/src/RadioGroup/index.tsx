@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
+import { useControllableValue } from '../hooks/useControllableState';
 import styles from './radiogroup.module.css';
 
 export type RadioGroupOrientation = 'vertical' | 'horizontal';
@@ -68,15 +69,13 @@ const RadioGroup: RadioGroupComponent = React.forwardRef<
 ) {
   const generatedName = React.useId();
   const groupName = name ?? generatedName;
-  const isControlled = typeof value === 'string';
-  const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
-
-  const selectedValue = isControlled ? value : internalValue;
+  const [selectedValue, setSelectedValue] = useControllableValue<string>(
+    value,
+    defaultValue ?? ''
+  );
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-    if (!isControlled) {
-      setInternalValue(event.target.value);
-    }
+    setSelectedValue(event.target.value);
 
     onChange?.(event);
   };

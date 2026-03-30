@@ -65,6 +65,11 @@
   grid-template-rows: 1fr;
 }
 
+.accordion_content_wrapper_closed {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 .accordion_content {
   overflow: hidden; /* Important for grid animation to hide contents when 0fr */
   padding-bottom: 1rem;
@@ -77,4 +82,12 @@
 .accordion_content_wrapper:not(.accordion_content_wrapper_open)
 .accordion_content {
   padding-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .accordion_trigger,
+  .accordion_chevron,
+  .accordion_content_wrapper {
+    transition: none;
+  }
 }

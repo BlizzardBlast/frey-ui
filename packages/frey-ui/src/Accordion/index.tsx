@@ -1,6 +1,8 @@
 import clsx from 'clsx';
-import React, { createContext, useContext, useId, useState } from 'react';
+import React, { createContext, useContext, useId } from 'react';
+import { useControllableValue } from '../hooks/useControllableState';
 import { ChevronDownIcon } from '../Icons';
+import { mergeRefs } from '../utils/mergeRefs';
 import styles from './accordion.module.css';
 
 export type AccordionType = 'single' | 'multiple';
@@ -11,6 +13,9 @@ type AccordionContextValue = {
   onValueChange: (value: string) => void;
   idPrefix: string;
 };
+
+const ACCORDION_FOCUSABLE_SELECTOR =
+  'a[href], button, input, select, textarea, [tabindex]';
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
 
@@ -57,14 +62,11 @@ const AccordionRoot: AccordionRootComponent = React.forwardRef<
   { type = 'single', value, defaultValue, onValueChange, className, ...props },
   ref
 ) {
-  const defaultVal = defaultValue ?? (type === 'multiple' ? [] : '');
-
-  const isControlled = value !== undefined;
-  const [uncontrolledValue, setUncontrolledValue] = useState<string | string[]>(
-    defaultVal
-  );
-
-  const currentValue = isControlled ? value : uncontrolledValue;
+  const defaultVal =
+    defaultValue ?? (type === 'multiple' ? ([] as string[]) : '');
+  const [currentValue, setCurrentValue] = useControllableValue<
+    string | string[]
+  >(value, defaultVal, onValueChange);
   const idPrefix = useId();
 
   const handleValueChange = React.useCallback(
@@ -74,10 +76,6 @@ const AccordionRoot: AccordionRootComponent = React.forwardRef<
       if (type === 'single') {
         const valueAsStr = typeof currentValue === 'string' ? currentValue : '';
         resolvedValue = valueAsStr === nextValue ? '' : nextValue;
-
-        if (!isControlled) {
-          setUncontrolledValue(resolvedValue);
-        }
       } else {
         const valueAsArray = Array.isArray(currentValue) ? currentValue : [];
         const isSelected = valueAsArray.includes(nextValue);
@@ -86,16 +84,12 @@ const AccordionRoot: AccordionRootComponent = React.forwardRef<
           ? valueAsArray.filter((v) => v !== nextValue)
           : [...valueAsArray, nextValue];
 
-        if (!isControlled) {
-          setUncontrolledValue(nextArrayValue);
-        }
-
         resolvedValue = nextArrayValue;
       }
 
-      onValueChange?.(resolvedValue);
+      setCurrentValue(resolvedValue);
     },
-    [type, currentValue, isControlled, onValueChange]
+    [type, currentValue, setCurrentValue]
   );
 
   const contextValue = React.useMemo(
@@ -203,16 +197,61 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
 >(function AccordionContent({ className, children, ...props }, ref) {
   const { idPrefix } = useAccordionContext();
   const { value, isOpen } = useAccordionItemContext();
+  const contentRef = React.useRef<HTMLElement | null>(null);
+  const mergedContentRef = React.useMemo(
+    () => mergeRefs<HTMLElement>(ref as React.Ref<HTMLElement>, contentRef),
+    [ref]
+  );
+
+  React.useEffect(() => {
+    const node = contentRef.current;
+
+    if (!node) {
+      return;
+    }
+
+    const focusableElements = node.querySelectorAll<HTMLElement>(
+      ACCORDION_FOCUSABLE_SELECTOR
+    );
+
+    focusableElements.forEach((element) => {
+      if (isOpen) {
+        const originalTabIndex = element.dataset.freyAccordionTabindex;
+
+        if (originalTabIndex === undefined) {
+          return;
+        }
+
+        if (originalTabIndex === '') {
+          element.removeAttribute('tabindex');
+        } else {
+          element.setAttribute('tabindex', originalTabIndex);
+        }
+
+        delete element.dataset.freyAccordionTabindex;
+        return;
+      }
+
+      if (element.dataset.freyAccordionTabindex !== undefined) {
+        return;
+      }
+
+      const currentTabIndex = element.getAttribute('tabindex');
+      element.dataset.freyAccordionTabindex = currentTabIndex ?? '';
+      element.setAttribute('tabindex', '-1');
+    });
+  }, [isOpen]);
 
   return (
     <section
-      ref={ref}
+      ref={mergedContentRef}
       id={`${idPrefix}-content-${value}`}
       aria-labelledby={`${idPrefix}-trigger-${value}`}
       aria-hidden={!isOpen}
-      hidden={!isOpen}
+      inert={!isOpen}
       className={clsx(styles.accordion_content_wrapper, {
-        [styles.accordion_content_wrapper_open]: isOpen
+        [styles.accordion_content_wrapper_open]: isOpen,
+        [styles.accordion_content_wrapper_closed]: !isOpen
       })}
       {...props}
     >
