@@ -76,6 +76,82 @@ describe('Accordion', () => {
     expect(after).toHaveFocus();
   });
 
+  it('restores stored tabindex values when a panel opens', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Restore tabindex</Accordion.Trigger>
+          <Accordion.Content>
+            <button type='button'>Natural button</button>
+            <button type='button' tabIndex={0}>
+              Custom tabindex button
+            </button>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Restore tabindex' });
+    const naturalButton = screen.getByText('Natural button');
+    const customButton = screen.getByText('Custom tabindex button');
+
+    expect(naturalButton).toHaveAttribute('tabindex', '-1');
+    expect(customButton).toHaveAttribute('tabindex', '-1');
+    expect(naturalButton).toHaveAttribute('data-frey-accordion-tabindex', '');
+    expect(customButton).toHaveAttribute('data-frey-accordion-tabindex', '0');
+
+    await user.click(trigger);
+
+    expect(naturalButton).not.toHaveAttribute('tabindex');
+    expect(customButton).toHaveAttribute('tabindex', '0');
+    expect(naturalButton).not.toHaveAttribute('data-frey-accordion-tabindex');
+    expect(customButton).not.toHaveAttribute('data-frey-accordion-tabindex');
+  });
+
+  it('does not mutate focusable elements when opened content has no stored metadata', () => {
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Open without metadata</Accordion.Trigger>
+          <Accordion.Content>
+            <button type='button' tabIndex={0}>
+              Preserved tabindex button
+            </button>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const button = screen.getByRole('button', {
+      name: 'Preserved tabindex button'
+    });
+
+    expect(button).toHaveAttribute('tabindex', '0');
+    expect(button).not.toHaveAttribute('data-frey-accordion-tabindex');
+  });
+
+  it('skips tabindex updates for elements that already have Accordion metadata while closed', () => {
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Pre-tagged closed content</Accordion.Trigger>
+          <Accordion.Content>
+            <button type='button' tabIndex={0} data-frey-accordion-tabindex='5'>
+              Pre-tagged button
+            </button>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const button = screen.getByText('Pre-tagged button');
+
+    expect(button).toHaveAttribute('tabindex', '0');
+    expect(button).toHaveAttribute('data-frey-accordion-tabindex', '5');
+  });
+
   it('toggles open state with keyboard Enter', async () => {
     const user = userEvent.setup();
 

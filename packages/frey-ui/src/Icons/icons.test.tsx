@@ -4,6 +4,20 @@ import { IconSvg } from './IconSvg';
 import { CheckIcon, ChevronDownIcon, CloseIcon } from './index';
 
 describe('Icons', () => {
+  it('re-exports all icons from the barrel entry', async () => {
+    const icons = await import('./index');
+
+    expect(icons.CheckIcon).toBeDefined();
+    expect(icons.ChevronDownIcon).toBeDefined();
+    expect(icons.CircleCheckIcon).toBeDefined();
+    expect(icons.CircleInfoIcon).toBeDefined();
+    expect(icons.CircleXIcon).toBeDefined();
+    expect(icons.CloseIcon).toBeDefined();
+    expect(icons.IconSvg).toBeDefined();
+    expect(icons.MinusIcon).toBeDefined();
+    expect(icons.TriangleAlertIcon).toBeDefined();
+  });
+
   it('renders decorative icon as aria-hidden by default', () => {
     const { container } = render(<CloseIcon />);
 
