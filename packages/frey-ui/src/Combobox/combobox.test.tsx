@@ -2,8 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { type ChangeEvent, createRef, useState } from 'react';
-import { describe, expect, it } from 'vitest';
-import { Combobox, type ComboboxOption } from '../index';
+import { describe, expect, it, vi } from 'vitest';
+import Combobox, { type ComboboxOption } from './index';
 
 const options: ReadonlyArray<ComboboxOption> = [
   {
@@ -179,7 +179,8 @@ describe('Combobox', () => {
     await user.type(input, 'zzzz-no-match');
     await user.keyboard('{ArrowDown}');
 
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('No results found');
     expect(input).not.toHaveAttribute('aria-activedescendant');
   });
 
@@ -384,10 +385,52 @@ describe('Combobox', () => {
     });
 
     await user.click(input);
-    await user.click(screen.getByRole('option', { name: 'Japan' }));
+    const disabledOption = screen.getByRole('option', { name: 'Japan' });
+
+    expect(disabledOption).toBeDisabled();
+    await user.click(disabledOption);
 
     expect(input).toHaveValue('');
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
+    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
+  });
+
+  it('falls back to direct value assignment when native input setter is missing', () => {
+    render(
+      <Combobox
+        label='Country'
+        options={options}
+        onChange={() => {
+          // no-op
+        }}
+      />
+    );
+
+    const input = screen.getByRole('combobox', {
+      name: 'Country'
+    });
+
+    fireEvent.focus(input);
+
+    const getOwnPropertyDescriptorSpy = vi
+      .spyOn(Object, 'getOwnPropertyDescriptor')
+      .mockImplementation(((target: object, property: PropertyKey) => {
+        if (
+          target === globalThis.HTMLInputElement.prototype &&
+          property === 'value'
+        ) {
+          return undefined;
+        }
+
+        return Reflect.getOwnPropertyDescriptor(target, property);
+      }) as typeof Object.getOwnPropertyDescriptor);
+
+    try {
+      fireEvent.click(screen.getByRole('option', { name: 'Japan' }));
+    } finally {
+      getOwnPropertyDescriptorSpy.mockRestore();
+    }
+
+    expect(input).toHaveValue('Japan');
   });
 
   it('uses listbox and option roles while options are visible', async () => {

@@ -75,7 +75,14 @@ function dispatchInputChangeEvent(input: HTMLInputElement, nextValue: string) {
     'value'
   )?.set;
 
-  nativeInputValueSetter?.call(input, nextValue);
+  const setInputValue =
+    nativeInputValueSetter ??
+    function setInputValueFallback(this: HTMLInputElement, value: string) {
+      this.value = value;
+    };
+
+  setInputValue.call(input, nextValue);
+
   input.dispatchEvent(new Event('input', { bubbles: true }));
 }
 
@@ -139,10 +146,6 @@ const Combobox: ComboboxComponent = React.forwardRef<
 
   const selectOption = React.useCallback(
     (option: ComboboxOption) => {
-      if (option.disabled) {
-        return;
-      }
-
       setCurrentValue(option.label);
       closeOptions();
 
@@ -201,6 +204,7 @@ const Combobox: ComboboxComponent = React.forwardRef<
             ? `${inputId}-option-${activeIndex}`
             : undefined;
         const isPopupVisible = open && !disabled;
+        const isListboxVisible = isPopupVisible && filteredOptions.length > 0;
 
         const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
           event
@@ -322,10 +326,10 @@ const Combobox: ComboboxComponent = React.forwardRef<
                 autoComplete={autoComplete ?? 'off'}
                 aria-autocomplete='list'
                 aria-haspopup='listbox'
-                aria-expanded={isPopupVisible}
-                aria-controls={isPopupVisible ? listboxId : undefined}
+                aria-expanded={isListboxVisible}
+                aria-controls={isListboxVisible ? listboxId : undefined}
                 aria-activedescendant={
-                  isPopupVisible ? activeOptionId : undefined
+                  isListboxVisible ? activeOptionId : undefined
                 }
                 className={clsx(
                   styles.combobox_input,
@@ -348,18 +352,25 @@ const Combobox: ComboboxComponent = React.forwardRef<
               <ChevronDownIcon className={styles.combobox_icon} size={16} />
             </div>
 
-            {isPopupVisible && (
+            {isPopupVisible && !isListboxVisible && (
+              <div
+                role='status'
+                aria-live='polite'
+                className={styles.combobox_listbox}
+              >
+                <p className={styles.combobox_empty_state}>{noResultsText}</p>
+              </div>
+            )}
+
+            {isListboxVisible && (
               <div
                 id={listboxId}
                 role='listbox'
                 className={styles.combobox_listbox}
               >
-                {filteredOptions.length === 0 && (
-                  <p className={styles.combobox_empty_state}>{noResultsText}</p>
-                )}
-
                 {filteredOptions.map((option, index) => {
                   const isActive = activeIndex === index;
+                  const isDisabled = Boolean(option.disabled);
 
                   return (
                     <button
@@ -367,24 +378,27 @@ const Combobox: ComboboxComponent = React.forwardRef<
                       id={`${inputId}-option-${index}`}
                       type='button'
                       role='option'
+                      disabled={isDisabled}
                       tabIndex={-1}
                       aria-selected={isActive}
-                      aria-disabled={option.disabled || undefined}
+                      aria-disabled={isDisabled || undefined}
                       className={clsx(styles.combobox_option, {
                         [styles.combobox_option_active]: isActive,
-                        [styles.combobox_option_disabled]: option.disabled
+                        [styles.combobox_option_disabled]: isDisabled
                       })}
-                      onMouseEnter={() => {
-                        if (!option.disabled) {
-                          setActiveIndex(index);
-                        }
-                      }}
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                      }}
-                      onClick={() => {
-                        selectOption(option);
-                      }}
+                      onMouseEnter={
+                        isDisabled ? undefined : () => setActiveIndex(index)
+                      }
+                      onMouseDown={
+                        isDisabled
+                          ? undefined
+                          : (event) => {
+                              event.preventDefault();
+                            }
+                      }
+                      onClick={
+                        isDisabled ? undefined : () => selectOption(option)
+                      }
                     >
                       {option.label}
                     </button>
