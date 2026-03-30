@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.14
+
+### Patch Changes
+
+- 8375394: feat: added combobox
+
 ## 1.0.13
 
 ### Patch Changes
