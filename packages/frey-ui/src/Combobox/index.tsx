@@ -155,6 +155,12 @@ const Combobox: ComboboxComponent = React.forwardRef<
   );
 
   React.useEffect(() => {
+    if (disabled) {
+      closeOptions();
+    }
+  }, [closeOptions, disabled]);
+
+  React.useEffect(() => {
     if (!open) {
       return undefined;
     }
@@ -191,7 +197,9 @@ const Combobox: ComboboxComponent = React.forwardRef<
       {({ inputId, describedBy, hasError }) => {
         const listboxId = `${inputId}-listbox`;
         const activeOptionId =
-          activeIndex >= 0 ? `${inputId}-option-${activeIndex}` : undefined;
+          activeIndex >= 0 && activeIndex < filteredOptions.length
+            ? `${inputId}-option-${activeIndex}`
+            : undefined;
         const isPopupVisible = open && !disabled;
 
         const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (

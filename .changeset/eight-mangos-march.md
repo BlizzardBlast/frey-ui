@@ -5,4 +5,3 @@
 ---
 
 feat: added combobox
-refactor: refactored code
