@@ -47,6 +47,8 @@ export type { CheckboxProps, CheckboxSize } from './Checkbox';
 export { default as Checkbox } from './Checkbox';
 export type { ChipElement, ChipProps, Variant } from './Chip';
 export { default as Chip } from './Chip';
+export type { ComboboxOption, ComboboxProps, ComboboxSize } from './Combobox';
+export { default as Combobox } from './Combobox';
 export type {
   DialogBodyProps,
   DialogContentProps,

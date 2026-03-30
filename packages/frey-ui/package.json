@@ -66,6 +66,11 @@
       "import": "./dist/esm/Chip/index.mjs",
       "require": "./dist/cjs/Chip/index.cjs"
     },
+    "./Combobox": {
+      "types": "./dist/types/src/Combobox/index.d.ts",
+      "import": "./dist/esm/Combobox/index.mjs",
+      "require": "./dist/cjs/Combobox/index.cjs"
+    },
     "./Dialog": {
       "types": "./dist/types/src/Dialog/index.d.ts",
       "import": "./dist/esm/Dialog/index.mjs",
