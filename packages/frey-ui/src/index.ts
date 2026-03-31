@@ -87,6 +87,8 @@ export {
 } from './Icons';
 export type { LinkColor, LinkProps, LinkUnderline } from './Link';
 export { default as Link } from './Link';
+export type { PaginationProps } from './Pagination';
+export { default as Pagination } from './Pagination';
 export type {
   PopoverContentProps,
   PopoverPlacement,

@@ -111,6 +111,11 @@
       "import": "./dist/esm/Popover/index.mjs",
       "require": "./dist/cjs/Popover/index.cjs"
     },
+    "./Pagination": {
+      "types": "./dist/types/src/Pagination/index.d.ts",
+      "import": "./dist/esm/Pagination/index.mjs",
+      "require": "./dist/cjs/Pagination/index.cjs"
+    },
     "./Progress": {
       "types": "./dist/types/src/Progress/index.d.ts",
       "import": "./dist/esm/Progress/index.mjs",
