@@ -19,7 +19,24 @@ function clampPage(page: number, totalPages: number): number {
   return Math.min(Math.max(page, 1), totalPages);
 }
 
-const meta: Meta<PaginationProps> = {
+type PaginationStoryProps = Pick<
+  PaginationProps,
+  | 'totalPages'
+  | 'page'
+  | 'defaultPage'
+  | 'onPageChange'
+  | 'siblingCount'
+  | 'boundaryCount'
+  | 'disabled'
+  | 'showControls'
+  | 'previousLabel'
+  | 'nextLabel'
+  | 'ariaLabel'
+  | 'className'
+  | 'style'
+>;
+
+const meta: Meta<PaginationStoryProps> = {
   component: Pagination,
   parameters: {
     layout: 'centered'
@@ -31,6 +48,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'number'
+        },
+        defaultValue: {
+          summary: 'None'
         }
       }
     },
@@ -40,6 +60,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'number'
+        },
+        defaultValue: {
+          summary: 'None'
         }
       }
     },
@@ -49,6 +72,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'number'
+        },
+        defaultValue: {
+          summary: '1'
         }
       }
     },
@@ -58,6 +84,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: '(page: number) => void'
+        },
+        defaultValue: {
+          summary: 'None'
         }
       }
     },
@@ -68,6 +97,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'number'
+        },
+        defaultValue: {
+          summary: '1'
         }
       }
     },
@@ -78,6 +110,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'number'
+        },
+        defaultValue: {
+          summary: '1'
         }
       }
     },
@@ -87,6 +122,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
         }
       }
     },
@@ -96,6 +134,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'true'
         }
       }
     },
@@ -105,6 +146,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'string'
+        },
+        defaultValue: {
+          summary: "'Previous'"
         }
       }
     },
@@ -114,6 +158,9 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'string'
+        },
+        defaultValue: {
+          summary: "'Next'"
         }
       }
     },
@@ -123,15 +170,42 @@ const meta: Meta<PaginationProps> = {
       table: {
         type: {
           summary: 'string'
+        },
+        defaultValue: {
+          summary: "'Pagination'"
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the pagination root',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the pagination root',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
         }
       }
     }
   }
-} satisfies Meta<PaginationProps>;
+} satisfies Meta<PaginationStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<PaginationProps>;
+type Story = StoryObj<PaginationStoryProps>;
 
 export const basic: Story = {
   args: {
@@ -207,6 +281,7 @@ export const custom_labels_and_theme: Story = {
       {...args}
       style={
         {
+          ...(args.style ?? {}),
           '--frey-color-primary': 'var(--frey-palette-blue-600)'
         } as React.CSSProperties
       }

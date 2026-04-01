@@ -1,22 +1,80 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Dialog, type DialogProps } from 'frey-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const meta: Meta<DialogProps> = {
+type DialogStoryProps = Pick<
+  DialogProps,
+  'children' | 'open' | 'defaultOpen' | 'onOpenChange'
+>;
+
+const meta: Meta<DialogStoryProps> = {
   component: Dialog,
   parameters: {
     layout: 'centered'
+  },
+  argTypes: {
+    open: {
+      control: { type: 'boolean' },
+      description: 'Controlled open state of the dialog',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    defaultOpen: {
+      control: { type: 'boolean' },
+      description: 'Initial open state when the dialog is uncontrolled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    onOpenChange: {
+      action: 'open changed',
+      description: 'Called when the dialog open state changes',
+      table: {
+        type: {
+          summary: '(open: boolean) => void'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    children: {
+      control: false,
+      description: 'Composed dialog trigger and content elements',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    }
   }
-} satisfies Meta<DialogProps>;
+} satisfies Meta<DialogStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<DialogProps>;
+type Story = StoryObj<DialogStoryProps>;
 
 export const basic_dialog: Story = {
-  render: function BasicDialogStory() {
+  args: {
+    defaultOpen: false
+  },
+  render: function BasicDialogStory(args) {
     return (
-      <Dialog>
+      <Dialog {...args}>
         <Dialog.Trigger asChild>
           <Button>Open dialog</Button>
         </Dialog.Trigger>
@@ -36,9 +94,12 @@ export const basic_dialog: Story = {
 } satisfies Story;
 
 export const with_description: Story = {
-  render: function WithDescriptionStory() {
+  args: {
+    defaultOpen: false
+  },
+  render: function WithDescriptionStory(args) {
     return (
-      <Dialog>
+      <Dialog {...args}>
         <Dialog.Trigger asChild>
           <Button>Invite collaborator</Button>
         </Dialog.Trigger>
@@ -59,13 +120,33 @@ export const with_description: Story = {
 } satisfies Story;
 
 export const controlled_dialog: Story = {
-  render: function ControlledDialogStory() {
-    const [open, setOpen] = useState(false);
+  args: {
+    defaultOpen: false
+  },
+  render: function ControlledDialogStory(args) {
+    const [open, setOpen] = useState(Boolean(args.defaultOpen));
+
+    useEffect(() => {
+      if (args.open === undefined) {
+        setOpen(Boolean(args.defaultOpen));
+      }
+    }, [args.defaultOpen, args.open]);
+
+    const resolvedOpen = args.open ?? open;
+    const handleOpenChange = (nextOpen: boolean) => {
+      if (args.open === undefined) {
+        setOpen(nextOpen);
+      }
+
+      args.onOpenChange?.(nextOpen);
+    };
 
     return (
       <div style={{ display: 'grid', gap: 12 }}>
-        <Button onClick={() => setOpen(true)}>Open controlled dialog</Button>
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Button onClick={() => handleOpenChange(true)}>
+          Open controlled dialog
+        </Button>
+        <Dialog open={resolvedOpen} onOpenChange={handleOpenChange}>
           <Dialog.Content>
             <Dialog.Header>
               <Dialog.Title>Settings saved</Dialog.Title>
@@ -74,7 +155,10 @@ export const controlled_dialog: Story = {
               </Dialog.Description>
             </Dialog.Header>
             <Dialog.Footer>
-              <Button variant='secondary' onClick={() => setOpen(false)}>
+              <Button
+                variant='secondary'
+                onClick={() => handleOpenChange(false)}
+              >
                 Close
               </Button>
             </Dialog.Footer>

@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Accordion, type AccordionProps } from 'frey-ui';
 
-const meta: Meta<AccordionProps> = {
+type AccordionStoryProps = Pick<
+  AccordionProps,
+  'type' | 'value' | 'defaultValue' | 'onValueChange'
+>;
+
+const meta: Meta<AccordionStoryProps> = {
   component: Accordion,
   parameters: {
     layout: 'padded'
@@ -12,14 +17,59 @@ const meta: Meta<AccordionProps> = {
   argTypes: {
     type: {
       control: { type: 'select' },
-      options: ['single', 'multiple']
+      options: ['single', 'multiple'],
+      description: 'Whether the accordion allows one or multiple items open',
+      table: {
+        type: {
+          summary: "'single' | 'multiple'"
+        },
+        defaultValue: {
+          summary: "'single'"
+        }
+      }
+    },
+    value: {
+      control: { type: 'object' },
+      description: 'Controlled open item value or values',
+      table: {
+        type: {
+          summary: 'string | string[]'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    defaultValue: {
+      control: { type: 'object' },
+      description: 'Initial open item value or values when uncontrolled',
+      table: {
+        type: {
+          summary: 'string | string[]'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    onValueChange: {
+      action: 'value changed',
+      description: 'Called when the open accordion item value changes',
+      table: {
+        type: {
+          summary: '(value: string | string[]) => void'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<AccordionProps>;
+} satisfies Meta<AccordionStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<AccordionProps>;
+type Story = StoryObj<AccordionStoryProps>;
 
 export const basic: Story = {
   render: (args) => (

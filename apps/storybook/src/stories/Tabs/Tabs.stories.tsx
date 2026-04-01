@@ -1,23 +1,69 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Card, Tabs, type TabsProps } from 'frey-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const meta: Meta<TabsProps> = {
+type TabsStoryProps = Pick<
+  TabsProps,
+  'value' | 'defaultValue' | 'onValueChange'
+>;
+
+const meta: Meta<TabsStoryProps> = {
   component: Tabs,
   parameters: {
     layout: 'centered'
+  },
+  argTypes: {
+    value: {
+      control: { type: 'text' },
+      description: 'Controlled active tab value',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    defaultValue: {
+      control: { type: 'text' },
+      description: 'Initial active tab value when uncontrolled',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    onValueChange: {
+      action: 'tab changed',
+      description: 'Called when the active tab value changes',
+      table: {
+        type: {
+          summary: '(value: string) => void'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    }
   }
-} satisfies Meta<TabsProps>;
+} satisfies Meta<TabsStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<TabsProps>;
+type Story = StoryObj<TabsStoryProps>;
 
 export const basic: Story = {
-  render: () => (
+  args: {
+    defaultValue: 'account'
+  },
+  render: (args) => (
     <Card style={{ width: 400 }}>
       <Card.Content>
-        <Tabs defaultValue='account'>
+        <Tabs {...args}>
           <Tabs.List>
             <Tabs.Trigger value='account'>Account</Tabs.Trigger>
             <Tabs.Trigger value='password'>Password</Tabs.Trigger>
@@ -39,8 +85,26 @@ export const basic: Story = {
 } satisfies Story;
 
 export const controlled: Story = {
-  render: function ControlledStory() {
-    const [tab, setTab] = useState('billing');
+  args: {
+    defaultValue: 'billing'
+  },
+  render: function ControlledStory(args) {
+    const [tab, setTab] = useState(args.defaultValue ?? 'billing');
+
+    useEffect(() => {
+      if (args.value === undefined) {
+        setTab(args.defaultValue ?? 'billing');
+      }
+    }, [args.defaultValue, args.value]);
+
+    const resolvedTab = args.value ?? tab;
+    const handleValueChange = (nextValue: string) => {
+      if (args.value === undefined) {
+        setTab(nextValue);
+      }
+
+      args.onValueChange?.(nextValue);
+    };
 
     return (
       <Card style={{ width: 400 }}>
@@ -48,7 +112,7 @@ export const controlled: Story = {
           <Card.Title>Settings</Card.Title>
         </Card.Header>
         <Card.Content>
-          <Tabs value={tab} onValueChange={setTab}>
+          <Tabs value={resolvedTab} onValueChange={handleValueChange}>
             <Tabs.List>
               <Tabs.Trigger value='general'>General</Tabs.Trigger>
               <Tabs.Trigger value='billing'>Billing</Tabs.Trigger>

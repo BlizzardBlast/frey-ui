@@ -3,7 +3,20 @@ import type { SelectProps } from 'frey-ui';
 import { Select } from 'frey-ui';
 import { useState } from 'react';
 
-const meta: Meta<SelectProps> = {
+type SelectStoryProps = Pick<
+  SelectProps,
+  | 'label'
+  | 'hideLabel'
+  | 'helperText'
+  | 'error'
+  | 'disabled'
+  | 'placeholder'
+  | 'size'
+  | 'className'
+  | 'style'
+>;
+
+const meta: Meta<SelectStoryProps> = {
   component: Select,
   parameters: {
     layout: 'centered'
@@ -14,12 +27,123 @@ const meta: Meta<SelectProps> = {
         <Story />
       </div>
     )
-  ]
-} satisfies Meta<SelectProps>;
+  ],
+  argTypes: {
+    label: {
+      control: { type: 'text' },
+      description: 'Accessible label for the select input',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    hideLabel: {
+      control: { type: 'boolean' },
+      description: 'Whether to visually hide the label',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    helperText: {
+      control: { type: 'text' },
+      description: 'Supporting helper copy shown below the select',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    error: {
+      control: { type: 'text' },
+      description: 'Error message shown below the select',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      description: 'Whether the select is disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    placeholder: {
+      control: { type: 'text' },
+      description: 'Placeholder option shown before a value is selected',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg'],
+      description: 'Size variant of the select input',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the select field wrapper',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the select field wrapper',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    }
+  }
+} satisfies Meta<SelectStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<SelectProps>;
+type Story = StoryObj<SelectStoryProps>;
 
 export const basic_select: Story = {
   render: (args) => (
@@ -79,12 +203,13 @@ export const sizes: Story = {
 } satisfies Story;
 
 export const controlled: Story = {
-  render: function ControlledSelect() {
+  render: function ControlledSelect(args) {
     const [value, setValue] = useState('owner');
 
     return (
       <div style={{ display: 'grid', gap: 8 }}>
         <Select
+          {...args}
           label='Permission level'
           value={value}
           onChange={(event) => setValue(event.target.value)}

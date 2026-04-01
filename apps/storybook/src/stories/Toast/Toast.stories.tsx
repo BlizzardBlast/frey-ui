@@ -74,7 +74,12 @@ function ToastDemo() {
   );
 }
 
-const meta: Meta<ToastProviderProps> = {
+type ToastProviderStoryProps = Pick<
+  ToastProviderProps,
+  'children' | 'placement' | 'limit' | 'className' | 'style'
+>;
+
+const meta: Meta<ToastProviderStoryProps> = {
   component: ToastProvider,
   parameters: {
     layout: 'centered'
@@ -82,17 +87,71 @@ const meta: Meta<ToastProviderProps> = {
   argTypes: {
     placement: {
       control: { type: 'select' },
-      options: ['top-right', 'top-left', 'bottom-right', 'bottom-left']
+      options: ['top-right', 'top-left', 'bottom-right', 'bottom-left'],
+      description: 'Viewport corner where toast notifications stack',
+      table: {
+        type: {
+          summary: "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'"
+        },
+        defaultValue: {
+          summary: "'top-right'"
+        }
+      }
     },
     limit: {
-      control: { type: 'number' }
+      control: { type: 'number' },
+      description: 'Maximum number of toasts displayed at one time',
+      table: {
+        type: {
+          summary: 'number'
+        },
+        defaultValue: {
+          summary: '4'
+        }
+      }
+    },
+    children: {
+      control: false,
+      description: 'Content rendered inside the toast provider context',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the toast viewport',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the toast viewport',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<ToastProviderProps>;
+} satisfies Meta<ToastProviderStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<ToastProviderProps>;
+type Story = StoryObj<ToastProviderStoryProps>;
 
 export const basic_toast: Story = {
   render: (args) => (

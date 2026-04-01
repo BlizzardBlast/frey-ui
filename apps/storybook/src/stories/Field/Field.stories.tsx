@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Field } from 'frey-ui';
+import { Field, type FieldProps } from 'frey-ui';
 import { useState } from 'react';
 
 const baseInputStyle = {
@@ -11,7 +11,22 @@ const baseInputStyle = {
   color: 'var(--frey-color-text-primary, #0f172a)'
 } as const;
 
-const meta: Meta<typeof Field> = {
+type FieldStoryProps = Pick<
+  FieldProps,
+  | 'children'
+  | 'label'
+  | 'hideLabel'
+  | 'error'
+  | 'helperText'
+  | 'required'
+  | 'disabled'
+  | 'id'
+  | 'className'
+  | 'style'
+  | 'labelElement'
+>;
+
+const meta: Meta<FieldStoryProps> = {
   component: Field,
   parameters: {
     layout: 'centered'
@@ -24,21 +39,147 @@ const meta: Meta<typeof Field> = {
     )
   ],
   argTypes: {
+    label: {
+      control: { type: 'text' },
+      description: 'Visible label text for the field wrapper',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    hideLabel: {
+      control: { type: 'boolean' },
+      description:
+        'Whether to visually hide the label while keeping it accessible',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    error: {
+      control: { type: 'text' },
+      description: 'Error message rendered below the field',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    helperText: {
+      control: { type: 'text' },
+      description: 'Supporting helper copy rendered below the field',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    required: {
+      control: { type: 'boolean' },
+      description: 'Whether the field is marked as required',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    disabled: {
+      control: { type: 'boolean' },
+      description: 'Whether the field and its label are presented as disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
     labelElement: {
       control: { type: 'select' },
-      options: ['label', 'span']
+      options: ['label', 'span'],
+      description: 'Element used to render the label wrapper',
+      table: {
+        type: {
+          summary: "'label' | 'span'"
+        },
+        defaultValue: {
+          summary: "'label'"
+        }
+      }
     },
     children: {
+      control: false,
+      description:
+        'Render function that receives ids and validation state for the input',
       table: {
-        disable: true
+        type: {
+          summary: '(props: Readonly<FieldRenderProps>) => ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    id: {
+      control: { type: 'text' },
+      description: 'Base id used to derive the field label and helper ids',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the field container',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the field container',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
       }
     }
   }
-} satisfies Meta<typeof Field>;
+} satisfies Meta<FieldStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<typeof Field>;
+type Story = StoryObj<FieldStoryProps>;
 
 export const basic_field: Story = {
   args: {
@@ -123,8 +264,8 @@ export const controlled_field: Story = {
     return (
       <Field
         {...args}
-        label='Project key'
-        helperText='Minimum 3 characters.'
+        label={args.label ?? 'Project key'}
+        helperText={args.helperText ?? 'Minimum 3 characters.'}
         error={hasError ? 'Project key is too short.' : undefined}
       >
         {({ inputId, describedBy, hasError: invalid }) => (

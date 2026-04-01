@@ -11,7 +11,12 @@ import {
   TriangleAlertIcon
 } from 'frey-ui';
 
-const meta: Meta<IconProps> = {
+type IconStoryProps = Pick<
+  IconProps,
+  'size' | 'strokeWidth' | 'title' | 'className' | 'style'
+>;
+
+const meta: Meta<IconStoryProps> = {
   component: CloseIcon,
   parameters: {
     layout: 'centered'
@@ -20,19 +25,71 @@ const meta: Meta<IconProps> = {
     size: {
       control: { type: 'select' },
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Named icon size token (also accepts number override)'
+      description: 'Named icon size token (also accepts number override)',
+      table: {
+        type: {
+          summary: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     },
     strokeWidth: {
       control: { type: 'select' },
       options: ['thin', 'regular', 'bold'],
-      description: 'Named stroke token (also accepts number override)'
+      description: 'Named stroke token (also accepts number override)',
+      table: {
+        type: {
+          summary: "'thin' | 'regular' | 'bold' | number"
+        },
+        defaultValue: {
+          summary: "'regular'"
+        }
+      }
+    },
+    title: {
+      control: { type: 'text' },
+      description: 'Accessible title announced for the icon graphic',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the SVG element',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the SVG element',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<IconProps>;
+} satisfies Meta<IconStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<IconProps>;
+type Story = StoryObj<IconStoryProps>;
 
 export const icon_gallery: Story = {
   render: (args) => (
@@ -45,42 +102,43 @@ export const icon_gallery: Story = {
       }}
     >
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <CloseIcon {...args} title='Close icon' />
+        <CloseIcon {...args} title={args.title ?? 'Close icon'} />
         <small>CloseIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <ChevronDownIcon {...args} title='Chevron down icon' />
+        <ChevronDownIcon {...args} title={args.title ?? 'Chevron down icon'} />
         <small>ChevronDownIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <CheckIcon {...args} title='Check icon' />
+        <CheckIcon {...args} title={args.title ?? 'Check icon'} />
         <small>CheckIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <MinusIcon {...args} title='Minus icon' />
+        <MinusIcon {...args} title={args.title ?? 'Minus icon'} />
         <small>MinusIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <CircleXIcon {...args} title='Error icon' />
+        <CircleXIcon {...args} title={args.title ?? 'Error icon'} />
         <small>CircleXIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <CircleCheckIcon {...args} title='Success icon' />
+        <CircleCheckIcon {...args} title={args.title ?? 'Success icon'} />
         <small>CircleCheckIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <TriangleAlertIcon {...args} title='Warning icon' />
+        <TriangleAlertIcon {...args} title={args.title ?? 'Warning icon'} />
         <small>TriangleAlertIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-        <CircleInfoIcon {...args} title='Info icon' />
+        <CircleInfoIcon {...args} title={args.title ?? 'Info icon'} />
         <small>CircleInfoIcon</small>
       </div>
     </div>
   ),
   args: {
     size: 'lg',
-    strokeWidth: 'regular'
+    strokeWidth: 'regular',
+    title: 'Icon'
   }
 } satisfies Story;
 

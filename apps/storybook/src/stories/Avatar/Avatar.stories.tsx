@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Avatar, type AvatarProps } from 'frey-ui';
 
-const meta: Meta<AvatarProps> = {
+type AvatarStoryProps = Pick<
+  AvatarProps,
+  'src' | 'alt' | 'fallback' | 'size' | 'status'
+>;
+
+const meta: Meta<AvatarStoryProps> = {
   component: Avatar,
   parameters: {
     layout: 'centered'
@@ -10,20 +15,74 @@ const meta: Meta<AvatarProps> = {
     size: 'md'
   },
   argTypes: {
+    src: {
+      control: { type: 'text' },
+      description: 'Image source URL',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    alt: {
+      control: { type: 'text' },
+      description: 'Alternative text for the avatar image',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    fallback: {
+      control: { type: 'text' },
+      description: 'Fallback text shown when the image is unavailable',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg']
+      options: ['sm', 'md', 'lg'],
+      description: 'Avatar size variant',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     },
     status: {
       control: { type: 'select' },
-      options: ['online', 'offline', 'idle', 'dnd']
+      options: ['online', 'offline', 'idle', 'dnd'],
+      description: 'Optional presence status indicator',
+      table: {
+        type: {
+          summary: "'online' | 'offline' | 'idle' | 'dnd'"
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<AvatarProps>;
+} satisfies Meta<AvatarStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<AvatarProps>;
+type Story = StoryObj<AvatarStoryProps>;
 
 export const basic: Story = {
   args: {

@@ -1,16 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Card, TextInput } from 'frey-ui';
 
-const meta: Meta<typeof Card> = {
+type CardStoryProps = Record<never, never>;
+
+const meta: Meta<CardStoryProps> = {
   component: Card,
   parameters: {
     layout: 'centered'
-  }
-} satisfies Meta<typeof Card>;
+  },
+  argTypes: {}
+} satisfies Meta<CardStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<typeof Card>;
+type Story = StoryObj<CardStoryProps>;
 
 export const basic: Story = {
   render: () => (

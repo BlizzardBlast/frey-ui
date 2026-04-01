@@ -1,8 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, Popover, type PopoverProps } from 'frey-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const meta: Meta<PopoverProps> = {
+type PopoverStoryProps = Pick<
+  PopoverProps,
+  | 'children'
+  | 'open'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'placement'
+  | 'offset'
+  | 'closeOnEscape'
+  | 'closeOnOutsideClick'
+>;
+
+const meta: Meta<PopoverStoryProps> = {
   component: Popover,
   parameters: {
     layout: 'centered'
@@ -10,20 +22,107 @@ const meta: Meta<PopoverProps> = {
   argTypes: {
     placement: {
       control: { type: 'select' },
-      options: ['top', 'right', 'bottom', 'left']
+      options: ['top', 'right', 'bottom', 'left'],
+      description: 'Preferred placement of the popover content',
+      table: {
+        type: {
+          summary: "'top' | 'right' | 'bottom' | 'left'"
+        },
+        defaultValue: {
+          summary: "'bottom'"
+        }
+      }
     },
     closeOnEscape: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether pressing Escape closes the popover',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'true'
+        }
+      }
     },
     closeOnOutsideClick: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether clicking outside closes the popover',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'true'
+        }
+      }
+    },
+    open: {
+      control: { type: 'boolean' },
+      description: 'Controlled open state of the popover',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    defaultOpen: {
+      control: { type: 'boolean' },
+      description: 'Initial open state when the popover is uncontrolled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    onOpenChange: {
+      action: 'open changed',
+      description: 'Called when the popover open state changes',
+      table: {
+        type: {
+          summary: '(open: boolean) => void'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    offset: {
+      control: { type: 'number' },
+      description: 'Distance in pixels between the trigger and popover content',
+      table: {
+        type: {
+          summary: 'number'
+        },
+        defaultValue: {
+          summary: '8'
+        }
+      }
+    },
+    children: {
+      control: false,
+      description: 'Composed trigger and popover content elements',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<PopoverProps>;
+} satisfies Meta<PopoverStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<PopoverProps>;
+type Story = StoryObj<PopoverStoryProps>;
 
 export const basic_popover: Story = {
   render: (args) => (
@@ -67,11 +166,26 @@ export const placement_variants: Story = {
 
 export const controlled_popover: Story = {
   render: function ControlledPopoverStory(args) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(Boolean(args.defaultOpen));
+
+    useEffect(() => {
+      if (args.open === undefined) {
+        setOpen(Boolean(args.defaultOpen));
+      }
+    }, [args.defaultOpen, args.open]);
+
+    const resolvedOpen = args.open ?? open;
+    const handleOpenChange = (nextOpen: boolean) => {
+      if (args.open === undefined) {
+        setOpen(nextOpen);
+      }
+
+      args.onOpenChange?.(nextOpen);
+    };
 
     return (
       <div style={{ display: 'grid', gap: 10 }}>
-        <Popover {...args} open={open} onOpenChange={setOpen}>
+        <Popover {...args} open={resolvedOpen} onOpenChange={handleOpenChange}>
           <Popover.Trigger asChild>
             <Button>Toggle settings</Button>
           </Popover.Trigger>
@@ -80,7 +194,7 @@ export const controlled_popover: Story = {
           </Popover.Content>
         </Popover>
 
-        <small>Popover state: {open ? 'open' : 'closed'}</small>
+        <small>Popover state: {resolvedOpen ? 'open' : 'closed'}</small>
       </div>
     );
   },

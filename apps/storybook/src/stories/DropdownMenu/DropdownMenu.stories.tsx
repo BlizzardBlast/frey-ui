@@ -1,8 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, DropdownMenu, type DropdownMenuProps } from 'frey-ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const meta: Meta<DropdownMenuProps> = {
+type DropdownMenuStoryProps = Pick<
+  DropdownMenuProps,
+  | 'children'
+  | 'open'
+  | 'defaultOpen'
+  | 'onOpenChange'
+  | 'placement'
+  | 'offset'
+  | 'closeOnEscape'
+  | 'closeOnOutsideClick'
+>;
+
+const meta: Meta<DropdownMenuStoryProps> = {
   component: DropdownMenu,
   parameters: {
     layout: 'centered'
@@ -10,20 +22,107 @@ const meta: Meta<DropdownMenuProps> = {
   argTypes: {
     placement: {
       control: { type: 'select' },
-      options: ['top', 'right', 'bottom', 'left']
+      options: ['top', 'right', 'bottom', 'left'],
+      description: 'Preferred placement of the dropdown content',
+      table: {
+        type: {
+          summary: "'top' | 'right' | 'bottom' | 'left'"
+        },
+        defaultValue: {
+          summary: "'bottom'"
+        }
+      }
     },
     closeOnEscape: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether pressing Escape closes the menu',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'true'
+        }
+      }
     },
     closeOnOutsideClick: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether clicking outside closes the menu',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'true'
+        }
+      }
+    },
+    open: {
+      control: { type: 'boolean' },
+      description: 'Controlled open state of the dropdown menu',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    defaultOpen: {
+      control: { type: 'boolean' },
+      description: 'Initial open state when the menu is uncontrolled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    onOpenChange: {
+      action: 'open changed',
+      description: 'Called when the dropdown menu open state changes',
+      table: {
+        type: {
+          summary: '(open: boolean) => void'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    offset: {
+      control: { type: 'number' },
+      description: 'Distance in pixels between the trigger and menu content',
+      table: {
+        type: {
+          summary: 'number'
+        },
+        defaultValue: {
+          summary: '8'
+        }
+      }
+    },
+    children: {
+      control: false,
+      description: 'Composed trigger and menu content elements',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<DropdownMenuProps>;
+} satisfies Meta<DropdownMenuStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<DropdownMenuProps>;
+type Story = StoryObj<DropdownMenuStoryProps>;
 
 export const basic_menu: Story = {
   render: (args) => (
@@ -77,12 +176,31 @@ export const with_disabled_item: Story = {
 
 export const controlled_menu: Story = {
   render: function ControlledDropdownStory(args) {
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(Boolean(args.defaultOpen));
     const [selection, setSelection] = useState<string | null>(null);
+
+    useEffect(() => {
+      if (args.open === undefined) {
+        setOpen(Boolean(args.defaultOpen));
+      }
+    }, [args.defaultOpen, args.open]);
+
+    const resolvedOpen = args.open ?? open;
+    const handleOpenChange = (nextOpen: boolean) => {
+      if (args.open === undefined) {
+        setOpen(nextOpen);
+      }
+
+      args.onOpenChange?.(nextOpen);
+    };
 
     return (
       <div style={{ display: 'grid', gap: 10, justifyItems: 'center' }}>
-        <DropdownMenu {...args} open={open} onOpenChange={setOpen}>
+        <DropdownMenu
+          {...args}
+          open={resolvedOpen}
+          onOpenChange={handleOpenChange}
+        >
           <DropdownMenu.Trigger asChild>
             <Button>Project options</Button>
           </DropdownMenu.Trigger>
@@ -107,7 +225,7 @@ export const controlled_menu: Story = {
 
         <small>
           Last selection: {selection ?? 'none'} | Menu is{' '}
-          {open ? 'open' : 'closed'}
+          {resolvedOpen ? 'open' : 'closed'}
         </small>
       </div>
     );

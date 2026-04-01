@@ -21,23 +21,116 @@ const meta: Meta<ButtonStoryProps> = {
     layout: 'centered'
   },
   argTypes: {
+    children: {
+      control: { type: 'text' },
+      description: 'Button label content',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
     variant: {
       control: { type: 'select' },
       options: ['primary', 'secondary', 'ghost', 'destructive'],
-      description: 'Visual variant of the button'
+      description: 'Visual variant of the button',
+      table: {
+        type: {
+          summary: "'primary' | 'secondary' | 'ghost' | 'destructive'"
+        },
+        defaultValue: {
+          summary: "'primary'"
+        }
+      }
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: 'Size of the button'
+      description: 'Size of the button',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     },
     disabled: {
       control: { type: 'boolean' },
-      description: 'Whether the button is disabled'
+      description: 'Whether the button is disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     loading: {
       control: { type: 'boolean' },
-      description: 'Whether the button is in a loading state'
+      description: 'Whether the button is in a loading state',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    asChild: {
+      control: false,
+      description:
+        'Whether the button should pass its behavior and styling to a single child element',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the button element',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the button element',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    onClick: {
+      action: 'clicked',
+      description: 'Called when the button is clicked',
+      table: {
+        type: {
+          summary: 'MouseEventHandler<HTMLElement>'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
 } satisfies Meta<ButtonStoryProps>;

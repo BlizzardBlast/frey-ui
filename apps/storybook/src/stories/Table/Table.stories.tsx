@@ -1,19 +1,54 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, Table, type TableProps } from 'frey-ui';
 
-const meta: Meta<TableProps> = {
+type TableStoryProps = Pick<
+  TableProps,
+  'containerClassName' | 'containerStyle'
+>;
+
+const meta: Meta<TableStoryProps> = {
   component: Table,
   parameters: {
     layout: 'centered'
+  },
+  argTypes: {
+    containerStyle: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the outer table container',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    containerClassName: {
+      control: { type: 'text' },
+      description:
+        'Additional class names applied to the outer table container',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    }
   }
-} satisfies Meta<TableProps>;
+} satisfies Meta<TableStoryProps>;
 
 export default meta;
-type Story = StoryObj<TableProps>;
+type Story = StoryObj<TableStoryProps>;
 
 export const basic: Story = {
-  render: () => (
-    <Table containerStyle={{ width: 680 }}>
+  args: {
+    containerStyle: { width: 680 }
+  },
+  render: (args) => (
+    <Table {...args}>
       <Table.Caption>Project member roles</Table.Caption>
       <Table.Header>
         <Table.Row>
@@ -47,8 +82,11 @@ export const basic: Story = {
 } satisfies Story;
 
 export const with_footer: Story = {
-  render: () => (
-    <Table containerStyle={{ width: 720 }}>
+  args: {
+    containerStyle: { width: 720 }
+  },
+  render: (args) => (
+    <Table {...args}>
       <Table.Header>
         <Table.Row>
           <Table.Head>Plan</Table.Head>

@@ -4,7 +4,18 @@ import { Checkbox } from 'frey-ui';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
-const meta: Meta<CheckboxProps> = {
+type CheckboxStoryProps = Pick<
+  CheckboxProps,
+  | 'label'
+  | 'hideLabel'
+  | 'size'
+  | 'disabled'
+  | 'indeterminate'
+  | 'className'
+  | 'style'
+>;
+
+const meta: Meta<CheckboxStoryProps> = {
   component: Checkbox,
   parameters: {
     layout: 'centered'
@@ -12,30 +23,94 @@ const meta: Meta<CheckboxProps> = {
   argTypes: {
     label: {
       control: { type: 'text' },
-      description: 'Accessible label for the checkbox'
+      description: 'Accessible label for the checkbox',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     hideLabel: {
       control: { type: 'boolean' },
-      description: 'Visually hide the label'
+      description: 'Visually hide the label',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: 'Size variant'
+      description: 'Size variant',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     },
     disabled: {
       control: { type: 'boolean' },
-      description: 'Whether the checkbox is disabled'
+      description: 'Whether the checkbox is disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     indeterminate: {
       control: { type: 'boolean' },
-      description: 'Whether the checkbox is in an indeterminate state'
+      description: 'Whether the checkbox is in an indeterminate state',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the checkbox container',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the checkbox container',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<CheckboxProps>;
+} satisfies Meta<CheckboxStoryProps>;
 
 export default meta;
-type Story = StoryObj<CheckboxProps>;
+type Story = StoryObj<CheckboxStoryProps>;
 
 export const basic_checkbox: Story = {
   args: {

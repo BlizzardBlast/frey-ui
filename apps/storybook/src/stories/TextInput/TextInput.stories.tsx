@@ -4,7 +4,22 @@ import { TextInput } from 'frey-ui';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
-const meta: Meta<TextInputProps> = {
+type TextInputStoryProps = Pick<
+  TextInputProps,
+  | 'label'
+  | 'hideLabel'
+  | 'error'
+  | 'helperText'
+  | 'disabled'
+  | 'type'
+  | 'placeholder'
+  | 'value'
+  | 'readOnly'
+  | 'className'
+  | 'style'
+>;
+
+const meta: Meta<TextInputStoryProps> = {
   component: TextInput,
   parameters: {
     layout: 'centered'
@@ -12,32 +27,136 @@ const meta: Meta<TextInputProps> = {
   argTypes: {
     label: {
       control: { type: 'text' },
-      description: 'Accessible label for the input'
+      description: 'Accessible label for the input',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     hideLabel: {
       control: { type: 'boolean' },
-      description: 'Visually hide the label'
+      description: 'Visually hide the label',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     error: {
       control: { type: 'text' },
-      description: 'Error message to display'
+      description: 'Error message to display',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     helperText: {
       control: { type: 'text' },
-      description: 'Helper text below the input'
+      description: 'Helper text below the input',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     disabled: {
       control: { type: 'boolean' },
-      description: 'Whether the input is disabled'
+      description: 'Whether the input is disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     type: {
       control: { type: 'select' },
       options: ['text', 'email', 'password', 'search', 'tel', 'url'],
-      description: 'HTML input type'
+      description: 'HTML input type',
+      table: {
+        type: {
+          summary: "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'"
+        },
+        defaultValue: {
+          summary: "'text'"
+        }
+      }
     },
     placeholder: {
       control: { type: 'text' },
-      description: 'Placeholder text'
+      description: 'Placeholder text',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    value: {
+      control: { type: 'text' },
+      description: 'Controlled input value',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    readOnly: {
+      control: { type: 'boolean' },
+      description: 'Whether the input is read-only',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the input field wrapper',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the input field wrapper',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   },
   decorators: [
@@ -47,10 +166,10 @@ const meta: Meta<TextInputProps> = {
       </div>
     )
   ]
-} satisfies Meta<TextInputProps>;
+} satisfies Meta<TextInputStoryProps>;
 
 export default meta;
-type Story = StoryObj<TextInputProps>;
+type Story = StoryObj<TextInputStoryProps>;
 
 export const basic_text_input: Story = {
   args: {
@@ -103,15 +222,16 @@ export const hidden_label: Story = {
 } satisfies Story;
 
 export const controlled: Story = {
-  render: function ControlledInput() {
+  render: function ControlledInput(args) {
     const [value, setValue] = useState('');
     return (
       <div style={{ width: 320 }}>
         <TextInput
-          label='Username'
+          {...args}
+          label={args.label ?? 'Username'}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          helperText={`${value.length}/20 characters`}
+          helperText={args.helperText ?? `${value.length}/20 characters`}
           error={value.length > 20 ? 'Too long!' : undefined}
         />
       </div>

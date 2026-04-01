@@ -2,7 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { SkeletonProps } from 'frey-ui';
 import { Skeleton } from 'frey-ui';
 
-const meta: Meta<SkeletonProps> = {
+type SkeletonStoryProps = Pick<
+  SkeletonProps,
+  'width' | 'height' | 'shape' | 'className' | 'style'
+>;
+
+const meta: Meta<SkeletonStoryProps> = {
   component: Skeleton,
   parameters: {
     layout: 'centered'
@@ -10,22 +15,72 @@ const meta: Meta<SkeletonProps> = {
   argTypes: {
     width: {
       control: { type: 'text' },
-      description: 'Width (number for px, string for any unit)'
+      description:
+        'Width of the placeholder (number for px, string for any unit)',
+      table: {
+        type: {
+          summary: 'string | number'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     height: {
       control: { type: 'text' },
-      description: 'Height (number for px, string for any unit)'
+      description:
+        'Height of the placeholder (number for px, string for any unit)',
+      table: {
+        type: {
+          summary: 'string | number'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     shape: {
       control: { type: 'select' },
       options: ['rectangle', 'circle'],
-      description: 'Shape of the skeleton'
+      description: 'Shape of the skeleton',
+      table: {
+        type: {
+          summary: "'rectangle' | 'circle'"
+        },
+        defaultValue: {
+          summary: "'rectangle'"
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the skeleton element',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the skeleton element',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<SkeletonProps>;
+} satisfies Meta<SkeletonStoryProps>;
 
 export default meta;
-type Story = StoryObj<SkeletonProps>;
+type Story = StoryObj<SkeletonStoryProps>;
 
 export const rectangle: Story = {
   args: {

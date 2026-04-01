@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Spinner, type SpinnerProps } from 'frey-ui';
 
-const meta: Meta<SpinnerProps> = {
+type SpinnerStoryProps = Pick<
+  SpinnerProps,
+  'size' | 'label' | 'className' | 'style'
+>;
+
+const meta: Meta<SpinnerStoryProps> = {
   component: Spinner,
   parameters: {
     layout: 'centered'
@@ -9,17 +14,60 @@ const meta: Meta<SpinnerProps> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg']
+      options: ['sm', 'md', 'lg'],
+      description:
+        'Named spinner size token (also accepts a numeric pixel size)',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg' | number"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     },
     label: {
-      control: { type: 'text' }
+      control: { type: 'text' },
+      description: 'Accessible loading label announced to assistive technology',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: "'Loading'"
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the spinner root',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the spinner root',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<SpinnerProps>;
+} satisfies Meta<SpinnerStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<SpinnerProps>;
+type Story = StoryObj<SpinnerStoryProps>;
 
 export const basic_spinner: Story = {
   args: {

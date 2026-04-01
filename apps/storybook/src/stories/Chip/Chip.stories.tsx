@@ -8,8 +8,6 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 type ChipStoryProps = {
   label: string;
   variant?: Variant;
-  style?: React.CSSProperties;
-  className?: string;
   as?: ChipElement;
   href?: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
@@ -25,18 +23,36 @@ const meta: Meta<ChipStoryProps> = {
       control: {
         type: 'text'
       },
-      description: 'The text to display in the chip'
+      description: 'The text to display in the chip',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     onClick: {
-      type: 'function',
       description: 'The event handler for the click event',
-      action: 'clicked'
+      action: 'clicked',
+      table: {
+        type: {
+          summary: 'MouseEventHandler<HTMLElement>'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     as: {
       description: 'The HTML element to render for the chip',
       table: {
         type: {
           summary: "'button' | 'div' | 'span' | 'a'"
+        },
+        defaultValue: {
+          summary: "'span' (or 'button' when onClick is set)"
         }
       },
       control: {
@@ -48,6 +64,14 @@ const meta: Meta<ChipStoryProps> = {
       description: 'URL when rendering as an anchor chip',
       control: {
         type: 'text'
+      },
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
       }
     },
     variant: {
@@ -55,34 +79,15 @@ const meta: Meta<ChipStoryProps> = {
       table: {
         type: {
           summary: 'default | outlined'
+        },
+        defaultValue: {
+          summary: "'default'"
         }
       },
       control: {
         type: 'select'
       },
       options: ['default', 'outlined']
-    },
-    style: {
-      description: 'The style of the chip',
-      control: {
-        type: 'object'
-      },
-      table: {
-        type: {
-          summary: 'CSSProperties'
-        }
-      }
-    },
-    className: {
-      description: 'The class name of the chip',
-      control: {
-        type: 'text'
-      },
-      table: {
-        type: {
-          summary: 'string'
-        }
-      }
     }
   }
 } satisfies Meta<ChipStoryProps>;
@@ -93,9 +98,7 @@ type Story = StoryObj<ChipStoryProps>;
 export const basic_chip: Story = {
   args: {
     label: 'Chip',
-    onClick: undefined,
-    className: undefined,
-    style: undefined
+    onClick: undefined
   },
   render: (args) => (
     <div className='flex gap-4'>
@@ -109,9 +112,7 @@ export const clickable_chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn(),
-    as: 'button',
-    className: undefined,
-    style: undefined
+    as: 'button'
   },
   render: (args) => (
     <div className='flex gap-4'>

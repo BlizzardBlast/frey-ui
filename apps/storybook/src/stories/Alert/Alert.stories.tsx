@@ -2,7 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { AlertProps } from 'frey-ui';
 import { Alert } from 'frey-ui';
 
-const meta: Meta<AlertProps> = {
+type AlertStoryProps = Pick<
+  AlertProps,
+  'variant' | 'title' | 'children' | 'className' | 'style'
+>;
+
+const meta: Meta<AlertStoryProps> = {
   component: Alert,
   parameters: {
     layout: 'centered'
@@ -11,15 +16,63 @@ const meta: Meta<AlertProps> = {
     variant: {
       control: { type: 'select' },
       options: ['error', 'success', 'warning', 'info'],
-      description: 'Visual variant / severity'
+      description: 'Visual variant / severity',
+      table: {
+        type: {
+          summary: "'error' | 'success' | 'warning' | 'info'"
+        },
+        defaultValue: {
+          summary: "'info'"
+        }
+      }
     },
     title: {
       control: { type: 'text' },
-      description: 'Optional bold title'
+      description: 'Optional bold title',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     children: {
       control: { type: 'text' },
-      description: 'Alert message content'
+      description: 'Alert message content',
+      table: {
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the alert root',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the alert root',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   },
   decorators: [
@@ -29,10 +82,10 @@ const meta: Meta<AlertProps> = {
       </div>
     )
   ]
-} satisfies Meta<AlertProps>;
+} satisfies Meta<AlertStoryProps>;
 
 export default meta;
-type Story = StoryObj<AlertProps>;
+type Story = StoryObj<AlertStoryProps>;
 
 export const all_variants: Story = {
   render: () => (

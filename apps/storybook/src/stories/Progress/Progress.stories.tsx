@@ -2,7 +2,20 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ProgressProps } from 'frey-ui';
 import { Progress } from 'frey-ui';
 
-const meta: Meta<ProgressProps> = {
+type ProgressStoryProps = Pick<
+  ProgressProps,
+  | 'label'
+  | 'value'
+  | 'max'
+  | 'indeterminate'
+  | 'showValue'
+  | 'size'
+  | 'className'
+  | 'style'
+  | 'barClassName'
+>;
+
+const meta: Meta<ProgressStoryProps> = {
   component: Progress,
   parameters: {
     layout: 'centered'
@@ -17,26 +30,119 @@ const meta: Meta<ProgressProps> = {
   argTypes: {
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md', 'lg']
+      options: ['sm', 'md', 'lg'],
+      description: 'Height variant for the progress indicator',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
+    },
+    label: {
+      control: { type: 'text' },
+      description: 'Accessible label shown above the progress bar',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     value: {
-      control: { type: 'number' }
+      control: { type: 'number' },
+      description: 'Current progress value',
+      table: {
+        type: {
+          summary: 'number'
+        },
+        defaultValue: {
+          summary: '0'
+        }
+      }
     },
     max: {
-      control: { type: 'number' }
+      control: { type: 'number' },
+      description: 'Maximum progress value',
+      table: {
+        type: {
+          summary: 'number'
+        },
+        defaultValue: {
+          summary: '100'
+        }
+      }
     },
     indeterminate: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether the progress is loading without a fixed value',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     showValue: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether to display the computed percentage label',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the progress root',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the progress root',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    barClassName: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the native progress bar',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
-} satisfies Meta<ProgressProps>;
+} satisfies Meta<ProgressStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<ProgressProps>;
+type Story = StoryObj<ProgressStoryProps>;
 
 export const basic_progress: Story = {
   args: {

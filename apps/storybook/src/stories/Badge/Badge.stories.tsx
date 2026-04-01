@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, type BadgeProps } from 'frey-ui';
 
-const meta: Meta<BadgeProps> = {
+type BadgeStoryProps = Pick<BadgeProps, 'tone' | 'variant' | 'size'>;
+
+const meta: Meta<BadgeStoryProps> = {
   component: Badge,
   parameters: {
     layout: 'centered'
@@ -9,29 +11,56 @@ const meta: Meta<BadgeProps> = {
   argTypes: {
     tone: {
       control: { type: 'select' },
-      options: ['neutral', 'info', 'success', 'warning', 'error']
+      options: ['neutral', 'info', 'success', 'warning', 'error'],
+      description: 'Semantic tone applied to the badge',
+      table: {
+        type: {
+          summary: "'neutral' | 'info' | 'success' | 'warning' | 'error'"
+        },
+        defaultValue: {
+          summary: "'neutral'"
+        }
+      }
     },
     variant: {
       control: { type: 'select' },
-      options: ['subtle', 'solid']
+      options: ['subtle', 'solid'],
+      description: 'Visual treatment of the badge',
+      table: {
+        type: {
+          summary: "'subtle' | 'solid'"
+        },
+        defaultValue: {
+          summary: "'subtle'"
+        }
+      }
     },
     size: {
       control: { type: 'select' },
-      options: ['sm', 'md']
+      options: ['sm', 'md'],
+      description: 'Badge size variant',
+      table: {
+        type: {
+          summary: "'sm' | 'md'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
     }
   }
-} satisfies Meta<BadgeProps>;
+} satisfies Meta<BadgeStoryProps>;
 
 export default meta;
-type Story = StoryObj<BadgeProps>;
+type Story = StoryObj<BadgeStoryProps>;
 
 export const basic: Story = {
   args: {
-    children: 'Active',
     tone: 'success',
     variant: 'subtle',
     size: 'md'
-  }
+  },
+  render: (args) => <Badge {...args}>Active</Badge>
 } satisfies Story;
 
 export const all_tones: Story = {

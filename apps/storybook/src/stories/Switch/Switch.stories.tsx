@@ -4,7 +4,16 @@ import { Switch } from 'frey-ui';
 import { useState } from 'react';
 import { expect, userEvent, within } from 'storybook/test';
 
-type SwitchStoryProps = SwitchProps;
+type SwitchStoryProps = Pick<
+  SwitchProps,
+  | 'label'
+  | 'hideLabel'
+  | 'checked'
+  | 'disabled'
+  | 'size'
+  | 'className'
+  | 'style'
+>;
 
 const meta: Meta<SwitchStoryProps> = {
   component: Switch,
@@ -14,25 +23,89 @@ const meta: Meta<SwitchStoryProps> = {
   argTypes: {
     label: {
       control: { type: 'text' },
-      description: 'Accessible label for the switch'
+      description: 'Accessible label for the switch',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     hideLabel: {
       control: { type: 'boolean' },
       description:
-        'Whether to visually hide the label (still accessible to screen readers)'
+        'Whether to visually hide the label (still accessible to screen readers)',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     checked: {
       control: { type: 'boolean' },
-      description: 'Controlled checked state'
+      description: 'Controlled checked state',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     },
     disabled: {
       control: { type: 'boolean' },
-      description: 'Whether the switch is disabled'
+      description: 'Whether the switch is disabled',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     size: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg'],
-      description: 'Size variant of the switch'
+      description: 'Size variant of the switch',
+      table: {
+        type: {
+          summary: "'sm' | 'md' | 'lg'"
+        },
+        defaultValue: {
+          summary: "'md'"
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the switch container',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the switch container',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
     }
   }
 } satisfies Meta<SwitchStoryProps>;
@@ -79,12 +152,13 @@ export const disabled: Story = {
 } satisfies Story;
 
 export const controlled: Story = {
-  render: function ControlledSwitch() {
+  render: function ControlledSwitch(args) {
     const [checked, setChecked] = useState(false);
     return (
       <div className='flex flex-col gap-4 items-center'>
         <Switch
-          label='Dark mode'
+          {...args}
+          label={args.label ?? 'Dark mode'}
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
         />

@@ -1,15 +1,43 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Breadcrumbs, type BreadcrumbsProps } from 'frey-ui';
 
-const meta: Meta<BreadcrumbsProps> = {
+type BreadcrumbsStoryProps = Pick<BreadcrumbsProps, 'separator' | 'ariaLabel'>;
+
+const meta: Meta<BreadcrumbsStoryProps> = {
   component: Breadcrumbs,
   parameters: {
     layout: 'centered'
+  },
+  argTypes: {
+    separator: {
+      control: { type: 'text' },
+      description: 'Separator string shown between breadcrumb items',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: "'/'"
+        }
+      }
+    },
+    ariaLabel: {
+      control: { type: 'text' },
+      description: 'Accessible label for the breadcrumb navigation',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: "'Breadcrumb'"
+        }
+      }
+    }
   }
-} satisfies Meta<BreadcrumbsProps>;
+} satisfies Meta<BreadcrumbsStoryProps>;
 
 export default meta;
-type Story = StoryObj<BreadcrumbsProps>;
+type Story = StoryObj<BreadcrumbsStoryProps>;
 
 export const basic: Story = {
   render: () => (

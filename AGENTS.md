@@ -40,6 +40,7 @@ Make sure internet is available because turbo needs to upload cache through the 
 Run in this exact order. All four commands must pass:
 
 ```bash
+pnpm docs:check
 pnpm typecheck
 pnpm lint
 pnpm test:coverage

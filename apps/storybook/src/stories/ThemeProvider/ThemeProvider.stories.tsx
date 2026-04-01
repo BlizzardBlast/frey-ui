@@ -18,7 +18,12 @@ function ThemePreview() {
   );
 }
 
-const meta: Meta<ThemeProviderProps> = {
+type ThemeProviderStoryProps = Pick<
+  ThemeProviderProps,
+  'children' | 'theme' | 'highContrast' | 'id' | 'className' | 'style'
+>;
+
+const meta: Meta<ThemeProviderStoryProps> = {
   component: ThemeProvider,
   parameters: {
     layout: 'centered'
@@ -33,22 +38,83 @@ const meta: Meta<ThemeProviderProps> = {
   argTypes: {
     theme: {
       control: { type: 'select' },
-      options: ['light', 'dark', 'system']
+      options: ['light', 'dark', 'system'],
+      description: 'Theme mode to apply to semantic design tokens',
+      table: {
+        type: {
+          summary: "'light' | 'dark' | 'system'"
+        },
+        defaultValue: {
+          summary: "'light'"
+        }
+      }
     },
     highContrast: {
-      control: { type: 'boolean' }
+      control: { type: 'boolean' },
+      description: 'Whether to enable the high-contrast token set',
+      table: {
+        type: {
+          summary: 'boolean'
+        },
+        defaultValue: {
+          summary: 'false'
+        }
+      }
     },
     children: {
+      control: false,
+      description: 'Theme-aware content rendered inside the provider',
       table: {
-        disable: true
+        type: {
+          summary: 'ReactNode'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    id: {
+      control: { type: 'text' },
+      description: 'Id applied to the theme provider root element',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the theme provider root',
+      table: {
+        type: {
+          summary: 'string'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
+      }
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the theme provider root',
+      table: {
+        type: {
+          summary: 'CSSProperties'
+        },
+        defaultValue: {
+          summary: 'None'
+        }
       }
     }
   }
-} satisfies Meta<ThemeProviderProps>;
+} satisfies Meta<ThemeProviderStoryProps>;
 
 export default meta;
 
-type Story = StoryObj<ThemeProviderProps>;
+type Story = StoryObj<ThemeProviderStoryProps>;
 
 export const light_theme: Story = {
   args: {

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { collectStoryDocsIssuesFromFile } from './storybookDocsCheck.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,6 +46,11 @@ const exportedComponents = exportMatches
   .sort((a, b) => a.localeCompare(b));
 
 const storyFiles = walkStoryFiles(storiesRoot);
+const componentStoryFiles = storyFiles.filter((storyPath) => {
+  const storyGroup = path.relative(storiesRoot, storyPath).split(path.sep)[0];
+
+  return storyGroup !== 'Patterns';
+});
 const documentedComponents = new Set(
   storyFiles
     .map(
@@ -64,7 +70,18 @@ const castWrapperStoryFiles = storyFiles
   })
   .map((storyPath) => path.relative(rootDir, storyPath));
 
-if (missingStories.length > 0 || castWrapperStoryFiles.length > 0) {
+const incompleteStoryFiles = componentStoryFiles.flatMap((storyPath) => {
+  const relativePath = path.relative(rootDir, storyPath);
+  const issues = collectStoryDocsIssuesFromFile(storyPath);
+
+  return issues.map((issue) => `${relativePath}: ${issue}`);
+});
+
+if (
+  missingStories.length > 0 ||
+  castWrapperStoryFiles.length > 0 ||
+  incompleteStoryFiles.length > 0
+) {
   console.error('Storybook API coverage check failed.');
 
   if (missingStories.length > 0) {
@@ -78,6 +95,13 @@ if (missingStories.length > 0 || castWrapperStoryFiles.length > 0) {
     console.error('\nStories still using cast wrappers:');
     for (const storyPath of castWrapperStoryFiles) {
       console.error(`- ${storyPath}`);
+    }
+  }
+
+  if (incompleteStoryFiles.length > 0) {
+    console.error('\nStories with incomplete docs metadata:');
+    for (const issue of incompleteStoryFiles) {
+      console.error(`- ${issue}`);
     }
   }
 
