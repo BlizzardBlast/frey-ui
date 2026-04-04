@@ -37,7 +37,7 @@ Make sure internet is available because turbo needs to upload cache through the 
 
 ## Required Validation Before Merge
 
-Run in this exact order. All four commands must pass:
+Run in this exact order. All six commands must pass:
 
 ```bash
 pnpm docs:check

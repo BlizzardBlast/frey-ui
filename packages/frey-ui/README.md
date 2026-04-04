@@ -129,8 +129,7 @@ Then load the generated CSS after `frey-ui/theme.css` in your application so you
 
 ## Roadmap Notes
 
-- `Combobox / Autocomplete`: planned to support searchable long-option datasets with robust keyboard semantics.
-- `Drawer / Slide-over`: now available with modal behavior, close controls, and placement support (`left`, `right`, `top`, `bottom`).
+- Additional upcoming components are tracked through repository roadmap/issues and Storybook coverage.
 - Accordion content animation: current grid-based animation uses `overflow: hidden` on the inner content wrapper, which can clip inner tooltips and extended focus rings. Prefer external tooltip portals and avoid relying on overflow-visible descendants inside accordion content.
 
 ## License

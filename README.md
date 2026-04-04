@@ -1,11 +1,12 @@
 # Frey UI Monorepo
 
-This repository contains the Frey UI design system package and its Storybook app.
+This repository contains the Frey UI component library, Storybook docs app, and Playwright end-to-end test app.
 
 ## Workspaces
 
 - `packages/frey-ui`: published React component library (`frey-ui`)
 - `apps/storybook`: local docs and development environment for components
+- `apps/playwright`: browser E2E tests against Storybook
 
 ## Requirements
 
@@ -22,7 +23,10 @@ pnpm install
 
 ```bash
 pnpm storybook        # run Storybook locally
+pnpm docs:check       # verify Storybook API docs coverage
+pnpm playwright:install  # install Playwright Chromium browser
 pnpm test:e2e         # run Playwright overlay e2e tests
+pnpm test:coverage    # run frey-ui unit tests with coverage
 pnpm build            # build all workspaces
 pnpm test             # run tests across workspaces
 pnpm lint             # lint all workspaces
@@ -37,18 +41,10 @@ For install, usage, API, accessibility details, and theming docs, see:
 
 ## Roadmap Progress
 
-Currently in implementation:
+Roadmap and component status evolve quickly.
 
-- Form Controls Pack (in progress): `Field`, `Textarea`, `Select`, `RadioGroup`
-- Overlay primitives (in progress): `Dialog`, `Popover`, `Tooltip`, `DropdownMenu`
-- Shared icons (in progress): tokenized sizes/strokes + alert/checkbox glyph set
-- Async feedback (in progress): `ToastProvider/useToast`, `Progress`, `Spinner`
-- Storybook usage patterns (in progress): forms, settings page, auth form, table filters
-- Theming v2 (completed): `system` mode, semantic token tiers, high-contrast
-
-Planned next:
-
-- Additional UI components
+- For package-level roadmap notes, see [`packages/frey-ui/README.md`](./packages/frey-ui/README.md).
+- For the latest implemented component APIs and usage, see Storybook.
 
 ## Storybook
 
