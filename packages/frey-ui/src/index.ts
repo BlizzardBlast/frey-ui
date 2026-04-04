@@ -61,6 +61,18 @@ export type {
 } from './Dialog';
 export { default as Dialog } from './Dialog';
 export type {
+  DrawerBodyProps,
+  DrawerContentProps,
+  DrawerDescriptionProps,
+  DrawerFooterProps,
+  DrawerHeaderProps,
+  DrawerPlacement,
+  DrawerProps,
+  DrawerTitleProps,
+  DrawerTriggerProps
+} from './Drawer';
+export { default as Drawer } from './Drawer';
+export type {
   DropdownMenuContentProps,
   DropdownMenuItemProps,
   DropdownMenuPlacement,

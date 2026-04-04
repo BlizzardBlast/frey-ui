@@ -74,6 +74,31 @@ function App() {
 }
 ```
 
+## Drawer Quick Example
+
+```tsx
+import { Button, Drawer } from 'frey-ui';
+
+function SettingsDrawer() {
+  return (
+    <Drawer placement='right'>
+      <Drawer.Trigger asChild>
+        <Button>Open settings</Button>
+      </Drawer.Trigger>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>Workspace settings</Drawer.Title>
+          <Drawer.Description>
+            Update project-level preferences.
+          </Drawer.Description>
+        </Drawer.Header>
+        <Drawer.Body>Drawer content goes here.</Drawer.Body>
+      </Drawer.Content>
+    </Drawer>
+  );
+}
+```
+
 ## Component API Docs
 
 Storybook is the source of truth for component API docs and usage examples.
@@ -105,7 +130,7 @@ Then load the generated CSS after `frey-ui/theme.css` in your application so you
 ## Roadmap Notes
 
 - `Combobox / Autocomplete`: planned to support searchable long-option datasets with robust keyboard semantics.
-- `Drawer / Slide-over`: planned for mobile-first and dense settings workflows.
+- `Drawer / Slide-over`: now available with modal behavior, close controls, and placement support (`left`, `right`, `top`, `bottom`).
 - Accordion content animation: current grid-based animation uses `overflow: hidden` on the inner content wrapper, which can clip inner tooltips and extended focus rings. Prefer external tooltip portals and avoid relying on overflow-visible descendants inside accordion content.
 
 ## License

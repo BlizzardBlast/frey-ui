@@ -61,4 +61,53 @@ test.describe('overlay stories', () => {
     await page.keyboard.press('Escape');
     await expect(tooltip).toHaveCount(0);
   });
+
+  test('drawer opens and closes', async ({ page }) => {
+    await gotoStory('stories-drawer--basic-drawer', page);
+
+    await page.getByRole('button', { name: 'Open drawer' }).click();
+
+    await expect(page.locator('dialog[open]')).toHaveCount(1);
+    await expect(
+      page.getByRole('heading', { name: 'Workspace settings' })
+    ).toBeVisible();
+
+    await page.getByRole('button', { name: 'Close drawer' }).click();
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+  });
+
+  test('drawer closes on Escape and restores focus to trigger', async ({
+    page
+  }) => {
+    await gotoStory('stories-drawer--basic-drawer', page);
+
+    const trigger = page.getByRole('button', { name: 'Open drawer' });
+
+    await trigger.click();
+    await expect(page.locator('dialog[open]')).toHaveCount(1);
+
+    await page.keyboard.press('Escape');
+
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+  });
+
+  test('drawer placement variants render with expected placement attribute', async ({
+    page
+  }) => {
+    await gotoStory('stories-drawer--placement-variants', page);
+
+    for (const placement of ['left', 'right', 'top', 'bottom'] as const) {
+      const trigger = page.getByRole('button', { name: `${placement} drawer` });
+
+      await trigger.click();
+      await expect(
+        page.locator(`[data-placement='${placement}']`)
+      ).toBeVisible();
+      await expect(page.getByText(`Placement: ${placement}`)).toBeVisible();
+
+      await page.keyboard.press('Escape');
+      await expect(page.locator('dialog[open]')).toHaveCount(0);
+    }
+  });
 });

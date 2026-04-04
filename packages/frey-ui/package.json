@@ -76,6 +76,11 @@
       "import": "./dist/esm/Dialog/index.mjs",
       "require": "./dist/cjs/Dialog/index.cjs"
     },
+    "./Drawer": {
+      "types": "./dist/types/src/Drawer/index.d.ts",
+      "import": "./dist/esm/Drawer/index.mjs",
+      "require": "./dist/cjs/Drawer/index.cjs"
+    },
     "./DropdownMenu": {
       "types": "./dist/types/src/DropdownMenu/index.d.ts",
       "import": "./dist/esm/DropdownMenu/index.mjs",
