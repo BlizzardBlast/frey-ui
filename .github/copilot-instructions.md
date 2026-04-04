@@ -85,6 +85,12 @@ Build a small, accessible React component library.
 - Use `@storybook/react-vite` types (`Meta`, `StoryObj`).
 - Story exports are `snake_case`.
 - Prefer stories that show: default, variants/sizes, disabled, controlled usage, theming via CSS variables.
+- When working on UI components, stories, or docs, always use `storybook-mcp` as the source of truth.
+- **CRITICAL:** never hallucinate component props.
+- Query `list-all-documentation` to discover available components.
+- Query `get-documentation` for a target component before implementation and only use explicitly documented props.
+- Query `get-storybook-story-instructions` before creating/updating stories.
+- Run `run-story-tests` after story/component updates.
 
 ## Testing
 

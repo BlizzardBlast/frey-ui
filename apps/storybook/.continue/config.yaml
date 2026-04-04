@@ -1,0 +1,4 @@
+mcpServers:
+  - name: Storybook
+    type: http
+    url: http://localhost:6006/mcp

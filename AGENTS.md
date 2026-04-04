@@ -61,6 +61,17 @@ pnpm build
   2. `pnpm version-packages`
   3. `pnpm release`
 
+## Agent Instructions for UI Components (Storybook MCP)
+
+When working on UI components, stories, or component docs, always use the `storybook-mcp` tools as the source of truth.
+
+- **CRITICAL:** Never hallucinate component properties.
+- Query `list-all-documentation` first to list available documented components.
+- Query `get-documentation` for the specific component to confirm all supported properties, types, and examples.
+- Only use properties that are explicitly documented.
+- Query `get-storybook-story-instructions` before creating or updating stories so you follow current project conventions.
+- Validate changes by running `run-story-tests`.
+
 ## Git Hook/Commit Expectations
 
 - pre-commit runs `pnpm check:staged`
