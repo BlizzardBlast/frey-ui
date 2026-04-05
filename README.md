@@ -44,6 +44,7 @@ For install, usage, API, accessibility details, and theming docs, see:
 Roadmap and component status evolve quickly.
 
 - For package-level roadmap notes, see [`packages/frey-ui/README.md`](./packages/frey-ui/README.md).
+- For the current recommended next components, see [`docs/component-priorities.md`](./docs/component-priorities.md).
 - For the latest implemented component APIs and usage, see Storybook.
 
 ## Storybook

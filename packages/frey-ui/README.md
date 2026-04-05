@@ -129,7 +129,7 @@ Then load the generated CSS after `frey-ui/theme.css` in your application so you
 
 ## Roadmap Notes
 
-- Additional upcoming components are tracked through repository roadmap/issues and Storybook coverage.
+- Additional upcoming components are tracked through repository roadmap/issues, Storybook coverage, and [`docs/component-priorities.md`](../../docs/component-priorities.md).
 - Accordion content animation: current grid-based animation uses `overflow: hidden` on the inner content wrapper, which can clip inner tooltips and extended focus rings. Prefer external tooltip portals and avoid relying on overflow-visible descendants inside accordion content.
 
 ## License
