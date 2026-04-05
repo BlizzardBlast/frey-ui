@@ -1,4 +1,5 @@
 {
+  "$schema": "https://turborepo.dev/schema.json",
   "extends": ["//"],
   "tasks": {
     "dev": {
@@ -13,24 +14,80 @@
       "persistent": true
     },
     "build": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!.continue/**",
+        "!.cursor/**",
+        "!.gemini/**",
+        "!.mcp.json",
+        "!opencode.json",
+        "!src/storybookDocsCheck.test.mjs",
+        "!**/*.test.*",
+        "!**/*.spec.*"
+      ],
       "outputs": ["storybook-static/**"]
     },
     "build-storybook": {
       "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!.continue/**",
+        "!.cursor/**",
+        "!.gemini/**",
+        "!.mcp.json",
+        "!opencode.json",
+        "!src/storybookDocsCheck.test.mjs",
+        "!**/*.test.*",
+        "!**/*.spec.*"
+      ],
       "outputs": ["storybook-static/**"]
     },
     "typecheck": {
       "dependsOn": ["^typecheck", "^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!.continue/**",
+        "!.cursor/**",
+        "!.gemini/**",
+        "!.mcp.json",
+        "!opencode.json"
+      ],
       "outputs": [
         "node_modules/.tmp/tsconfig.app.tsbuildinfo",
         "node_modules/.tmp/tsconfig.node.tsbuildinfo"
       ]
     },
     "lint": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!.continue/**",
+        "!.cursor/**",
+        "!.gemini/**",
+        "!.mcp.json",
+        "!opencode.json"
+      ],
       "outputs": []
     },
     "test": {
       "dependsOn": ["^build"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!.continue/**",
+        "!.cursor/**",
+        "!.gemini/**",
+        "!.mcp.json",
+        "!opencode.json"
+      ],
       "outputs": []
     }
   }

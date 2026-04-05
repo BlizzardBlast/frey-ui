@@ -214,7 +214,7 @@
     "format:check": "biome format .",
     "check": "biome check .",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=../../test-report.junit.xml"
+    "test:coverage": "vitest run --coverage --reporter=default --reporter=junit --outputFile.junit=test-report.junit.xml"
   },
   "peerDependencies": {
     "react": "^18 || ^19",

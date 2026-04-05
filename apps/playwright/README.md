@@ -23,7 +23,13 @@ Optional local debug commands:
 1. `pnpm --filter @frey-ui/playwright run test:e2e:headed`
 2. `pnpm --filter @frey-ui/playwright run test:e2e:ui`
 
-The Playwright config starts Storybook on port `6006` automatically. You can override the base URL or port with:
+The Playwright config does not require any Playwright-specific environment variables.
+
+- If you set nothing, it serves the built Storybook locally at `http://127.0.0.1:6006`.
+- `PLAYWRIGHT_STORYBOOK_PORT` changes that local port.
+- `PLAYWRIGHT_BASE_URL` points Playwright at an already-running site and skips starting the local Storybook server.
+
+Optional overrides:
 
 - `PLAYWRIGHT_BASE_URL`
 - `PLAYWRIGHT_STORYBOOK_PORT`

@@ -9,7 +9,11 @@ const env = (
 ).process?.env;
 
 const PORT = Number.parseInt(env?.PLAYWRIGHT_STORYBOOK_PORT ?? '6006', 10);
-const baseURL = env?.PLAYWRIGHT_BASE_URL ?? `http://127.0.0.1:${PORT}`;
+const localBaseURL = `http://127.0.0.1:${PORT}`;
+const hasCustomBaseURL = Boolean(env?.PLAYWRIGHT_BASE_URL);
+const baseURL = env?.PLAYWRIGHT_BASE_URL ?? localBaseURL;
+const storybookStaticDir = '../storybook/storybook-static';
+const serveCommand = `pnpm exec serve -c $PWD/serve.json -l tcp://127.0.0.1:${PORT} ${storybookStaticDir}`;
 
 export default defineConfig({
   testDir: './tests',
@@ -29,12 +33,12 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] }
     }
   ],
-  webServer: {
-    command: env?.CI
-      ? `pnpm exec serve -c $PWD/serve.json ../storybook/storybook-static -l ${PORT}`
-      : `pnpm --filter @frey-ui/storybook exec storybook dev -p ${PORT} --ci`,
-    url: baseURL,
-    reuseExistingServer: !env?.CI,
-    timeout: 120_000
-  }
+  webServer: hasCustomBaseURL
+    ? undefined
+    : {
+        command: serveCommand,
+        url: localBaseURL,
+        reuseExistingServer: !env?.CI,
+        timeout: 120_000
+      }
 });

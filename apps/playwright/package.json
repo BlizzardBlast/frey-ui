@@ -9,6 +9,9 @@
     "test:e2e:ui": "playwright test --ui",
     "lint": "biome lint ."
   },
+  "dependencies": {
+    "@frey-ui/storybook": "workspace:*"
+  },
   "devDependencies": {
     "@playwright/test": "^1.53.1",
     "@types/node": "^22.19.11",

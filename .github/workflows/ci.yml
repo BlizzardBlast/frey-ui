@@ -12,6 +12,8 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_SCM_BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+      TURBO_SCM_HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
@@ -26,9 +28,28 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Run affected-package checks
         run: pnpm turbo run lint typecheck test build --affected
+      - name: Check if E2E is affected
+        id: e2e_affected
+        run: |
+          set +e
+          pnpm turbo query affected --tasks test:e2e --packages @frey-ui/playwright --exit-code
+          CODE=$?
+          if [ "$CODE" -eq 1 ]; then
+            echo "e2e_affected=true" >> "$GITHUB_OUTPUT"
+          elif [ "$CODE" -eq 0 ]; then
+            echo "e2e_affected=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "Unexpected turbo query affected exit code: $CODE"
+            exit "$CODE"
+          fi
+      - name: Skip E2E (unaffected)
+        if: steps.e2e_affected.outputs.e2e_affected == 'false'
+        run: echo "No Playwright or Storybook changes detected. Skipping E2E checks."
       - name: Install Playwright Browsers with OS dependencies
+        if: steps.e2e_affected.outputs.e2e_affected == 'true'
         run: pnpm --filter @frey-ui/playwright exec playwright install --with-deps chromium
       - name: Run E2E tests
-        run: pnpm turbo run test:e2e
+        if: steps.e2e_affected.outputs.e2e_affected == 'true'
+        run: pnpm turbo run test:e2e --filter=@frey-ui/playwright
       - name: Run Storybook API docs coverage check
-        run: pnpm docs:check
+        run: pnpm turbo run docs:check

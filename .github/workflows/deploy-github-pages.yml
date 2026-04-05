@@ -16,6 +16,8 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+      TURBO_SCM_BASE: ${{ github.event.before }}
+      TURBO_SCM_HEAD: ${{ github.sha }}
 
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
@@ -34,14 +36,14 @@ jobs:
         id: affected
         run: |
           set +e
-          pnpm dlx turbo-ignore --task=build-storybook @frey-ui/storybook
+          pnpm dlx turbo@2.9.3 query affected --tasks build-storybook --packages @frey-ui/storybook --exit-code
           CODE=$?
           if [ "$CODE" -eq 1 ]; then
             echo "storybook_affected=true" >> "$GITHUB_OUTPUT"
           elif [ "$CODE" -eq 0 ]; then
             echo "storybook_affected=false" >> "$GITHUB_OUTPUT"
           else
-            echo "Unexpected turbo-ignore exit code: $CODE"
+            echo "Unexpected turbo query affected exit code: $CODE"
             exit "$CODE"
           fi
       - name: Skip deploy (unaffected)

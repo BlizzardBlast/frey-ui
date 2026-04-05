@@ -8,6 +8,11 @@
         "$TURBO_DEFAULT$",
         "!README.md",
         "!CHANGELOG.md",
+        "!**/.continue/**",
+        "!**/.cursor/**",
+        "!**/.gemini/**",
+        "!**/.mcp.json",
+        "!**/opencode.json",
         "!**/*.test.*",
         "!**/*.spec.*"
       ],
@@ -15,21 +20,52 @@
     },
     "typecheck": {
       "dependsOn": ["^typecheck"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!**/.continue/**",
+        "!**/.cursor/**",
+        "!**/.gemini/**",
+        "!**/.mcp.json",
+        "!**/opencode.json"
+      ],
       "outputs": ["node_modules/.tmp/tsconfig.tsbuildinfo"]
     },
     "lint": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!**/.continue/**",
+        "!**/.cursor/**",
+        "!**/.gemini/**",
+        "!**/.mcp.json",
+        "!**/opencode.json"
+      ],
       "outputs": []
     },
     "test": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "!README.md",
+        "!CHANGELOG.md",
+        "!**/.continue/**",
+        "!**/.cursor/**",
+        "!**/.gemini/**",
+        "!**/.mcp.json",
+        "!**/opencode.json"
+      ],
       "outputs": []
     },
-    "test:e2e": {
-      "dependsOn": ["@frey-ui/storybook#build"],
-      "cache": false,
-      "outputs": [
-        "apps/playwright/playwright-report/**",
-        "apps/playwright/test-results/**"
-      ]
+    "//#docs:check": {
+      "inputs": [
+        "apps/storybook/src/stories/**",
+        "packages/frey-ui/src/index.ts",
+        "scripts/check-storybook-api-coverage.mjs",
+        "scripts/storybookDocsCheck.mjs"
+      ],
+      "outputs": []
     },
     "dev": {
       "cache": false,
