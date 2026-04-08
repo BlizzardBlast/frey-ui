@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import Accordion from './index';
 
 describe('Accordion overflow edge cases', () => {
@@ -19,13 +19,16 @@ describe('Accordion overflow edge cases', () => {
     const panel = screen.getByText('Content').closest('section') as HTMLElement;
     const trigger = screen.getByRole('button', { name: 'Section' });
 
-    // Simulate a DOM state where the inner child element is missing
-    // (defensive guard: line 254 in AccordionContent useLayoutEffect)
+    // Simulate a DOM state where the inner child element is missing.
+    // This exercises the null-inner guard in the overflow useLayoutEffect.
     Object.defineProperty(panel, 'firstElementChild', {
       get: () => null,
       configurable: true
     });
 
     await user.click(trigger);
+
+    // The trigger should still have toggled the panel state without throwing.
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
   });
 });
