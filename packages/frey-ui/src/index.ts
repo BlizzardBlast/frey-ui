@@ -50,6 +50,18 @@ export { default as Chip } from './Chip';
 export type { ComboboxOption, ComboboxProps, ComboboxSize } from './Combobox';
 export { default as Combobox } from './Combobox';
 export type {
+  CommandPaletteContentProps,
+  CommandPaletteEmptyProps,
+  CommandPaletteGroupProps,
+  CommandPaletteInputProps,
+  CommandPaletteItemProps,
+  CommandPaletteListProps,
+  CommandPaletteProps,
+  CommandPaletteShortcutProps,
+  CommandPaletteTriggerProps
+} from './CommandPalette';
+export { default as CommandPalette } from './CommandPalette';
+export type {
   DialogBodyProps,
   DialogContentProps,
   DialogDescriptionProps,
