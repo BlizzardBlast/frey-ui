@@ -1,82 +1,72 @@
 # Component Priorities
 
-Last reviewed: 2026-04-05
+Last reviewed: 2026-04-08
 
 This note captures the strongest next component opportunities in the current
 Frey UI library based on the exported component surface, Storybook coverage,
 recent changelog history, and the package README roadmap notes.
 
-## Recommended Next New Component
+## Recently Implemented
 
 ### `CommandPalette`
 
-`CommandPalette` is the strongest next component to build.
+`CommandPalette` has been implemented and should no longer be treated as the
+next component to build.
+
+What is now covered:
+
+- Compound API surface: `CommandPalette`, `Trigger`, `Content`, `Input`,
+  `List`, `Group`, `Item`, `Empty`, `Shortcut`.
+- Expected v1 behavior: open/close handling, filtering, grouped items, empty
+  states, disabled items, keyboard navigation, and focus return.
+- Storybook scenarios and unit-test coverage for the core interaction paths.
+
+## Recommended Next New Component
+
+### `SegmentedControl`
+
+`SegmentedControl` is now the strongest next **new** component to build.
 
 Why it is the best fit now:
 
-- Frey UI is positioned as a design system for internal applications, and a
-  command palette is a high-leverage internal-app pattern for navigation,
-  search, quick actions, and entity switching.
-- The current library already has most of the primitives needed to implement it
-  cleanly: `Dialog`, `Drawer`, `Combobox`, `Field`, `Badge`, `Spinner`,
-  `Button`, `Card`, `Stack`, `Box`, and `ThemeProvider`.
-- Recent work has already added the hardest building blocks. `Drawer` and
-  `Combobox` landed recently, which makes this a good moment to turn those
-  primitives into a more product-shaped component.
-- It creates a strong Storybook and Playwright showcase for keyboard support,
-  filtering, focus management, overlays, and accessible interaction patterns in
-  one place.
+- High reuse in settings pages, filters, and dashboards.
+- Can likely reuse patterns from `Tabs` and `RadioGroup`.
+- Lower implementation risk than `DatePicker` or file upload.
 
 Suggested v1 scope:
 
-- `CommandPalette`
-- `CommandPalette.Trigger`
-- `CommandPalette.Content`
-- `CommandPalette.Input`
-- `CommandPalette.List`
-- `CommandPalette.Group`
-- `CommandPalette.Item`
-- `CommandPalette.Empty`
-- `CommandPalette.Shortcut`
+- `SegmentedControl`
+- `SegmentedControl.Item`
 
 Suggested v1 behaviors:
 
-- Open from a trigger and support a controlled `open` state.
-- Filter items by typed input.
-- Support grouped items and empty states.
-- Support disabled items.
-- Support keyboard navigation with arrow keys and Enter.
-- Restore focus to the trigger when closed.
-- Close on Escape and outside press.
+- Controlled and uncontrolled value patterns.
+- Keyboard navigation with arrow keys.
+- Disabled item support.
+- Clear selected/unselected and focus-visible states.
 
 Suggested v1 non-goals:
 
-- Async data fetching.
-- Nested pages.
-- Virtualized lists.
-- Recent-items persistence.
+- Multi-row overflow behavior.
+- Icon-only variants.
+- Async-loading options.
 
 Suggested Storybook stories:
 
-- Basic command palette.
-- Grouped actions.
-- Empty results state.
+- Basic usage.
 - Disabled items.
-- Controlled open state.
-- Search-driven workspace switcher.
+- Controlled selection.
+- Settings/filter examples.
 
 Suggested tests:
 
-- Unit tests for filtering, keyboard navigation, disabled items, and focus
-  return.
-- Playwright coverage for open/close behavior, arrow-key traversal, Enter
-  selection, and Escape dismissal.
+- Unit tests for selection behavior, keyboard navigation, and disabled items.
+- A11y assertions for role/state semantics and focus visibility.
 
 Implementation note:
 
-- Prefer composing on top of the existing overlay and input primitives instead
-  of creating a brand-new overlay stack. That keeps behavior aligned with the
-  rest of the library and reuses coverage you already have.
+- Prefer composing on top of existing `Tabs`/`RadioGroup` interaction patterns
+  instead of introducing a one-off selection model.
 
 ## Best Remake Candidate
 
@@ -105,13 +95,9 @@ Remake direction:
 
 ## Other Good Ideas
 
-### `SegmentedControl`
+### `SegmentedControl` status
 
-Best small-to-medium sized addition.
-
-- High reuse in settings pages, filters, and dashboards.
-- Can likely reuse patterns from `Tabs` and `RadioGroup`.
-- Lower implementation risk than `DatePicker` or file upload.
+Now promoted to the recommended next new component.
 
 ### `DatePicker`
 
@@ -120,8 +106,8 @@ Best high-demand but higher-complexity form component.
 - Strong practical value.
 - Significantly more surface area: calendar math, localization, keyboard
   support, and overlay behavior.
-- Better as a deliberate follow-up after `CommandPalette` unless date input is
-  currently blocking product work.
+- Better as a deliberate follow-up after `SegmentedControl` unless date input
+  is currently blocking product work.
 
 ### `FileUpload` or `Dropzone`
 
@@ -143,18 +129,17 @@ Best lightweight product-polish addition.
 
 ## Priority Order
 
-1. `CommandPalette`
-2. `Accordion` remake
-3. `SegmentedControl`
-4. `DatePicker`
-5. `FileUpload` or `Dropzone`
-6. `EmptyState`
+1. `Accordion` remake
+2. `SegmentedControl`
+3. `DatePicker`
+4. `FileUpload` or `Dropzone`
+5. `EmptyState`
 
 ## Recommendation
 
-If only one thing should happen next, build `CommandPalette`.
+If only one thing should happen next, remake `Accordion`.
 
-If you want the smallest useful component next, build `SegmentedControl`.
+If you want the next net-new component, build `SegmentedControl`.
 
-If you want to improve an existing component instead of expanding the library,
-remake `Accordion`.
+If you need a higher-demand form surface and can absorb complexity, build
+`DatePicker`.

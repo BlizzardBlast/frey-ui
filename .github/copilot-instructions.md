@@ -97,6 +97,20 @@ Build a small, accessible React component library.
 - If you add tests, use the existing setup in `packages/frey-ui/` (Vitest + Testing Library).
 - Focus on: renders label/text, keyboard/focus behavior, disabled behavior.
 
+## Self code review workflow (bounded)
+
+- After each agent-authored change batch, perform a self code review on the
+  current diff before finalizing.
+- Severity policy:
+  - Must fix: P0/P1
+  - Should fix: P2 (or explicitly document trade-off)
+  - Optional: P3
+- Iterate review/fix cycles up to **3 passes max**.
+- Prevent logic loops:
+  - Stop if two consecutive passes return materially identical findings and no
+    meaningful diff change occurred.
+  - Report blocker/decision instead of repeating edits.
+
 ## Packaging
 
 - Keep public exports stable (Rollup publishes CJS + ESM + types).

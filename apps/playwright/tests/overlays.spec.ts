@@ -110,4 +110,45 @@ test.describe('overlay stories', () => {
       await expect(page.locator('dialog[open]')).toHaveCount(0);
     }
   });
+
+  test('command palette closes after arrow traversal and Enter selection', async ({
+    page
+  }) => {
+    await gotoStory('stories-commandpalette--basic-command-palette', page);
+
+    const trigger = page.getByRole('button', {
+      name: 'Open command palette'
+    });
+
+    await trigger.click();
+    await expect(page.locator('dialog[open]')).toHaveCount(1);
+
+    const input = page.getByRole('combobox', { name: 'Search commands' });
+    await input.click();
+
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('Enter');
+
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+  });
+
+  test('command palette closes on Escape and restores trigger focus', async ({
+    page
+  }) => {
+    await gotoStory('stories-commandpalette--basic-command-palette', page);
+
+    const trigger = page.getByRole('button', {
+      name: 'Open command palette'
+    });
+
+    await trigger.click();
+    await expect(page.locator('dialog[open]')).toHaveCount(1);
+
+    await page.keyboard.press('Escape');
+
+    await expect(page.locator('dialog[open]')).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+  });
 });

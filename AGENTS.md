@@ -61,6 +61,29 @@ pnpm build
   2. `pnpm version-packages`
   3. `pnpm release`
 
+## Agent Self-Review Loop (Required)
+
+For any agent-authored change set (code, tests, stories, docs, or config):
+
+1. Run a self code review on the current diff using severity levels P0-P3.
+2. Fix all P0/P1 findings before moving forward.
+3. Fix P2 findings unless there is a documented trade-off decision.
+4. Repeat review/fix cycles with a hard cap of **3 passes**.
+
+Loop prevention rules:
+
+- If two consecutive passes produce materially identical findings and the diff
+  did not change meaningfully, stop iterating and report the decision/blocker.
+- Do not re-apply no-op edits.
+- Always include a short pros/cons note when choosing between two valid
+  implementation options.
+
+Exit criteria:
+
+- No unresolved P0/P1 findings.
+- No new regressions introduced by the latest edits.
+- Required validation commands pass in the documented order.
+
 ## Agent Instructions for UI Components (Storybook MCP)
 
 When working on UI components, stories, or component docs, always use the `storybook-mcp` tools as the source of truth.
