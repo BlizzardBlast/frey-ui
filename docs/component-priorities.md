@@ -21,6 +21,26 @@ What is now covered:
   states, disabled items, keyboard navigation, and focus return.
 - Storybook scenarios and unit-test coverage for the core interaction paths.
 
+### `Accordion` remake
+
+The `Accordion` component has been remade and should no longer be treated as
+the top remake candidate.
+
+What changed:
+
+- Replaced the clipping-heavy grid animation with a hybrid approach: the CSS
+  grid `0fr → 1fr` animation is retained for smooth height reveal, but a
+  `useLayoutEffect` + `transitionend` listener now switches the inner content
+  from `overflow: hidden` to `overflow: visible` once the panel is fully open.
+- When a panel starts closing, `overflow` is reset to `hidden` synchronously
+  before the first paint so the collapse animation clips correctly.
+- Focus rings and nested overlays (e.g. tooltips) inside expanded panels are
+  no longer clipped.
+- The public API is unchanged.
+- New tests cover: tab navigation into open panels, tab skip over closed
+  panels, overflow state after `transitionend`, overflow reset on close, and
+  defensive edge cases (null inner element, unrelated transition events).
+
 ## Recommended Next New Component
 
 ### `SegmentedControl`
@@ -70,28 +90,14 @@ Implementation note:
 
 ## Best Remake Candidate
 
-### `Accordion`
+The `Accordion` remake is now complete (see Recently Implemented above). The
+next strongest remake candidate is:
+
+### `Select`
 
 If the goal is to remake an existing component instead of adding a new one,
-`Accordion` is the clearest candidate.
-
-Why it stands out:
-
-- The package README already documents a known limitation: the current
-  grid-based animation uses `overflow: hidden`, which can clip tooltips and
-  extended focus rings inside accordion content.
-- That limitation affects composition quality, which matters in a design system.
-- Fixing it would improve confidence in nested interactive content instead of
-  only adding a new API surface area.
-
-Remake direction:
-
-- Replace the current clipping-heavy content animation with an approach that is
-  safer for focus outlines and nested overlays.
-- Keep the current public API if possible so the change is mostly an internal
-  implementation upgrade.
-- Add tests for focus behavior and nested interactive content inside expanded
-  panels.
+`Select` may benefit from alignment with the new `Combobox` patterns introduced
+since it was first shipped.
 
 ## Other Good Ideas
 
@@ -129,17 +135,14 @@ Best lightweight product-polish addition.
 
 ## Priority Order
 
-1. `Accordion` remake
-2. `SegmentedControl`
-3. `DatePicker`
-4. `FileUpload` or `Dropzone`
-5. `EmptyState`
+1. `SegmentedControl`
+2. `DatePicker`
+3. `FileUpload` or `Dropzone`
+4. `EmptyState`
 
 ## Recommendation
 
-If only one thing should happen next, remake `Accordion`.
-
-If you want the next net-new component, build `SegmentedControl`.
+If only one thing should happen next, build `SegmentedControl`.
 
 If you need a higher-demand form surface and can absorb complexity, build
 `DatePicker`.

@@ -242,6 +242,50 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
     });
   }, [isOpen]);
 
+  // Switch inner content from overflow:hidden to overflow:visible once the
+  // open animation completes, so focus rings and overlays (tooltips, etc.)
+  // inside expanded panels are never clipped. Reset immediately before paint
+  // when closing so the collapse animation still clips correctly.
+  //
+  // prevIsOpenRef tracks the previous isOpen value so we can distinguish
+  // between "panel starts open on mount" (no CSS transition fires) and
+  // "panel transitions from closed to open" (CSS transition fires).
+  const prevIsOpenRef = React.useRef(isOpen);
+
+  React.useLayoutEffect(() => {
+    const outer = contentRef.current;
+    if (!outer) return;
+
+    const inner = outer.firstElementChild as HTMLElement | null;
+    if (!inner) return;
+
+    const wasOpen = prevIsOpenRef.current;
+    prevIsOpenRef.current = isOpen;
+
+    if (!isOpen) {
+      inner.style.overflow = '';
+      return;
+    }
+
+    // If the panel was already open when the effect first ran (no CSS
+    // transition fired — e.g. opened via defaultValue), expose the content
+    // immediately so nested focus rings and overlays are not clipped.
+    if (wasOpen) {
+      inner.style.overflow = 'visible';
+      return;
+    }
+
+    // Otherwise wait for the grid transition to finish before removing the clip.
+    const handleTransitionEnd = (e: TransitionEvent) => {
+      if (e.propertyName === 'grid-template-rows') {
+        inner.style.overflow = 'visible';
+      }
+    };
+
+    outer.addEventListener('transitionend', handleTransitionEnd);
+    return () => outer.removeEventListener('transitionend', handleTransitionEnd);
+  }, [isOpen]);
+
   return (
     <section
       ref={mergedContentRef}

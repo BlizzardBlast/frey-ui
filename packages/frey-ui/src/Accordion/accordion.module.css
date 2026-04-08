@@ -71,7 +71,11 @@
 }
 
 .accordion_content {
-  overflow: hidden; /* Important for grid animation to hide contents when 0fr */
+  /* overflow:hidden is the base state needed for the grid animation to clip
+     content at 0fr. JS (useLayoutEffect + transitionend) switches this to
+     overflow:visible once the panel is fully open, so focus rings and nested
+     overlays (e.g. tooltips) are never clipped in the expanded state. */
+  overflow: hidden;
   padding-bottom: 1rem;
   color: var(--frey-color-text-muted);
   font-size: 0.875rem;

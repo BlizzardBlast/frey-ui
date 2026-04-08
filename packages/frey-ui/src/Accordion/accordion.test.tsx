@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
@@ -315,5 +315,161 @@ describe('Accordion', () => {
     const results = await axe(container);
 
     expect(results).toHaveNoViolations();
+  });
+
+  it('allows keyboard tab navigation into nested content inside an open panel', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <>
+        <Accordion>
+          <Accordion.Item value='one'>
+            <Accordion.Trigger>Open section</Accordion.Trigger>
+            <Accordion.Content>
+              <a href='#target'>Link inside panel</a>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+        <button type='button'>After accordion</button>
+      </>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Open section' });
+
+    await user.click(trigger);
+
+    trigger.focus();
+    await user.tab();
+
+    expect(screen.getByRole('link', { name: 'Link inside panel' })).toHaveFocus();
+  });
+
+  it('skips nested content inside a closed panel when tabbing', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <>
+        <Accordion>
+          <Accordion.Item value='one'>
+            <Accordion.Trigger>Closed section</Accordion.Trigger>
+            <Accordion.Content>
+              <a href='#target'>Link inside closed panel</a>
+            </Accordion.Content>
+          </Accordion.Item>
+        </Accordion>
+        <button type='button'>After accordion</button>
+      </>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Closed section' });
+    const after = screen.getByRole('button', { name: 'After accordion' });
+
+    trigger.focus();
+    await user.tab();
+
+    expect(after).toHaveFocus();
+  });
+
+  it('sets inner content overflow to visible after the open transition ends', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Overflow section</Accordion.Trigger>
+          <Accordion.Content>Overflow content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Overflow section' });
+    await user.click(trigger);
+
+    const panel = screen.getByText('Overflow content').closest('section');
+    const inner = screen.getByText('Overflow content').closest('div');
+
+    // Simulate the CSS grid transition completing
+    act(() => {
+      panel?.dispatchEvent(
+        new TransitionEvent('transitionend', {
+          propertyName: 'grid-template-rows',
+          bubbles: true
+        })
+      );
+    });
+
+    expect(inner).toHaveStyle({ overflow: 'visible' });
+  });
+
+  it('resets inner content overflow when a panel closes', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Reset overflow section</Accordion.Trigger>
+          <Accordion.Content>Reset overflow content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Reset overflow section' });
+    const inner = screen.getByText('Reset overflow content').closest('div');
+
+    // Panel starts open — overflow should be visible immediately
+    expect(inner).toHaveStyle({ overflow: 'visible' });
+
+    // Now close the panel — overflow should reset before the closing animation
+    await user.click(trigger);
+
+    expect(inner).not.toHaveStyle({ overflow: 'visible' });
+  });
+
+  it('immediately sets inner content overflow to visible for a panel opened via defaultValue', () => {
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Pre-open section</Accordion.Trigger>
+          <Accordion.Content>Pre-open content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const inner = screen.getByText('Pre-open content').closest('div');
+
+    // No transitionend dispatched — overflow must already be visible on mount
+    expect(inner).toHaveStyle({ overflow: 'visible' });
+  });
+
+  it('ignores transitionend events for non-grid-template-rows properties', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Non-grid section</Accordion.Trigger>
+          <Accordion.Content>Non-grid content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Non-grid section' });
+    await user.click(trigger);
+
+    const panel = screen.getByText('Non-grid content').closest('section');
+    const inner = screen.getByText('Non-grid content').closest('div');
+
+    // Fire a transitionend event for a different CSS property
+    act(() => {
+      panel?.dispatchEvent(
+        new TransitionEvent('transitionend', {
+          propertyName: 'opacity',
+          bubbles: true
+        })
+      );
+    });
+
+    // Overflow should NOT have been set to visible by an unrelated transition
+    expect(inner).not.toHaveStyle({ overflow: 'visible' });
   });
 });
