@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, CommandPalette, type CommandPaletteProps } from 'frey-ui';
 import { useEffect, useState } from 'react';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, fn, screen, userEvent } from 'storybook/test';
 
 type CommandPaletteStoryProps = Pick<
   CommandPaletteProps,
@@ -140,7 +140,11 @@ export const basic_command_palette: Story = {
       })
     );
 
-    await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
+    const input = await screen.findByRole('combobox', {
+      name: 'Search commands'
+    });
+    await userEvent.click(input);
+    await userEvent.keyboard('{ArrowDown}{Enter}');
 
     await expect(args.onSelect).toHaveBeenCalledWith('invite-member');
   }
@@ -185,14 +189,15 @@ export const empty_results_state: Story = {
       })
     );
 
-    await userEvent.type(
-      await canvas.findByRole('combobox', {
-        name: 'Search actions'
-      }),
-      'no-match-value'
-    );
+    const input = await screen.findByRole('combobox', {
+      name: 'Search actions'
+    });
+    await userEvent.click(input);
+    await userEvent.type(input, 'no-match-value');
 
-    await expect(canvas.getByText('No commands found.')).toBeInTheDocument();
+    await expect(
+      await screen.findByText('No commands found.')
+    ).toBeInTheDocument();
   }
 } satisfies Story;
 
@@ -219,7 +224,11 @@ export const disabled_items: Story = {
       })
     );
 
-    await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{Enter}');
+    const input = await screen.findByRole('combobox', {
+      name: 'Find project action'
+    });
+    await userEvent.click(input);
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
 
     await expect(args.onSelect).toHaveBeenCalledWith('archive-project');
   }
