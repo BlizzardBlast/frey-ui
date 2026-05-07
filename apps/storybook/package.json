@@ -26,11 +26,11 @@
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
     "@chromatic-com/storybook": "^5.1.1",
-    "@storybook/addon-a11y": "10.3.4",
-    "@storybook/addon-docs": "10.3.4",
+    "@storybook/addon-a11y": "10.3.6",
+    "@storybook/addon-docs": "10.3.6",
     "@storybook/addon-mcp": "^0.5.0",
     "@storybook/addon-themes": "^10.3.4",
-    "@storybook/react-vite": "10.3.4",
+    "@storybook/react-vite": "10.3.6",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "22.19.17",
     "@types/react": "^19.2.14",
@@ -40,7 +40,7 @@
     "@vitest/ui": "^4.1.2",
     "chromatic": "^16.1.0",
     "jsdom": "^29.0.1",
-    "storybook": "10.3.4",
+    "storybook": "10.3.6",
     "typescript": "^6.0.2",
     "vite": "8.0.3",
     "vitest": "^4.1.2"
