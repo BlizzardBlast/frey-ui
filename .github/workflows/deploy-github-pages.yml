@@ -36,7 +36,7 @@ jobs:
         id: affected
         run: |
           set +e
-          pnpm dlx turbo@2.9.3 query affected --tasks build-storybook --packages @frey-ui/storybook --exit-code
+          pnpm dlx turbo@2.9.15 query affected --tasks build-storybook --packages @frey-ui/storybook --exit-code
           CODE=$?
           if [ "$CODE" -eq 1 ]; then
             echo "storybook_affected=true" >> "$GITHUB_OUTPUT"
