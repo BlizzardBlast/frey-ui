@@ -87,10 +87,7 @@ export const Slot: React.ForwardRefExoticComponent<
     return null;
   }
 
-  const mergedProps = mergeProps(
-    slotProps as AnyProps,
-    children.props as AnyProps
-  );
+  const mergedProps = mergeProps(slotProps, children.props as AnyProps);
   const childRef = getElementRef(children);
 
   return React.cloneElement(children, {

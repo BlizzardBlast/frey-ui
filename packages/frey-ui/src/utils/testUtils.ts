@@ -19,5 +19,5 @@ export function createMockRect({
     right: x + width,
     bottom: y + height,
     toJSON: () => ({}),
-  } as DOMRect;
+  };
 }
