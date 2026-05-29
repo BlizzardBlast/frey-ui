@@ -67,15 +67,29 @@ describe('Checkbox', () => {
   });
 
   it('clears indeterminate when updated to checked', () => {
+    const onChange = vi.fn();
+
     const { rerender } = render(
-      <Checkbox label='Select all' checked={false} indeterminate />
+      <Checkbox
+        label='Select all'
+        checked={false}
+        indeterminate
+        onChange={onChange}
+      />
     );
     const checkbox = screen.getByRole('checkbox', { name: 'Select all' });
 
     expect((checkbox as HTMLInputElement).indeterminate).toBe(true);
     expect(checkbox).toHaveAttribute('aria-checked', 'mixed');
 
-    rerender(<Checkbox label='Select all' checked indeterminate={false} />);
+    rerender(
+      <Checkbox
+        label='Select all'
+        checked
+        indeterminate={false}
+        onChange={onChange}
+      />
+    );
 
     expect((checkbox as HTMLInputElement).indeterminate).toBe(false);
     expect(checkbox).toBeChecked();

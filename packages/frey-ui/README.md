@@ -12,7 +12,7 @@ Frey UI targets **ES2016+** and supports modern evergreen browsers:
 
 ## Accessibility
 
-Frey UI is built with **WCAG 2.1 AA** compliance as a goal:
+Frey UI is built with **WCAG 2.2 AA** compliance as a goal:
 
 - Interactive components use semantic HTML (`button`, `input`, `label`)
 - Non-native interactive elements receive keyboard/focus affordances automatically

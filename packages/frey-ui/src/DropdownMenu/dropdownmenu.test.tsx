@@ -502,8 +502,10 @@ describe('DropdownMenu', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(
-      <DropdownMenu defaultOpen>
+    const user = userEvent.setup();
+
+    render(
+      <DropdownMenu>
         <DropdownMenu.Trigger asChild>
           <Button>A11y menu</Button>
         </DropdownMenu.Trigger>
@@ -514,7 +516,13 @@ describe('DropdownMenu', () => {
       </DropdownMenu>
     );
 
-    const results = await axe(container);
+    await user.click(screen.getByRole('button', { name: 'A11y menu' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('menuitem', { name: 'Rename' })).toHaveFocus();
+    });
+
+    const results = await axe(screen.getByRole('menu'));
 
     expect(results).toHaveNoViolations();
   });

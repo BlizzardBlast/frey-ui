@@ -160,13 +160,23 @@ describe('Tooltip', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(
-      <Tooltip asChild content='A11y tooltip' defaultOpen>
+    const user = userEvent.setup();
+
+    render(
+      <Tooltip asChild content='A11y tooltip' delay={0}>
         <Button>A11y target</Button>
       </Tooltip>
     );
 
-    const results = await axe(container);
+    await user.hover(screen.getByRole('button', { name: 'A11y target' }));
+
+    const tooltip = await screen.findByRole('tooltip');
+
+    await waitFor(() => {
+      expect(tooltip).toBeInTheDocument();
+    });
+
+    const results = await axe(tooltip);
     expect(results).toHaveNoViolations();
   });
 

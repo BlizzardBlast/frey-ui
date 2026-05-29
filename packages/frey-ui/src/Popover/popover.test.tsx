@@ -310,18 +310,32 @@ describe('Popover', () => {
   });
 
   it('has no accessibility violations', async () => {
-    const { container } = render(
-      <Popover defaultOpen>
+    const user = userEvent.setup();
+
+    render(
+      <Popover>
         <Popover.Trigger asChild>
           <Button>Open popover</Button>
         </Popover.Trigger>
         <Popover.Content>
-          <p>A11y content</p>
+          <button type='button'>A11y action</button>
         </Popover.Content>
       </Popover>
     );
 
-    const results = await axe(container);
+    await user.click(screen.getByRole('button', { name: 'Open popover' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'A11y action' })).toHaveFocus();
+    });
+
+    const popoverContent = screen
+      .getByRole('button', { name: 'A11y action' })
+      .closest('[data-floating-ui-focusable]');
+
+    expect(popoverContent).not.toBeNull();
+
+    const results = await axe(popoverContent as HTMLElement);
 
     expect(results).toHaveNoViolations();
   });
