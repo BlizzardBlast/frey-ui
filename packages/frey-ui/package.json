@@ -203,7 +203,8 @@
     "url": "git+https://github.com/BlizzardBlast/frey-ui.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "dev": "rollup -c -w",

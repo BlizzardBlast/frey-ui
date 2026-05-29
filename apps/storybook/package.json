@@ -3,6 +3,9 @@
   "private": true,
   "version": "1.0.5",
   "type": "module",
+  "publishConfig": {
+    "provenance": true
+  },
   "scripts": {
     "dev": "vite",
     "test": "vitest run --passWithNoTests",
