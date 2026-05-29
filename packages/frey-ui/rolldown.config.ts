@@ -1,38 +1,26 @@
 import crypto from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
 import MagicString from 'magic-string';
 import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
-import { defineConfig } from 'rollup';
-import dts from 'rollup-plugin-dts';
+import { defineConfig } from 'rolldown';
 import external from 'rollup-plugin-peer-deps-external';
-import typescriptEngine from 'typescript';
+import dts from 'unplugin-dts/rolldown';
 
-const packageJson = JSON.parse(readFileSync('./package.json'));
-const externalPackages = [
-  ...Object.keys(packageJson.dependencies || {}),
-  ...Object.keys(packageJson.peerDependencies || {}),
-  'react/jsx-runtime',
-];
-
-function toPosixPath(filePath) {
+function toPosixPath(filePath: string): string {
   return filePath.split(path.sep).join('/');
 }
 
-function normalizeSourcemapSourcePath(sourcePath) {
+function normalizeSourcemapSourcePath(sourcePath: string): string {
   return sourcePath
     .replaceAll('\\', '/')
     .replace(/^\.\.\/\.\.\/\.\.\/\.\.\/src\//, '../../../src/');
 }
 
-function prependAfterDirectivePrologue(code, statement) {
+function prependAfterDirectivePrologue(code: string, statement: string) {
   const magicString = new MagicString(code);
   const directiveRegex = /^(?:[ \t]*['"][^'"\r\n]+['"];[ \t]*(?:\r?\n|$))+/;
-  const directiveMatch = code.match(directiveRegex);
+  const directiveMatch = directiveRegex.exec(code);
   const insertIndex = directiveMatch ? directiveMatch[0].length : 0;
 
   magicString.appendLeft(insertIndex, `${statement}\n`);
@@ -43,10 +31,35 @@ function prependAfterDirectivePrologue(code, statement) {
   };
 }
 
+interface EmitAssetOptions {
+  type: 'asset';
+  fileName: string;
+  source: string;
+}
+
+interface TransformContext {
+  emitFile: (options: EmitAssetOptions) => void;
+}
+
+interface CssModuleChunk {
+  facadeModuleId: string | null;
+}
+
+interface RenderChunkOptions {
+  format: string;
+}
+
+interface SourceMapBundleItem {
+  type: string;
+  map?: {
+    sources: string[];
+  };
+}
+
 function cssModulesPlugin() {
   return {
     name: 'css-modules',
-    async transform(code, id) {
+    async transform(this: TransformContext, code: string, id: string) {
       const sourceId = id.split('?')[0];
       if (!sourceId.endsWith('.css')) return null;
 
@@ -94,17 +107,23 @@ function cssModulesPlugin() {
         source: result.css,
       });
 
+      // Explicitly return moduleType: 'js' to stop Rolldown from parsing this asset as raw CSS
       if (isTheme) {
-        return { code: '', map: { mappings: '' } };
+        return { code: '', map: { mappings: '' }, moduleType: 'js' };
       }
 
       return {
         code: `export default ${JSON.stringify(classNames)};`,
         map: { mappings: '' },
+        moduleType: 'js',
       };
     },
 
-    renderChunk(code, chunk, options) {
+    renderChunk(
+      code: string,
+      chunk: CssModuleChunk,
+      options: RenderChunkOptions
+    ) {
       if (!chunk.facadeModuleId?.endsWith('.css')) {
         return null;
       }
@@ -126,7 +145,10 @@ function cssModulesPlugin() {
 function normalizeSourcemapPathsPlugin() {
   return {
     name: 'normalize-sourcemap-paths',
-    generateBundle(_outputOptions, bundle) {
+    generateBundle(
+      _outputOptions: unknown,
+      bundle: Record<string, SourceMapBundleItem>
+    ) {
       for (const chunkOrAsset of Object.values(bundle)) {
         if (chunkOrAsset.type !== 'chunk' || !chunkOrAsset.map?.sources)
           continue;
@@ -139,79 +161,39 @@ function normalizeSourcemapPathsPlugin() {
   };
 }
 
-export default defineConfig([
-  {
-    input: './src/index.ts',
-    output: [
-      {
-        dir: 'dist',
-        format: 'cjs',
-        sourcemap: true,
-        sourcemapPathTransform: (relativeSourcePath) => {
-          return normalizeSourcemapSourcePath(relativeSourcePath);
-        },
-        exports: 'named',
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        entryFileNames: 'cjs/[name].cjs',
-        chunkFileNames: 'cjs/[name]-[hash].cjs',
-        name: packageJson.name,
-        banner: "'use client';",
-      },
-      {
-        dir: 'dist',
-        format: 'es',
-        exports: 'named',
-        sourcemap: true,
-        sourcemapPathTransform: (relativeSourcePath) => {
-          return normalizeSourcemapSourcePath(relativeSourcePath);
-        },
-        preserveModules: true,
-        preserveModulesRoot: 'src',
-        entryFileNames: 'esm/[name].mjs',
-        chunkFileNames: 'esm/[name]-[hash].mjs',
-        banner: "'use client';",
-      },
-    ],
-    external: externalPackages,
-    plugins: [
-      external({ includeDependencies: true }),
-      resolve(),
-      commonjs(),
-      cssModulesPlugin(),
-      typescript({
-        tsconfig: './tsconfig.lib.json',
-        typescript: typescriptEngine,
-        sourceMap: true,
-        exclude: [
-          'coverage',
-          '.storybook',
-          'storybook-static',
-          'config',
-          'dist',
-          'node_modules/**',
-          '*.cjs',
-          '*.mjs',
-          '**/__snapshots__/*',
-          '**/__tests__',
-          '**/*.test.js+(|x)',
-          '**/*.test.ts+(|x)',
-          '**/*.mdx',
-          '**/*.story.ts+(|x)',
-          '**/*.story.js+(|x)',
-          '**/*.stories.ts+(|x)',
-          '**/*.stories.js+(|x)',
-          'setupTests.ts',
-          'vitest.config.ts',
-        ],
-      }),
-      normalizeSourcemapPathsPlugin(),
-    ],
-  },
-  {
-    input: 'dist/types/src/index.d.ts',
-    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
-    external: [/\.(sc|sa|c)ss$/],
-    plugins: [dts()],
-  },
-]);
+export default defineConfig({
+  input: './src/index.ts',
+  output: [
+    {
+      dir: 'dist',
+      format: 'cjs',
+      sourcemap: true,
+      exports: 'named',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      entryFileNames: 'cjs/[name].cjs',
+      chunkFileNames: 'cjs/[name]-[hash].cjs',
+      banner: "'use client';",
+    },
+    {
+      dir: 'dist',
+      format: 'esm',
+      sourcemap: true,
+      exports: 'named',
+      preserveModules: true,
+      preserveModulesRoot: 'src',
+      entryFileNames: 'esm/[name].mjs',
+      chunkFileNames: 'esm/[name]-[hash].mjs',
+      banner: "'use client';",
+    },
+  ],
+  plugins: [
+    external({ includeDependencies: true }),
+    cssModulesPlugin(),
+    normalizeSourcemapPathsPlugin(),
+    dts({
+      tsconfigPath: './tsconfig.lib.json',
+      bundleTypes: true,
+    }),
+  ],
+});
