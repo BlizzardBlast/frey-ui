@@ -6,7 +6,7 @@ type BreadcrumbsStoryProps = Pick<BreadcrumbsProps, 'separator' | 'ariaLabel'>;
 const meta: Meta<BreadcrumbsStoryProps> = {
   component: Breadcrumbs,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     separator: {
@@ -14,26 +14,26 @@ const meta: Meta<BreadcrumbsStoryProps> = {
       description: 'Separator string shown between breadcrumb items',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'/'"
-        }
-      }
+          summary: "'/'",
+        },
+      },
     },
     ariaLabel: {
       control: { type: 'text' },
       description: 'Accessible label for the breadcrumb navigation',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'Breadcrumb'"
-        }
-      }
-    }
-  }
+          summary: "'Breadcrumb'",
+        },
+      },
+    },
+  },
 } satisfies Meta<BreadcrumbsStoryProps>;
 
 export default meta;
@@ -54,7 +54,7 @@ export const basic: Story = {
         </Breadcrumbs.Item>
       </Breadcrumbs.List>
     </Breadcrumbs>
-  )
+  ),
 } satisfies Story;
 
 export const custom_separator: Story = {
@@ -72,5 +72,5 @@ export const custom_separator: Story = {
         </Breadcrumbs.Item>
       </Breadcrumbs.List>
     </Breadcrumbs>
-  )
+  ),
 } satisfies Story;

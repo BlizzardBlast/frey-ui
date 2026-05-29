@@ -17,7 +17,7 @@ type DropdownMenuStoryProps = Pick<
 const meta: Meta<DropdownMenuStoryProps> = {
   component: DropdownMenu,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     placement: {
@@ -26,98 +26,98 @@ const meta: Meta<DropdownMenuStoryProps> = {
       description: 'Preferred placement of the dropdown content',
       table: {
         type: {
-          summary: "'top' | 'right' | 'bottom' | 'left'"
+          summary: "'top' | 'right' | 'bottom' | 'left'",
         },
         defaultValue: {
-          summary: "'bottom'"
-        }
-      }
+          summary: "'bottom'",
+        },
+      },
     },
     closeOnEscape: {
       control: { type: 'boolean' },
       description: 'Whether pressing Escape closes the menu',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'true'
-        }
-      }
+          summary: 'true',
+        },
+      },
     },
     closeOnOutsideClick: {
       control: { type: 'boolean' },
       description: 'Whether clicking outside closes the menu',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'true'
-        }
-      }
+          summary: 'true',
+        },
+      },
     },
     open: {
       control: { type: 'boolean' },
       description: 'Controlled open state of the dropdown menu',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
       description: 'Initial open state when the menu is uncontrolled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called when the dropdown menu open state changes',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     offset: {
       control: { type: 'number' },
       description: 'Distance in pixels between the trigger and menu content',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '8'
-        }
-      }
+          summary: '8',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Composed trigger and menu content elements',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<DropdownMenuStoryProps>;
 
 export default meta;
@@ -149,8 +149,8 @@ export const basic_menu: Story = {
   args: {
     placement: 'bottom',
     closeOnEscape: true,
-    closeOnOutsideClick: true
-  }
+    closeOnOutsideClick: true,
+  },
 } satisfies Story;
 
 export const with_disabled_item: Story = {
@@ -171,7 +171,7 @@ export const with_disabled_item: Story = {
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
-  )
+  ),
 } satisfies Story;
 
 export const controlled_menu: Story = {
@@ -231,6 +231,6 @@ export const controlled_menu: Story = {
     );
   },
   args: {
-    placement: 'bottom'
-  }
+    placement: 'bottom',
+  },
 } satisfies Story;

@@ -8,7 +8,7 @@ import {
   CloseIcon,
   type IconProps,
   MinusIcon,
-  TriangleAlertIcon
+  TriangleAlertIcon,
 } from 'frey-ui';
 
 type IconStoryProps = Pick<
@@ -19,7 +19,7 @@ type IconStoryProps = Pick<
 const meta: Meta<IconStoryProps> = {
   component: CloseIcon,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     size: {
@@ -28,12 +28,12 @@ const meta: Meta<IconStoryProps> = {
       description: 'Named icon size token (also accepts number override)',
       table: {
         type: {
-          summary: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number"
+          summary: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     strokeWidth: {
       control: { type: 'select' },
@@ -41,50 +41,50 @@ const meta: Meta<IconStoryProps> = {
       description: 'Named stroke token (also accepts number override)',
       table: {
         type: {
-          summary: "'thin' | 'regular' | 'bold' | number"
+          summary: "'thin' | 'regular' | 'bold' | number",
         },
         defaultValue: {
-          summary: "'regular'"
-        }
-      }
+          summary: "'regular'",
+        },
+      },
     },
     title: {
       control: { type: 'text' },
       description: 'Accessible title announced for the icon graphic',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the SVG element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the SVG element',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<IconStoryProps>;
 
 export default meta;
@@ -98,7 +98,7 @@ export const icon_gallery: Story = {
         display: 'grid',
         gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
         gap: 20,
-        color: 'var(--frey-color-text-primary, #111827)'
+        color: 'var(--frey-color-text-primary, #111827)',
       }}
     >
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
@@ -138,8 +138,8 @@ export const icon_gallery: Story = {
   args: {
     size: 'lg',
     strokeWidth: 'regular',
-    title: 'Icon'
-  }
+    title: 'Icon',
+  },
 } satisfies Story;
 
 export const size_variants: Story = {
@@ -151,7 +151,7 @@ export const size_variants: Story = {
       <ChevronDownIcon size='lg' title='Large chevron' />
       <ChevronDownIcon size='xl' title='Extra large chevron' />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const numeric_override: Story = {
@@ -161,5 +161,5 @@ export const numeric_override: Story = {
       <CloseIcon size={22} strokeWidth={2.2} title='Regular close icon' />
       <CloseIcon size={28} strokeWidth={2.8} title='Bold close icon' />
     </div>
-  )
+  ),
 } satisfies Story;

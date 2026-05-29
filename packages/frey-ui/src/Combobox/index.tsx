@@ -45,7 +45,7 @@ type ComboboxComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<ComboboxSize, string> = {
   sm: styles.combobox_input_sm,
   md: styles.combobox_input_md,
-  lg: styles.combobox_input_lg
+  lg: styles.combobox_input_lg,
 };
 
 function findNextEnabledOptionIndex(
@@ -384,7 +384,7 @@ const Combobox: ComboboxComponent = React.forwardRef<
                       aria-disabled={isDisabled || undefined}
                       className={clsx(styles.combobox_option, {
                         [styles.combobox_option_active]: isActive,
-                        [styles.combobox_option_disabled]: isDisabled
+                        [styles.combobox_option_disabled]: isDisabled,
                       })}
                       onMouseEnter={
                         isDisabled ? undefined : () => setActiveIndex(index)

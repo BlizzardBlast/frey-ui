@@ -77,11 +77,11 @@ describe('Tooltip', () => {
       x: 120,
       y: 160,
       width: 80,
-      height: 24
+      height: 24,
     });
     const tooltipRect = createMockRect({
       width: 100,
-      height: 40
+      height: 40,
     });
     const rectSpy = vi
       .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
@@ -104,7 +104,7 @@ describe('Tooltip', () => {
     const originalInnerHeight = globalThis.innerHeight;
     Object.defineProperty(globalThis, 'innerHeight', {
       configurable: true,
-      value: 400
+      value: 400,
     });
 
     try {
@@ -139,7 +139,7 @@ describe('Tooltip', () => {
         x: 120,
         y: 120,
         width: 80,
-        height: 24
+        height: 24,
       });
 
       screen
@@ -154,7 +154,7 @@ describe('Tooltip', () => {
       rectSpy.mockRestore();
       Object.defineProperty(globalThis, 'innerHeight', {
         configurable: true,
-        value: originalInnerHeight
+        value: originalInnerHeight,
       });
     }
   });

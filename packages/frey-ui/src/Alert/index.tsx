@@ -4,7 +4,7 @@ import {
   CircleCheckIcon,
   CircleInfoIcon,
   CircleXIcon,
-  TriangleAlertIcon
+  TriangleAlertIcon,
 } from '../Icons';
 import styles from './alert.module.css';
 
@@ -26,14 +26,14 @@ const VariantClassMap: Record<AlertVariant, string> = {
   error: styles['alert-error'],
   success: styles['alert-success'],
   warning: styles['alert-warning'],
-  info: styles['alert-info']
+  info: styles['alert-info'],
 };
 
 const VariantRoleMap: Record<AlertVariant, 'alert' | 'status'> = {
   error: 'alert',
   warning: 'alert',
   success: 'status',
-  info: 'status'
+  info: 'status',
 };
 
 const icons: Record<AlertVariant, React.ReactNode> = {
@@ -64,7 +64,7 @@ const icons: Record<AlertVariant, React.ReactNode> = {
       strokeWidth='bold'
       className={styles.alert_icon_svg}
     />
-  )
+  ),
 };
 
 const Alert: AlertComponent = React.forwardRef<

@@ -25,13 +25,13 @@ const ColorClassMap: Record<LinkColor, string> = {
   info: styles['link-info'],
   success: styles['link-success'],
   warning: styles['link-warning'],
-  error: styles['link-error']
+  error: styles['link-error'],
 };
 
 const UnderlineClassMap: Record<LinkUnderline, string> = {
   always: styles['underline-always'],
   hover: styles['underline-hover'],
-  none: styles['underline-none']
+  none: styles['underline-none'],
 };
 
 function getSafeRelForTargetBlank(rel?: string) {

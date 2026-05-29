@@ -6,13 +6,13 @@ import {
   useDismiss,
   useFloating,
   useFloatingRootContext,
-  useInteractions
+  useInteractions,
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useId, useRef, useState } from 'react';
 import {
   createFloatingMiddleware,
-  toFloatingPlacement
+  toFloatingPlacement,
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
 import { mergeRefs } from '../utils/mergeRefs';
@@ -69,7 +69,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
   offset = 8,
   closeOnEscape = true,
   closeOnOutsideClick = true,
-  children
+  children,
 }: Readonly<PopoverProps>): React.JSX.Element {
   const idPrefix = useId();
   const triggerRef = useRef<HTMLElement | null>(null);
@@ -99,25 +99,25 @@ const PopoverRoot: PopoverRootComponent = function Popover({
     onOpenChange: handleFloatingOpenChange,
     elements: {
       reference: referenceElement,
-      floating: floatingElement
-    }
+      floating: floatingElement,
+    },
   });
   const {
     refs,
     floatingStyles,
-    context: floatingContext
+    context: floatingContext,
   } = useFloating({
     rootContext: floatingRootContext,
     placement: toFloatingPlacement(placement, 'center'),
     middleware: createFloatingMiddleware(offset),
     strategy: 'fixed',
     transform: false,
-    whileElementsMounted: autoUpdate
+    whileElementsMounted: autoUpdate,
   });
   const dismiss = useDismiss(floatingContext, {
     enabled: currentOpen,
     escapeKey: closeOnEscape,
-    outsidePress: closeOnOutsideClick
+    outsidePress: closeOnOutsideClick,
   });
   const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
   const setReference = React.useCallback(
@@ -145,7 +145,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
       floatingStyles,
       floatingContext,
       getReferenceProps,
-      getFloatingProps
+      getFloatingProps,
     }),
     [
       currentOpen,
@@ -156,7 +156,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
       floatingStyles,
       floatingContext,
       getReferenceProps,
-      getFloatingProps
+      getFloatingProps,
     ]
   );
 
@@ -190,7 +190,7 @@ const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
     idPrefix,
     triggerRef,
     setReference,
-    getReferenceProps
+    getReferenceProps,
   } = usePopoverContext();
   const mergedRef = mergeRefs(
     ref,
@@ -208,7 +208,7 @@ const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
     onClick: handleClick,
     'aria-haspopup': 'dialog',
     'aria-expanded': open,
-    'aria-controls': `${idPrefix}-content`
+    'aria-controls': `${idPrefix}-content`,
   }) as React.HTMLAttributes<HTMLElement>;
 
   if (asChild) {
@@ -253,7 +253,7 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
     setFloating,
     floatingStyles,
     floatingContext,
-    getFloatingProps
+    getFloatingProps,
   } = usePopoverContext();
   const floatingProps = getFloatingProps(
     props
@@ -276,7 +276,7 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
           className={clsx(styles.popover_content, className)}
           style={{
             ...floatingStyles,
-            ...style
+            ...style,
           }}
           {...floatingProps}
         >
@@ -295,7 +295,7 @@ type PopoverComponent = typeof PopoverRoot & {
 
 export const Popover: PopoverComponent = Object.assign(PopoverRoot, {
   Trigger: PopoverTrigger,
-  Content: PopoverContent
+  Content: PopoverContent,
 });
 
 export default Popover;

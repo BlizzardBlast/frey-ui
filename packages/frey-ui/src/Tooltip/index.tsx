@@ -4,13 +4,13 @@ import {
   useFloating,
   useFocus,
   useHover,
-  useInteractions
+  useInteractions,
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React from 'react';
 import {
   createFloatingMiddleware,
-  toFloatingPlacement
+  toFloatingPlacement,
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
 import Portal from '../utils/Portal';
@@ -46,7 +46,7 @@ function Tooltip({
   delay = 120,
   id,
   className,
-  style
+  style,
 }: Readonly<TooltipProps>): React.JSX.Element {
   const generatedId = React.useId();
   const tooltipId = id ?? `${generatedId}-tooltip`;
@@ -62,27 +62,27 @@ function Tooltip({
     middleware: createFloatingMiddleware(offset),
     strategy: 'fixed',
     transform: false,
-    whileElementsMounted: autoUpdate
+    whileElementsMounted: autoUpdate,
   });
   const hover = useHover(context, {
     delay: {
       open: delay,
-      close: 0
+      close: 0,
     },
-    move: false
+    move: false,
   });
   const focus = useFocus(context);
   const dismiss = useDismiss(context, {
     escapeKey: true,
-    outsidePress: false
+    outsidePress: false,
   });
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
     focus,
-    dismiss
+    dismiss,
   ]);
   const referenceProps = getReferenceProps({
-    'aria-describedby': isOpen ? tooltipId : undefined
+    'aria-describedby': isOpen ? tooltipId : undefined,
   }) as React.HTMLAttributes<HTMLElement>;
 
   let triggerElement: React.ReactElement;
@@ -120,7 +120,7 @@ function Tooltip({
 
   const floatingProps = getFloatingProps({
     id: tooltipId,
-    role: 'tooltip'
+    role: 'tooltip',
   }) as React.HTMLAttributes<HTMLDivElement>;
 
   return (
@@ -134,7 +134,7 @@ function Tooltip({
             className={clsx(styles.tooltip, className)}
             style={{
               ...floatingStyles,
-              ...style
+              ...style,
             }}
             {...floatingProps}
           >

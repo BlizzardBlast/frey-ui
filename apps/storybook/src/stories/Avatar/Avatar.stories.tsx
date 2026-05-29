@@ -9,10 +9,10 @@ type AvatarStoryProps = Pick<
 const meta: Meta<AvatarStoryProps> = {
   component: Avatar,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   args: {
-    size: 'md'
+    size: 'md',
   },
   argTypes: {
     src: {
@@ -20,36 +20,36 @@ const meta: Meta<AvatarStoryProps> = {
       description: 'Image source URL',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     alt: {
       control: { type: 'text' },
       description: 'Alternative text for the avatar image',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     fallback: {
       control: { type: 'text' },
       description: 'Fallback text shown when the image is unavailable',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -57,12 +57,12 @@ const meta: Meta<AvatarStoryProps> = {
       description: 'Avatar size variant',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     status: {
       control: { type: 'select' },
@@ -70,14 +70,14 @@ const meta: Meta<AvatarStoryProps> = {
       description: 'Optional presence status indicator',
       table: {
         type: {
-          summary: "'online' | 'offline' | 'idle' | 'dnd'"
+          summary: "'online' | 'offline' | 'idle' | 'dnd'",
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<AvatarStoryProps>;
 
 export default meta;
@@ -88,23 +88,23 @@ export const basic: Story = {
   args: {
     src: 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
     alt: 'Jason Bourne',
-    fallback: 'JB'
-  }
+    fallback: 'JB',
+  },
 } satisfies Story;
 
 export const with_fallback: Story = {
   args: {
     alt: 'Alice Smith',
-    fallback: 'AS'
-  }
+    fallback: 'AS',
+  },
 } satisfies Story;
 
 export const with_broken_image: Story = {
   args: {
     src: 'https://broken-link.example.com/avatar.jpg',
     alt: 'Broken Image User',
-    fallback: 'BU'
-  }
+    fallback: 'BU',
+  },
 } satisfies Story;
 
 export const sizes: Story = {
@@ -118,8 +118,8 @@ export const sizes: Story = {
   args: {
     src: 'https://i.pravatar.cc/150?u=a042581f4e29026024d',
     alt: 'Jane Doe',
-    fallback: 'JD'
-  }
+    fallback: 'JD',
+  },
 } satisfies Story;
 
 export const with_status: Story = {
@@ -133,6 +133,6 @@ export const with_status: Story = {
   ),
   args: {
     src: 'https://i.pravatar.cc/150?u=a04258a2462d826712d',
-    alt: 'Status User'
-  }
+    alt: 'Status User',
+  },
 } satisfies Story;

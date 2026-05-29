@@ -25,13 +25,13 @@ export default defineConfig({
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL,
-    trace: 'retain-on-failure'
+    trace: 'retain-on-failure',
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
-    }
+      use: { ...devices['Desktop Chrome'] },
+    },
   ],
   webServer: hasCustomBaseURL
     ? undefined
@@ -39,6 +39,6 @@ export default defineConfig({
         command: serveCommand,
         url: localBaseURL,
         reuseExistingServer: !env?.CI,
-        timeout: 120_000
-      }
+        timeout: 120_000,
+      },
 });

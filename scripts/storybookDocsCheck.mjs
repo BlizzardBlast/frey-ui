@@ -16,7 +16,7 @@ function getTypescript() {
   }
 
   const resolvedPath = require.resolve('typescript', {
-    paths: [path.resolve(__dirname, '../apps/storybook')]
+    paths: [path.resolve(__dirname, '../apps/storybook')],
   });
 
   cachedTypescript = require(resolvedPath);
@@ -334,7 +334,7 @@ function resolveExplicitPropNames(filePath, storySourceFile, ts) {
 
   const candidateTypeNames = [
     `${getStoryComponentName(filePath)}Props`,
-    ...importedNames.filter((name) => name.endsWith('Props'))
+    ...importedNames.filter((name) => name.endsWith('Props')),
   ];
   const uniqueCandidateTypeNames = [...new Set(candidateTypeNames)];
 
@@ -354,7 +354,7 @@ function resolveExplicitPropNames(filePath, storySourceFile, ts) {
         match.declaration,
         match.sourceFile,
         ts
-      )
+      ),
     ];
   }
 
@@ -484,6 +484,6 @@ export function collectStoryDocsIssues({ filePath, sourceText }) {
 export function collectStoryDocsIssuesFromFile(filePath) {
   return collectStoryDocsIssues({
     filePath,
-    sourceText: fs.readFileSync(filePath, 'utf8')
+    sourceText: fs.readFileSync(filePath, 'utf8'),
   });
 }

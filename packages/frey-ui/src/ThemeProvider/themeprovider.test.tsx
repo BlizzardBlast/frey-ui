@@ -77,7 +77,7 @@ describe('ThemeProvider', () => {
         removeEventListener,
         addListener: vi.fn(),
         removeListener: vi.fn(),
-        dispatchEvent: vi.fn()
+        dispatchEvent: vi.fn(),
       } as MediaQueryList;
     });
 
@@ -126,7 +126,7 @@ describe('ThemeProvider', () => {
         removeEventListener: vi.fn(),
         addListener: vi.fn(),
         removeListener: vi.fn(),
-        dispatchEvent: vi.fn()
+        dispatchEvent: vi.fn(),
       } as MediaQueryList;
     });
 

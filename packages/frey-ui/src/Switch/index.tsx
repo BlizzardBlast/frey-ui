@@ -23,7 +23,7 @@ type SwitchComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<SwitchSize, string> = {
   sm: styles['switch-sm'],
   md: styles['switch-md'],
-  lg: styles['switch-lg']
+  lg: styles['switch-lg'],
 };
 
 const Switch: SwitchComponent = React.forwardRef<
@@ -74,7 +74,7 @@ const Switch: SwitchComponent = React.forwardRef<
     <div className={clsx(styles['switch-container'], className)} style={style}>
       <span
         className={clsx(styles.switch, SizeClassMap[size], {
-          [styles['switch-disabled']]: disabled
+          [styles['switch-disabled']]: disabled,
         })}
         aria-disabled={disabled || undefined}
       >
@@ -95,7 +95,7 @@ const Switch: SwitchComponent = React.forwardRef<
       <label
         htmlFor={inputId}
         className={clsx(styles.label, {
-          [styles.visually_hidden]: hideLabel
+          [styles.visually_hidden]: hideLabel,
         })}
       >
         {label}

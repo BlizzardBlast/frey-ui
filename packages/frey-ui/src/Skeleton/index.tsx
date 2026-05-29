@@ -18,7 +18,7 @@ type SkeletonComponent = React.ForwardRefExoticComponent<
 
 const ShapeClassMap: Record<SkeletonShape, string> = {
   rectangle: styles['skeleton-rectangle'],
-  circle: styles['skeleton-circle']
+  circle: styles['skeleton-circle'],
 };
 
 const Skeleton: SkeletonComponent = React.forwardRef<
@@ -39,7 +39,7 @@ const Skeleton: SkeletonComponent = React.forwardRef<
       style={{
         width: resolvedWidth,
         height: resolvedHeight,
-        ...style
+        ...style,
       }}
       aria-hidden='true'
       role='presentation'

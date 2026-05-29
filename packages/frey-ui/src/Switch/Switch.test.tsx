@@ -80,7 +80,7 @@ describe('Switch', () => {
     );
 
     const input = screen.getByRole('switch', {
-      name: 'Controlled click switch'
+      name: 'Controlled click switch',
     });
 
     await user.click(input);
@@ -98,7 +98,7 @@ describe('Switch', () => {
     );
 
     const input = screen.getByRole('switch', {
-      name: 'Disabled keyboard switch'
+      name: 'Disabled keyboard switch',
     });
 
     fireEvent.keyDown(input, { key: 'Enter' });

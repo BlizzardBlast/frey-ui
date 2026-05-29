@@ -265,7 +265,7 @@ describe('Drawer', () => {
     'left',
     'right',
     'top',
-    'bottom'
+    'bottom',
   ] as const)('renders the %s placement', (placement) => {
     render(
       <Drawer open placement={placement}>

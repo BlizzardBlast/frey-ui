@@ -6,7 +6,7 @@ export function CircleCheckIcon({
   strokeWidth = 'regular',
   title,
   className,
-  style
+  style,
 }: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg

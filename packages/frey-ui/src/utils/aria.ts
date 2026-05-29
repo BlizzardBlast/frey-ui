@@ -12,6 +12,6 @@ export function computeAriaProps(
 
   return {
     'aria-invalid': isInvalid || undefined,
-    'aria-describedby': mergedDescribedBy
+    'aria-describedby': mergedDescribedBy,
   };
 }

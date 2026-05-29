@@ -28,13 +28,13 @@ const VariantClassMap: Record<ButtonVariant, string> = {
   primary: styles['button-primary'],
   secondary: styles['button-secondary'],
   ghost: styles['button-ghost'],
-  destructive: styles['button-destructive']
+  destructive: styles['button-destructive'],
 };
 
 const SizeClassMap: Record<ButtonSize, string> = {
   sm: styles['button-sm'],
   md: styles['button-md'],
-  lg: styles['button-lg']
+  lg: styles['button-lg'],
 };
 
 type ButtonComponent = React.ForwardRefExoticComponent<
@@ -71,7 +71,7 @@ const Button: ButtonComponent = React.forwardRef<
   const commonProps = {
     className: combinedClassName,
     style,
-    'aria-busy': loading || undefined
+    'aria-busy': loading || undefined,
   };
   const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     if (isDisabled) {
@@ -99,7 +99,7 @@ const Button: ButtonComponent = React.forwardRef<
               <span className={styles.spinner} aria-hidden='true' />
               {childElement.props.children}
             </>
-          )
+          ),
         })
       : childElement;
 

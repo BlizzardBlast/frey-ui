@@ -9,10 +9,10 @@ type AccordionStoryProps = Pick<
 const meta: Meta<AccordionStoryProps> = {
   component: Accordion,
   parameters: {
-    layout: 'padded'
+    layout: 'padded',
   },
   args: {
-    type: 'single'
+    type: 'single',
   },
   argTypes: {
     type: {
@@ -21,50 +21,50 @@ const meta: Meta<AccordionStoryProps> = {
       description: 'Whether the accordion allows one or multiple items open',
       table: {
         type: {
-          summary: "'single' | 'multiple'"
+          summary: "'single' | 'multiple'",
         },
         defaultValue: {
-          summary: "'single'"
-        }
-      }
+          summary: "'single'",
+        },
+      },
     },
     value: {
       control: { type: 'object' },
       description: 'Controlled open item value or values',
       table: {
         type: {
-          summary: 'string | string[]'
+          summary: 'string | string[]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultValue: {
       control: { type: 'object' },
       description: 'Initial open item value or values when uncontrolled',
       table: {
         type: {
-          summary: 'string | string[]'
+          summary: 'string | string[]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onValueChange: {
       action: 'value changed',
       description: 'Called when the open accordion item value changes',
       table: {
         type: {
-          summary: '(value: string | string[]) => void'
+          summary: '(value: string | string[]) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<AccordionStoryProps>;
 
 export default meta;
@@ -98,7 +98,7 @@ export const basic: Story = {
         </Accordion.Item>
       </Accordion>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const multiple: Story = {
@@ -120,5 +120,5 @@ export const multiple: Story = {
         </Accordion.Item>
       </Accordion>
     </div>
-  )
+  ),
 } satisfies Story;

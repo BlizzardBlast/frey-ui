@@ -3,7 +3,7 @@ import {
   fireEvent,
   render,
   screen,
-  waitFor
+  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
@@ -65,7 +65,7 @@ function CommandPaletteFixture(
 
   return {
     ui,
-    onSelectCreate
+    onSelectCreate,
   };
 }
 
@@ -85,13 +85,13 @@ describe('CommandPalette', () => {
     render(ui);
 
     const trigger = screen.getByRole('button', {
-      name: 'Open command palette'
+      name: 'Open command palette',
     });
 
     await user.click(trigger);
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
@@ -116,24 +116,24 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.type(input, 'invoice');
 
     expect(
       screen.getByRole('option', {
-        name: /Manage billing/i
+        name: /Manage billing/i,
       })
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('option', {
-        name: /Open dashboard/i
+        name: /Open dashboard/i,
       })
     ).not.toBeInTheDocument();
 
@@ -143,7 +143,7 @@ describe('CommandPalette', () => {
     expect(screen.getByText('No commands found.')).toBeInTheDocument();
     expect(
       screen.queryByRole('option', {
-        name: /Manage billing/i
+        name: /Manage billing/i,
       })
     ).not.toBeInTheDocument();
   });
@@ -156,13 +156,13 @@ describe('CommandPalette', () => {
     render(ui);
 
     const trigger = screen.getByRole('button', {
-      name: 'Open command palette'
+      name: 'Open command palette',
     });
 
     await user.click(trigger);
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.click(input);
@@ -219,7 +219,7 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Toggle palette'
+        name: 'Toggle palette',
       })
     );
 
@@ -235,12 +235,12 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     expect(input).toHaveAttribute('aria-haspopup', 'listbox');
@@ -249,7 +249,7 @@ describe('CommandPalette', () => {
     expect(listbox).toHaveAttribute('id', input.getAttribute('aria-controls'));
 
     const billingOption = screen.getByRole('option', {
-      name: /Manage billing/i
+      name: /Manage billing/i,
     });
     fireEvent.mouseEnter(billingOption);
 
@@ -258,7 +258,7 @@ describe('CommandPalette', () => {
 
   it('keeps generated list id when a consumer passes a list id prop', () => {
     const listProps: HTMLAttributes<HTMLDivElement> = {
-      id: 'custom-list-id'
+      id: 'custom-list-id',
     };
 
     render(
@@ -275,7 +275,7 @@ describe('CommandPalette', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
     const listId = input.getAttribute('aria-controls');
 
@@ -369,7 +369,7 @@ describe('CommandPalette', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Prevented keydown'
+      name: 'Prevented keydown',
     });
 
     await user.click(input);
@@ -387,12 +387,12 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.click(input);
@@ -420,7 +420,7 @@ describe('CommandPalette', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'No matches input'
+      name: 'No matches input',
     });
 
     await user.click(input);
@@ -465,7 +465,7 @@ describe('CommandPalette', () => {
     );
 
     const guardedButton = screen.getByRole('option', {
-      name: 'Guarded action'
+      name: 'Guarded action',
     });
 
     fireEvent.mouseEnter(guardedButton);
@@ -476,17 +476,17 @@ describe('CommandPalette', () => {
 
     const enabledMouseDownEvent = new MouseEvent('mousedown', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
     guardedButton.dispatchEvent(enabledMouseDownEvent);
     expect(enabledMouseDownEvent.defaultPrevented).toBe(true);
 
     const disabledButton = screen.getByRole('option', {
-      name: 'Disabled guarded'
+      name: 'Disabled guarded',
     });
     const disabledMouseDownEvent = new MouseEvent('mousedown', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
     disabledButton.dispatchEvent(disabledMouseDownEvent);
     expect(disabledMouseDownEvent.defaultPrevented).toBe(false);
@@ -501,15 +501,15 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
     const billingItem = screen.getByRole('option', {
-      name: /Manage billing/i
+      name: /Manage billing/i,
     });
 
     fireEvent.mouseEnter(billingItem);
@@ -527,12 +527,12 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.type(input, 'invoice');
@@ -545,7 +545,7 @@ describe('CommandPalette', () => {
 
     const hiddenMouseDownEvent = new MouseEvent('mousedown', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
 
     hiddenOpenDashboardButton?.dispatchEvent(hiddenMouseDownEvent);
@@ -562,15 +562,15 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
     const openDashboardItem = screen.getByRole('option', {
-      name: /Open dashboard/i
+      name: /Open dashboard/i,
     });
 
     fireEvent.mouseEnter(openDashboardItem);
@@ -578,11 +578,11 @@ describe('CommandPalette', () => {
     await act(async () => {
       fireEvent.change(input, {
         target: {
-          value: 'invoice'
-        }
+          value: 'invoice',
+        },
       });
       fireEvent.keyDown(input, {
-        key: 'Enter'
+        key: 'Enter',
       });
     });
 
@@ -598,12 +598,12 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.type(input, 'not-found');
@@ -612,24 +612,24 @@ describe('CommandPalette', () => {
     await act(async () => {
       fireEvent.change(input, {
         target: {
-          value: ''
-        }
+          value: '',
+        },
       });
       fireEvent.keyDown(input, {
-        key: 'ArrowDown'
+        key: 'ArrowDown',
       });
     });
 
     const visibleItems = [
       screen.getByRole('option', {
-        name: /Open dashboard/i
+        name: /Open dashboard/i,
       }).id,
       screen.getByRole('option', {
-        name: /Manage billing/i
+        name: /Manage billing/i,
       }).id,
       screen.getByRole('option', {
-        name: /Create project/i
-      }).id
+        name: /Create project/i,
+      }).id,
     ];
 
     expect(visibleItems).toContain(
@@ -645,12 +645,12 @@ describe('CommandPalette', () => {
 
     await user.click(
       screen.getByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
 
     await user.type(input, 'not-found');
@@ -659,16 +659,16 @@ describe('CommandPalette', () => {
     await act(async () => {
       fireEvent.change(input, {
         target: {
-          value: ''
-        }
+          value: '',
+        },
       });
       fireEvent.keyDown(input, {
-        key: 'ArrowUp'
+        key: 'ArrowUp',
       });
     });
 
     const createProjectItem = screen.getByRole('option', {
-      name: /Create project/i
+      name: /Create project/i,
     });
 
     expect(input).toHaveAttribute(

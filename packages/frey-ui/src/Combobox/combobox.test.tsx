@@ -8,16 +8,16 @@ import Combobox, { type ComboboxOption } from './index';
 const options: ReadonlyArray<ComboboxOption> = [
   {
     value: 'indonesia',
-    label: 'Indonesia'
+    label: 'Indonesia',
   },
   {
     value: 'singapore',
-    label: 'Singapore'
+    label: 'Singapore',
   },
   {
     value: 'japan',
-    label: 'Japan'
-  }
+    label: 'Japan',
+  },
 ];
 
 describe('Combobox', () => {
@@ -26,7 +26,7 @@ describe('Combobox', () => {
 
     expect(
       screen.getByRole('combobox', {
-        name: 'Country'
+        name: 'Country',
       })
     ).toBeInTheDocument();
   });
@@ -61,7 +61,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -79,7 +79,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -114,7 +114,7 @@ describe('Combobox', () => {
     render(<ControlledCombobox />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.clear(input);
@@ -129,7 +129,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -151,7 +151,7 @@ describe('Combobox', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     input.focus();
@@ -172,7 +172,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -190,19 +190,19 @@ describe('Combobox', () => {
       {
         value: 'indonesia',
         label: 'Indonesia',
-        disabled: true
+        disabled: true,
       },
       {
         value: 'japan',
         label: 'Japan',
-        disabled: true
-      }
+        disabled: true,
+      },
     ];
 
     render(<Combobox label='Country' options={allDisabledOptions} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -224,7 +224,7 @@ describe('Combobox', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     input.focus();
@@ -243,7 +243,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -262,7 +262,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -279,7 +279,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -287,7 +287,7 @@ describe('Combobox', () => {
     const option = screen.getByRole('option', { name: 'Indonesia' });
 
     fireEvent.blur(input, {
-      relatedTarget: option
+      relatedTarget: option,
     });
 
     expect(screen.getByRole('listbox')).toBeInTheDocument();
@@ -306,7 +306,7 @@ describe('Combobox', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -326,7 +326,7 @@ describe('Combobox', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -340,7 +340,7 @@ describe('Combobox', () => {
     const { rerender } = render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -352,8 +352,8 @@ describe('Combobox', () => {
         options={[
           {
             value: 'indonesia',
-            label: 'Indonesia'
-          }
+            label: 'Indonesia',
+          },
         ]}
       />
     );
@@ -369,19 +369,19 @@ describe('Combobox', () => {
     const optionsWithDisabled: ReadonlyArray<ComboboxOption> = [
       {
         value: 'indonesia',
-        label: 'Indonesia'
+        label: 'Indonesia',
       },
       {
         value: 'japan',
         label: 'Japan',
-        disabled: true
-      }
+        disabled: true,
+      },
     ];
 
     render(<Combobox label='Country' options={optionsWithDisabled} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -406,7 +406,7 @@ describe('Combobox', () => {
     );
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     fireEvent.focus(input);
@@ -439,14 +439,14 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
 
     const listbox = screen.getByRole('listbox');
     const option = screen.getByRole('option', {
-      name: 'Indonesia'
+      name: 'Indonesia',
     });
 
     expect(listbox).toBeInTheDocument();
@@ -474,7 +474,7 @@ describe('Combobox', () => {
     render(<ControlledSelectCombobox />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -504,7 +504,7 @@ describe('Combobox', () => {
     render(<DisableAfterOpenCombobox />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);
@@ -536,7 +536,7 @@ describe('Combobox', () => {
     render(<Combobox label='Country' options={options} disabled />);
 
     const input = screen.getByRole('combobox', {
-      name: 'Country'
+      name: 'Country',
     });
 
     await user.click(input);

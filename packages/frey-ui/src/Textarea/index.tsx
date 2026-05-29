@@ -27,7 +27,7 @@ const ResizeClassMap: Record<TextareaResize, string> = {
   none: styles.resize_none,
   vertical: styles.resize_vertical,
   horizontal: styles.resize_horizontal,
-  both: styles.resize_both
+  both: styles.resize_both,
 };
 
 const Textarea: TextareaComponent = React.forwardRef<

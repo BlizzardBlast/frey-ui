@@ -33,12 +33,12 @@ export type ChipProps<E extends ChipElement = 'span'> =
 
 const VariantDefaultMap: Record<Variant, string> = {
   default: styles['chip-default'],
-  outlined: styles['chip-outlined']
+  outlined: styles['chip-outlined'],
 };
 
 const VariantClickableMap: Record<Variant, string> = {
   default: styles['chip-default-clickable'],
-  outlined: styles['chip-outlined-clickable']
+  outlined: styles['chip-outlined-clickable'],
 };
 
 type ChipComponent = (<E extends ChipElement = 'span'>(
@@ -84,7 +84,7 @@ const Chip = React.forwardRef(function Chip<E extends ChipElement = 'span'>(
   const classes = clsx(
     VariantDefaultMap[variant],
     {
-      [VariantClickableMap[variant]]: isInteractive
+      [VariantClickableMap[variant]]: isInteractive,
     },
     className
   );

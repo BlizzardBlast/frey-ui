@@ -32,13 +32,13 @@ export function composeEventHandlers<EventType>(
 function mergeProps(slotProps: AnyProps, childProps: AnyProps): AnyProps {
   const mergedProps: AnyProps = {
     ...slotProps,
-    ...childProps
+    ...childProps,
   };
 
   if (slotProps.style || childProps.style) {
     mergedProps.style = {
       ...(slotProps.style as React.CSSProperties | undefined),
-      ...(childProps.style as React.CSSProperties | undefined)
+      ...(childProps.style as React.CSSProperties | undefined),
     };
   }
 
@@ -95,7 +95,7 @@ export const Slot: React.ForwardRefExoticComponent<
 
   return React.cloneElement(children, {
     ...mergedProps,
-    ref: mergeRefs(childRef as React.Ref<HTMLElement>, forwardedRef)
+    ref: mergeRefs(childRef as React.Ref<HTMLElement>, forwardedRef),
   } as Record<string, unknown>);
 });
 

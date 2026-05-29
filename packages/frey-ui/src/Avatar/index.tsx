@@ -20,14 +20,14 @@ type AvatarComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<AvatarSize, string> = {
   sm: styles.avatar_sm,
   md: styles.avatar_md,
-  lg: styles.avatar_lg
+  lg: styles.avatar_lg,
 };
 
 const StatusClassMap: Record<AvatarStatus, string> = {
   online: styles.avatar_status_online,
   offline: styles.avatar_status_offline,
   idle: styles.avatar_status_idle,
-  dnd: styles.avatar_status_dnd
+  dnd: styles.avatar_status_dnd,
 };
 
 const useImageLoadingStatus = (src?: string) => {

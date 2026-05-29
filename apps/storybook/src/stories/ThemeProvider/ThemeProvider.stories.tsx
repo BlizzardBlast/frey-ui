@@ -26,14 +26,14 @@ type ThemeProviderStoryProps = Pick<
 const meta: Meta<ThemeProviderStoryProps> = {
   component: ThemeProvider,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 420 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     theme: {
@@ -42,74 +42,74 @@ const meta: Meta<ThemeProviderStoryProps> = {
       description: 'Theme mode to apply to semantic design tokens',
       table: {
         type: {
-          summary: "'light' | 'dark' | 'system'"
+          summary: "'light' | 'dark' | 'system'",
         },
         defaultValue: {
-          summary: "'light'"
-        }
-      }
+          summary: "'light'",
+        },
+      },
     },
     highContrast: {
       control: { type: 'boolean' },
       description: 'Whether to enable the high-contrast token set',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Theme-aware content rendered inside the provider',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     id: {
       control: { type: 'text' },
       description: 'Id applied to the theme provider root element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the theme provider root',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the theme provider root',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<ThemeProviderStoryProps>;
 
 export default meta;
@@ -119,47 +119,47 @@ type Story = StoryObj<ThemeProviderStoryProps>;
 export const light_theme: Story = {
   args: {
     theme: 'light',
-    highContrast: false
+    highContrast: false,
   },
   render: (args) => (
     <ThemeProvider {...args}>
       <ThemePreview />
     </ThemeProvider>
-  )
+  ),
 } satisfies Story;
 
 export const dark_theme: Story = {
   args: {
     theme: 'dark',
-    highContrast: false
+    highContrast: false,
   },
   render: (args) => (
     <ThemeProvider {...args}>
       <ThemePreview />
     </ThemeProvider>
-  )
+  ),
 } satisfies Story;
 
 export const system_theme: Story = {
   args: {
     theme: 'system',
-    highContrast: false
+    highContrast: false,
   },
   render: (args) => (
     <ThemeProvider {...args}>
       <ThemePreview />
     </ThemeProvider>
-  )
+  ),
 } satisfies Story;
 
 export const high_contrast: Story = {
   args: {
     theme: 'light',
-    highContrast: true
+    highContrast: true,
   },
   render: (args) => (
     <ThemeProvider {...args}>
       <ThemePreview />
     </ThemeProvider>
-  )
+  ),
 } satisfies Story;

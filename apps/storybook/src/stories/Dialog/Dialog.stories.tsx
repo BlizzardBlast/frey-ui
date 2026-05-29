@@ -10,7 +10,7 @@ type DialogStoryProps = Pick<
 const meta: Meta<DialogStoryProps> = {
   component: Dialog,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     open: {
@@ -18,50 +18,50 @@ const meta: Meta<DialogStoryProps> = {
       description: 'Controlled open state of the dialog',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
       description: 'Initial open state when the dialog is uncontrolled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called when the dialog open state changes',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Composed dialog trigger and content elements',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<DialogStoryProps>;
 
 export default meta;
@@ -70,7 +70,7 @@ type Story = StoryObj<DialogStoryProps>;
 
 export const basic_dialog: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: function BasicDialogStory(args) {
     return (
@@ -90,12 +90,12 @@ export const basic_dialog: Story = {
         </Dialog.Content>
       </Dialog>
     );
-  }
+  },
 } satisfies Story;
 
 export const with_description: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: function WithDescriptionStory(args) {
     return (
@@ -116,12 +116,12 @@ export const with_description: Story = {
         </Dialog.Content>
       </Dialog>
     );
-  }
+  },
 } satisfies Story;
 
 export const controlled_dialog: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: function ControlledDialogStory(args) {
     const [open, setOpen] = useState(Boolean(args.defaultOpen));
@@ -166,5 +166,5 @@ export const controlled_dialog: Story = {
         </Dialog>
       </div>
     );
-  }
+  },
 } satisfies Story;

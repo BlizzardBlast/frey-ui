@@ -17,7 +17,7 @@ describe('Grid', () => {
       gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
       gridTemplateRows: 'repeat(2, minmax(0, 1fr))',
       rowGap: 'var(--frey-space-3, 0.75rem)',
-      columnGap: 'var(--frey-space-3, 0.75rem)'
+      columnGap: 'var(--frey-space-3, 0.75rem)',
     });
   });
 
@@ -30,7 +30,7 @@ describe('Grid', () => {
 
     expect(screen.getByTestId('grid')).toHaveStyle({
       gridTemplateColumns: '200px 1fr',
-      gridTemplateRows: 'auto 1fr'
+      gridTemplateRows: 'auto 1fr',
     });
   });
 

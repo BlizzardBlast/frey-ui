@@ -97,7 +97,7 @@ export const Card: CardComponent = Object.assign(CardRoot, {
   Header: CardHeader,
   Title: CardTitle,
   Content: CardContent,
-  Footer: CardFooter
+  Footer: CardFooter,
 });
 
 export default Card;

@@ -3,7 +3,7 @@ import { expect, type Page, test } from '@playwright/test';
 async function gotoStory(storyId: string, page: Page) {
   await page.goto(`/iframe.html?id=${storyId}&viewMode=story`);
   await expect(page.locator('#storybook-root')).toBeVisible({
-    timeout: 15_000
+    timeout: 15_000,
   });
 }
 
@@ -17,7 +17,7 @@ test.describe('component stories', () => {
     const content = page.getByText(
       'Yes. It adheres to the WAI-ARIA design pattern',
       {
-        exact: false
+        exact: false,
       }
     );
 
@@ -33,7 +33,7 @@ test.describe('component stories', () => {
   });
 
   test('controlled switch updates its visible state label', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-switch--controlled', page);
 
@@ -63,7 +63,7 @@ test.describe('component stories', () => {
   });
 
   test('theme provider stories expose expected data attributes', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-themeprovider--dark-theme', page);
 

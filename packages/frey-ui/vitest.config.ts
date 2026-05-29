@@ -12,7 +12,7 @@ export default defineConfig({
         lines: 100,
         functions: 100,
         statements: 100,
-        branches: 100
+        branches: 100,
       },
       exclude: [
         'src/index.ts',
@@ -21,8 +21,8 @@ export default defineConfig({
         '**/*.mdx',
         '**/*.story.*',
         '**/*.stories.*',
-        ...(configDefaults.coverage.exclude || [])
-      ]
-    }
-  }
+        ...(configDefaults.coverage.exclude || []),
+      ],
+    },
+  },
 });

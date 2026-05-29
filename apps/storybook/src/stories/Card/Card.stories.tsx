@@ -6,9 +6,9 @@ type CardStoryProps = Record<never, never>;
 const meta: Meta<CardStoryProps> = {
   component: Card,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
-  argTypes: {}
+  argTypes: {},
 } satisfies Meta<CardStoryProps>;
 
 export default meta;
@@ -34,7 +34,7 @@ export const basic: Story = {
         <Button>Deploy</Button>
       </Card.Footer>
     </Card>
-  )
+  ),
 } satisfies Story;
 
 export const content_only: Story = {
@@ -46,5 +46,5 @@ export const content_only: Story = {
         </p>
       </Card.Content>
     </Card>
-  )
+  ),
 } satisfies Story;

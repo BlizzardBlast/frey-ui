@@ -16,80 +16,80 @@ type ChipStoryProps = {
 const meta: Meta<ChipStoryProps> = {
   component: Chip,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     label: {
       control: {
-        type: 'text'
+        type: 'text',
       },
       description: 'The text to display in the chip',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onClick: {
       description: 'The event handler for the click event',
       action: 'clicked',
       table: {
         type: {
-          summary: 'MouseEventHandler<HTMLElement>'
+          summary: 'MouseEventHandler<HTMLElement>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     as: {
       description: 'The HTML element to render for the chip',
       table: {
         type: {
-          summary: "'button' | 'div' | 'span' | 'a'"
+          summary: "'button' | 'div' | 'span' | 'a'",
         },
         defaultValue: {
-          summary: "'span' (or 'button' when onClick is set)"
-        }
+          summary: "'span' (or 'button' when onClick is set)",
+        },
       },
       control: {
-        type: 'select'
+        type: 'select',
       },
-      options: ['button', 'div', 'span', 'a']
+      options: ['button', 'div', 'span', 'a'],
     },
     href: {
       description: 'URL when rendering as an anchor chip',
       control: {
-        type: 'text'
+        type: 'text',
       },
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     variant: {
       description: 'The variant of the chip',
       table: {
         type: {
-          summary: 'default | outlined'
+          summary: 'default | outlined',
         },
         defaultValue: {
-          summary: "'default'"
-        }
+          summary: "'default'",
+        },
       },
       control: {
-        type: 'select'
+        type: 'select',
       },
-      options: ['default', 'outlined']
-    }
-  }
+      options: ['default', 'outlined'],
+    },
+  },
 } satisfies Meta<ChipStoryProps>;
 
 export default meta;
@@ -98,28 +98,28 @@ type Story = StoryObj<ChipStoryProps>;
 export const basic_chip: Story = {
   args: {
     label: 'Chip',
-    onClick: undefined
+    onClick: undefined,
   },
   render: (args) => (
     <div className='flex gap-4'>
       <Chip {...args} variant={'default'} />
       <Chip {...args} variant={'outlined'} />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const clickable_chip: Story = {
   args: {
     label: 'Chip',
     onClick: fn(),
-    as: 'button'
+    as: 'button',
   },
   render: (args) => (
     <div className='flex gap-4'>
       <Chip {...args} variant={'default'} />
       <Chip {...args} variant={'outlined'} />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const link_chip: Story = {
@@ -127,15 +127,15 @@ export const link_chip: Story = {
     label: 'Read docs',
     as: 'a',
     href: 'https://storybook.js.org',
-    variant: 'outlined'
+    variant: 'outlined',
   },
-  render: (args) => <Chip {...args} />
+  render: (args) => <Chip {...args} />,
 } satisfies Story;
 
 export const interactive_flow: Story = {
   args: {
     label: 'Click me',
-    onClick: fn()
+    onClick: fn(),
   },
   render: (args) => <Chip {...args} />,
   play: async ({ canvasElement, args }) => {
@@ -145,14 +145,14 @@ export const interactive_flow: Story = {
     await userEvent.click(chip);
 
     expect(args.onClick).toHaveBeenCalledTimes(1);
-  }
+  },
 } satisfies Story;
 
 export const keyboard_navigation: Story = {
   args: {
     label: 'Keyboard chip',
     as: 'div',
-    onClick: fn()
+    onClick: fn(),
   },
   render: (args) => <Chip {...args} />,
   play: async ({ canvasElement, args }) => {
@@ -165,5 +165,5 @@ export const keyboard_navigation: Story = {
     await userEvent.keyboard('{Enter}');
 
     expect(args.onClick).toHaveBeenCalledTimes(1);
-  }
+  },
 } satisfies Story;

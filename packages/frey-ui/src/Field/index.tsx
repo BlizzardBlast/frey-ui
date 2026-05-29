@@ -34,7 +34,7 @@ function Field({
   id,
   className,
   style,
-  labelElement = 'label'
+  labelElement = 'label',
 }: Readonly<FieldProps>): ReactNode {
   const generatedId = useId();
   const inputId = id ?? generatedId;
@@ -52,7 +52,7 @@ function Field({
 
   const sharedLabelClassName = clsx(styles.field_label, {
     [styles.field_label_disabled]: disabled,
-    [styles.visually_hidden]: hideLabel
+    [styles.visually_hidden]: hideLabel,
   });
 
   return (
@@ -81,7 +81,7 @@ function Field({
         inputId,
         labelId,
         describedBy,
-        hasError
+        hasError,
       })}
 
       {hasError && (

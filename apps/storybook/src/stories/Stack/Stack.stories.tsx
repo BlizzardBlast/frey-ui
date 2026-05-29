@@ -9,7 +9,7 @@ type StackStoryProps = Pick<
 const meta: Meta<StackStoryProps> = {
   component: Stack,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     as: {
@@ -18,12 +18,12 @@ const meta: Meta<StackStoryProps> = {
       description: 'Element rendered by the stack container',
       table: {
         type: {
-          summary: 'BoxElement'
+          summary: 'BoxElement',
         },
         defaultValue: {
-          summary: "'div'"
-        }
-      }
+          summary: "'div'",
+        },
+      },
     },
     direction: {
       control: { type: 'select' },
@@ -31,12 +31,12 @@ const meta: Meta<StackStoryProps> = {
       description: 'Stack orientation',
       table: {
         type: {
-          summary: "'vertical' | 'horizontal'"
+          summary: "'vertical' | 'horizontal'",
         },
         defaultValue: {
-          summary: "'vertical'"
-        }
-      }
+          summary: "'vertical'",
+        },
+      },
     },
     align: {
       control: { type: 'select' },
@@ -44,12 +44,12 @@ const meta: Meta<StackStoryProps> = {
       description: 'Cross-axis alignment of stack children',
       table: {
         type: {
-          summary: 'CSSProperties["alignItems"]'
+          summary: 'CSSProperties["alignItems"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     justify: {
       control: { type: 'select' },
@@ -59,17 +59,17 @@ const meta: Meta<StackStoryProps> = {
         'flex-end',
         'space-between',
         'space-around',
-        'space-evenly'
+        'space-evenly',
       ],
       description: 'Main-axis distribution of stack children',
       table: {
         type: {
-          summary: 'CSSProperties["justifyContent"]'
+          summary: 'CSSProperties["justifyContent"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     wrap: {
       control: { type: 'select' },
@@ -77,26 +77,26 @@ const meta: Meta<StackStoryProps> = {
       description: 'Wrapping behavior for horizontal stacks',
       table: {
         type: {
-          summary: 'CSSProperties["flexWrap"]'
+          summary: 'CSSProperties["flexWrap"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     gap: {
       control: { type: 'text' },
       description: 'Gap between stack children',
       table: {
         type: {
-          summary: 'string | number'
+          summary: 'string | number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<StackStoryProps>;
 
 export default meta;
@@ -106,12 +106,12 @@ const panelStyle: React.CSSProperties = {
   padding: '0.625rem 0.75rem',
   border: '1px solid var(--frey-color-border-subtle)',
   borderRadius: 'var(--frey-radius-sm)',
-  backgroundColor: 'var(--frey-color-surface-subtle)'
+  backgroundColor: 'var(--frey-color-surface-subtle)',
 };
 
 export const vertical: Story = {
   args: {
-    gap: '3'
+    gap: '3',
   },
   render: (args) => (
     <Stack {...args} style={{ minWidth: 280 }}>
@@ -119,13 +119,13 @@ export const vertical: Story = {
       <div style={panelStyle}>Notifications</div>
       <div style={panelStyle}>Security</div>
     </Stack>
-  )
+  ),
 } satisfies Story;
 
 export const horizontal: Story = {
   args: {
     direction: 'horizontal',
-    gap: '2'
+    gap: '2',
   },
   render: (args) => (
     <Stack {...args}>
@@ -133,5 +133,5 @@ export const horizontal: Story = {
       <div style={panelStyle}>Quarterly</div>
       <div style={panelStyle}>Yearly</div>
     </Stack>
-  )
+  ),
 } satisfies Story;

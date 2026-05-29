@@ -6,7 +6,7 @@ type BadgeStoryProps = Pick<BadgeProps, 'tone' | 'variant' | 'size'>;
 const meta: Meta<BadgeStoryProps> = {
   component: Badge,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     tone: {
@@ -15,12 +15,12 @@ const meta: Meta<BadgeStoryProps> = {
       description: 'Semantic tone applied to the badge',
       table: {
         type: {
-          summary: "'neutral' | 'info' | 'success' | 'warning' | 'error'"
+          summary: "'neutral' | 'info' | 'success' | 'warning' | 'error'",
         },
         defaultValue: {
-          summary: "'neutral'"
-        }
-      }
+          summary: "'neutral'",
+        },
+      },
     },
     variant: {
       control: { type: 'select' },
@@ -28,12 +28,12 @@ const meta: Meta<BadgeStoryProps> = {
       description: 'Visual treatment of the badge',
       table: {
         type: {
-          summary: "'subtle' | 'solid'"
+          summary: "'subtle' | 'solid'",
         },
         defaultValue: {
-          summary: "'subtle'"
-        }
-      }
+          summary: "'subtle'",
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -41,14 +41,14 @@ const meta: Meta<BadgeStoryProps> = {
       description: 'Badge size variant',
       table: {
         type: {
-          summary: "'sm' | 'md'"
+          summary: "'sm' | 'md'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
-    }
-  }
+          summary: "'md'",
+        },
+      },
+    },
+  },
 } satisfies Meta<BadgeStoryProps>;
 
 export default meta;
@@ -58,9 +58,9 @@ export const basic: Story = {
   args: {
     tone: 'success',
     variant: 'subtle',
-    size: 'md'
+    size: 'md',
   },
-  render: (args) => <Badge {...args}>Active</Badge>
+  render: (args) => <Badge {...args}>Active</Badge>,
 } satisfies Story;
 
 export const all_tones: Story = {
@@ -72,7 +72,7 @@ export const all_tones: Story = {
       <Badge tone='warning'>Warning</Badge>
       <Badge tone='error'>Error</Badge>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const subtle_vs_solid: Story = {
@@ -95,5 +95,5 @@ export const subtle_vs_solid: Story = {
         </Badge>
       </div>
     </div>
-  )
+  ),
 } satisfies Story;

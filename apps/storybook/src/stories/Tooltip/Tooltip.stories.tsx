@@ -21,7 +21,7 @@ type TooltipStoryProps = Pick<
 const meta: Meta<TooltipStoryProps> = {
   component: Tooltip,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     placement: {
@@ -30,24 +30,24 @@ const meta: Meta<TooltipStoryProps> = {
       description: 'Preferred placement of the tooltip bubble',
       table: {
         type: {
-          summary: "'top' | 'right' | 'bottom' | 'left'"
+          summary: "'top' | 'right' | 'bottom' | 'left'",
         },
         defaultValue: {
-          summary: "'top'"
-        }
-      }
+          summary: "'top'",
+        },
+      },
     },
     delay: {
       control: { type: 'number' },
       description: 'Delay in milliseconds before the tooltip opens on hover',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '120'
-        }
-      }
+          summary: '120',
+        },
+      },
     },
     asChild: {
       control: false,
@@ -55,12 +55,12 @@ const meta: Meta<TooltipStoryProps> = {
         'Whether the tooltip should attach its behavior to a single child element',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     content: {
       control: { type: 'text' },
@@ -68,110 +68,110 @@ const meta: Meta<TooltipStoryProps> = {
         'Tooltip content shown when the trigger is hovered or focused',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     open: {
       control: { type: 'boolean' },
       description: 'Controlled open state of the tooltip',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
       description: 'Initial open state when the tooltip is uncontrolled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called when the tooltip open state changes',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     offset: {
       control: { type: 'number' },
       description: 'Distance in pixels between the trigger and tooltip bubble',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '8'
-        }
-      }
+          summary: '8',
+        },
+      },
     },
     id: {
       control: { type: 'text' },
       description: 'Id applied to the tooltip element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the tooltip bubble',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the tooltip bubble',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Trigger element that shows the tooltip on interaction',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<TooltipStoryProps>;
 
 export default meta;
@@ -187,8 +187,8 @@ export const basic_tooltip: Story = {
   args: {
     placement: 'top',
     delay: 120,
-    content: 'Copy to clipboard'
-  }
+    content: 'Copy to clipboard',
+  },
 } satisfies Story;
 
 export const placement_variants: Story = {
@@ -206,7 +206,7 @@ export const placement_variants: Story = {
         </Tooltip>
       ))}
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const controlled_tooltip: Story = {
@@ -249,6 +249,6 @@ export const controlled_tooltip: Story = {
   args: {
     placement: 'top',
     delay: 0,
-    content: 'Controlled tooltip'
-  }
+    content: 'Controlled tooltip',
+  },
 } satisfies Story;

@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { createContext, useContext, useId } from 'react';
 import Dialog, {
   type DialogContentProps,
-  type DialogTriggerProps
+  type DialogTriggerProps,
 } from '../Dialog';
 import { useControllableState } from '../hooks/useControllableState';
 import styles from './commandpalette.module.css';
@@ -99,7 +99,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
     defaultOpen = false,
     onOpenChange,
     onSelect,
-    children
+    children,
   }: Readonly<CommandPaletteProps>): React.JSX.Element {
     const idPrefix = useId();
     const inputId = `${idPrefix}-input`;
@@ -163,7 +163,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
 
         itemsRef.current.set(itemConfig.id, {
           element: currentItem?.element ?? null,
-          ...itemConfig
+          ...itemConfig,
         });
 
         bumpItemsVersion();
@@ -186,7 +186,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
 
         itemsRef.current.set(itemId, {
           ...currentItem,
-          element
+          element,
         });
 
         bumpItemsVersion();
@@ -310,7 +310,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
         upsertItem,
         removeItem,
         setItemElement,
-        inputRef
+        inputRef,
       }),
       [
         idPrefix,
@@ -328,7 +328,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
         selectItem,
         upsertItem,
         removeItem,
-        setItemElement
+        setItemElement,
       ]
     );
 
@@ -445,7 +445,7 @@ const CommandPaletteInput: CommandPaletteInputComponent = React.forwardRef<
     focusNextItem,
     focusPreviousItem,
     selectItem,
-    inputRef
+    inputRef,
   } = useCommandPaletteContext();
 
   const handleRef = React.useCallback(
@@ -650,7 +650,7 @@ const CommandPaletteItem: CommandPaletteItemComponent = React.forwardRef<
     selectItem,
     upsertItem,
     removeItem,
-    setItemElement
+    setItemElement,
   } = useCommandPaletteContext();
   const itemElementRef = React.useRef<HTMLButtonElement | null>(null);
   const keywordsSignature = keywords.join('||');
@@ -665,7 +665,7 @@ const CommandPaletteItem: CommandPaletteItemComponent = React.forwardRef<
         keywordsSignature.length > 0 ? keywordsSignature.split('||') : [],
       disabled,
       groupId,
-      onSelect
+      onSelect,
     });
     setItemElement(itemId, itemElementRef.current);
 
@@ -682,7 +682,7 @@ const CommandPaletteItem: CommandPaletteItemComponent = React.forwardRef<
     onSelect,
     upsertItem,
     removeItem,
-    setItemElement
+    setItemElement,
   ]);
 
   const isVisible = isItemVisible(itemId);
@@ -740,7 +740,7 @@ const CommandPaletteItem: CommandPaletteItemComponent = React.forwardRef<
       aria-disabled={disabled || undefined}
       className={clsx(styles.command_palette_item, className, {
         [styles.command_palette_item_active]: isVisible && isActive,
-        [styles.command_palette_item_disabled]: disabled
+        [styles.command_palette_item_disabled]: disabled,
       })}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
@@ -834,7 +834,7 @@ export const CommandPalette: CommandPaletteComponent = Object.assign(
     Group: CommandPaletteGroup,
     Item: CommandPaletteItem,
     Empty: CommandPaletteEmpty,
-    Shortcut: CommandPaletteShortcut
+    Shortcut: CommandPaletteShortcut,
   }
 );
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   type RovingCollection,
-  useRovingCollection
+  useRovingCollection,
 } from './useRovingCollection';
 
 type HarnessProps = {
@@ -150,11 +150,11 @@ describe('useRovingCollection', () => {
 
     Object.defineProperty(first, 'compareDocumentPosition', {
       configurable: true,
-      value: () => 0
+      value: () => 0,
     });
     Object.defineProperty(second, 'compareDocumentPosition', {
       configurable: true,
-      value: () => 0
+      value: () => 0,
     });
 
     collection.registerItem('first', first);

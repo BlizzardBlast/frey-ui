@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import type {
   PolymorphicComponentProps,
-  PolymorphicRef
+  PolymorphicRef,
 } from '../types/polymorphic';
 import styles from './box.module.css';
 
@@ -106,7 +106,7 @@ const SpaceValueMap: Record<SpaceToken, string> = {
   '8': 'var(--frey-space-8, 2rem)',
   '10': 'var(--frey-space-10, 2.5rem)',
   '12': 'var(--frey-space-12, 3rem)',
-  '16': 'var(--frey-space-16, 4rem)'
+  '16': 'var(--frey-space-16, 4rem)',
 };
 
 const RadiusValueMap: Record<RadiusToken, string> = {
@@ -114,7 +114,7 @@ const RadiusValueMap: Record<RadiusToken, string> = {
   sm: 'var(--frey-radius-sm)',
   md: 'var(--frey-radius-md)',
   lg: 'var(--frey-radius-lg)',
-  full: 'var(--frey-radius-full)'
+  full: 'var(--frey-radius-full)',
 };
 
 const ColorValueMap: Record<ColorToken, string> = {
@@ -134,7 +134,7 @@ const ColorValueMap: Record<ColorToken, string> = {
   info: 'var(--frey-color-info)',
   success: 'var(--frey-color-success)',
   warning: 'var(--frey-color-warning)',
-  error: 'var(--frey-color-error)'
+  error: 'var(--frey-color-error)',
 };
 
 function resolveSpace(token?: SpaceToken) {
@@ -163,7 +163,7 @@ function mergeResolvedStyle(
   const mergedStyle: Record<string, unknown> = { ...baseStyle };
   const overrideEntries = Object.entries(overrideStyle) as [
     keyof React.CSSProperties,
-    React.CSSProperties[keyof React.CSSProperties]
+    React.CSSProperties[keyof React.CSSProperties],
   ][];
 
   for (const [key, value] of overrideEntries) {
@@ -195,7 +195,7 @@ function mergeResolvedStyle(
 
   return {
     ...(mergedStyle as React.CSSProperties),
-    ...overrideStyle
+    ...overrideStyle,
   };
 }
 
@@ -270,7 +270,7 @@ const Box = React.forwardRef(function Box<E extends BoxElement = 'div'>(
     maxWidth,
     height,
     minHeight,
-    maxHeight
+    maxHeight,
   };
 
   const mergedStyle = mergeResolvedStyle(resolvedStyle, style);

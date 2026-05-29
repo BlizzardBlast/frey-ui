@@ -118,7 +118,7 @@ describe('Dialog', () => {
 
     Object.defineProperty(document, 'activeElement', {
       configurable: true,
-      get: () => null
+      get: () => null,
     });
 
     try {
@@ -201,7 +201,7 @@ describe('Dialog', () => {
 
     Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
       configurable: true,
-      value: showModalSpy
+      value: showModalSpy,
     });
 
     try {
@@ -221,7 +221,7 @@ describe('Dialog', () => {
       if (originalShowModal) {
         Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
           configurable: true,
-          value: originalShowModal
+          value: originalShowModal,
         });
       } else {
         delete (HTMLDialogElement.prototype as { showModal?: unknown })
@@ -247,7 +247,7 @@ describe('Dialog', () => {
     const dialog = screen.getByRole('dialog');
     const cancelEvent = new Event('cancel', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
 
     fireEvent(dialog, cancelEvent);
@@ -272,7 +272,7 @@ describe('Dialog', () => {
     const dialog = screen.getByRole('dialog');
     const cancelEvent = new Event('cancel', {
       bubbles: true,
-      cancelable: true
+      cancelable: true,
     });
 
     fireEvent(dialog, cancelEvent);
@@ -339,11 +339,11 @@ describe('Dialog', () => {
     Object.defineProperty(dialog, 'open', {
       configurable: true,
       writable: true,
-      value: true
+      value: true,
     });
     Object.defineProperty(dialog, 'close', {
       configurable: true,
-      value: closeSpy
+      value: closeSpy,
     });
 
     rerender(
@@ -378,11 +378,11 @@ describe('Dialog', () => {
     Object.defineProperty(dialog, 'open', {
       configurable: true,
       writable: true,
-      value: false
+      value: false,
     });
     Object.defineProperty(dialog, 'close', {
       configurable: true,
-      value: undefined
+      value: undefined,
     });
 
     rerender(
@@ -513,15 +513,15 @@ describe('Dialog', () => {
     vi.useFakeTimers();
     Object.defineProperty(HTMLDialogElement.prototype, 'open', {
       configurable: true,
-      get: () => nativeOpenState
+      get: () => nativeOpenState,
     });
     Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
       configurable: true,
-      value: showModalSpy
+      value: showModalSpy,
     });
     Object.defineProperty(HTMLDialogElement.prototype, 'close', {
       configurable: true,
-      value: closeSpy
+      value: closeSpy,
     });
 
     try {
@@ -635,7 +635,7 @@ describe('Dialog', () => {
 
     Object.defineProperty(HTMLDialogElement.prototype, 'showModal', {
       configurable: true,
-      value: undefined
+      value: undefined,
     });
 
     try {

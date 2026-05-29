@@ -10,7 +10,7 @@ type SkeletonStoryProps = Pick<
 const meta: Meta<SkeletonStoryProps> = {
   component: Skeleton,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     width: {
@@ -19,12 +19,12 @@ const meta: Meta<SkeletonStoryProps> = {
         'Width of the placeholder (number for px, string for any unit)',
       table: {
         type: {
-          summary: 'string | number'
+          summary: 'string | number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     height: {
       control: { type: 'text' },
@@ -32,12 +32,12 @@ const meta: Meta<SkeletonStoryProps> = {
         'Height of the placeholder (number for px, string for any unit)',
       table: {
         type: {
-          summary: 'string | number'
+          summary: 'string | number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     shape: {
       control: { type: 'select' },
@@ -45,38 +45,38 @@ const meta: Meta<SkeletonStoryProps> = {
       description: 'Shape of the skeleton',
       table: {
         type: {
-          summary: "'rectangle' | 'circle'"
+          summary: "'rectangle' | 'circle'",
         },
         defaultValue: {
-          summary: "'rectangle'"
-        }
-      }
+          summary: "'rectangle'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the skeleton element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the skeleton element',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<SkeletonStoryProps>;
 
 export default meta;
@@ -85,15 +85,15 @@ type Story = StoryObj<SkeletonStoryProps>;
 export const rectangle: Story = {
   args: {
     width: 200,
-    height: 20
-  }
+    height: 20,
+  },
 } satisfies Story;
 
 export const circle: Story = {
   args: {
     shape: 'circle',
-    width: 48
-  }
+    width: 48,
+  },
 } satisfies Story;
 
 export const text_lines: Story = {
@@ -103,7 +103,7 @@ export const text_lines: Story = {
       <Skeleton width='100%' height={16} />
       <Skeleton width='60%' height={16} />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const card_skeleton: Story = {
@@ -116,7 +116,7 @@ export const card_skeleton: Story = {
         <Skeleton width='80%' height={12} />
       </div>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const various_sizes: Story = {
@@ -127,5 +127,5 @@ export const various_sizes: Story = {
       <Skeleton shape='circle' width={64} />
       <Skeleton width='100%' height={40} />
     </div>
-  )
+  ),
 } satisfies Story;

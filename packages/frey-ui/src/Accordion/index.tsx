@@ -97,7 +97,7 @@ const AccordionRoot: AccordionRootComponent = React.forwardRef<
       type,
       value: currentValue,
       onValueChange: handleValueChange,
-      idPrefix
+      idPrefix,
     }),
     [type, currentValue, handleValueChange, idPrefix]
   );
@@ -175,7 +175,7 @@ const AccordionTrigger: AccordionTriggerComponent = React.forwardRef<
         {children}
         <ChevronDownIcon
           className={clsx(styles.accordion_chevron, {
-            [styles.accordion_chevron_open]: isOpen
+            [styles.accordion_chevron_open]: isOpen,
           })}
           size={16}
         />
@@ -251,7 +251,7 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
       inert={!isOpen}
       className={clsx(styles.accordion_content_wrapper, {
         [styles.accordion_content_wrapper_open]: isOpen,
-        [styles.accordion_content_wrapper_closed]: !isOpen
+        [styles.accordion_content_wrapper_closed]: !isOpen,
       })}
       {...props}
     >
@@ -272,7 +272,7 @@ type AccordionComponent = typeof AccordionRoot & {
 export const Accordion: AccordionComponent = Object.assign(AccordionRoot, {
   Item: AccordionItem,
   Trigger: AccordionTrigger,
-  Content: AccordionContent
+  Content: AccordionContent,
 });
 
 export default Accordion;

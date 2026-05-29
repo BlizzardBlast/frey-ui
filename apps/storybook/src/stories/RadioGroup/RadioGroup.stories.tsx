@@ -25,14 +25,14 @@ type RadioGroupStoryProps = Pick<
 const meta: Meta<RadioGroupStoryProps> = {
   component: RadioGroup,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 360 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     label: {
@@ -40,120 +40,120 @@ const meta: Meta<RadioGroupStoryProps> = {
       description: 'Accessible group label for the radio set',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     options: {
       control: { type: 'object' },
       description: 'Radio options rendered by the group',
       table: {
         type: {
-          summary: 'ReadonlyArray<RadioOption>'
+          summary: 'ReadonlyArray<RadioOption>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultValue: {
       control: { type: 'text' },
       description: 'Initial selected option when uncontrolled',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     value: {
       control: { type: 'text' },
       description: 'Controlled selected option value',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onChange: {
       action: 'changed',
       description: 'Called when the selected radio option changes',
       table: {
         type: {
-          summary: 'ChangeEventHandler<HTMLInputElement>'
+          summary: 'ChangeEventHandler<HTMLInputElement>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
       description: 'Whether to visually hide the group label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Supporting helper copy shown below the group',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     error: {
       control: { type: 'text' },
       description: 'Error message shown below the group',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the entire radio group is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     required: {
       control: { type: 'boolean' },
       description: 'Whether a radio option selection is required',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     orientation: {
       control: { type: 'select' },
@@ -161,36 +161,36 @@ const meta: Meta<RadioGroupStoryProps> = {
       description: 'Layout direction of the radio options',
       table: {
         type: {
-          summary: "'vertical' | 'horizontal'"
+          summary: "'vertical' | 'horizontal'",
         },
         defaultValue: {
-          summary: "'vertical'"
-        }
-      }
+          summary: "'vertical'",
+        },
+      },
     },
     name: {
       control: { type: 'text' },
       description: 'Name attribute shared by the radio inputs',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     id: {
       control: { type: 'text' },
       description: 'Base id used to derive the radio group and option ids',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
@@ -198,26 +198,26 @@ const meta: Meta<RadioGroupStoryProps> = {
         'Additional class names applied to the radio group field wrapper',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the radio group field wrapper',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<RadioGroupStoryProps>;
 
 export default meta;
@@ -228,26 +228,26 @@ const planOptions: RadioGroupProps['options'] = [
   {
     label: 'Starter',
     value: 'starter',
-    description: 'Good for small teams'
+    description: 'Good for small teams',
   },
   {
     label: 'Growth',
     value: 'growth',
-    description: 'Best for scaling products'
+    description: 'Best for scaling products',
   },
   {
     label: 'Enterprise',
     value: 'enterprise',
-    description: 'Advanced security and support'
-  }
+    description: 'Advanced security and support',
+  },
 ];
 
 export const basic_radio_group: Story = {
   args: {
     label: 'Plan',
     options: planOptions,
-    defaultValue: 'growth'
-  }
+    defaultValue: 'growth',
+  },
 } satisfies Story;
 
 export const horizontal: Story = {
@@ -257,9 +257,9 @@ export const horizontal: Story = {
     options: [
       { label: 'Development', value: 'dev' },
       { label: 'Staging', value: 'staging' },
-      { label: 'Production', value: 'prod' }
-    ]
-  }
+      { label: 'Production', value: 'prod' },
+    ],
+  },
 } satisfies Story;
 
 export const with_error: Story = {
@@ -267,10 +267,10 @@ export const with_error: Story = {
     label: 'Billing cycle',
     options: [
       { label: 'Monthly', value: 'monthly' },
-      { label: 'Yearly', value: 'yearly' }
+      { label: 'Yearly', value: 'yearly' },
     ],
-    error: 'Please choose a billing cycle.'
-  }
+    error: 'Please choose a billing cycle.',
+  },
 } satisfies Story;
 
 export const disabled: Story = {
@@ -278,8 +278,8 @@ export const disabled: Story = {
     label: 'Readonly options',
     options: planOptions,
     defaultValue: 'starter',
-    disabled: true
-  }
+    disabled: true,
+  },
 } satisfies Story;
 
 export const controlled: Story = {
@@ -313,5 +313,5 @@ export const controlled: Story = {
         <small>Current selection: {resolvedValue}</small>
       </div>
     );
-  }
+  },
 } satisfies Story;

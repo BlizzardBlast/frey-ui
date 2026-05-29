@@ -22,7 +22,7 @@ type TextInputStoryProps = Pick<
 const meta: Meta<TextInputStoryProps> = {
   component: TextInput,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     label: {
@@ -30,60 +30,60 @@ const meta: Meta<TextInputStoryProps> = {
       description: 'Accessible label for the input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
       description: 'Visually hide the label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     error: {
       control: { type: 'text' },
       description: 'Error message to display',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Helper text below the input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the input is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     type: {
       control: { type: 'select' },
@@ -91,81 +91,81 @@ const meta: Meta<TextInputStoryProps> = {
       description: 'HTML input type',
       table: {
         type: {
-          summary: "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'"
+          summary: "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'",
         },
         defaultValue: {
-          summary: "'text'"
-        }
-      }
+          summary: "'text'",
+        },
+      },
     },
     placeholder: {
       control: { type: 'text' },
       description: 'Placeholder text',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     value: {
       control: { type: 'text' },
       description: 'Controlled input value',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     readOnly: {
       control: { type: 'boolean' },
       description: 'Whether the input is read-only',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the input field wrapper',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the input field wrapper',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
+          summary: 'None',
+        },
+      },
+    },
   },
   decorators: [
     (Story) => (
       <div style={{ width: 320 }}>
         <Story />
       </div>
-    )
-  ]
+    ),
+  ],
 } satisfies Meta<TextInputStoryProps>;
 
 export default meta;
@@ -174,8 +174,8 @@ type Story = StoryObj<TextInputStoryProps>;
 export const basic_text_input: Story = {
   args: {
     label: 'Full name',
-    placeholder: 'Jane Doe'
-  }
+    placeholder: 'Jane Doe',
+  },
 } satisfies Story;
 
 export const with_helper_text: Story = {
@@ -183,8 +183,8 @@ export const with_helper_text: Story = {
     label: 'Email',
     type: 'email',
     placeholder: 'you@example.com',
-    helperText: 'We will never share your email.'
-  }
+    helperText: 'We will never share your email.',
+  },
 } satisfies Story;
 
 export const with_error: Story = {
@@ -192,24 +192,24 @@ export const with_error: Story = {
     label: 'Email',
     type: 'email',
     value: 'not-an-email',
-    error: 'Please enter a valid email address.'
-  }
+    error: 'Please enter a valid email address.',
+  },
 } satisfies Story;
 
 export const disabled: Story = {
   args: {
     label: 'Disabled input',
     disabled: true,
-    value: 'Cannot edit this'
-  }
+    value: 'Cannot edit this',
+  },
 } satisfies Story;
 
 export const read_only: Story = {
   args: {
     label: 'Read-only input',
     readOnly: true,
-    value: 'Fixed value'
-  }
+    value: 'Fixed value',
+  },
 } satisfies Story;
 
 export const hidden_label: Story = {
@@ -217,8 +217,8 @@ export const hidden_label: Story = {
     label: 'Search',
     hideLabel: true,
     placeholder: 'Search...',
-    type: 'search'
-  }
+    type: 'search',
+  },
 } satisfies Story;
 
 export const controlled: Story = {
@@ -236,13 +236,13 @@ export const controlled: Story = {
         />
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const type_interaction: Story = {
   args: {
     label: 'Interactive input',
-    placeholder: 'Type here...'
+    placeholder: 'Type here...',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -251,5 +251,5 @@ export const type_interaction: Story = {
     await userEvent.type(input, 'Hello world');
 
     expect(input).toHaveValue('Hello world');
-  }
+  },
 } satisfies Story;

@@ -10,7 +10,7 @@ describe('Stack', () => {
 
     expect(screen.getByTestId('stack')).toHaveStyle({
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
     });
   });
 
@@ -24,7 +24,7 @@ describe('Stack', () => {
     expect(screen.getByTestId('stack')).toHaveStyle({
       flexDirection: 'row',
       rowGap: 'var(--frey-space-4, 1rem)',
-      columnGap: 'var(--frey-space-4, 1rem)'
+      columnGap: 'var(--frey-space-4, 1rem)',
     });
   });
 

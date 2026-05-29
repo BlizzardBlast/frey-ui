@@ -44,7 +44,7 @@ const Flex = React.forwardRef(function Flex<E extends BoxElement = 'div'>(
     alignItems: align,
     justifyContent: justify,
     flexWrap: wrap,
-    ...style
+    ...style,
   };
 
   return (

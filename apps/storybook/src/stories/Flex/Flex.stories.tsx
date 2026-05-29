@@ -9,7 +9,7 @@ type FlexStoryProps = Pick<
 const meta: Meta<FlexStoryProps> = {
   component: Flex,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     as: {
@@ -18,24 +18,24 @@ const meta: Meta<FlexStoryProps> = {
       description: 'Element rendered by the flex container',
       table: {
         type: {
-          summary: 'BoxElement'
+          summary: 'BoxElement',
         },
         defaultValue: {
-          summary: "'div'"
-        }
-      }
+          summary: "'div'",
+        },
+      },
     },
     inline: {
       control: { type: 'boolean' },
       description: 'Whether the container uses inline-flex instead of flex',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     direction: {
       control: { type: 'select' },
@@ -43,12 +43,12 @@ const meta: Meta<FlexStoryProps> = {
       description: 'Main axis direction for flex children',
       table: {
         type: {
-          summary: 'CSSProperties["flexDirection"]'
+          summary: 'CSSProperties["flexDirection"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     align: {
       control: { type: 'select' },
@@ -56,12 +56,12 @@ const meta: Meta<FlexStoryProps> = {
       description: 'Cross-axis alignment of flex children',
       table: {
         type: {
-          summary: 'CSSProperties["alignItems"]'
+          summary: 'CSSProperties["alignItems"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     justify: {
       control: { type: 'select' },
@@ -71,17 +71,17 @@ const meta: Meta<FlexStoryProps> = {
         'flex-end',
         'space-between',
         'space-around',
-        'space-evenly'
+        'space-evenly',
       ],
       description: 'Main-axis distribution of flex children',
       table: {
         type: {
-          summary: 'CSSProperties["justifyContent"]'
+          summary: 'CSSProperties["justifyContent"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     wrap: {
       control: { type: 'select' },
@@ -89,26 +89,26 @@ const meta: Meta<FlexStoryProps> = {
       description: 'Wrapping behavior for flex children',
       table: {
         type: {
-          summary: 'CSSProperties["flexWrap"]'
+          summary: 'CSSProperties["flexWrap"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     gap: {
       control: { type: 'text' },
       description: 'Gap between flex children',
       table: {
         type: {
-          summary: 'string | number'
+          summary: 'string | number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<FlexStoryProps>;
 
 export default meta;
@@ -118,13 +118,13 @@ const itemStyle: React.CSSProperties = {
   padding: '0.5rem 0.75rem',
   borderRadius: 'var(--frey-radius-sm)',
   backgroundColor: 'var(--frey-color-surface-subtle)',
-  border: '1px solid var(--frey-color-border-subtle)'
+  border: '1px solid var(--frey-color-border-subtle)',
 };
 
 export const horizontal: Story = {
   args: {
     gap: '3',
-    align: 'center'
+    align: 'center',
   },
   render: (args) => (
     <Flex {...args}>
@@ -132,13 +132,13 @@ export const horizontal: Story = {
       <div style={itemStyle}>Build</div>
       <div style={itemStyle}>Ship</div>
     </Flex>
-  )
+  ),
 } satisfies Story;
 
 export const wrapped: Story = {
   args: {
     gap: '2',
-    wrap: 'wrap'
+    wrap: 'wrap',
   },
   render: (args) => (
     <Flex {...args} style={{ maxWidth: 280 }}>
@@ -148,5 +148,5 @@ export const wrapped: Story = {
       <div style={itemStyle}>Updated</div>
       <div style={itemStyle}>Region</div>
     </Flex>
-  )
+  ),
 } satisfies Story;

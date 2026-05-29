@@ -5,7 +5,7 @@ import {
   CircleInfoIcon,
   CircleXIcon,
   CloseIcon,
-  TriangleAlertIcon
+  TriangleAlertIcon,
 } from '../Icons';
 import Portal from '../utils/Portal';
 import styles from './toast.module.css';
@@ -59,14 +59,14 @@ const VariantIconMap: Record<ToastVariant, React.ReactNode> = {
   info: <CircleInfoIcon size='lg' className={styles.toast_icon_svg} />,
   success: <CircleCheckIcon size='lg' className={styles.toast_icon_svg} />,
   warning: <TriangleAlertIcon size='lg' className={styles.toast_icon_svg} />,
-  error: <CircleXIcon size='lg' className={styles.toast_icon_svg} />
+  error: <CircleXIcon size='lg' className={styles.toast_icon_svg} />,
 };
 
 const PlacementClassMap: Record<ToastPlacement, string> = {
   'top-right': styles.toast_viewport_top_right,
   'top-left': styles.toast_viewport_top_left,
   'bottom-right': styles.toast_viewport_bottom_right,
-  'bottom-left': styles.toast_viewport_bottom_left
+  'bottom-left': styles.toast_viewport_bottom_left,
 };
 
 let toastCounter = 0;
@@ -88,7 +88,7 @@ export function ToastProvider({
   placement = 'top-right',
   limit = 4,
   className,
-  style
+  style,
 }: Readonly<ToastProviderProps>): React.JSX.Element {
   const [toasts, setToasts] = React.useState<ReadonlyArray<ToastRecord>>([]);
   const timersRef = React.useRef<Record<string, ReturnType<typeof setTimeout>>>(
@@ -135,7 +135,7 @@ export function ToastProvider({
         description: options.description,
         variant: options.variant ?? 'info',
         duration,
-        action: options.action
+        action: options.action,
       };
 
       setToasts((currentToasts) => {
