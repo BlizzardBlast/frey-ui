@@ -31,7 +31,7 @@ describe('Avatar', () => {
       }
     }
 
-    vi.stubGlobal('Image', SuccessfulImage as unknown as typeof Image);
+    vi.stubGlobal('Image', SuccessfulImage);
 
     render(
       <Avatar
@@ -62,7 +62,7 @@ describe('Avatar', () => {
       }
     }
 
-    vi.stubGlobal('Image', FailingImage as unknown as typeof Image);
+    vi.stubGlobal('Image', FailingImage);
 
     render(
       <Avatar
@@ -97,7 +97,7 @@ describe('Avatar', () => {
       }
     }
 
-    vi.stubGlobal('Image', DeferredImage as unknown as typeof Image);
+    vi.stubGlobal('Image', DeferredImage);
 
     const { unmount } = render(
       <Avatar
