@@ -3,7 +3,6 @@ packages:
   - 'packages/*'
 overrides:
   valibot: ^1.4.0
-  postcss: ^8.5.10
 loglevel: debug
 ignoreScripts: true
 minimumReleaseAge: 1440
