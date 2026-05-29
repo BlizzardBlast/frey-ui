@@ -33,15 +33,15 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.16",
-    "@changesets/cli": "2.31.0",
-    "@commitlint/cli": "^21.0.1",
-    "@commitlint/config-conventional": "^21.0.1",
-    "@commitlint/types": "^21.0.1",
-    "@vitest/coverage-v8": "^4.1.7",
-    "husky": "^9.1.7",
-    "jsdom": "^29.1.1",
-    "turbo": "^2.9.15",
-    "vitest": "^4.1.7"
+    "@biomejs/biome": "catalog:",
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@commitlint/config-conventional": "catalog:",
+    "@commitlint/types": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "husky": "catalog:",
+    "jsdom": "catalog:",
+    "turbo": "catalog:",
+    "vitest": "catalog:"
   }
 }
