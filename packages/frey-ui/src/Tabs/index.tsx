@@ -61,7 +61,7 @@ const TabsRoot: TabsRootComponent = React.forwardRef<
       value: currentValue,
       onValueChange: handleValueChange,
       idPrefix,
-      triggerCollection
+      triggerCollection,
     }),
     [currentValue, handleValueChange, idPrefix, triggerCollection]
   );
@@ -114,7 +114,7 @@ const TabsTrigger: TabsTriggerComponent = React.forwardRef<
     value: selectedValue,
     onValueChange,
     idPrefix,
-    triggerCollection
+    triggerCollection,
   } = useTabsContext();
   const isSelected = selectedValue === triggerValue;
   const triggerRef = React.useRef<HTMLButtonElement | null>(null);
@@ -123,7 +123,7 @@ const TabsTrigger: TabsTriggerComponent = React.forwardRef<
   React.useEffect(() => {
     triggerCollection.registerItem(triggerValue, triggerRef.current, {
       disabled,
-      value: triggerValue
+      value: triggerValue,
     });
 
     return () => {
@@ -236,7 +236,7 @@ type TabsComponent = typeof TabsRoot & {
 export const Tabs: TabsComponent = Object.assign(TabsRoot, {
   List: TabsList,
   Trigger: TabsTrigger,
-  Content: TabsContent
+  Content: TabsContent,
 });
 
 export default Tabs;

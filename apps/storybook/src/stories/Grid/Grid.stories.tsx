@@ -9,7 +9,7 @@ type GridStoryProps = Pick<
 const meta: Meta<GridStoryProps> = {
   component: Grid,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     as: {
@@ -18,36 +18,36 @@ const meta: Meta<GridStoryProps> = {
       description: 'Element rendered by the grid container',
       table: {
         type: {
-          summary: 'BoxElement'
+          summary: 'BoxElement',
         },
         defaultValue: {
-          summary: "'div'"
-        }
-      }
+          summary: "'div'",
+        },
+      },
     },
     columns: {
       control: { type: 'text' },
       description: 'Grid column template or column count',
       table: {
         type: {
-          summary: 'number | string'
+          summary: 'number | string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     rows: {
       control: { type: 'text' },
       description: 'Grid row template or row count',
       table: {
         type: {
-          summary: 'number | string'
+          summary: 'number | string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     autoFlow: {
       control: { type: 'select' },
@@ -55,12 +55,12 @@ const meta: Meta<GridStoryProps> = {
       description: 'Auto-placement behavior for implicit grid items',
       table: {
         type: {
-          summary: 'CSSProperties["gridAutoFlow"]'
+          summary: 'CSSProperties["gridAutoFlow"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     alignItems: {
       control: { type: 'select' },
@@ -68,12 +68,12 @@ const meta: Meta<GridStoryProps> = {
       description: 'Block-axis alignment of grid items',
       table: {
         type: {
-          summary: 'CSSProperties["alignItems"]'
+          summary: 'CSSProperties["alignItems"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     justifyItems: {
       control: { type: 'select' },
@@ -81,26 +81,26 @@ const meta: Meta<GridStoryProps> = {
       description: 'Inline-axis alignment of grid items',
       table: {
         type: {
-          summary: 'CSSProperties["justifyItems"]'
+          summary: 'CSSProperties["justifyItems"]',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     gap: {
       control: { type: 'text' },
       description: 'Gap between grid items',
       table: {
         type: {
-          summary: 'string | number'
+          summary: 'string | number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<GridStoryProps>;
 
 export default meta;
@@ -111,13 +111,13 @@ const cellStyle: React.CSSProperties = {
   borderRadius: 'var(--frey-radius-sm)',
   backgroundColor: 'var(--frey-color-surface-subtle)',
   padding: '0.75rem',
-  textAlign: 'center'
+  textAlign: 'center',
 };
 
 export const columns: Story = {
   args: {
     columns: 3,
-    gap: '3'
+    gap: '3',
   },
   render: (args) => (
     <Grid {...args} style={{ minWidth: 420 }}>
@@ -128,14 +128,14 @@ export const columns: Story = {
       <div style={cellStyle}>5</div>
       <div style={cellStyle}>6</div>
     </Grid>
-  )
+  ),
 } satisfies Story;
 
 export const custom_template: Story = {
   args: {
     columns: '240px 1fr',
     rows: 'auto auto',
-    gap: '2'
+    gap: '2',
   },
   render: (args) => (
     <Grid {...args} style={{ minWidth: 520 }}>
@@ -144,5 +144,5 @@ export const custom_template: Story = {
       <div style={cellStyle}>Filters</div>
       <div style={cellStyle}>Data table</div>
     </Grid>
-  )
+  ),
 } satisfies Story;

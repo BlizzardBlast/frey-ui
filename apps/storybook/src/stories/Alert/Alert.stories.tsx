@@ -10,7 +10,7 @@ type AlertStoryProps = Pick<
 const meta: Meta<AlertStoryProps> = {
   component: Alert,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     variant: {
@@ -19,69 +19,69 @@ const meta: Meta<AlertStoryProps> = {
       description: 'Visual variant / severity',
       table: {
         type: {
-          summary: "'error' | 'success' | 'warning' | 'info'"
+          summary: "'error' | 'success' | 'warning' | 'info'",
         },
         defaultValue: {
-          summary: "'info'"
-        }
-      }
+          summary: "'info'",
+        },
+      },
     },
     title: {
       control: { type: 'text' },
       description: 'Optional bold title',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: { type: 'text' },
       description: 'Alert message content',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the alert root',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the alert root',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
+          summary: 'None',
+        },
+      },
+    },
   },
   decorators: [
     (Story) => (
       <div style={{ width: 400 }}>
         <Story />
       </div>
-    )
-  ]
+    ),
+  ],
 } satisfies Meta<AlertStoryProps>;
 
 export default meta;
@@ -95,7 +95,7 @@ export const all_variants: Story = {
       <Alert variant='warning'>Please review before continuing.</Alert>
       <Alert variant='error'>Something went wrong. Please try again.</Alert>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const with_title: Story = {
@@ -108,35 +108,35 @@ export const with_title: Story = {
         Your changes have been saved successfully.
       </Alert>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const info: Story = {
   args: {
     variant: 'info',
-    children: 'Your session will expire in 5 minutes.'
-  }
+    children: 'Your session will expire in 5 minutes.',
+  },
 } satisfies Story;
 
 export const success: Story = {
   args: {
     variant: 'success',
     title: 'Payment received',
-    children: 'Thank you for your purchase.'
-  }
+    children: 'Thank you for your purchase.',
+  },
 } satisfies Story;
 
 export const warning: Story = {
   args: {
     variant: 'warning',
-    children: 'This action cannot be undone.'
-  }
+    children: 'This action cannot be undone.',
+  },
 } satisfies Story;
 
 export const error: Story = {
   args: {
     variant: 'error',
     title: 'Error',
-    children: 'Failed to save changes.'
-  }
+    children: 'Failed to save changes.',
+  },
 } satisfies Story;

@@ -8,7 +8,7 @@ import { type ToastOptions, ToastProvider, useToast } from './index';
 
 function ToastHarness({
   onAction,
-  autoDuration
+  autoDuration,
 }: Readonly<{ onAction?: () => void; autoDuration?: number }>) {
   const { toast, dismissAll } = useToast();
 
@@ -25,9 +25,9 @@ function ToastHarness({
             action: onAction
               ? {
                   label: 'Undo',
-                  onClick: onAction
+                  onClick: onAction,
                 }
-              : undefined
+              : undefined,
           });
         }}
       >
@@ -42,7 +42,7 @@ function ToastHarness({
 }
 
 function ToastIdHarness({
-  options
+  options,
 }: Readonly<{ options: Readonly<ToastOptions> }>) {
   const { toast } = useToast();
   const [generatedId, setGeneratedId] = React.useState('');
@@ -74,7 +74,7 @@ function VariantToastHarness() {
         onClick={() => {
           toast({
             description: 'Default info toast',
-            duration: 0
+            duration: 0,
           });
         }}
       >
@@ -87,7 +87,7 @@ function VariantToastHarness() {
           toast({
             description: 'Error toast',
             variant: 'error',
-            duration: 0
+            duration: 0,
           });
         }}
       >
@@ -212,7 +212,7 @@ describe('Toast', () => {
         <ToastIdHarness
           options={{
             description: 'Fallback id toast',
-            duration: 0
+            duration: 0,
           }}
         />
       </ToastProvider>

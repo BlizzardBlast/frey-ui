@@ -8,8 +8,8 @@ const preview: Preview = {
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/i
-      }
+        date: /Date$/i,
+      },
     },
     docs: {
       toc: {
@@ -19,27 +19,27 @@ const preview: Preview = {
         title: 'Table of Contents',
         disable: false,
         unsafeTocbotOptions: {
-          orderedList: false
-        }
-      }
-    }
+          orderedList: false,
+        },
+      },
+    },
   },
   decorators: [
     withThemeByDataAttribute({
       themes: {
         light: 'light',
-        dark: 'dark'
+        dark: 'dark',
       },
       defaultTheme: 'light',
-      attributeName: 'data-theme'
+      attributeName: 'data-theme',
     }),
     (Story) => (
       <div className='frey-theme-provider'>
         <Story />
       </div>
-    )
+    ),
   ],
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default preview;

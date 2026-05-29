@@ -28,7 +28,7 @@ type SelectComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<SelectSize, string> = {
   sm: styles.select_sm,
   md: styles.select_md,
-  lg: styles.select_lg
+  lg: styles.select_lg,
 };
 
 const Select: SelectComponent = React.forwardRef<

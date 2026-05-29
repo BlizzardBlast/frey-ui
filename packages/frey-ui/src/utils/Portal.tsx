@@ -9,7 +9,7 @@ export type PortalProps = {
 
 function Portal({
   children,
-  container
+  container,
 }: Readonly<PortalProps>): React.ReactPortal | null {
   const themeContext = React.useContext(ThemeContext);
   const [portalNode] = React.useState<HTMLElement | null>(() => {

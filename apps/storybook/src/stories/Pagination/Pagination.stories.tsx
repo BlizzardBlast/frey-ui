@@ -39,7 +39,7 @@ type PaginationStoryProps = Pick<
 const meta: Meta<PaginationStoryProps> = {
   component: Pagination,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     totalPages: {
@@ -47,48 +47,48 @@ const meta: Meta<PaginationStoryProps> = {
       description: 'Total number of available pages',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     page: {
       control: { type: 'number' },
       description: 'Controlled current page',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultPage: {
       control: { type: 'number' },
       description: 'Initial page when the component is uncontrolled',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '1'
-        }
-      }
+          summary: '1',
+        },
+      },
     },
     onPageChange: {
       action: 'page changed',
       description: 'Called when the selected page changes',
       table: {
         type: {
-          summary: '(page: number) => void'
+          summary: '(page: number) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     siblingCount: {
       control: { type: 'number' },
@@ -96,12 +96,12 @@ const meta: Meta<PaginationStoryProps> = {
         'Number of sibling pages shown on each side of the current page',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '1'
-        }
-      }
+          summary: '1',
+        },
+      },
     },
     boundaryCount: {
       control: { type: 'number' },
@@ -109,98 +109,98 @@ const meta: Meta<PaginationStoryProps> = {
         'Number of always-visible pages shown at the beginning and end',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '1'
-        }
-      }
+          summary: '1',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the pagination is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     showControls: {
       control: { type: 'boolean' },
       description: 'Whether the previous and next controls are displayed',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'true'
-        }
-      }
+          summary: 'true',
+        },
+      },
     },
     previousLabel: {
       control: { type: 'text' },
       description: 'Text label for the previous page button',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'Previous'"
-        }
-      }
+          summary: "'Previous'",
+        },
+      },
     },
     nextLabel: {
       control: { type: 'text' },
       description: 'Text label for the next page button',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'Next'"
-        }
-      }
+          summary: "'Next'",
+        },
+      },
     },
     ariaLabel: {
       control: { type: 'text' },
       description: 'Accessible label for the pagination navigation landmark',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'Pagination'"
-        }
-      }
+          summary: "'Pagination'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the pagination root',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the pagination root',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<PaginationStoryProps>;
 
 export default meta;
@@ -209,8 +209,8 @@ type Story = StoryObj<PaginationStoryProps>;
 
 export const basic: Story = {
   args: {
-    totalPages: 7
-  }
+    totalPages: 7,
+  },
 } satisfies Story;
 
 export const truncated: Story = {
@@ -218,15 +218,15 @@ export const truncated: Story = {
     totalPages: 24,
     defaultPage: 12,
     siblingCount: 1,
-    boundaryCount: 1
+    boundaryCount: 1,
   },
-  render: (args) => <Pagination {...args} />
+  render: (args) => <Pagination {...args} />,
 } satisfies Story;
 
 export const controlled: Story = {
   args: {
     totalPages: 12,
-    defaultPage: 3
+    defaultPage: 3,
   },
   render: function ControlledStory(args) {
     const resolvedTotalPages = normalizePositiveInt(args.totalPages, 1);
@@ -266,7 +266,7 @@ export const controlled: Story = {
         />
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const custom_labels_and_theme: Story = {
@@ -274,7 +274,7 @@ export const custom_labels_and_theme: Story = {
     totalPages: 9,
     defaultPage: 5,
     previousLabel: 'Back',
-    nextLabel: 'Forward'
+    nextLabel: 'Forward',
   },
   render: (args) => (
     <Pagination
@@ -282,9 +282,9 @@ export const custom_labels_and_theme: Story = {
       style={
         {
           ...(args.style ?? {}),
-          '--frey-color-primary': 'var(--frey-palette-blue-600)'
+          '--frey-color-primary': 'var(--frey-palette-blue-600)',
         } as React.CSSProperties
       }
     />
-  )
+  ),
 } satisfies Story;

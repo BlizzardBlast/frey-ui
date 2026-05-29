@@ -173,7 +173,7 @@ export const Table: TableComponent = Object.assign(TableRoot, {
   Row: TableRow,
   Head: TableHead,
   Cell: TableCell,
-  Caption: TableCaption
+  Caption: TableCaption,
 });
 
 export default Table;

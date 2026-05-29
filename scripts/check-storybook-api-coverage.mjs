@@ -38,7 +38,7 @@ const indexSource = fs.readFileSync(libraryIndexPath, 'utf8');
 const exportMatches = [
   ...indexSource.matchAll(
     /export\s+\{\s*default\s+as\s+(\w+)\s*\}\s+from\s+'\.\/[^']+';/g
-  )
+  ),
 ];
 
 const exportedComponents = exportMatches

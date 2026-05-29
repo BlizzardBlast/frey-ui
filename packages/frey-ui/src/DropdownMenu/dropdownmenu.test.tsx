@@ -417,7 +417,7 @@ describe('DropdownMenu', () => {
     await user.click(screen.getByRole('button', { name: 'Open menu' }));
 
     const disabledItem = screen.getByRole('menuitem', {
-      name: 'Disabled action'
+      name: 'Disabled action',
     });
     const reactPropsKey = Object.keys(disabledItem).find((key) =>
       key.startsWith('__reactProps$')
@@ -443,11 +443,11 @@ describe('DropdownMenu', () => {
       x: 280,
       y: 100,
       width: 40,
-      height: 24
+      height: 24,
     });
     const menuRect = createMockRect({
       width: 160,
-      height: 120
+      height: 120,
     });
     const rectSpy = vi
       .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
@@ -471,7 +471,7 @@ describe('DropdownMenu', () => {
     const originalInnerWidth = globalThis.innerWidth;
     Object.defineProperty(globalThis, 'innerWidth', {
       configurable: true,
-      value: 360
+      value: 360,
     });
 
     try {
@@ -496,7 +496,7 @@ describe('DropdownMenu', () => {
       rectSpy.mockRestore();
       Object.defineProperty(globalThis, 'innerWidth', {
         configurable: true,
-        value: originalInnerWidth
+        value: originalInnerWidth,
       });
     }
   });

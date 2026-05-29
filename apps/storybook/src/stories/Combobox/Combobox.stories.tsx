@@ -6,20 +6,20 @@ import { type ChangeEvent, useEffect, useState } from 'react';
 const options: ReadonlyArray<ComboboxOption> = [
   {
     value: 'id',
-    label: 'Indonesia'
+    label: 'Indonesia',
   },
   {
     value: 'sg',
-    label: 'Singapore'
+    label: 'Singapore',
   },
   {
     value: 'jp',
-    label: 'Japan'
+    label: 'Japan',
   },
   {
     value: 'us',
-    label: 'United States'
-  }
+    label: 'United States',
+  },
 ];
 
 type ComboboxStoryProps = Pick<
@@ -43,14 +43,14 @@ type ComboboxStoryProps = Pick<
 const meta: Meta<ComboboxStoryProps> = {
   component: Combobox,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 320 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     label: {
@@ -58,132 +58,132 @@ const meta: Meta<ComboboxStoryProps> = {
       description: 'Accessible label for the combobox input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     options: {
       control: { type: 'object' },
       description: 'List of selectable options displayed in the combobox menu',
       table: {
         type: {
-          summary: 'ReadonlyArray<ComboboxOption>'
+          summary: 'ReadonlyArray<ComboboxOption>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
       description: 'Whether to visually hide the field label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     placeholder: {
       control: { type: 'text' },
       description: 'Placeholder text shown when the input is empty',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Supporting helper copy shown below the input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     error: {
       control: { type: 'text' },
       description: 'Error message shown below the input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the combobox is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     defaultValue: {
       control: { type: 'text' },
       description: 'Initial input value when the combobox is uncontrolled',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onChange: {
       action: 'changed',
       description: 'Called when the combobox input value changes',
       table: {
         type: {
-          summary: 'ChangeEventHandler<HTMLInputElement>'
+          summary: 'ChangeEventHandler<HTMLInputElement>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     noResultsText: {
       control: { type: 'text' },
       description: 'Message displayed when filtering returns no options',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'No results found'"
-        }
-      }
+          summary: "'No results found'",
+        },
+      },
     },
     value: {
       control: { type: 'text' },
       description: 'Controlled combobox input value',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -191,12 +191,12 @@ const meta: Meta<ComboboxStoryProps> = {
       description: 'Size variant of the combobox input',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
@@ -204,26 +204,26 @@ const meta: Meta<ComboboxStoryProps> = {
         'Additional class names applied to the combobox field wrapper',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the combobox field wrapper',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<ComboboxStoryProps>;
 
 export default meta;
@@ -234,8 +234,8 @@ export const basic_combobox: Story = {
   args: {
     label: 'Country',
     options,
-    placeholder: 'Search country'
-  }
+    placeholder: 'Search country',
+  },
 } satisfies Story;
 
 export const with_helper_text: Story = {
@@ -244,27 +244,27 @@ export const with_helper_text: Story = {
     options: [
       {
         value: 'asia-jakarta',
-        label: 'Asia/Jakarta'
+        label: 'Asia/Jakarta',
       },
       {
         value: 'utc',
-        label: 'UTC'
+        label: 'UTC',
       },
       {
         value: 'america-new-york',
-        label: 'America/New_York'
-      }
+        label: 'America/New_York',
+      },
     ],
-    helperText: 'Type to filter long option lists quickly.'
-  }
+    helperText: 'Type to filter long option lists quickly.',
+  },
 } satisfies Story;
 
 export const with_error: Story = {
   args: {
     label: 'Country',
     options,
-    error: 'Please choose a valid country.'
-  }
+    error: 'Please choose a valid country.',
+  },
 } satisfies Story;
 
 export const disabled: Story = {
@@ -272,8 +272,8 @@ export const disabled: Story = {
     label: 'Country',
     options,
     value: 'Indonesia',
-    disabled: true
-  }
+    disabled: true,
+  },
 } satisfies Story;
 
 export const controlled: Story = {
@@ -308,7 +308,7 @@ export const controlled: Story = {
         <small>Current value: {resolvedValue}</small>
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const custom_empty_state: Story = {
@@ -316,6 +316,6 @@ export const custom_empty_state: Story = {
     label: 'Country',
     options,
     placeholder: 'Type a country name',
-    noResultsText: 'No countries match your search.'
-  }
+    noResultsText: 'No countries match your search.',
+  },
 } satisfies Story;

@@ -18,7 +18,7 @@ type CheckboxStoryProps = Pick<
 const meta: Meta<CheckboxStoryProps> = {
   component: Checkbox,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     label: {
@@ -26,24 +26,24 @@ const meta: Meta<CheckboxStoryProps> = {
       description: 'Accessible label for the checkbox',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
       description: 'Visually hide the label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -51,62 +51,62 @@ const meta: Meta<CheckboxStoryProps> = {
       description: 'Size variant',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the checkbox is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     indeterminate: {
       control: { type: 'boolean' },
       description: 'Whether the checkbox is in an indeterminate state',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the checkbox container',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the checkbox container',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<CheckboxStoryProps>;
 
 export default meta;
@@ -114,8 +114,8 @@ type Story = StoryObj<CheckboxStoryProps>;
 
 export const basic_checkbox: Story = {
   args: {
-    label: 'Accept terms and conditions'
-  }
+    label: 'Accept terms and conditions',
+  },
 } satisfies Story;
 
 export const sizes: Story = {
@@ -125,7 +125,7 @@ export const sizes: Story = {
       <Checkbox label='Medium (default)' size='md' />
       <Checkbox label='Large' size='lg' />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const disabled_checkbox: Story = {
@@ -134,7 +134,7 @@ export const disabled_checkbox: Story = {
       <Checkbox label='Disabled unchecked' disabled />
       <Checkbox label='Disabled checked' disabled defaultChecked />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const indeterminate: Story = {
@@ -142,7 +142,7 @@ export const indeterminate: Story = {
     const [items, setItems] = useState([
       { id: '1', checked: true },
       { id: '2', checked: false },
-      { id: '3', checked: true }
+      { id: '3', checked: true },
     ]);
     const allChecked = items.every((item) => item.checked);
     const someChecked = items.some((item) => item.checked) && !allChecked;
@@ -151,7 +151,7 @@ export const indeterminate: Story = {
       setItems(
         items.map((item) => ({
           ...item,
-          checked: !allChecked
+          checked: !allChecked,
         }))
       );
     };
@@ -180,7 +180,7 @@ export const indeterminate: Story = {
         </div>
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const controlled: Story = {
@@ -196,17 +196,17 @@ export const controlled: Story = {
         <p>Checkbox is: {checked ? 'checked' : 'unchecked'}</p>
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const toggle_interaction: Story = {
   args: {
-    label: 'Interactive checkbox'
+    label: 'Interactive checkbox',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', {
-      name: 'Interactive checkbox'
+      name: 'Interactive checkbox',
     });
 
     expect(checkbox).not.toBeChecked();
@@ -218,18 +218,18 @@ export const toggle_interaction: Story = {
     await userEvent.click(checkbox);
 
     expect(checkbox).not.toBeChecked();
-  }
+  },
 } satisfies Story;
 
 export const disabled_interaction: Story = {
   args: {
     label: 'Disabled checkbox',
-    disabled: true
+    disabled: true,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const checkbox = canvas.getByRole('checkbox', {
-      name: 'Disabled checkbox'
+      name: 'Disabled checkbox',
     });
 
     expect(checkbox).toBeDisabled();
@@ -237,5 +237,5 @@ export const disabled_interaction: Story = {
     await userEvent.click(checkbox);
 
     expect(checkbox).not.toBeChecked();
-  }
+  },
 } satisfies Story;

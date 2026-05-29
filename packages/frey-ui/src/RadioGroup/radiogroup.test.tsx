@@ -7,13 +7,13 @@ import RadioGroup, { type RadioOption } from './index';
 const options: ReadonlyArray<RadioOption> = [
   {
     value: 'basic',
-    label: 'Basic'
+    label: 'Basic',
   },
   {
     value: 'pro',
     label: 'Pro',
-    description: 'Best for teams'
-  }
+    description: 'Best for teams',
+  },
 ];
 
 describe('RadioGroup', () => {

@@ -40,7 +40,7 @@ type RadioGroupComponent = React.ForwardRefExoticComponent<
 
 const OrientationClassMap: Record<RadioGroupOrientation, string> = {
   vertical: styles.radio_group_vertical,
-  horizontal: styles.radio_group_horizontal
+  horizontal: styles.radio_group_horizontal,
 };
 
 const RadioGroup: RadioGroupComponent = React.forwardRef<
@@ -121,7 +121,7 @@ const RadioGroup: RadioGroupComponent = React.forwardRef<
                 key={option.value}
                 htmlFor={optionId}
                 className={clsx(styles.radio_option, {
-                  [styles.radio_option_disabled]: isOptionDisabled
+                  [styles.radio_option_disabled]: isOptionDisabled,
                 })}
               >
                 <input

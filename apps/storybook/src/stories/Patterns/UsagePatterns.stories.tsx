@@ -14,7 +14,7 @@ import {
   Textarea,
   TextInput,
   ToastProvider,
-  useToast
+  useToast,
 } from 'frey-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -25,10 +25,10 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Practical form, overlay, and feedback composition examples for real product UI flows using Frey UI.'
-      }
-    }
-  }
+          'Practical form, overlay, and feedback composition examples for real product UI flows using Frey UI.',
+      },
+    },
+  },
 };
 
 export default meta;
@@ -38,29 +38,29 @@ type SyncStatus = 'idle' | 'running' | 'success' | 'error';
 
 const basePatternStyle = {
   display: 'grid',
-  gap: 16
+  gap: 16,
 } as const;
 
 const headingBlockStyle = {
   display: 'grid',
-  gap: 4
+  gap: 4,
 } as const;
 
 const titleStyle = {
-  margin: 0
+  margin: 0,
 } as const;
 
 const subtitleStyle = {
   margin: 0,
   color: 'var(--frey-color-text-muted, #64748b)',
-  fontSize: 14
+  fontSize: 14,
 } as const;
 
 const actionRowStyle = {
   display: 'flex',
   gap: 8,
   flexWrap: 'wrap',
-  alignItems: 'center'
+  alignItems: 'center',
 } as const;
 
 function AsyncFeedbackFlow() {
@@ -102,7 +102,7 @@ function AsyncFeedbackFlow() {
         toast({
           variant: 'error',
           title: 'Sync failed',
-          description: 'Could not sync all records. Please retry.'
+          description: 'Could not sync all records. Please retry.',
         });
         return;
       }
@@ -112,7 +112,7 @@ function AsyncFeedbackFlow() {
       toast({
         variant: 'success',
         title: 'Sync complete',
-        description: 'All records are now up to date.'
+        description: 'All records are now up to date.',
       });
     });
   };
@@ -133,7 +133,7 @@ function AsyncFeedbackFlow() {
       <Alert variant='error' title='Sync failed'>
         We could not sync every record. Please run it again.
       </Alert>
-    )
+    ),
   } as const;
 
   return (
@@ -219,7 +219,7 @@ export const forms: Story = {
           options={[
             { label: 'Private', value: 'private' },
             { label: 'Internal', value: 'internal' },
-            { label: 'Public', value: 'public' }
+            { label: 'Public', value: 'public' },
           ]}
         />
         <div style={actionRowStyle}>
@@ -230,7 +230,7 @@ export const forms: Story = {
         </div>
       </form>
     );
-  }
+  },
 } satisfies Story;
 
 export const settings_page: Story = {
@@ -262,7 +262,7 @@ export const settings_page: Story = {
         </div>
       </section>
     );
-  }
+  },
 } satisfies Story;
 
 export const auth_form: Story = {
@@ -299,7 +299,7 @@ export const auth_form: Story = {
         </div>
       </form>
     );
-  }
+  },
 } satisfies Story;
 
 export const table_filters: Story = {
@@ -320,7 +320,7 @@ export const table_filters: Story = {
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: 12
+            gap: 12,
           }}
         >
           <TextInput
@@ -345,7 +345,7 @@ export const table_filters: Story = {
             defaultValue='updated'
             options={[
               { label: 'Updated', value: 'updated' },
-              { label: 'Name', value: 'name' }
+              { label: 'Name', value: 'name' },
             ]}
           />
         </div>
@@ -360,7 +360,7 @@ export const table_filters: Story = {
         </div>
       </section>
     );
-  }
+  },
 } satisfies Story;
 
 export const overlay_actions: Story = {
@@ -461,7 +461,7 @@ export const overlay_actions: Story = {
         </Dialog>
       </section>
     );
-  }
+  },
 } satisfies Story;
 
 export const async_feedback: Story = {
@@ -469,5 +469,5 @@ export const async_feedback: Story = {
     <ToastProvider placement='top-right' limit={4}>
       <AsyncFeedbackFlow />
     </ToastProvider>
-  )
+  ),
 } satisfies Story;

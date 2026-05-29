@@ -14,7 +14,7 @@ export type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
 
 const SizeClassMap: Record<BadgeSize, string> = {
   sm: styles['badge-sm'],
-  md: styles['badge-md']
+  md: styles['badge-md'],
 };
 
 const ToneVariantClassMap: Record<BadgeVariant, Record<BadgeTone, string>> = {
@@ -23,15 +23,15 @@ const ToneVariantClassMap: Record<BadgeVariant, Record<BadgeTone, string>> = {
     info: styles['badge-subtle-info'],
     success: styles['badge-subtle-success'],
     warning: styles['badge-subtle-warning'],
-    error: styles['badge-subtle-error']
+    error: styles['badge-subtle-error'],
   },
   solid: {
     neutral: styles['badge-solid-neutral'],
     info: styles['badge-solid-info'],
     success: styles['badge-solid-success'],
     warning: styles['badge-solid-warning'],
-    error: styles['badge-solid-error']
-  }
+    error: styles['badge-solid-error'],
+  },
 };
 
 type BadgeComponent = React.ForwardRefExoticComponent<

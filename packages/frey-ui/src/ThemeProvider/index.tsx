@@ -38,7 +38,7 @@ function ThemeProvider({
   highContrast = false,
   id,
   className,
-  style
+  style,
 }: Readonly<ThemeProviderProps>): React.JSX.Element {
   const [systemTheme, setSystemTheme] = useState<'light' | 'dark'>('light');
 

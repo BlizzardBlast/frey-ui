@@ -8,7 +8,7 @@ const baseInputStyle = {
   borderRadius: 8,
   padding: '0.5rem 0.75rem',
   backgroundColor: 'var(--frey-color-surface-primary, #ffffff)',
-  color: 'var(--frey-color-text-primary, #0f172a)'
+  color: 'var(--frey-color-text-primary, #0f172a)',
 } as const;
 
 type FieldStoryProps = Pick<
@@ -29,14 +29,14 @@ type FieldStoryProps = Pick<
 const meta: Meta<FieldStoryProps> = {
   component: Field,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 360 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     label: {
@@ -44,12 +44,12 @@ const meta: Meta<FieldStoryProps> = {
       description: 'Visible label text for the field wrapper',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
@@ -57,60 +57,60 @@ const meta: Meta<FieldStoryProps> = {
         'Whether to visually hide the label while keeping it accessible',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     error: {
       control: { type: 'text' },
       description: 'Error message rendered below the field',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Supporting helper copy rendered below the field',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     required: {
       control: { type: 'boolean' },
       description: 'Whether the field is marked as required',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the field and its label are presented as disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     labelElement: {
       control: { type: 'select' },
@@ -118,12 +118,12 @@ const meta: Meta<FieldStoryProps> = {
       description: 'Element used to render the label wrapper',
       table: {
         type: {
-          summary: "'label' | 'span'"
+          summary: "'label' | 'span'",
         },
         defaultValue: {
-          summary: "'label'"
-        }
-      }
+          summary: "'label'",
+        },
+      },
     },
     children: {
       control: false,
@@ -131,50 +131,50 @@ const meta: Meta<FieldStoryProps> = {
         'Render function that receives ids and validation state for the input',
       table: {
         type: {
-          summary: '(props: Readonly<FieldRenderProps>) => ReactNode'
+          summary: '(props: Readonly<FieldRenderProps>) => ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     id: {
       control: { type: 'text' },
       description: 'Base id used to derive the field label and helper ids',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the field container',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the field container',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<FieldStoryProps>;
 
 export default meta;
@@ -184,7 +184,7 @@ type Story = StoryObj<FieldStoryProps>;
 export const basic_field: Story = {
   args: {
     label: 'Email address',
-    helperText: 'We only use this for account notifications.'
+    helperText: 'We only use this for account notifications.',
   },
   render: (args) => (
     <Field {...args}>
@@ -199,13 +199,13 @@ export const basic_field: Story = {
         />
       )}
     </Field>
-  )
+  ),
 } satisfies Story;
 
 export const with_error: Story = {
   args: {
     label: 'Username',
-    error: 'That username is already taken.'
+    error: 'That username is already taken.',
   },
   render: (args) => (
     <Field {...args}>
@@ -220,14 +220,14 @@ export const with_error: Story = {
         />
       )}
     </Field>
-  )
+  ),
 } satisfies Story;
 
 export const grouped_controls: Story = {
   args: {
     label: 'Theme preference',
     labelElement: 'span',
-    helperText: 'Use arrow keys to navigate choices.'
+    helperText: 'Use arrow keys to navigate choices.',
   },
   render: (args) => (
     <Field {...args}>
@@ -253,7 +253,7 @@ export const grouped_controls: Story = {
         </div>
       )}
     </Field>
-  )
+  ),
 } satisfies Story;
 
 export const controlled_field: Story = {
@@ -281,5 +281,5 @@ export const controlled_field: Story = {
         )}
       </Field>
     );
-  }
+  },
 } satisfies Story;

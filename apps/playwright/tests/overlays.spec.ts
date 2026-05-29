@@ -77,7 +77,7 @@ test.describe('overlay stories', () => {
   });
 
   test('drawer closes on Escape and restores focus to trigger', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-drawer--basic-drawer', page);
 
@@ -93,7 +93,7 @@ test.describe('overlay stories', () => {
   });
 
   test('drawer placement variants render with expected placement attribute', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-drawer--placement-variants', page);
 
@@ -112,12 +112,12 @@ test.describe('overlay stories', () => {
   });
 
   test('command palette closes after arrow traversal and Enter selection', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-commandpalette--basic-command-palette', page);
 
     const trigger = page.getByRole('button', {
-      name: 'Open command palette'
+      name: 'Open command palette',
     });
 
     await trigger.click();
@@ -135,12 +135,12 @@ test.describe('overlay stories', () => {
   });
 
   test('command palette closes on Escape and restores trigger focus', async ({
-    page
+    page,
   }) => {
     await gotoStory('stories-commandpalette--basic-command-palette', page);
 
     const trigger = page.getByRole('button', {
-      name: 'Open command palette'
+      name: 'Open command palette',
     });
 
     await trigger.click();

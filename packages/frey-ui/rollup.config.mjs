@@ -16,7 +16,7 @@ const packageJson = JSON.parse(readFileSync('./package.json'));
 const externalPackages = [
   ...Object.keys(packageJson.dependencies || {}),
   ...Object.keys(packageJson.peerDependencies || {}),
-  'react/jsx-runtime'
+  'react/jsx-runtime',
 ];
 
 function toPosixPath(filePath) {
@@ -39,7 +39,7 @@ function prependAfterDirectivePrologue(code, statement) {
 
   return {
     code: magicString.toString(),
-    map: magicString.generateMap({ hires: true })
+    map: magicString.generateMap({ hires: true }),
   };
 }
 
@@ -67,14 +67,14 @@ function cssModulesPlugin() {
             },
             getJSON: (_, json) => {
               classNames = json;
-            }
+            },
           })
         );
       }
 
       const result = await postcss(plugins).process(code, {
         from: sourceId,
-        to: sourceId
+        to: sourceId,
       });
 
       const relativePath = path.relative(path.resolve('./src'), sourceId);
@@ -86,12 +86,12 @@ function cssModulesPlugin() {
       this.emitFile({
         type: 'asset',
         fileName: `cjs/${normalizedOutputCssPath}`,
-        source: result.css
+        source: result.css,
       });
       this.emitFile({
         type: 'asset',
         fileName: `esm/${normalizedOutputCssPath}`,
-        source: result.css
+        source: result.css,
       });
 
       if (isTheme) {
@@ -100,7 +100,7 @@ function cssModulesPlugin() {
 
       return {
         code: `export default ${JSON.stringify(classNames)};`,
-        map: { mappings: '' }
+        map: { mappings: '' },
       };
     },
 
@@ -119,7 +119,7 @@ function cssModulesPlugin() {
           : `import './${outputCssName}';`;
 
       return prependAfterDirectivePrologue(code, cssSideEffect);
-    }
+    },
   };
 }
 
@@ -135,7 +135,7 @@ function normalizeSourcemapPathsPlugin() {
           normalizeSourcemapSourcePath
         );
       }
-    }
+    },
   };
 }
 
@@ -156,7 +156,7 @@ export default defineConfig([
         entryFileNames: 'cjs/[name].cjs',
         chunkFileNames: 'cjs/[name]-[hash].cjs',
         name: packageJson.name,
-        banner: "'use client';"
+        banner: "'use client';",
       },
       {
         dir: 'dist',
@@ -170,8 +170,8 @@ export default defineConfig([
         preserveModulesRoot: 'src',
         entryFileNames: 'esm/[name].mjs',
         chunkFileNames: 'esm/[name]-[hash].mjs',
-        banner: "'use client';"
-      }
+        banner: "'use client';",
+      },
     ],
     external: externalPackages,
     plugins: [
@@ -202,16 +202,16 @@ export default defineConfig([
           '**/*.stories.ts+(|x)',
           '**/*.stories.js+(|x)',
           'setupTests.ts',
-          'vitest.config.ts'
-        ]
+          'vitest.config.ts',
+        ],
       }),
-      normalizeSourcemapPathsPlugin()
-    ]
+      normalizeSourcemapPathsPlugin(),
+    ],
   },
   {
     input: 'dist/types/src/index.d.ts',
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
     external: [/\.(sc|sa|c)ss$/],
-    plugins: [dts()]
-  }
+    plugins: [dts()],
+  },
 ]);

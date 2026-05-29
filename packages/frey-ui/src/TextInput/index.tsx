@@ -63,7 +63,7 @@ const TextInput: TextInputComponent = React.forwardRef<
             disabled={disabled}
             required={required}
             className={clsx(styles.input, {
-              [styles['input-error']]: hasError
+              [styles['input-error']]: hasError,
             })}
             {...computeAriaProps(
               hasError,

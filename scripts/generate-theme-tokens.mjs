@@ -3,7 +3,7 @@ const DEFAULT_COLORS = {
   success: '#16a34a',
   warning: '#d97706',
   error: '#dc2626',
-  info: '#2563eb'
+  info: '#2563eb',
 };
 
 const SUPPORTED_FLAGS = new Set([
@@ -13,7 +13,7 @@ const SUPPORTED_FLAGS = new Set([
   '--warning',
   '--error',
   '--info',
-  '--help'
+  '--help',
 ]);
 
 function writeError(message) {
@@ -49,7 +49,7 @@ function hexToRgb(hex) {
   return {
     red: Number.parseInt(value.slice(0, 2), 16),
     green: Number.parseInt(value.slice(2, 4), 16),
-    blue: Number.parseInt(value.slice(4, 6), 16)
+    blue: Number.parseInt(value.slice(4, 6), 16),
   };
 }
 
@@ -71,7 +71,7 @@ function mix(baseHex, targetHex, targetWeight) {
   return rgbToHex({
     red: base.red * (1 - clampedWeight) + target.red * clampedWeight,
     green: base.green * (1 - clampedWeight) + target.green * clampedWeight,
-    blue: base.blue * (1 - clampedWeight) + target.blue * clampedWeight
+    blue: base.blue * (1 - clampedWeight) + target.blue * clampedWeight,
   });
 }
 
@@ -122,7 +122,7 @@ function statusTokens(color) {
     darkBackground: darken(color, 0.78),
     darkBorder: darken(color, 0.5),
     highContrastLight: darken(color, 0.22),
-    highContrastDark: lighten(color, 0.25)
+    highContrastDark: lighten(color, 0.25),
   };
 }
 
@@ -276,7 +276,7 @@ function main() {
         '--warning'
       ),
       error: normalizeHex(parsed.error ?? DEFAULT_COLORS.error, '--error'),
-      info: normalizeHex(parsed.info ?? DEFAULT_COLORS.info, '--info')
+      info: normalizeHex(parsed.info ?? DEFAULT_COLORS.info, '--info'),
     };
 
     process.stdout.write(buildCss(colors));

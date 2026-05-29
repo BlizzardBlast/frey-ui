@@ -33,7 +33,7 @@ describe('Flex', () => {
       justifyContent: 'space-between',
       flexWrap: 'wrap',
       rowGap: 'var(--frey-space-3, 0.75rem)',
-      columnGap: 'var(--frey-space-3, 0.75rem)'
+      columnGap: 'var(--frey-space-3, 0.75rem)',
     });
   });
 

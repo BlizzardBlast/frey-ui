@@ -18,7 +18,7 @@ type SwitchStoryProps = Pick<
 const meta: Meta<SwitchStoryProps> = {
   component: Switch,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     label: {
@@ -26,12 +26,12 @@ const meta: Meta<SwitchStoryProps> = {
       description: 'Accessible label for the switch',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
@@ -39,36 +39,36 @@ const meta: Meta<SwitchStoryProps> = {
         'Whether to visually hide the label (still accessible to screen readers)',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     checked: {
       control: { type: 'boolean' },
       description: 'Controlled checked state',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the switch is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -76,38 +76,38 @@ const meta: Meta<SwitchStoryProps> = {
       description: 'Size variant of the switch',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the switch container',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the switch container',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<SwitchStoryProps>;
 
 export default meta;
@@ -115,21 +115,21 @@ type Story = StoryObj<SwitchStoryProps>;
 
 export const basic_switch: Story = {
   args: {
-    label: 'Enable notifications'
+    label: 'Enable notifications',
   },
   render: (args) => (
     <div className='flex gap-4'>
       <Switch {...args} />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const hidden_label: Story = {
   args: {
     label: 'Toggle feature',
-    hideLabel: true
+    hideLabel: true,
   },
-  render: (args) => <Switch {...args} />
+  render: (args) => <Switch {...args} />,
 } satisfies Story;
 
 export const sizes: Story = {
@@ -139,7 +139,7 @@ export const sizes: Story = {
       <Switch label='Medium (default)' size='md' />
       <Switch label='Large' size='lg' />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const disabled: Story = {
@@ -148,7 +148,7 @@ export const disabled: Story = {
       <Switch label='Disabled unchecked' disabled />
       <Switch label='Disabled checked' disabled defaultChecked />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const controlled: Story = {
@@ -165,12 +165,12 @@ export const controlled: Story = {
         <p>Switch is: {checked ? 'ON' : 'OFF'}</p>
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const custom_colors: Story = {
   args: {
-    label: 'Custom themed switch'
+    label: 'Custom themed switch',
   },
   render: (args) => (
     <Switch
@@ -179,16 +179,16 @@ export const custom_colors: Story = {
         {
           '--switch-track-inactive': '#94a3b8',
           '--switch-track-active': '#22c55e',
-          '--switch-focus-ring': '#22c55e'
+          '--switch-focus-ring': '#22c55e',
         } as NonNullable<SwitchProps['style']>
       }
     />
-  )
+  ),
 } satisfies Story;
 
 export const toggle_interaction: Story = {
   args: {
-    label: 'Interactive switch'
+    label: 'Interactive switch',
   },
   render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
@@ -204,12 +204,12 @@ export const toggle_interaction: Story = {
     await userEvent.click(toggle);
 
     expect(toggle).not.toBeChecked();
-  }
+  },
 } satisfies Story;
 
 export const keyboard_toggle: Story = {
   args: {
-    label: 'Keyboard switch'
+    label: 'Keyboard switch',
   },
   render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
@@ -224,13 +224,13 @@ export const keyboard_toggle: Story = {
     await userEvent.keyboard(' ');
 
     expect(toggle).not.toBeChecked();
-  }
+  },
 } satisfies Story;
 
 export const disabled_interaction: Story = {
   args: {
     label: 'Disabled switch',
-    disabled: true
+    disabled: true,
   },
   render: (args) => <Switch {...args} />,
   play: async ({ canvasElement }) => {
@@ -242,5 +242,5 @@ export const disabled_interaction: Story = {
     await userEvent.click(toggle);
 
     expect(toggle).not.toBeChecked();
-  }
+  },
 } satisfies Story;

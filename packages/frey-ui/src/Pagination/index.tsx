@@ -146,7 +146,7 @@ const Pagination: PaginationComponent = React.forwardRef<
       resolvedTotalPages,
       resolvedPage,
       resolvedSiblingCount,
-      resolvedBoundaryCount
+      resolvedBoundaryCount,
     ]
   );
 
@@ -216,7 +216,7 @@ const Pagination: PaginationComponent = React.forwardRef<
               <button
                 type='button'
                 className={clsx(styles.pagination_button, {
-                  [styles.pagination_button_current]: isCurrent
+                  [styles.pagination_button_current]: isCurrent,
                 })}
                 onClick={() => handlePageChange(item)}
                 disabled={disabled}

@@ -3,7 +3,7 @@ import {
   Button,
   ToastProvider,
   type ToastProviderProps,
-  useToast
+  useToast,
 } from 'frey-ui';
 
 function ToastDemo() {
@@ -17,7 +17,7 @@ function ToastDemo() {
           toast({
             variant: 'info',
             title: 'Info',
-            description: 'A new report is ready to review.'
+            description: 'A new report is ready to review.',
           });
         }}
       >
@@ -33,8 +33,8 @@ function ToastDemo() {
             description: 'Your changes were saved successfully.',
             action: {
               label: 'Undo',
-              onClick: () => undefined
-            }
+              onClick: () => undefined,
+            },
           });
         }}
       >
@@ -47,7 +47,7 @@ function ToastDemo() {
           toast({
             variant: 'warning',
             title: 'Storage warning',
-            description: 'You are close to your workspace storage limit.'
+            description: 'You are close to your workspace storage limit.',
           });
         }}
       >
@@ -60,7 +60,7 @@ function ToastDemo() {
           toast({
             variant: 'error',
             title: 'Publish failed',
-            description: 'Please try again in a few moments.'
+            description: 'Please try again in a few moments.',
           });
         }}
       >
@@ -82,7 +82,7 @@ type ToastProviderStoryProps = Pick<
 const meta: Meta<ToastProviderStoryProps> = {
   component: ToastProvider,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     placement: {
@@ -91,62 +91,62 @@ const meta: Meta<ToastProviderStoryProps> = {
       description: 'Viewport corner where toast notifications stack',
       table: {
         type: {
-          summary: "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'"
+          summary: "'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'",
         },
         defaultValue: {
-          summary: "'top-right'"
-        }
-      }
+          summary: "'top-right'",
+        },
+      },
     },
     limit: {
       control: { type: 'number' },
       description: 'Maximum number of toasts displayed at one time',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '4'
-        }
-      }
+          summary: '4',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Content rendered inside the toast provider context',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the toast viewport',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the toast viewport',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<ToastProviderStoryProps>;
 
 export default meta;
@@ -161,6 +161,6 @@ export const basic_toast: Story = {
   ),
   args: {
     placement: 'top-right',
-    limit: 4
-  }
+    limit: 4,
+  },
 } satisfies Story;

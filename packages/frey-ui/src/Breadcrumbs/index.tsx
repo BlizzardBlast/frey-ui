@@ -37,7 +37,7 @@ const BreadcrumbsRoot: BreadcrumbsRootComponent = React.forwardRef<
 ) {
   const resolvedStyle: BreadcrumbsStyle = {
     '--frey-breadcrumb-separator': JSON.stringify(separator),
-    ...style
+    ...style,
   };
 
   return (
@@ -149,7 +149,7 @@ export const Breadcrumbs: BreadcrumbsComponent = Object.assign(
     List: BreadcrumbsList,
     Item: BreadcrumbsItem,
     Link: BreadcrumbsLink,
-    Current: BreadcrumbsCurrent
+    Current: BreadcrumbsCurrent,
   }
 );
 

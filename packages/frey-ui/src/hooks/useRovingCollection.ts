@@ -58,7 +58,7 @@ export function useRovingCollection(): RovingCollection {
       itemsRef.current.set(id, {
         element,
         disabled: Boolean(options.disabled),
-        value: options.value
+        value: options.value,
       });
     },
     []
@@ -159,7 +159,7 @@ export function useRovingCollection(): RovingCollection {
       focusPrevious,
       focusFirst,
       focusLast,
-      findItemIdByElement
+      findItemIdByElement,
     }),
     [
       registerItem,
@@ -168,7 +168,7 @@ export function useRovingCollection(): RovingCollection {
       focusPrevious,
       focusFirst,
       focusLast,
-      findItemIdByElement
+      findItemIdByElement,
     ]
   );
 }

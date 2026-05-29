@@ -13,7 +13,7 @@ describe('collectStoryDocsIssues', () => {
         } satisfies Meta<unknown>;
 
         export default meta;
-      `
+      `,
     });
 
     expect(issues).toEqual(['Missing meta.argTypes block.']);
@@ -40,13 +40,13 @@ describe('collectStoryDocsIssues', () => {
         } satisfies Meta<unknown>;
 
         export default meta;
-      `
+      `,
     });
 
     expect(issues).toEqual([
       "Incomplete argTypes entry 'tone': missing description.",
       "Incomplete argTypes entry 'tone': missing table.type.summary.",
-      "Incomplete argTypes entry 'tone': missing table.defaultValue.summary."
+      "Incomplete argTypes entry 'tone': missing table.defaultValue.summary.",
     ]);
   });
 
@@ -92,7 +92,7 @@ describe('collectStoryDocsIssues', () => {
         } satisfies Meta<unknown>;
 
         export default meta;
-      `
+      `,
     });
 
     expect(issues).toEqual([]);

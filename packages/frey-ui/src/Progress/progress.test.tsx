@@ -32,7 +32,7 @@ describe('Progress', () => {
     render(<Progress label='Loading progress' indeterminate />);
 
     const progressbar = screen.getByRole('progressbar', {
-      name: 'Loading progress'
+      name: 'Loading progress',
     });
 
     expect(progressbar).not.toHaveAttribute('value');

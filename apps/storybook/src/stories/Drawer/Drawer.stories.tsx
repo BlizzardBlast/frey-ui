@@ -10,7 +10,7 @@ type DrawerStoryProps = Pick<
 const meta: Meta<DrawerStoryProps> = {
   component: Drawer,
   parameters: {
-    layout: 'fullscreen'
+    layout: 'fullscreen',
   },
   argTypes: {
     placement: {
@@ -19,62 +19,62 @@ const meta: Meta<DrawerStoryProps> = {
       description: 'Placement of the drawer panel relative to the viewport',
       table: {
         type: {
-          summary: "'left' | 'right' | 'top' | 'bottom'"
+          summary: "'left' | 'right' | 'top' | 'bottom'",
         },
         defaultValue: {
-          summary: "'right'"
-        }
-      }
+          summary: "'right'",
+        },
+      },
     },
     open: {
       control: { type: 'boolean' },
       description: 'Controlled open state of the drawer',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
       description: 'Initial open state when the drawer is uncontrolled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called when the drawer open state changes',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Composed trigger and drawer content elements',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<DrawerStoryProps>;
 
 export default meta;
@@ -84,7 +84,7 @@ type Story = StoryObj<DrawerStoryProps>;
 export const basic_drawer: Story = {
   args: {
     placement: 'right',
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: (args) => (
     <div style={{ padding: 24 }}>
@@ -111,7 +111,7 @@ export const basic_drawer: Story = {
         </Drawer.Content>
       </Drawer>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const placement_variants: Story = {
@@ -133,13 +133,13 @@ export const placement_variants: Story = {
         </Drawer>
       ))}
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const controlled_drawer: Story = {
   args: {
     placement: 'right',
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: function ControlledDrawerStory(args) {
     const [open, setOpen] = useState(Boolean(args.defaultOpen));
@@ -193,5 +193,5 @@ export const controlled_drawer: Story = {
         </Drawer>
       </div>
     );
-  }
+  },
 } satisfies Story;

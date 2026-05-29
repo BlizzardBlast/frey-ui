@@ -26,17 +26,17 @@ jobs:
 
       - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
         with:
-          version: "10.33.0"
+          version: "11.3.0"
 
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
-          node-version: 22.22.2
+          node-version: 24.16.0
           cache: "pnpm"
       - name: Check if Storybook is affected
         id: affected
         run: |
           set +e
-          pnpm dlx turbo@2.9.3 query affected --tasks build-storybook --packages @frey-ui/storybook --exit-code
+          pnpm dlx turbo@2.9.15 query affected --tasks build-storybook --packages @frey-ui/storybook --exit-code
           CODE=$?
           if [ "$CODE" -eq 1 ]; then
             echo "storybook_affected=true" >> "$GITHUB_OUTPUT"

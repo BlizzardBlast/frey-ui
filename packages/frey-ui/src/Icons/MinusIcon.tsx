@@ -6,7 +6,7 @@ export function MinusIcon({
   strokeWidth = 'bold',
   title,
   className,
-  style
+  style,
 }: Readonly<IconProps>): React.JSX.Element {
   return (
     <IconSvg

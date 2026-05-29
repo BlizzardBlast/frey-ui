@@ -12,7 +12,7 @@ const scriptPath = path.resolve(
 function runGenerator(args: string[], cwd?: string) {
   return spawnSync(process.execPath, [scriptPath, ...args], {
     encoding: 'utf8',
-    cwd
+    cwd,
   });
 }
 
@@ -51,7 +51,7 @@ describe('generate-theme-tokens CLI', () => {
       '--error',
       '#dc2626',
       '--info',
-      '#0284c7'
+      '#0284c7',
     ]);
 
     expect(result.status).toBe(0);

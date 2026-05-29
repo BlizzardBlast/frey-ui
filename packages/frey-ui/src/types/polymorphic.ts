@@ -5,7 +5,7 @@ export type PolymorphicRef<Element extends React.ElementType> =
 
 export type PolymorphicComponentProps<
   Element extends React.ElementType,
-  OwnProps extends object = Record<string, never>
+  OwnProps extends object = Record<string, never>,
 > = OwnProps & {
   as?: Element;
 } & Omit<React.ComponentPropsWithoutRef<Element>, keyof OwnProps | 'as'>;

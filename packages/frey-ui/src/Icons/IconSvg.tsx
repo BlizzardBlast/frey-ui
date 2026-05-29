@@ -18,13 +18,13 @@ const IconSizeMap: Record<IconSizeToken, number> = {
   sm: 14,
   md: 16,
   lg: 20,
-  xl: 24
+  xl: 24,
 };
 
 const IconStrokeWidthMap: Record<IconStrokeToken, number> = {
   thin: 1.5,
   regular: 1.8,
-  bold: 2.2
+  bold: 2.2,
 };
 
 function resolveSize(size: IconSizeToken | number | undefined) {
@@ -49,12 +49,12 @@ function getA11yProps(title?: string) {
   if (trimmedTitle) {
     return {
       role: 'img' as const,
-      'aria-label': trimmedTitle
+      'aria-label': trimmedTitle,
     };
   }
 
   return {
-    'aria-hidden': 'true' as const
+    'aria-hidden': 'true' as const,
   };
 }
 
@@ -64,7 +64,7 @@ export function IconSvg({
   title,
   className,
   style,
-  children
+  children,
 }: Readonly<IconProps & { children: React.ReactNode }>): React.ReactNode {
   const resolvedSize = resolveSize(size);
   const resolvedStrokeWidth = resolveStrokeWidth(strokeWidth);

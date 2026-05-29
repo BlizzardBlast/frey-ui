@@ -48,7 +48,7 @@ const Grid = React.forwardRef(function Grid<E extends BoxElement = 'div'>(
     gridAutoFlow: autoFlow,
     alignItems,
     justifyItems,
-    ...style
+    ...style,
   };
 
   return (

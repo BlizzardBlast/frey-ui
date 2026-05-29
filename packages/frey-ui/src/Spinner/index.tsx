@@ -18,7 +18,7 @@ type SpinnerComponent = React.ForwardRefExoticComponent<
 const SpinnerSizeMap: Record<SpinnerSize, number> = {
   sm: 14,
   md: 18,
-  lg: 24
+  lg: 24,
 };
 
 function resolveSize(size: SpinnerSize | number | undefined) {
@@ -42,7 +42,7 @@ const Spinner: SpinnerComponent = React.forwardRef<
       style={
         {
           '--spinner-size': `${resolvedSize}px`,
-          ...style
+          ...style,
         } as React.CSSProperties
       }
       aria-live='polite'

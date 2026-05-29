@@ -2,7 +2,7 @@ export function createMockRect({
   x = 0,
   y = 0,
   width = 0,
-  height = 0
+  height = 0,
 }: Readonly<{
   x?: number;
   y?: number;
@@ -18,6 +18,6 @@ export function createMockRect({
     left: x,
     right: x + width,
     bottom: y + height,
-    toJSON: () => ({})
-  } as DOMRect;
+    toJSON: () => ({}),
+  };
 }

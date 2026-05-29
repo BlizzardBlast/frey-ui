@@ -7,7 +7,7 @@ import Dialog, {
   type DialogFooterProps,
   type DialogHeaderProps,
   type DialogTitleProps,
-  type DialogTriggerProps
+  type DialogTriggerProps,
 } from '../Dialog';
 import styles from './drawer.module.css';
 
@@ -41,14 +41,14 @@ const drawerRootPlacementClassMap: Record<DrawerPlacement, string> = {
   left: styles.drawer_root_left,
   right: styles.drawer_root_right,
   top: styles.drawer_root_top,
-  bottom: styles.drawer_root_bottom
+  bottom: styles.drawer_root_bottom,
 };
 
 const drawerContentPlacementClassMap: Record<DrawerPlacement, string> = {
   left: styles.drawer_content_left,
   right: styles.drawer_content_right,
   top: styles.drawer_content_top,
-  bottom: styles.drawer_content_bottom
+  bottom: styles.drawer_content_bottom,
 };
 
 type DrawerRootComponent = {
@@ -61,7 +61,7 @@ const DrawerRoot: DrawerRootComponent = function Drawer({
   defaultOpen = false,
   onOpenChange,
   placement = 'right',
-  children
+  children,
 }: Readonly<DrawerProps>): React.JSX.Element {
   const contextValue = React.useMemo(() => ({ placement }), [placement]);
 
@@ -272,7 +272,7 @@ export const Drawer: DrawerComponent = Object.assign(DrawerRoot, {
   Title: DrawerTitle,
   Description: DrawerDescription,
   Body: DrawerBody,
-  Footer: DrawerFooter
+  Footer: DrawerFooter,
 });
 
 export default Drawer;

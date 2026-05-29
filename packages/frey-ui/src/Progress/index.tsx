@@ -26,7 +26,7 @@ type ProgressComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<ProgressSize, string> = {
   sm: styles.progress_sm,
   md: styles.progress_md,
-  lg: styles.progress_lg
+  lg: styles.progress_lg,
 };
 
 function clampValue(value: number, max: number) {

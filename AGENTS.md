@@ -7,18 +7,18 @@ All commands below are grounded in current repository scripts and CI workflows.
 
 ## Environment Setup
 
-Use Node 22 with `nvm` before running any project commands:
+Use Node 24.16.0 with `nvm` before running any project commands:
 
 ```bash
 export NVM_DIR="$HOME/.nvm"
 . "$NVM_DIR/nvm.sh"
-nvm use 22
+nvm use 24.16.0
 ```
 
 Source of truth for Node version:
 
-- `.nvmrc` is `22.22.2`
-- root `package.json` `engines.node` is `22.22.2`
+- `.nvmrc` is `24.16.0`
+- root `package.json` `engines.node` is `24.16.0`
 
 Install dependencies with CI parity:
 

@@ -17,7 +17,7 @@ type PopoverStoryProps = Pick<
 const meta: Meta<PopoverStoryProps> = {
   component: Popover,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     placement: {
@@ -26,98 +26,98 @@ const meta: Meta<PopoverStoryProps> = {
       description: 'Preferred placement of the popover content',
       table: {
         type: {
-          summary: "'top' | 'right' | 'bottom' | 'left'"
+          summary: "'top' | 'right' | 'bottom' | 'left'",
         },
         defaultValue: {
-          summary: "'bottom'"
-        }
-      }
+          summary: "'bottom'",
+        },
+      },
     },
     closeOnEscape: {
       control: { type: 'boolean' },
       description: 'Whether pressing Escape closes the popover',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'true'
-        }
-      }
+          summary: 'true',
+        },
+      },
     },
     closeOnOutsideClick: {
       control: { type: 'boolean' },
       description: 'Whether clicking outside closes the popover',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'true'
-        }
-      }
+          summary: 'true',
+        },
+      },
     },
     open: {
       control: { type: 'boolean' },
       description: 'Controlled open state of the popover',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
       description: 'Initial open state when the popover is uncontrolled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called when the popover open state changes',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     offset: {
       control: { type: 'number' },
       description: 'Distance in pixels between the trigger and popover content',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '8'
-        }
-      }
+          summary: '8',
+        },
+      },
     },
     children: {
       control: false,
       description: 'Composed trigger and popover content elements',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<PopoverStoryProps>;
 
 export default meta;
@@ -143,8 +143,8 @@ export const basic_popover: Story = {
   args: {
     placement: 'bottom',
     closeOnEscape: true,
-    closeOnOutsideClick: true
-  }
+    closeOnOutsideClick: true,
+  },
 } satisfies Story;
 
 export const placement_variants: Story = {
@@ -161,7 +161,7 @@ export const placement_variants: Story = {
         </Popover>
       ))}
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const controlled_popover: Story = {
@@ -199,6 +199,6 @@ export const controlled_popover: Story = {
     );
   },
   args: {
-    placement: 'bottom'
-  }
+    placement: 'bottom',
+  },
 } satisfies Story;

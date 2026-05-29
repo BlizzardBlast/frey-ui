@@ -18,7 +18,7 @@ type ButtonStoryProps = {
 const meta: Meta<ButtonStoryProps> = {
   component: Button,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     children: {
@@ -26,12 +26,12 @@ const meta: Meta<ButtonStoryProps> = {
       description: 'Button label content',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     variant: {
       control: { type: 'select' },
@@ -39,12 +39,12 @@ const meta: Meta<ButtonStoryProps> = {
       description: 'Visual variant of the button',
       table: {
         type: {
-          summary: "'primary' | 'secondary' | 'ghost' | 'destructive'"
+          summary: "'primary' | 'secondary' | 'ghost' | 'destructive'",
         },
         defaultValue: {
-          summary: "'primary'"
-        }
-      }
+          summary: "'primary'",
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -52,36 +52,36 @@ const meta: Meta<ButtonStoryProps> = {
       description: 'Size of the button',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the button is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     loading: {
       control: { type: 'boolean' },
       description: 'Whether the button is in a loading state',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     asChild: {
       control: false,
@@ -89,50 +89,50 @@ const meta: Meta<ButtonStoryProps> = {
         'Whether the button should pass its behavior and styling to a single child element',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the button element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the button element',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onClick: {
       action: 'clicked',
       description: 'Called when the button is clicked',
       table: {
         type: {
-          summary: 'MouseEventHandler<HTMLElement>'
+          summary: 'MouseEventHandler<HTMLElement>',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<ButtonStoryProps>;
 
 export default meta;
@@ -140,7 +140,7 @@ type Story = StoryObj<ButtonStoryProps>;
 
 export const basic_button: Story = {
   args: {
-    children: 'Button'
+    children: 'Button',
   },
   render: (args) => (
     <div className='flex gap-4'>
@@ -149,7 +149,7 @@ export const basic_button: Story = {
       <Button {...args} variant='ghost' />
       <Button {...args} variant='destructive' />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const sizes: Story = {
@@ -159,7 +159,7 @@ export const sizes: Story = {
       <Button size='md'>Medium</Button>
       <Button size='lg'>Large</Button>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const disabled_button: Story = {
@@ -173,7 +173,7 @@ export const disabled_button: Story = {
         Destructive
       </Button>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const loading_button: Story = {
@@ -184,13 +184,13 @@ export const loading_button: Story = {
         Loading
       </Button>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const as_link: Story = {
   args: {
     children: 'Visit docs',
-    variant: 'secondary'
+    variant: 'secondary',
   },
   render: (args) => (
     <Button {...args} asChild>
@@ -198,13 +198,13 @@ export const as_link: Story = {
         {args.children}
       </a>
     </Button>
-  )
+  ),
 } satisfies Story;
 
 export const click_interaction: Story = {
   args: {
     children: 'Click me',
-    onClick: fn()
+    onClick: fn(),
   },
   render: (args) => <Button {...args} />,
   play: async ({ canvasElement, args }) => {
@@ -214,14 +214,14 @@ export const click_interaction: Story = {
     await userEvent.click(button);
 
     expect(args.onClick).toHaveBeenCalledTimes(1);
-  }
+  },
 } satisfies Story;
 
 export const disabled_interaction: Story = {
   args: {
     children: 'Disabled',
     disabled: true,
-    onClick: fn()
+    onClick: fn(),
   },
   render: (args) => <Button {...args} />,
   play: async ({ canvasElement, args }) => {
@@ -233,5 +233,5 @@ export const disabled_interaction: Story = {
     await userEvent.click(button);
 
     expect(args.onClick).not.toHaveBeenCalled();
-  }
+  },
 } satisfies Story;

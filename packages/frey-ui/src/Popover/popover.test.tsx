@@ -256,11 +256,11 @@ describe('Popover', () => {
       x: 120,
       y: 190,
       width: 80,
-      height: 24
+      height: 24,
     });
     const contentRect = createMockRect({
       width: 180,
-      height: 100
+      height: 100,
     });
     const rectSpy = vi
       .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
@@ -281,7 +281,7 @@ describe('Popover', () => {
     const originalInnerHeight = globalThis.innerHeight;
     Object.defineProperty(globalThis, 'innerHeight', {
       configurable: true,
-      value: 240
+      value: 240,
     });
 
     try {
@@ -304,7 +304,7 @@ describe('Popover', () => {
       rectSpy.mockRestore();
       Object.defineProperty(globalThis, 'innerHeight', {
         configurable: true,
-        value: originalInnerHeight
+        value: originalInnerHeight,
       });
     }
   });

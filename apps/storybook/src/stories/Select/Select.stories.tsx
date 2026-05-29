@@ -19,14 +19,14 @@ type SelectStoryProps = Pick<
 const meta: Meta<SelectStoryProps> = {
   component: Select,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 320 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     label: {
@@ -34,72 +34,72 @@ const meta: Meta<SelectStoryProps> = {
       description: 'Accessible label for the select input',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     hideLabel: {
       control: { type: 'boolean' },
       description: 'Whether to visually hide the label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Supporting helper copy shown below the select',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     error: {
       control: { type: 'text' },
       description: 'Error message shown below the select',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     disabled: {
       control: { type: 'boolean' },
       description: 'Whether the select is disabled',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     placeholder: {
       control: { type: 'text' },
       description: 'Placeholder option shown before a value is selected',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     size: {
       control: { type: 'select' },
@@ -107,38 +107,38 @@ const meta: Meta<SelectStoryProps> = {
       description: 'Size variant of the select input',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the select field wrapper',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the select field wrapper',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<SelectStoryProps>;
 
 export default meta;
@@ -155,8 +155,8 @@ export const basic_select: Story = {
   ),
   args: {
     label: 'Team',
-    placeholder: 'Select a team'
-  }
+    placeholder: 'Select a team',
+  },
 } satisfies Story;
 
 export const with_helper_text: Story = {
@@ -169,8 +169,8 @@ export const with_helper_text: Story = {
   ),
   args: {
     label: 'Country',
-    helperText: 'Used for localization defaults.'
-  }
+    helperText: 'Used for localization defaults.',
+  },
 } satisfies Story;
 
 export const with_error: Story = {
@@ -182,8 +182,8 @@ export const with_error: Story = {
   ),
   args: {
     label: 'Role',
-    error: 'Role is required.'
-  }
+    error: 'Role is required.',
+  },
 } satisfies Story;
 
 export const sizes: Story = {
@@ -199,7 +199,7 @@ export const sizes: Story = {
         <option value='lg'>Large</option>
       </Select>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const controlled: Story = {
@@ -221,5 +221,5 @@ export const controlled: Story = {
         <small>Selected: {value}</small>
       </div>
     );
-  }
+  },
 } satisfies Story;

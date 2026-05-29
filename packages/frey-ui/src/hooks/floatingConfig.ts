@@ -3,7 +3,7 @@ import {
   flip,
   type Middleware,
   offset,
-  shift
+  shift,
 } from '@floating-ui/react';
 
 export type FloatingSide = 'top' | 'right' | 'bottom' | 'left';
@@ -25,6 +25,6 @@ export function createFloatingMiddleware(offsetValue: number): Middleware[] {
   return [
     offset(offsetValue),
     flip({ padding: FLOATING_VIEWPORT_PADDING }),
-    shift({ padding: FLOATING_VIEWPORT_PADDING })
+    shift({ padding: FLOATING_VIEWPORT_PADDING }),
   ];
 }

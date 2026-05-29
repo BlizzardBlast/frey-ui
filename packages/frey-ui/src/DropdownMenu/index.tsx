@@ -6,13 +6,13 @@ import {
   useDismiss,
   useFloating,
   useFloatingRootContext,
-  useInteractions
+  useInteractions,
 } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useId, useRef, useState } from 'react';
 import {
   createFloatingMiddleware,
-  toFloatingPlacement
+  toFloatingPlacement,
 } from '../hooks/floatingConfig';
 import { useControllableState } from '../hooks/useControllableState';
 import { useRovingCollection } from '../hooks/useRovingCollection';
@@ -74,7 +74,7 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
   offset = 8,
   closeOnEscape = true,
   closeOnOutsideClick = true,
-  children
+  children,
 }: Readonly<DropdownMenuProps>): React.JSX.Element {
   const idPrefix = useId();
   const menuItems = useRovingCollection();
@@ -105,25 +105,25 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
     onOpenChange: handleFloatingOpenChange,
     elements: {
       reference: referenceElement,
-      floating: floatingElement
-    }
+      floating: floatingElement,
+    },
   });
   const {
     refs,
     floatingStyles,
-    context: floatingContext
+    context: floatingContext,
   } = useFloating({
     rootContext: floatingRootContext,
     placement: toFloatingPlacement(placement, 'start'),
     middleware: createFloatingMiddleware(offset),
     strategy: 'fixed',
     transform: false,
-    whileElementsMounted: autoUpdate
+    whileElementsMounted: autoUpdate,
   });
   const dismiss = useDismiss(floatingContext, {
     enabled: currentOpen,
     escapeKey: closeOnEscape,
-    outsidePress: closeOnOutsideClick
+    outsidePress: closeOnOutsideClick,
   });
   const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
   const setReference = React.useCallback(
@@ -152,7 +152,7 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
       floatingContext,
       getReferenceProps,
       getFloatingProps,
-      menuItems
+      menuItems,
     }),
     [
       currentOpen,
@@ -164,7 +164,7 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
       floatingContext,
       getReferenceProps,
       getFloatingProps,
-      menuItems
+      menuItems,
     ]
   );
 
@@ -198,7 +198,7 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
     idPrefix,
     triggerRef,
     setReference,
-    getReferenceProps
+    getReferenceProps,
   } = useDropdownMenuContext();
   const mergedRef = mergeRefs(
     ref,
@@ -216,7 +216,7 @@ const DropdownMenuTrigger: DropdownMenuTriggerComponent = React.forwardRef<
     onClick: handleClick,
     'aria-haspopup': 'menu',
     'aria-expanded': open,
-    'aria-controls': `${idPrefix}-menu`
+    'aria-controls': `${idPrefix}-menu`,
   }) as React.HTMLAttributes<HTMLElement>;
 
   if (asChild) {
@@ -262,7 +262,7 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
     floatingStyles,
     floatingContext,
     getFloatingProps,
-    menuItems
+    menuItems,
   } = useDropdownMenuContext();
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -306,7 +306,7 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
   };
   const floatingProps = getFloatingProps({
     ...props,
-    onKeyDown: handleKeyDown
+    onKeyDown: handleKeyDown,
   }) as React.HTMLAttributes<HTMLDivElement>;
 
   if (!open) return null;
@@ -332,7 +332,7 @@ const DropdownMenuContent: DropdownMenuContentComponent = React.forwardRef<
           className={clsx(styles.dropdown_menu, className)}
           style={{
             ...floatingStyles,
-            ...style
+            ...style,
           }}
           {...floatingProps}
         >
@@ -369,7 +369,7 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
 
   useEffect(() => {
     menuItems.registerItem(itemId, itemRef.current, {
-      disabled: Boolean(disabled)
+      disabled: Boolean(disabled),
     });
 
     return () => {
@@ -394,7 +394,7 @@ const DropdownMenuItem: DropdownMenuItemComponent = React.forwardRef<
         disabled={disabled}
         onClick={handleClick}
         className={clsx(styles.dropdown_menu_item, className, {
-          [styles.dropdown_menu_item_destructive]: destructive
+          [styles.dropdown_menu_item_destructive]: destructive,
         })}
         {...props}
       >
@@ -416,7 +416,7 @@ export const DropdownMenu: DropdownMenuComponent = Object.assign(
   {
     Trigger: DropdownMenuTrigger,
     Content: DropdownMenuContent,
-    Item: DropdownMenuItem
+    Item: DropdownMenuItem,
   }
 );
 

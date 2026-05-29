@@ -125,7 +125,7 @@ describe('Accordion', () => {
     );
 
     const button = screen.getByRole('button', {
-      name: 'Preserved tabindex button'
+      name: 'Preserved tabindex button',
     });
 
     expect(button).toHaveAttribute('tabindex', '0');

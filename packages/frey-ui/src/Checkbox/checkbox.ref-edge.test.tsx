@@ -5,7 +5,7 @@ const stubbornRef = {} as { current: HTMLInputElement | null };
 Object.defineProperty(stubbornRef, 'current', {
   configurable: true,
   get: () => null,
-  set: () => undefined
+  set: () => undefined,
 });
 
 vi.mock('react', async () => {
@@ -13,7 +13,7 @@ vi.mock('react', async () => {
 
   return {
     ...actual,
-    useRef: vi.fn(() => stubbornRef)
+    useRef: vi.fn(() => stubbornRef),
   };
 });
 

@@ -39,7 +39,7 @@ const DialogRoot: DialogRootComponent = function Dialog({
   open,
   defaultOpen = false,
   onOpenChange,
-  children
+  children,
 }: Readonly<DialogProps>): React.JSX.Element {
   const idPrefix = useId();
   const [currentOpen, handleOpenChange] = useControllableState(
@@ -390,7 +390,7 @@ const DialogFooter: DialogFooterComponent = React.forwardRef<
         justifyContent: 'flex-end',
         gap: '8px',
         marginTop: '16px',
-        ...props.style
+        ...props.style,
       }}
       {...props}
     />
@@ -415,7 +415,7 @@ export const Dialog: DialogComponent = Object.assign(DialogRoot, {
   Title: DialogTitle,
   Description: DialogDescription,
   Body: DialogBody,
-  Footer: DialogFooter
+  Footer: DialogFooter,
 });
 
 export default Dialog;

@@ -9,7 +9,7 @@ type BoxStoryProps = Pick<
 const meta: Meta<BoxStoryProps> = {
   component: Box,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     as: {
@@ -29,17 +29,17 @@ const meta: Meta<BoxStoryProps> = {
         'ul',
         'ol',
         'li',
-        'p'
+        'p',
       ],
       description: 'Underlying HTML element to render',
       table: {
         type: {
-          summary: 'BoxElement'
+          summary: 'BoxElement',
         },
         defaultValue: {
-          summary: "'div'"
-        }
-      }
+          summary: "'div'",
+        },
+      },
     },
     p: {
       control: { type: 'select' },
@@ -47,12 +47,12 @@ const meta: Meta<BoxStoryProps> = {
       description: 'Padding token applied on all sides',
       table: {
         type: {
-          summary: 'SpaceToken'
+          summary: 'SpaceToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     m: {
       control: { type: 'select' },
@@ -60,12 +60,12 @@ const meta: Meta<BoxStoryProps> = {
       description: 'Margin token applied on all sides',
       table: {
         type: {
-          summary: 'SpaceToken'
+          summary: 'SpaceToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     bg: {
       control: { type: 'select' },
@@ -86,17 +86,17 @@ const meta: Meta<BoxStoryProps> = {
         'info',
         'success',
         'warning',
-        'error'
+        'error',
       ],
       description: 'Background color token',
       table: {
         type: {
-          summary: 'ColorToken'
+          summary: 'ColorToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     color: {
       control: { type: 'select' },
@@ -117,17 +117,17 @@ const meta: Meta<BoxStoryProps> = {
         'info',
         'success',
         'warning',
-        'error'
+        'error',
       ],
       description: 'Text color token',
       table: {
         type: {
-          summary: 'ColorToken'
+          summary: 'ColorToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     borderColor: {
       control: { type: 'select' },
@@ -148,17 +148,17 @@ const meta: Meta<BoxStoryProps> = {
         'info',
         'success',
         'warning',
-        'error'
+        'error',
       ],
       description: 'Border color token',
       table: {
         type: {
-          summary: 'ColorToken'
+          summary: 'ColorToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     radius: {
       control: { type: 'select' },
@@ -166,14 +166,14 @@ const meta: Meta<BoxStoryProps> = {
       description: 'Border radius token',
       table: {
         type: {
-          summary: 'RadiusToken'
+          summary: 'RadiusToken',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<BoxStoryProps>;
 
 export default meta;
@@ -190,7 +190,7 @@ export const basic: Story = {
     >
       Token-based box primitive
     </Box>
-  )
+  ),
 } satisfies Story;
 
 export const spacing_and_tokens: Story = {
@@ -209,7 +209,7 @@ export const spacing_and_tokens: Story = {
       </Box>
       <Box color='text'>Compose layout and token props without custom CSS.</Box>
     </Box>
-  )
+  ),
 } satisfies Story;
 
 export const polymorphic_link: Story = {
@@ -223,10 +223,10 @@ export const polymorphic_link: Story = {
       color='primary'
       style={{
         textDecoration: 'none',
-        border: '1px solid var(--frey-color-border)'
+        border: '1px solid var(--frey-color-border)',
       }}
     >
       Open Frey UI docs
     </Box>
-  )
+  ),
 } satisfies Story;

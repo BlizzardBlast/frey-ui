@@ -9,7 +9,7 @@ type TableStoryProps = Pick<
 const meta: Meta<TableStoryProps> = {
   component: Table,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     containerStyle: {
@@ -17,12 +17,12 @@ const meta: Meta<TableStoryProps> = {
       description: 'Inline styles applied to the outer table container',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     containerClassName: {
       control: { type: 'text' },
@@ -30,14 +30,14 @@ const meta: Meta<TableStoryProps> = {
         'Additional class names applied to the outer table container',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<TableStoryProps>;
 
 export default meta;
@@ -45,7 +45,7 @@ type Story = StoryObj<TableStoryProps>;
 
 export const basic: Story = {
   args: {
-    containerStyle: { width: 680 }
+    containerStyle: { width: 680 },
   },
   render: (args) => (
     <Table {...args}>
@@ -78,12 +78,12 @@ export const basic: Story = {
         </Table.Row>
       </Table.Body>
     </Table>
-  )
+  ),
 } satisfies Story;
 
 export const with_footer: Story = {
   args: {
-    containerStyle: { width: 720 }
+    containerStyle: { width: 720 },
   },
   render: (args) => (
     <Table {...args}>
@@ -114,5 +114,5 @@ export const with_footer: Story = {
         </Table.Row>
       </Table.Footer>
     </Table>
-  )
+  ),
 } satisfies Story;

@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../utils/mergeRefs', () => ({
-  mergeRefs: () => () => undefined
+  mergeRefs: () => () => undefined,
 }));
 
 import Dialog from './index';

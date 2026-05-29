@@ -9,7 +9,7 @@ type SpinnerStoryProps = Pick<
 const meta: Meta<SpinnerStoryProps> = {
   component: Spinner,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     size: {
@@ -19,50 +19,50 @@ const meta: Meta<SpinnerStoryProps> = {
         'Named spinner size token (also accepts a numeric pixel size)',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg' | number"
+          summary: "'sm' | 'md' | 'lg' | number",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     label: {
       control: { type: 'text' },
       description: 'Accessible loading label announced to assistive technology',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: "'Loading'"
-        }
-      }
+          summary: "'Loading'",
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the spinner root',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the spinner root',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<SpinnerStoryProps>;
 
 export default meta;
@@ -72,8 +72,8 @@ type Story = StoryObj<SpinnerStoryProps>;
 export const basic_spinner: Story = {
   args: {
     size: 'md',
-    label: 'Loading data'
-  }
+    label: 'Loading data',
+  },
 } satisfies Story;
 
 export const size_variants: Story = {
@@ -84,5 +84,5 @@ export const size_variants: Story = {
       <Spinner size='lg' label='Large loading spinner' />
       <Spinner size={28} label='Custom loading spinner' />
     </div>
-  )
+  ),
 } satisfies Story;

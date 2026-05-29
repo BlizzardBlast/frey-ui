@@ -25,7 +25,7 @@ type CheckboxComponent = React.ForwardRefExoticComponent<
 const SizeClassMap: Record<CheckboxSize, string> = {
   sm: styles['checkbox-sm'],
   md: styles['checkbox-md'],
-  lg: styles['checkbox-lg']
+  lg: styles['checkbox-lg'],
 };
 
 const Checkbox: CheckboxComponent = React.forwardRef<
@@ -63,7 +63,7 @@ const Checkbox: CheckboxComponent = React.forwardRef<
     >
       <span
         className={clsx(styles.checkbox, SizeClassMap[size], {
-          [styles['checkbox-disabled']]: disabled
+          [styles['checkbox-disabled']]: disabled,
         })}
         aria-disabled={disabled || undefined}
       >
@@ -91,7 +91,7 @@ const Checkbox: CheckboxComponent = React.forwardRef<
       <label
         htmlFor={inputId}
         className={clsx(styles.label, {
-          [styles.visually_hidden]: hideLabel
+          [styles.visually_hidden]: hideLabel,
         })}
       >
         {label}

@@ -9,7 +9,7 @@ type LinkStoryProps = Pick<
 const meta: Meta<LinkStoryProps> = {
   component: Link,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     href: {
@@ -17,24 +17,24 @@ const meta: Meta<LinkStoryProps> = {
       description: 'Destination URL for the anchor element',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: { type: 'text' },
       description: 'Text content rendered inside the link',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     color: {
       control: { type: 'select' },
@@ -45,18 +45,18 @@ const meta: Meta<LinkStoryProps> = {
         'info',
         'success',
         'warning',
-        'error'
+        'error',
       ],
       description: 'Semantic color treatment for the link text',
       table: {
         type: {
           summary:
-            "'primary' | 'text' | 'muted' | 'info' | 'success' | 'warning' | 'error'"
+            "'primary' | 'text' | 'muted' | 'info' | 'success' | 'warning' | 'error'",
         },
         defaultValue: {
-          summary: "'primary'"
-        }
-      }
+          summary: "'primary'",
+        },
+      },
     },
     underline: {
       control: { type: 'select' },
@@ -64,12 +64,12 @@ const meta: Meta<LinkStoryProps> = {
       description: 'When the link underline should be visible',
       table: {
         type: {
-          summary: "'always' | 'hover' | 'none'"
+          summary: "'always' | 'hover' | 'none'",
         },
         defaultValue: {
-          summary: "'hover'"
-        }
-      }
+          summary: "'hover'",
+        },
+      },
     },
     target: {
       control: { type: 'select' },
@@ -77,14 +77,14 @@ const meta: Meta<LinkStoryProps> = {
       description: 'Browsing context used when the link opens',
       table: {
         type: {
-          summary: "'_self' | '_blank' | '_parent' | '_top'"
+          summary: "'_self' | '_blank' | '_parent' | '_top'",
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<LinkStoryProps>;
 
 export default meta;
@@ -95,8 +95,8 @@ export const basic: Story = {
     href: 'https://blizzardblast.github.io/frey-ui',
     children: 'Read documentation',
     color: 'primary',
-    underline: 'hover'
-  }
+    underline: 'hover',
+  },
 } satisfies Story;
 
 export const color_variants: Story = {
@@ -118,13 +118,13 @@ export const color_variants: Story = {
         Error link
       </Link>
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const target_blank: Story = {
   args: {
     href: 'https://storybook.js.org',
     target: '_blank',
-    children: 'Open Storybook in new tab'
-  }
+    children: 'Open Storybook in new tab',
+  },
 } satisfies Story;

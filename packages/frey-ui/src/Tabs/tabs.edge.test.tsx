@@ -10,11 +10,11 @@ const mockedCollection = vi.hoisted(() => ({
   focusLast: vi.fn<() => string | null>(() => null),
   findItemIdByElement: vi.fn<(element: HTMLElement) => string | null>(
     () => null
-  )
+  ),
 }));
 
 vi.mock('../hooks/useRovingCollection', () => ({
-  useRovingCollection: () => mockedCollection
+  useRovingCollection: () => mockedCollection,
 }));
 
 import Tabs from './index';
@@ -49,7 +49,7 @@ describe('Tabs edge cases', () => {
     renderTabs(onValueChange);
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'One' }), {
-      key: 'ArrowRight'
+      key: 'ArrowRight',
     });
 
     expect(mockedCollection.focusNext).not.toHaveBeenCalled();
@@ -63,7 +63,7 @@ describe('Tabs edge cases', () => {
     renderTabs(onValueChange);
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'One' }), {
-      key: 'ArrowRight'
+      key: 'ArrowRight',
     });
 
     expect(mockedCollection.focusNext).toHaveBeenCalledWith('one');
@@ -77,7 +77,7 @@ describe('Tabs edge cases', () => {
     renderTabs(onValueChange);
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'One' }), {
-      key: 'ArrowLeft'
+      key: 'ArrowLeft',
     });
 
     expect(mockedCollection.focusPrevious).toHaveBeenCalledWith('one');
@@ -91,7 +91,7 @@ describe('Tabs edge cases', () => {
     renderTabs(onValueChange);
 
     fireEvent.keyDown(screen.getByRole('tab', { name: 'One' }), {
-      key: 'Enter'
+      key: 'Enter',
     });
 
     expect(mockedCollection.focusNext).not.toHaveBeenCalled();

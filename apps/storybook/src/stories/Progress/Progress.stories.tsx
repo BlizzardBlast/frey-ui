@@ -18,14 +18,14 @@ type ProgressStoryProps = Pick<
 const meta: Meta<ProgressStoryProps> = {
   component: Progress,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 360 }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     size: {
@@ -34,110 +34,110 @@ const meta: Meta<ProgressStoryProps> = {
       description: 'Height variant for the progress indicator',
       table: {
         type: {
-          summary: "'sm' | 'md' | 'lg'"
+          summary: "'sm' | 'md' | 'lg'",
         },
         defaultValue: {
-          summary: "'md'"
-        }
-      }
+          summary: "'md'",
+        },
+      },
     },
     label: {
       control: { type: 'text' },
       description: 'Accessible label shown above the progress bar',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     value: {
       control: { type: 'number' },
       description: 'Current progress value',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '0'
-        }
-      }
+          summary: '0',
+        },
+      },
     },
     max: {
       control: { type: 'number' },
       description: 'Maximum progress value',
       table: {
         type: {
-          summary: 'number'
+          summary: 'number',
         },
         defaultValue: {
-          summary: '100'
-        }
-      }
+          summary: '100',
+        },
+      },
     },
     indeterminate: {
       control: { type: 'boolean' },
       description: 'Whether the progress is loading without a fixed value',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     showValue: {
       control: { type: 'boolean' },
       description: 'Whether to display the computed percentage label',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class names applied to the progress root',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     style: {
       control: { type: 'object' },
       description: 'Inline styles applied to the progress root',
       table: {
         type: {
-          summary: 'CSSProperties'
+          summary: 'CSSProperties',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     barClassName: {
       control: { type: 'text' },
       description: 'Additional class names applied to the native progress bar',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<ProgressStoryProps>;
 
 export default meta;
@@ -150,8 +150,8 @@ export const basic_progress: Story = {
     value: 45,
     max: 100,
     size: 'md',
-    showValue: true
-  }
+    showValue: true,
+  },
 } satisfies Story;
 
 export const size_variants: Story = {
@@ -161,13 +161,13 @@ export const size_variants: Story = {
       <Progress label='Medium progress' value={55} size='md' />
       <Progress label='Large progress' value={80} size='lg' />
     </div>
-  )
+  ),
 } satisfies Story;
 
 export const indeterminate: Story = {
   args: {
     label: 'Preparing report',
     indeterminate: true,
-    size: 'md'
-  }
+    size: 'md',
+  },
 } satisfies Story;

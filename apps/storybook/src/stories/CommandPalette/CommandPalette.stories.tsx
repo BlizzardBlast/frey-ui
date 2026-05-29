@@ -38,14 +38,14 @@ function base_palette_items() {
 const meta: Meta<CommandPaletteStoryProps> = {
   component: CommandPalette,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   decorators: [
     (Story) => (
       <div style={{ width: 560, maxWidth: '100%' }}>
         <Story />
       </div>
-    )
+    ),
   ],
   argTypes: {
     open: {
@@ -53,12 +53,12 @@ const meta: Meta<CommandPaletteStoryProps> = {
       description: 'Controlled open state of the command palette.',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultOpen: {
       control: { type: 'boolean' },
@@ -66,36 +66,36 @@ const meta: Meta<CommandPaletteStoryProps> = {
         'Initial open state used when the command palette is uncontrolled.',
       table: {
         type: {
-          summary: 'boolean'
+          summary: 'boolean',
         },
         defaultValue: {
-          summary: 'false'
-        }
-      }
+          summary: 'false',
+        },
+      },
     },
     onOpenChange: {
       action: 'open changed',
       description: 'Called whenever the open state changes.',
       table: {
         type: {
-          summary: '(open: boolean) => void'
+          summary: '(open: boolean) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onSelect: {
       action: 'command selected',
       description: 'Called when a command item is selected.',
       table: {
         type: {
-          summary: '(value: string) => void'
+          summary: '(value: string) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     children: {
       control: false,
@@ -103,14 +103,14 @@ const meta: Meta<CommandPaletteStoryProps> = {
         'Composed trigger, content, input, list, group, item, empty and shortcut elements.',
       table: {
         type: {
-          summary: 'ReactNode'
+          summary: 'ReactNode',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<CommandPaletteStoryProps>;
 
 export default meta;
@@ -120,7 +120,7 @@ type Story = StoryObj<CommandPaletteStoryProps>;
 export const basic_command_palette: Story = {
   args: {
     defaultOpen: false,
-    onSelect: fn()
+    onSelect: fn(),
   },
   render: (args) => (
     <CommandPalette {...args}>
@@ -136,23 +136,23 @@ export const basic_command_palette: Story = {
   play: async ({ canvas, args }) => {
     await userEvent.click(
       await canvas.findByRole('button', {
-        name: 'Open command palette'
+        name: 'Open command palette',
       })
     );
 
     const input = await screen.findByRole('combobox', {
-      name: 'Search commands'
+      name: 'Search commands',
     });
     await userEvent.click(input);
     await userEvent.keyboard('{ArrowDown}{Enter}');
 
     await expect(args.onSelect).toHaveBeenCalledWith('invite-member');
-  }
+  },
 } satisfies Story;
 
 export const grouped_actions: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: (args) => (
     <CommandPalette {...args}>
@@ -164,12 +164,12 @@ export const grouped_actions: Story = {
         <CommandPalette.List>{base_palette_items()}</CommandPalette.List>
       </CommandPalette.Content>
     </CommandPalette>
-  )
+  ),
 } satisfies Story;
 
 export const empty_results_state: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: (args) => (
     <CommandPalette {...args}>
@@ -185,12 +185,12 @@ export const empty_results_state: Story = {
   play: async ({ canvas }) => {
     await userEvent.click(
       await canvas.findByRole('button', {
-        name: 'Search actions'
+        name: 'Search actions',
       })
     );
 
     const input = await screen.findByRole('combobox', {
-      name: 'Search actions'
+      name: 'Search actions',
     });
     await userEvent.click(input);
     await userEvent.type(input, 'no-match-value');
@@ -198,13 +198,13 @@ export const empty_results_state: Story = {
     await expect(
       await screen.findByText('No commands found.')
     ).toBeInTheDocument();
-  }
+  },
 } satisfies Story;
 
 export const disabled_items: Story = {
   args: {
     defaultOpen: false,
-    onSelect: fn()
+    onSelect: fn(),
   },
   render: (args) => (
     <CommandPalette {...args}>
@@ -220,23 +220,23 @@ export const disabled_items: Story = {
   play: async ({ canvas, args }) => {
     await userEvent.click(
       await canvas.findByRole('button', {
-        name: 'Open actions'
+        name: 'Open actions',
       })
     );
 
     const input = await screen.findByRole('combobox', {
-      name: 'Find project action'
+      name: 'Find project action',
     });
     await userEvent.click(input);
     await userEvent.keyboard('{ArrowDown}{ArrowDown}{Enter}');
 
     await expect(args.onSelect).toHaveBeenCalledWith('archive-project');
-  }
+  },
 } satisfies Story;
 
 export const controlled_open_state: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: function ControlledOpenStateStory(args) {
     const [open, setOpen] = useState(Boolean(args.defaultOpen));
@@ -274,12 +274,12 @@ export const controlled_open_state: Story = {
         </CommandPalette>
       </div>
     );
-  }
+  },
 } satisfies Story;
 
 export const search_driven_workspace_switcher: Story = {
   args: {
-    defaultOpen: false
+    defaultOpen: false,
   },
   render: (args) => (
     <CommandPalette {...args}>
@@ -321,5 +321,5 @@ export const search_driven_workspace_switcher: Story = {
         </CommandPalette.List>
       </CommandPalette.Content>
     </CommandPalette>
-  )
+  ),
 } satisfies Story;

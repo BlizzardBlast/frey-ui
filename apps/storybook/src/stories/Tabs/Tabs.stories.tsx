@@ -10,7 +10,7 @@ type TabsStoryProps = Pick<
 const meta: Meta<TabsStoryProps> = {
   component: Tabs,
   parameters: {
-    layout: 'centered'
+    layout: 'centered',
   },
   argTypes: {
     value: {
@@ -18,38 +18,38 @@ const meta: Meta<TabsStoryProps> = {
       description: 'Controlled active tab value',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     defaultValue: {
       control: { type: 'text' },
       description: 'Initial active tab value when uncontrolled',
       table: {
         type: {
-          summary: 'string'
+          summary: 'string',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
+          summary: 'None',
+        },
+      },
     },
     onValueChange: {
       action: 'tab changed',
       description: 'Called when the active tab value changes',
       table: {
         type: {
-          summary: '(value: string) => void'
+          summary: '(value: string) => void',
         },
         defaultValue: {
-          summary: 'None'
-        }
-      }
-    }
-  }
+          summary: 'None',
+        },
+      },
+    },
+  },
 } satisfies Meta<TabsStoryProps>;
 
 export default meta;
@@ -58,7 +58,7 @@ type Story = StoryObj<TabsStoryProps>;
 
 export const basic: Story = {
   args: {
-    defaultValue: 'account'
+    defaultValue: 'account',
   },
   render: (args) => (
     <Card style={{ width: 400 }}>
@@ -81,12 +81,12 @@ export const basic: Story = {
         </Tabs>
       </Card.Content>
     </Card>
-  )
+  ),
 } satisfies Story;
 
 export const controlled: Story = {
   args: {
-    defaultValue: 'billing'
+    defaultValue: 'billing',
   },
   render: function ControlledStory(args) {
     const [tab, setTab] = useState(args.defaultValue ?? 'billing');
@@ -131,5 +131,5 @@ export const controlled: Story = {
         </Card.Content>
       </Card>
     );
-  }
+  },
 } satisfies Story;
