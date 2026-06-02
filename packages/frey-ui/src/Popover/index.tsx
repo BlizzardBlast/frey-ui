@@ -14,7 +14,7 @@ import {
   createFloatingMiddleware,
   toFloatingPlacement,
 } from '../hooks/floatingConfig';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import { mergeRefs } from '../utils/mergeRefs';
 import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
@@ -79,7 +79,7 @@ const PopoverRoot: PopoverRootComponent = function Popover({
   const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(
     null
   );
-  const [currentOpen, handleOpenChange] = useControllableState(
+  const [currentOpen, handleOpenChange] = useControllableValue<boolean>(
     open,
     defaultOpen,
     onOpenChange

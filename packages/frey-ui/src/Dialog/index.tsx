@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { createContext, useContext, useId } from 'react';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import { CloseIcon } from '../Icons';
 import { mergeRefs } from '../utils/mergeRefs';
 import Portal from '../utils/Portal';
@@ -42,7 +42,7 @@ const DialogRoot: DialogRootComponent = function Dialog({
   children,
 }: Readonly<DialogProps>): React.JSX.Element {
   const idPrefix = useId();
-  const [currentOpen, handleOpenChange] = useControllableState(
+  const [currentOpen, handleOpenChange] = useControllableValue<boolean>(
     open,
     defaultOpen,
     onOpenChange
@@ -384,14 +384,7 @@ const DialogFooter: DialogFooterComponent = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={clsx(styles.dialog_body, className)}
-      style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        gap: '8px',
-        marginTop: '16px',
-        ...props.style,
-      }}
+      className={clsx(styles.dialog_footer, className)}
       {...props}
     />
   );

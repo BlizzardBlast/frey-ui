@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useId } from 'react';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import styles from './switch.module.css';
 
 export type SwitchSize = 'sm' | 'md' | 'lg';
@@ -48,7 +48,7 @@ const Switch: SwitchComponent = React.forwardRef<
 ) {
   const generatedId = useId();
   const inputId = id ?? generatedId;
-  const [currentChecked, setCurrentChecked] = useControllableState(
+  const [currentChecked, setCurrentChecked] = useControllableValue<boolean>(
     checked,
     Boolean(defaultChecked)
   );

@@ -1,19 +1,20 @@
 import { act, renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import {
-  useControllableState,
-  useControllableValue,
-} from '../useControllableState';
+import { useControllableValue } from '../useControllableState';
 
-describe('useControllableState', () => {
+describe('useControllableValue<boolean>', () => {
   it('uses defaultValue for uncontrolled state', () => {
-    const { result } = renderHook(() => useControllableState(undefined, false));
+    const { result } = renderHook(() =>
+      useControllableValue<boolean>(undefined, false)
+    );
 
     expect(result.current[0]).toBe(false);
   });
 
   it('updates internal state when uncontrolled', () => {
-    const { result } = renderHook(() => useControllableState(undefined, false));
+    const { result } = renderHook(() =>
+      useControllableValue<boolean>(undefined, false)
+    );
 
     act(() => {
       result.current[1](true);
@@ -23,7 +24,9 @@ describe('useControllableState', () => {
   });
 
   it('uses controlled value when provided', () => {
-    const { result } = renderHook(() => useControllableState(true, false));
+    const { result } = renderHook(() =>
+      useControllableValue<boolean>(true, false)
+    );
 
     expect(result.current[0]).toBe(true);
   });
@@ -31,7 +34,7 @@ describe('useControllableState', () => {
   it('does not update internal state when controlled', () => {
     const onChange = vi.fn();
     const { result } = renderHook(() =>
-      useControllableState(false, false, onChange)
+      useControllableValue<boolean>(false, false, onChange)
     );
 
     act(() => {
@@ -46,7 +49,7 @@ describe('useControllableState', () => {
   it('calls onChange callback in both modes', () => {
     const onChange = vi.fn();
     const { result } = renderHook(() =>
-      useControllableState(undefined, false, onChange)
+      useControllableValue<boolean>(undefined, false, onChange)
     );
 
     act(() => {

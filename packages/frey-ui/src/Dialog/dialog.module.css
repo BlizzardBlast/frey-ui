@@ -143,6 +143,13 @@
   margin-top: 0.875rem;
 }
 
+.dialog_footer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dialog_root,
   .dialog_root::backdrop,

@@ -12,7 +12,7 @@ import {
   createFloatingMiddleware,
   toFloatingPlacement,
 } from '../hooks/floatingConfig';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
 import styles from './tooltip.module.css';
@@ -50,7 +50,7 @@ function Tooltip({
 }: Readonly<TooltipProps>): React.JSX.Element {
   const generatedId = React.useId();
   const tooltipId = id ?? `${generatedId}-tooltip`;
-  const [isOpen, setOpen] = useControllableState(
+  const [isOpen, setOpen] = useControllableValue<boolean>(
     open,
     defaultOpen,
     onOpenChange

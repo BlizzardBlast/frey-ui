@@ -4,7 +4,7 @@ import Dialog, {
   type DialogContentProps,
   type DialogTriggerProps,
 } from '../Dialog';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import styles from './commandpalette.module.css';
 
 type RegisteredCommandItem = {
@@ -114,7 +114,7 @@ const CommandPaletteRoot: CommandPaletteRootComponent =
     );
     const [query, setQuery] = React.useState('');
     const [activeItemId, setActiveItemId] = React.useState<string | null>(null);
-    const [currentOpen, setCurrentOpen] = useControllableState(
+    const [currentOpen, setCurrentOpen] = useControllableValue<boolean>(
       open,
       defaultOpen,
       onOpenChange

@@ -27,15 +27,3 @@ export function useControllableValue<Value>(
 
   return [value, setValue];
 }
-
-/**
- * Manages a boolean value that can be either controlled (value supplied by parent)
- * or uncontrolled (managed internally with an optional callback).
- */
-export function useControllableState(
-  controlled: boolean | undefined,
-  defaultValue: boolean,
-  onChange?: (value: boolean) => void
-): [boolean, (next: boolean) => void] {
-  return useControllableValue(controlled, defaultValue, onChange);
-}

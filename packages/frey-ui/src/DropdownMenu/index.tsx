@@ -14,7 +14,7 @@ import {
   createFloatingMiddleware,
   toFloatingPlacement,
 } from '../hooks/floatingConfig';
-import { useControllableState } from '../hooks/useControllableState';
+import { useControllableValue } from '../hooks/useControllableState';
 import { useRovingCollection } from '../hooks/useRovingCollection';
 import { mergeRefs } from '../utils/mergeRefs';
 import Portal from '../utils/Portal';
@@ -85,7 +85,7 @@ const DropdownMenuRoot: DropdownMenuRootComponent = function DropdownMenu({
   const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(
     null
   );
-  const [currentOpen, handleOpenChange] = useControllableState(
+  const [currentOpen, handleOpenChange] = useControllableValue<boolean>(
     open,
     defaultOpen,
     onOpenChange

@@ -37,13 +37,13 @@ function walkStoryFiles(dir) {
 const indexSource = fs.readFileSync(libraryIndexPath, 'utf8');
 const exportMatches = [
   ...indexSource.matchAll(
-    /export\s+\{\s*default\s+as\s+(\w+)\s*\}\s+from\s+'\.\/[^']+';/g
+    /export\s+(?!type\s)\{[^}]+\}\s+from\s+'\.\/([^']+)';/g
   ),
 ];
 
-const exportedComponents = exportMatches
-  .map((match) => match[1])
-  .sort((a, b) => a.localeCompare(b));
+const exportedComponents = [
+  ...new Set(exportMatches.map((match) => match[1])),
+].sort((a, b) => a.localeCompare(b));
 
 const storyFiles = walkStoryFiles(storiesRoot);
 const componentStoryFiles = storyFiles.filter((storyPath) => {
