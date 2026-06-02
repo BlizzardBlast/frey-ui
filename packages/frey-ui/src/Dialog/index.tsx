@@ -11,15 +11,19 @@ export type DialogContextValue = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   idPrefix: string;
+  hasDescription: boolean;
+  setHasDescription: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DialogContext = createContext<DialogContextValue | null>(null);
 
 function useDialogContext() {
   const context = useContext(DialogContext);
+
   if (!context) {
     throw new Error('Dialog components must be wrapped in <Dialog>');
   }
+
   return context;
 }
 
@@ -47,10 +51,17 @@ const DialogRoot: DialogRootComponent = function Dialog({
     defaultOpen,
     onOpenChange
   );
+  const [hasDescription, setHasDescription] = React.useState(false);
 
   const contextValue = React.useMemo(
-    () => ({ open: currentOpen, onOpenChange: handleOpenChange, idPrefix }),
-    [currentOpen, handleOpenChange, idPrefix]
+    () => ({
+      open: currentOpen,
+      onOpenChange: handleOpenChange,
+      idPrefix,
+      hasDescription,
+      setHasDescription,
+    }),
+    [currentOpen, handleOpenChange, idPrefix, hasDescription]
   );
 
   return (
@@ -59,6 +70,7 @@ const DialogRoot: DialogRootComponent = function Dialog({
     </DialogContext.Provider>
   );
 };
+
 DialogRoot.displayName = 'Dialog';
 
 export type DialogTriggerProps = {
@@ -81,6 +93,7 @@ const DialogTrigger: DialogTriggerComponent = React.forwardRef<
 
   const handleClick: React.MouseEventHandler<HTMLElement> = (event) => {
     onClick?.(event as React.MouseEvent<HTMLButtonElement>);
+
     if (!event.defaultPrevented) {
       onOpenChange(!open);
     }
@@ -112,7 +125,7 @@ const DialogTrigger: DialogTriggerComponent = React.forwardRef<
       ref={ref as React.Ref<HTMLButtonElement>}
       {...triggerProps}
       type={type ?? 'button'}
-      onClick={handleClick as React.MouseEventHandler<HTMLButtonElement>}
+      onClick={handleClick}
       aria-haspopup='dialog'
       aria-expanded={open}
       aria-controls={`${idPrefix}-dialog`}
@@ -121,6 +134,7 @@ const DialogTrigger: DialogTriggerComponent = React.forwardRef<
     </button>
   );
 });
+
 DialogTrigger.displayName = 'Dialog.Trigger';
 
 export type DialogContentProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -147,11 +161,13 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     className,
     containerClassName,
     children,
+    'aria-labelledby': ariaLabelledBy,
+    'aria-describedby': ariaDescribedBy,
     ...props
   },
   ref
 ) {
-  const { open, onOpenChange, idPrefix } = useDialogContext();
+  const { open, onOpenChange, idPrefix, hasDescription } = useDialogContext();
   const dialogRef = React.useRef<HTMLDialogElement | null>(null);
   const previousFocusedElementRef = React.useRef<HTMLElement | null>(null);
   const [mounted, setMounted] = React.useState(open);
@@ -163,18 +179,23 @@ const DialogContent: DialogContentComponent = React.forwardRef<
   React.useEffect(() => {
     if (open) {
       setMounted(true);
+
       if (document.activeElement instanceof HTMLElement) {
         previousFocusedElementRef.current = document.activeElement;
       }
+
       return;
     }
+
     previousFocusedElementRef.current?.focus();
     previousFocusedElementRef.current = null;
   }, [open]);
 
   React.useEffect(() => {
     if (!mounted) return;
+
     const dialogElement = dialogRef.current;
+
     if (!dialogElement) return;
 
     const canShowModal = typeof dialogElement.showModal === 'function';
@@ -187,6 +208,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
           dialogElement.setAttribute('open', '');
         }
       }
+
       return;
     }
 
@@ -199,6 +221,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     }
 
     const timer = setTimeout(() => setMounted(false), 250);
+
     return () => clearTimeout(timer);
   }, [open, mounted]);
 
@@ -206,6 +229,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     if (!open || !closeOnEscape) return;
 
     const dialogElement = dialogRef.current;
+
     if (!dialogElement || typeof dialogElement.showModal === 'function') return;
 
     const handleEscape = (event: KeyboardEvent) => {
@@ -216,6 +240,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     };
 
     document.addEventListener('keydown', handleEscape);
+
     return () => document.removeEventListener('keydown', handleEscape);
   }, [open, closeOnEscape, onOpenChange]);
 
@@ -223,9 +248,11 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     if (!open) return;
 
     const dialogElement = dialogRef.current;
+
     if (!dialogElement || typeof dialogElement.showModal === 'function') return;
 
     const previousOverflow = document.body.style.overflow;
+
     document.body.style.overflow = 'hidden';
 
     return () => {
@@ -235,6 +262,7 @@ const DialogContent: DialogContentComponent = React.forwardRef<
 
   React.useEffect(() => {
     const dialogElement = dialogRef.current;
+
     if (!dialogElement || !closeOnOverlayClick) return;
 
     const handleDialogClick = (event: MouseEvent) => {
@@ -244,18 +272,22 @@ const DialogContent: DialogContentComponent = React.forwardRef<
     };
 
     dialogElement.addEventListener('click', handleDialogClick);
+
     return () => dialogElement.removeEventListener('click', handleDialogClick);
   }, [closeOnOverlayClick, onOpenChange]);
 
   if (typeof document === 'undefined' || !mounted) return null;
+
+  const describedBy =
+    ariaDescribedBy ?? (hasDescription ? descriptionId : undefined);
 
   return (
     <Portal>
       <dialog
         id={dialogId}
         ref={mergeRefs(dialogRef, ref)}
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-labelledby={ariaLabelledBy ?? titleId}
+        aria-describedby={describedBy}
         className={clsx(styles.dialog_root, containerClassName)}
         onCancel={(event) => {
           if (!closeOnEscape) {
@@ -279,12 +311,14 @@ const DialogContent: DialogContentComponent = React.forwardRef<
               <CloseIcon size={16} className={styles.dialog_close_icon} />
             </button>
           )}
+
           {children}
         </div>
       </dialog>
     </Portal>
   );
 });
+
 DialogContent.displayName = 'Dialog.Content';
 
 export type DialogHeaderProps = React.HTMLAttributes<HTMLDivElement>;
@@ -305,6 +339,7 @@ const DialogHeader: DialogHeaderComponent = React.forwardRef<
     />
   );
 });
+
 DialogHeader.displayName = 'Dialog.Header';
 
 export type DialogTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
@@ -318,6 +353,7 @@ const DialogTitle: DialogTitleComponent = React.forwardRef<
   Readonly<DialogTitleProps>
 >(function DialogTitle({ className, children, ...props }, ref) {
   const { idPrefix } = useDialogContext();
+
   return (
     <h2
       ref={ref}
@@ -329,6 +365,7 @@ const DialogTitle: DialogTitleComponent = React.forwardRef<
     </h2>
   );
 });
+
 DialogTitle.displayName = 'Dialog.Title';
 
 export type DialogDescriptionProps = React.HTMLAttributes<HTMLParagraphElement>;
@@ -341,7 +378,16 @@ const DialogDescription: DialogDescriptionComponent = React.forwardRef<
   HTMLParagraphElement,
   Readonly<DialogDescriptionProps>
 >(function DialogDescription({ className, children, ...props }, ref) {
-  const { idPrefix } = useDialogContext();
+  const { idPrefix, setHasDescription } = useDialogContext();
+
+  React.useEffect(() => {
+    setHasDescription(true);
+
+    return () => {
+      setHasDescription(false);
+    };
+  }, [setHasDescription]);
+
   return (
     <p
       ref={ref}
@@ -353,6 +399,7 @@ const DialogDescription: DialogDescriptionComponent = React.forwardRef<
     </p>
   );
 });
+
 DialogDescription.displayName = 'Dialog.Description';
 
 export type DialogBodyProps = React.HTMLAttributes<HTMLDivElement>;
@@ -369,6 +416,7 @@ const DialogBody: DialogBodyComponent = React.forwardRef<
     <div ref={ref} className={clsx(styles.dialog_body, className)} {...props} />
   );
 });
+
 DialogBody.displayName = 'Dialog.Body';
 
 export type DialogFooterProps = React.HTMLAttributes<HTMLDivElement>;
@@ -389,6 +437,7 @@ const DialogFooter: DialogFooterComponent = React.forwardRef<
     />
   );
 });
+
 DialogFooter.displayName = 'Dialog.Footer';
 
 type DialogComponent = typeof DialogRoot & {

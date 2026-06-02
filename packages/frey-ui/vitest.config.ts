@@ -7,7 +7,13 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    reporters: ['default', 'junit'],
+    outputFile: {
+      junit: './test-report.junit.xml',
+    },
     coverage: {
+      reporter: ['text', 'json', 'html', 'lcov'],
+      reportsDirectory: './coverage',
       thresholds: {
         lines: 100,
         functions: 100,

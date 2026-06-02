@@ -7,7 +7,7 @@
     "provenance": true
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "storybook dev -p 6006",
     "test": "vitest run --passWithNoTests",
     "test:ui": "vitest --ui",
     "build": "tsc -b && storybook build --stats-json",
@@ -16,7 +16,7 @@
     "format": "biome format --write src .storybook vite.config.ts vitest.setup.ts",
     "format:check": "biome format src .storybook vite.config.ts vitest.setup.ts",
     "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "pnpm dev",
     "build-storybook": "storybook build --stats-json"
   },
   "dependencies": {

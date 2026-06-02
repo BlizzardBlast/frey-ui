@@ -1,11 +1,29 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "helpers:pinGitHubActionDigests"],
+  "labels": ["dependencies"],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "matchUpdateTypes": ["patch", "pin", "digest"],
       "automerge": true
+    },
+    {
+      "matchPackageNames": [
+        "typescript",
+        "vite",
+        "vitest",
+        "storybook",
+        "@storybook/**",
+        "@vitejs/**",
+        "@playwright/test",
+        "@biomejs/biome",
+        "rollup",
+        "react",
+        "react-dom"
+      ],
+      "matchUpdateTypes": ["minor", "major"],
+      "automerge": false,
+      "labels": ["dependencies", "needs-review"]
     }
-  ],
-  "labels": ["dependencies"]
+  ]
 }

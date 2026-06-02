@@ -683,4 +683,16 @@ describe('Dialog', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
+
+  it('does not reference a missing description by default', () => {
+    render(
+      <Dialog defaultOpen>
+        <Dialog.Content>
+          <Dialog.Title>Dialog title</Dialog.Title>
+        </Dialog.Content>
+      </Dialog>
+    );
+
+    expect(screen.getByRole('dialog')).not.toHaveAttribute('aria-describedby');
+  });
 });
