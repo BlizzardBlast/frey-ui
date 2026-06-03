@@ -1,5 +1,13 @@
 # @frey-ui/storybook
 
+## 1.0.6
+
+### Patch Changes
+
+- c0031fd: added pagination, drawer, command palette
+- Updated dependencies [c0031fd]
+  - frey-ui@1.0.15
+
 ## 1.0.5
 
 ### Patch Changes

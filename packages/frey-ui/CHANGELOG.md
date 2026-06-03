@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.15
+
+### Patch Changes
+
+- c0031fd: added pagination, drawer, command palette
+
 ## 1.0.14
 
 ### Patch Changes

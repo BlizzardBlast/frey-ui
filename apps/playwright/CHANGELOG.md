@@ -1,5 +1,13 @@
 # @frey-ui/playwright
 
+## 1.0.3
+
+### Patch Changes
+
+- c0031fd: added pagination, drawer, command palette
+- Updated dependencies [c0031fd]
+  - @frey-ui/storybook@1.0.6
+
 ## 1.0.2
 
 ### Patch Changes
