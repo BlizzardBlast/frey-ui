@@ -1,6 +1,6 @@
 # Component Priorities
 
-Last reviewed: 2026-04-08
+Last reviewed: 2026-07-15
 
 This note captures the strongest next component opportunities in the current
 Frey UI library based on the exported component surface, Storybook coverage,
@@ -20,6 +20,19 @@ What is now covered:
 - Expected v1 behavior: open/close handling, filtering, grouped items, empty
   states, disabled items, keyboard navigation, and focus return.
 - Storybook scenarios and unit-test coverage for the core interaction paths.
+
+### `Accordion` remake
+
+`Accordion` has been remade and should no longer be treated as the next
+component opportunity.
+
+What is now covered:
+
+- The existing public compound API and selection behavior are unchanged.
+- The 200 ms height animation remains, with clipping limited to the active
+  opening or closing transition.
+- Settled expanded panels allow nested focus rings and non-portaled overlays
+  to extend beyond their content boundary.
 
 ## Recommended Next New Component
 
@@ -68,31 +81,6 @@ Implementation note:
 - Prefer composing on top of existing `Tabs`/`RadioGroup` interaction patterns
   instead of introducing a one-off selection model.
 
-## Best Remake Candidate
-
-### `Accordion`
-
-If the goal is to remake an existing component instead of adding a new one,
-`Accordion` is the clearest candidate.
-
-Why it stands out:
-
-- The package README already documents a known limitation: the current
-  grid-based animation uses `overflow: hidden`, which can clip tooltips and
-  extended focus rings inside accordion content.
-- That limitation affects composition quality, which matters in a design system.
-- Fixing it would improve confidence in nested interactive content instead of
-  only adding a new API surface area.
-
-Remake direction:
-
-- Replace the current clipping-heavy content animation with an approach that is
-  safer for focus outlines and nested overlays.
-- Keep the current public API if possible so the change is mostly an internal
-  implementation upgrade.
-- Add tests for focus behavior and nested interactive content inside expanded
-  panels.
-
 ## Other Good Ideas
 
 ### `SegmentedControl` status
@@ -129,15 +117,14 @@ Best lightweight product-polish addition.
 
 ## Priority Order
 
-1. `Accordion` remake
-2. `SegmentedControl`
-3. `DatePicker`
-4. `FileUpload` or `Dropzone`
-5. `EmptyState`
+1. `SegmentedControl`
+2. `DatePicker`
+3. `FileUpload` or `Dropzone`
+4. `EmptyState`
 
 ## Recommendation
 
-If only one thing should happen next, remake `Accordion`.
+If only one thing should happen next, build `SegmentedControl`.
 
 If you want the next net-new component, build `SegmentedControl`.
 

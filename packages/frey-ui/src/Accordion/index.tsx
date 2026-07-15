@@ -194,14 +194,27 @@ type AccordionContentComponent = React.ForwardRefExoticComponent<
 const AccordionContent: AccordionContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<AccordionContentProps>
->(function AccordionContent({ className, children, ...props }, ref) {
+>(function AccordionContent(
+  { className, children, onTransitionEnd, ...props },
+  ref
+) {
   const { idPrefix } = useAccordionContext();
   const { value, isOpen } = useAccordionItemContext();
   const contentRef = React.useRef<HTMLElement | null>(null);
+  const [isSettledOpen, setIsSettledOpen] = React.useState(isOpen);
+  const prefersReducedMotion =
+    typeof window !== 'undefined' &&
+    window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const mergedContentRef = React.useMemo(
     () => mergeRefs<HTMLElement>(ref as React.Ref<HTMLElement>, contentRef),
     [ref]
   );
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      setIsSettledOpen(false);
+    }
+  }, [isOpen]);
 
   React.useEffect(() => {
     const node = contentRef.current;
@@ -242,6 +255,20 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
     });
   }, [isOpen]);
 
+  const handleTransitionEnd: React.TransitionEventHandler<HTMLElement> = (
+    event
+  ) => {
+    onTransitionEnd?.(event as React.TransitionEvent<HTMLDivElement>);
+
+    if (
+      event.target === event.currentTarget &&
+      event.propertyName === 'grid-template-rows' &&
+      isOpen
+    ) {
+      setIsSettledOpen(true);
+    }
+  };
+
   return (
     <section
       ref={mergedContentRef}
@@ -249,9 +276,12 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
       aria-labelledby={`${idPrefix}-trigger-${value}`}
       aria-hidden={!isOpen}
       inert={!isOpen}
+      onTransitionEnd={handleTransitionEnd}
       className={clsx(styles.accordion_content_wrapper, {
         [styles.accordion_content_wrapper_open]: isOpen,
         [styles.accordion_content_wrapper_closed]: !isOpen,
+        [styles.accordion_content_wrapper_settled]:
+          isOpen && (isSettledOpen || prefersReducedMotion),
       })}
       {...props}
     >

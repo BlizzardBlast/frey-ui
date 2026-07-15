@@ -58,11 +58,16 @@
 .accordion_content_wrapper {
   display: grid;
   grid-template-rows: 0fr;
+  overflow: clip;
   transition: grid-template-rows 0.2s ease-out;
 }
 
 .accordion_content_wrapper_open {
   grid-template-rows: 1fr;
+}
+
+.accordion_content_wrapper_settled {
+  overflow: visible;
 }
 
 .accordion_content_wrapper_closed {
@@ -71,7 +76,7 @@
 }
 
 .accordion_content {
-  overflow: hidden; /* Important for grid animation to hide contents when 0fr */
+  min-height: 0;
   padding-bottom: 1rem;
   color: var(--frey-color-text-muted);
   font-size: 0.875rem;

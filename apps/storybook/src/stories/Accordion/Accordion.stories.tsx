@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Accordion, type AccordionProps } from 'frey-ui';
+import { expect, userEvent } from 'storybook/test';
 
 type AccordionStoryProps = Pick<
   AccordionProps,
@@ -121,4 +122,57 @@ export const multiple: Story = {
       </Accordion>
     </div>
   ),
+} satisfies Story;
+
+export const overflow_safe_content: Story = {
+  render: () => (
+    <div style={{ width: 400 }}>
+      <Accordion>
+        <Accordion.Item value='overflow-safe'>
+          <Accordion.Trigger>Show overflow-safe content</Accordion.Trigger>
+          <Accordion.Content>
+            <div style={{ position: 'relative' }}>
+              <button type='button'>Focusable panel action</button>
+              <span
+                data-testid='accordion-non-portaled-overlay'
+                role='status'
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 'calc(100% + 0.5rem)',
+                  zIndex: 1,
+                  padding: '0.25rem 0.5rem',
+                  border: '1px solid var(--frey-color-border-subtle)',
+                  borderRadius: 'var(--frey-radius-sm)',
+                  background: 'var(--frey-color-surface)',
+                  color: 'var(--frey-color-text)',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                Non-portaled helper
+              </span>
+            </div>
+            <p>
+              After the height animation settles, focus rings and non-portaled
+              helpers can extend beyond this panel. They remain clipped only
+              while the panel is moving.
+            </p>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    const trigger = canvas.getByRole('button', {
+      name: 'Show overflow-safe content',
+    });
+
+    await userEvent.click(trigger);
+
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    await userEvent.click(trigger);
+
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  },
 } satisfies Story;
