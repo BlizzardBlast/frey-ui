@@ -11,7 +11,7 @@ This repository contains the Frey UI component library, Storybook docs app, and 
 ## Requirements
 
 - Node.js `24.16.0` (see `.nvmrc`)
-- pnpm `11.3.0`
+- pnpm `11.13.0`
 
 ## Getting Started
 

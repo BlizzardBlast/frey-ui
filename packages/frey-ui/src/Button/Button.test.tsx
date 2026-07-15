@@ -56,10 +56,10 @@ describe('Button', () => {
   it('renders as a child anchor when asChild is true', () => {
     render(
       <Button asChild>
-        <a href='https://example.com'>Link</a>
+        <a href='https://example.com'>Example website</a>
       </Button>
     );
-    const link = screen.getByRole('link', { name: 'Link' });
+    const link = screen.getByRole('link', { name: 'Example website' });
     expect(link.tagName).toBe('A');
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
