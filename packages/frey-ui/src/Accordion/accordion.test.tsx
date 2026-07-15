@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { createRef, type TransitionEventHandler } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import styles from './accordion.module.css';
 import Accordion from './index';
@@ -53,6 +54,23 @@ describe('Accordion', () => {
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(panel).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('forwards an HTMLElement ref to the content section', () => {
+    const contentRef = createRef<HTMLElement>();
+
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Content ref</Accordion.Trigger>
+          <Accordion.Content ref={contentRef}>
+            Content ref body
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    expect(contentRef.current?.tagName).toBe('SECTION');
   });
 
   it('only allows overflow after the opening transition settles', async () => {
@@ -185,7 +203,10 @@ describe('Accordion', () => {
   });
 
   it('preserves a consumer transition-end handler', () => {
-    const onTransitionEnd = vi.fn();
+    let calls = 0;
+    const onTransitionEnd: TransitionEventHandler<HTMLElement> = () => {
+      calls += 1;
+    };
 
     render(
       <Accordion defaultValue='one'>
@@ -204,7 +225,7 @@ describe('Accordion', () => {
 
     fireEvent.transitionEnd(panel, { propertyName: 'grid-template-rows' });
 
-    expect(onTransitionEnd).toHaveBeenCalledTimes(1);
+    expect(calls).toBe(1);
   });
 
   it('keeps collapsed content out of keyboard tab order', async () => {

@@ -135,7 +135,6 @@ export const overflow_safe_content: Story = {
               <button type='button'>Focusable panel action</button>
               <span
                 data-testid='accordion-non-portaled-overlay'
-                role='status'
                 style={{
                   position: 'absolute',
                   top: 0,

@@ -185,14 +185,14 @@ const AccordionTrigger: AccordionTriggerComponent = React.forwardRef<
 });
 AccordionTrigger.displayName = 'Accordion.Trigger';
 
-export type AccordionContentProps = React.HTMLAttributes<HTMLDivElement>;
+export type AccordionContentProps = React.HTMLAttributes<HTMLElement>;
 
 type AccordionContentComponent = React.ForwardRefExoticComponent<
-  Readonly<AccordionContentProps> & React.RefAttributes<HTMLDivElement>
+  Readonly<AccordionContentProps> & React.RefAttributes<HTMLElement>
 >;
 
 const AccordionContent: AccordionContentComponent = React.forwardRef<
-  HTMLDivElement,
+  HTMLElement,
   Readonly<AccordionContentProps>
 >(function AccordionContent(
   { className, children, onTransitionEnd, ...props },
@@ -206,7 +206,7 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   const mergedContentRef = React.useMemo(
-    () => mergeRefs<HTMLElement>(ref as React.Ref<HTMLElement>, contentRef),
+    () => mergeRefs<HTMLElement>(ref, contentRef),
     [ref]
   );
 
@@ -258,7 +258,7 @@ const AccordionContent: AccordionContentComponent = React.forwardRef<
   const handleTransitionEnd: React.TransitionEventHandler<HTMLElement> = (
     event
   ) => {
-    onTransitionEnd?.(event as React.TransitionEvent<HTMLDivElement>);
+    onTransitionEnd?.(event);
 
     if (
       event.target === event.currentTarget &&
