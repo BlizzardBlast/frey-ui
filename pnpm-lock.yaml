@@ -88,8 +88,8 @@ catalogs:
       specifier: ^4.1.7
       version: 4.1.7
     chromatic:
-      specifier: 17.1.0
-      version: 17.1.0
+      specifier: 17.8.0
+      version: 17.8.0
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
@@ -273,7 +273,7 @@ importers:
         version: 4.1.7(vitest@4.1.7)
       chromatic:
         specifier: 'catalog:'
-        version: 17.1.0
+        version: 17.8.0
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1
@@ -2170,8 +2170,8 @@ packages:
       '@chromatic-com/vitest':
         optional: true
 
-  chromatic@17.1.0:
-    resolution: {integrity: sha512-TApQvyoFJHmeSqgvtGQ8JVQmHcPENub76B/uJGBx+G2Ju6AVo2f4Buh3Rhe0IcBh2N/fBdqEU4MDavhJeVnS+Q==}
+  chromatic@17.8.0:
+    resolution: {integrity: sha512-xcn2TGdbrKHQbGAo3wZc5qoKaPe+CEvhAEcky9OCpofGd3DJucLFEYpk8wYgHKgR5XAI9X8Op1C6fWlvdjxE/g==}
     engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
@@ -2541,6 +2541,7 @@ packages:
   git-raw-commits@5.0.1:
     resolution: {integrity: sha512-Y+csSm2GD/PCSh6Isd/WiMjNAydu0VBiG9J7EdQsNA5P9uXvLayqjmTsNlK5Gs9IhblFZqOU0yid5Il5JPoLiQ==}
     engines: {node: '>=18'}
+    deprecated: Deprecated and no longer maintained. Use @conventional-changelog/git-client instead.
     hasBin: true
 
   glob-parent@5.1.2:
@@ -5406,7 +5407,7 @@ snapshots:
     dependencies:
       semver: 7.8.1
 
-  chromatic@17.1.0:
+  chromatic@17.8.0:
     dependencies:
       semver: 7.8.1
 
