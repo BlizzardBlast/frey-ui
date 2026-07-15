@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.0.16
+
+### Patch Changes
+
+- 09ff360: Allow settled Accordion panels to display nested overlays and focus rings beyond their content boundary. Correct Accordion.Content's forwarded ref and transition-event typing to match its section wrapper.
+
 ## 1.0.15
 
 ### Patch Changes
