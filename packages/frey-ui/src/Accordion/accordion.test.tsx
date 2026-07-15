@@ -1,8 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import { describe, expect, it, vi } from 'vitest';
+import { createRef, type TransitionEventHandler } from 'react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import styles from './accordion.module.css';
 import Accordion from './index';
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
 
 describe('Accordion', () => {
   it('throws when a compound child is rendered outside Accordion root', () => {
@@ -48,6 +54,178 @@ describe('Accordion', () => {
 
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(panel).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('forwards an HTMLElement ref to the content section', () => {
+    const contentRef = createRef<HTMLElement>();
+
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Content ref</Accordion.Trigger>
+          <Accordion.Content ref={contentRef}>
+            Content ref body
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    expect(contentRef.current?.tagName).toBe('SECTION');
+  });
+
+  it('only allows overflow after the opening transition settles', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Overflow transition</Accordion.Trigger>
+          <Accordion.Content>Overflow-safe content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', {
+      name: 'Overflow transition',
+    });
+    const panel = screen.getByText('Overflow-safe content').closest('section');
+
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+
+    await user.click(trigger);
+
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+
+    fireEvent.transitionEnd(panel as HTMLElement, {
+      propertyName: 'grid-template-rows',
+    });
+
+    expect(panel).toHaveClass(styles.accordion_content_wrapper_settled);
+  });
+
+  it('starts default-open content in its overflow-safe state', () => {
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Default-open overflow</Accordion.Trigger>
+          <Accordion.Content>Default-open content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    expect(
+      screen.getByText('Default-open content').closest('section')
+    ).toHaveClass(styles.accordion_content_wrapper_settled);
+  });
+
+  it('restores clipping immediately when a settled panel closes', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Close overflow</Accordion.Trigger>
+          <Accordion.Content>Closable overflow content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Close overflow' });
+    const panel = screen
+      .getByText('Closable overflow content')
+      .closest('section') as HTMLElement;
+
+    await user.click(trigger);
+    fireEvent.transitionEnd(panel, { propertyName: 'grid-template-rows' });
+
+    expect(panel).toHaveClass(styles.accordion_content_wrapper_settled);
+
+    await user.click(trigger);
+
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+
+    fireEvent.transitionEnd(panel, { propertyName: 'grid-template-rows' });
+
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+  });
+
+  it('keeps a panel clipped when it closes before opening has settled', async () => {
+    const user = userEvent.setup();
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Interrupt overflow</Accordion.Trigger>
+          <Accordion.Content>Interrupted overflow content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', {
+      name: 'Interrupt overflow',
+    });
+    const panel = screen
+      .getByText('Interrupted overflow content')
+      .closest('section') as HTMLElement;
+
+    await user.click(trigger);
+    await user.click(trigger);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+
+    fireEvent.transitionEnd(panel, { propertyName: 'grid-template-rows' });
+
+    expect(panel).not.toHaveClass(styles.accordion_content_wrapper_settled);
+  });
+
+  it('settles overflow immediately when reduced motion is preferred', async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({ matches: true }));
+
+    render(
+      <Accordion>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Reduced motion overflow</Accordion.Trigger>
+          <Accordion.Content>Reduced motion content</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const trigger = screen.getByRole('button', {
+      name: 'Reduced motion overflow',
+    });
+    const panel = screen.getByText('Reduced motion content').closest('section');
+
+    await user.click(trigger);
+
+    expect(panel).toHaveClass(styles.accordion_content_wrapper_settled);
+  });
+
+  it('preserves a consumer transition-end handler', () => {
+    let calls = 0;
+    const onTransitionEnd: TransitionEventHandler<HTMLElement> = () => {
+      calls += 1;
+    };
+
+    render(
+      <Accordion defaultValue='one'>
+        <Accordion.Item value='one'>
+          <Accordion.Trigger>Transition handler</Accordion.Trigger>
+          <Accordion.Content onTransitionEnd={onTransitionEnd}>
+            Transition handler content
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    );
+
+    const panel = screen
+      .getByText('Transition handler content')
+      .closest('section') as HTMLElement;
+
+    fireEvent.transitionEnd(panel, { propertyName: 'grid-template-rows' });
+
+    expect(calls).toBe(1);
   });
 
   it('keeps collapsed content out of keyboard tab order', async () => {

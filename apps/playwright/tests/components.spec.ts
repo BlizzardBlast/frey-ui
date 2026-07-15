@@ -32,6 +32,52 @@ test.describe('component stories', () => {
     await expect(content).toBeHidden();
   });
 
+  test('accordion releases non-portaled overlays after expansion settles', async ({
+    page,
+  }) => {
+    await gotoStory('stories-accordion--overflow-safe-content', page);
+
+    const trigger = page.getByRole('button', {
+      name: 'Show overflow-safe content',
+    });
+    const overlay = page.getByTestId('accordion-non-portaled-overlay');
+    const panel = overlay.locator('xpath=ancestor::section');
+
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    await trigger.click();
+
+    await expect
+      .poll(() =>
+        panel.evaluate((element) => getComputedStyle(element).overflow)
+      )
+      .toBe('visible');
+
+    const overlayBox = await overlay.boundingBox();
+    const panelBox = await panel.boundingBox();
+
+    expect(overlayBox).not.toBeNull();
+    expect(panelBox).not.toBeNull();
+    expect(overlayBox?.x).toBeGreaterThan(
+      (panelBox?.x ?? 0) + (panelBox?.width ?? 0)
+    );
+
+    const hitTestId = await page.evaluate(
+      ({ x, y }) => {
+        return document
+          .elementFromPoint(x, y)
+          ?.closest('[data-testid]')
+          ?.getAttribute('data-testid');
+      },
+      {
+        x: (overlayBox?.x ?? 0) + 2,
+        y: (overlayBox?.y ?? 0) + 2,
+      }
+    );
+
+    expect(hitTestId).toBe('accordion-non-portaled-overlay');
+  });
+
   test('controlled switch updates its visible state label', async ({
     page,
   }) => {
