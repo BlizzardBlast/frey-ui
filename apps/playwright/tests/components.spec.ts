@@ -108,6 +108,45 @@ test.describe('component stories', () => {
     await expect(page.getByText('Selected: editor')).toBeVisible();
   });
 
+  test('segmented control supports keyboard selection and visible focus', async ({
+    page,
+  }) => {
+    await gotoStory('stories-segmentedcontrol--disabled-states', page);
+
+    const group = page.getByRole('radiogroup', {
+      name: 'Layout navigation',
+    });
+    const list = group.getByRole('radio', { name: 'List' });
+    const unavailable = group.getByRole('radio', {
+      name: 'Grid unavailable',
+    });
+    const compact = group.getByRole('radio', { name: 'Compact' });
+
+    await expect(list).toBeChecked();
+    await expect(unavailable).toBeDisabled();
+
+    await list.focus();
+    await page.keyboard.press('ArrowRight');
+
+    await expect(compact).toBeFocused();
+    await expect(compact).toBeChecked();
+
+    const compactSegment = compact.locator('xpath=following-sibling::span[1]');
+    await expect
+      .poll(() =>
+        compactSegment.evaluate((element) => {
+          const styles = getComputedStyle(element);
+          return `${styles.outlineStyle} ${styles.outlineWidth}`;
+        })
+      )
+      .toBe('solid 2px');
+
+    await page.keyboard.press('ArrowRight');
+
+    await expect(list).toBeFocused();
+    await expect(list).toBeChecked();
+  });
+
   test('theme provider stories expose expected data attributes', async ({
     page,
   }) => {
