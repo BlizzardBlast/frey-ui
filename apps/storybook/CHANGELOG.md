@@ -1,5 +1,12 @@
 # @frey-ui/storybook
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependencies [09ff360]
+  - frey-ui@1.0.16
+
 ## 1.0.6
 
 ### Patch Changes
