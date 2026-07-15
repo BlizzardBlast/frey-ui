@@ -1,5 +1,6 @@
 .segmented_control {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   gap: var(--frey-space-1);
   box-sizing: border-box;
@@ -62,7 +63,7 @@
   border: 1px solid transparent;
   border-radius: var(--frey-radius-md);
   background-color: transparent;
-  color: var(--frey-color-text-secondary);
+  color: var(--frey-color-text-primary);
   font-size: var(--segmented-control-font-size);
   font-weight: 500;
   line-height: 1.5;
@@ -80,15 +81,15 @@
 }
 
 .segmented_control_input:checked + .segmented_control_segment {
-  border-color: var(--frey-button-primary-bg);
-  background-color: var(--frey-button-primary-bg);
-  color: var(--frey-button-primary-text);
+  border-color: var(--frey-segmented-control-selected-text);
+  background-color: var(--frey-segmented-control-selected-bg);
+  color: var(--frey-segmented-control-selected-text);
 }
 
 .segmented_control_input:focus + .segmented_control_segment {
   position: relative;
   z-index: 1;
-  outline: 2px solid var(--frey-focus-ring);
+  outline: 2px solid var(--frey-segmented-control-focus-ring);
   outline-offset: 2px;
 }
 
@@ -99,7 +100,7 @@
   }
 
   .segmented_control_input:focus-visible + .segmented_control_segment {
-    outline: 2px solid var(--frey-focus-ring);
+    outline: 2px solid var(--frey-segmented-control-focus-ring);
     outline-offset: 2px;
   }
 }

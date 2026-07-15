@@ -298,13 +298,15 @@ describe('SegmentedControl', () => {
     expect(defaultClass).toBe(mediumClass);
   });
 
-  it('applies root and item DOM customization to their documented elements', () => {
+  it('applies field, group, and item customization to their documented elements', () => {
     render(
       <SegmentedControl
         label='Dashboard view'
         id='dashboard-view'
-        className='custom-group'
+        className='custom-field'
         style={{ marginTop: 12 }}
+        groupClassName='custom-group'
+        groupStyle={{ marginBottom: 8 }}
         data-testid='segmented-root'
       >
         <SegmentedControl.Item
@@ -319,15 +321,65 @@ describe('SegmentedControl', () => {
     );
 
     const group = screen.getByTestId('segmented-root');
+    const field = group.parentElement;
     const radio = screen.getByRole('radio', { name: 'List' });
     const visibleSegment = screen.getByText('List');
 
+    expect(field).toHaveClass('custom-field');
+    expect(field).toHaveStyle({ marginTop: '12px' });
     expect(group).toHaveAttribute('id', 'dashboard-view');
     expect(group).toHaveClass('custom-group');
-    expect(group).toHaveStyle({ marginTop: '12px' });
+    expect(group).not.toHaveClass('custom-field');
+    expect(group).toHaveStyle({ marginBottom: '8px' });
+    expect(group).not.toHaveStyle({ marginTop: '12px' });
     expect(radio).toHaveAttribute('id', 'dashboard-list');
     expect(visibleSegment).toHaveClass('custom-item');
     expect(visibleSegment).toHaveStyle({ minWidth: '80px' });
+  });
+
+  it('merges consumer and field descriptions while errors remain authoritative', () => {
+    render(
+      <>
+        <p id='external-description'>External guidance.</p>
+        <SegmentedControl
+          label='Billing interval'
+          helperText='Choose one interval.'
+          error='An interval is required.'
+          aria-describedby='external-description'
+          aria-invalid={false}
+        >
+          <SegmentedControl.Item value='monthly'>Monthly</SegmentedControl.Item>
+          <SegmentedControl.Item value='yearly'>Yearly</SegmentedControl.Item>
+        </SegmentedControl>
+      </>
+    );
+
+    const group = screen.getByRole('radiogroup', {
+      name: 'Billing interval',
+    });
+    const describedBy = group.getAttribute('aria-describedby')?.split(' ');
+
+    expect(describedBy).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining('-error'),
+        expect.stringContaining('-helper'),
+        'external-description',
+      ])
+    );
+    expect(group).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it('honors an explicit consumer invalid state without a field error', () => {
+    render(
+      <SegmentedControl label='Billing interval' aria-invalid='true'>
+        <SegmentedControl.Item value='monthly'>Monthly</SegmentedControl.Item>
+        <SegmentedControl.Item value='yearly'>Yearly</SegmentedControl.Item>
+      </SegmentedControl>
+    );
+
+    expect(
+      screen.getByRole('radiogroup', { name: 'Billing interval' })
+    ).toHaveAttribute('aria-invalid', 'true');
   });
 
   it('forwards root and item refs to the documented DOM elements', () => {

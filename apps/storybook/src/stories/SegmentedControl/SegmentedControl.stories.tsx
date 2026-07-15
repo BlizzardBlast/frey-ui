@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { SegmentedControlProps } from 'frey-ui';
-import { SegmentedControl } from 'frey-ui';
+import { SegmentedControl, ThemeProvider } from 'frey-ui';
 import { useState } from 'react';
 import { expect, fn, userEvent, within } from 'storybook/test';
 
@@ -21,7 +21,49 @@ type SegmentedControlStoryProps = Pick<
   | 'id'
   | 'className'
   | 'style'
+  | 'groupClassName'
+  | 'groupStyle'
 >;
+
+type ThemeCompatibilityPreviewProps = {
+  label: string;
+  name: string;
+  theme: 'light' | 'dark';
+  highContrast: boolean;
+};
+
+function ThemeCompatibilityPreview({
+  label,
+  name,
+  theme,
+  highContrast,
+}: Readonly<ThemeCompatibilityPreviewProps>) {
+  return (
+    <ThemeProvider theme={theme} highContrast={highContrast}>
+      <div
+        style={{
+          display: 'grid',
+          gap: 8,
+          padding: 16,
+          border: '1px solid var(--frey-color-border)',
+          borderRadius: 'var(--frey-radius-lg)',
+          background: 'var(--frey-color-surface)',
+        }}
+      >
+        <strong>{label}</strong>
+        <SegmentedControl
+          label={`${label} dashboard view`}
+          name={name}
+          defaultValue='list'
+        >
+          <SegmentedControl.Item value='list'>List</SegmentedControl.Item>
+          <SegmentedControl.Item value='grid'>Grid</SegmentedControl.Item>
+          <SegmentedControl.Item value='compact'>Compact</SegmentedControl.Item>
+        </SegmentedControl>
+      </div>
+    </ThemeProvider>
+  );
+}
 
 const meta: Meta<SegmentedControlStoryProps> = {
   component: SegmentedControl,
@@ -33,7 +75,7 @@ const meta: Meta<SegmentedControlStoryProps> = {
     docs: {
       description: {
         component:
-          'A native radio-backed single-select control. Each `SegmentedControl.Item` requires a unique `value` and visible text content. Its `disabled` and `id` props target the native radio; `className` and `style` target the visible segment.',
+          'A native radio-backed single-select control. Root `className` and `style` target the Field wrapper; `groupClassName`, `groupStyle`, other div attributes, the root id, and the root ref target the radiogroup. Each `SegmentedControl.Item` requires a unique `value` and visible text content. Item `disabled` and `id` target the native radio, while item `className` and `style` target the visible segment. Selection and focus colors can be customized with the `--frey-segmented-control-selected-bg`, `--frey-segmented-control-selected-text`, and `--frey-segmented-control-focus-ring` tokens.',
       },
     },
   },
@@ -205,7 +247,7 @@ const meta: Meta<SegmentedControlStoryProps> = {
     },
     className: {
       control: { type: 'text' },
-      description: 'Additional class names applied to the radiogroup.',
+      description: 'Additional class names applied to the Field wrapper.',
       table: {
         type: {
           summary: 'string',
@@ -216,6 +258,30 @@ const meta: Meta<SegmentedControlStoryProps> = {
       },
     },
     style: {
+      control: { type: 'object' },
+      description: 'Inline styles applied to the Field wrapper.',
+      table: {
+        type: {
+          summary: 'CSSProperties',
+        },
+        defaultValue: {
+          summary: 'None',
+        },
+      },
+    },
+    groupClassName: {
+      control: { type: 'text' },
+      description: 'Additional class names applied to the radiogroup.',
+      table: {
+        type: {
+          summary: 'string',
+        },
+        defaultValue: {
+          summary: 'None',
+        },
+      },
+    },
+    groupStyle: {
       control: { type: 'object' },
       description: 'Inline styles applied to the radiogroup.',
       table: {
@@ -391,5 +457,52 @@ export const dashboard_filter: Story = {
         <small>Showing {status} transactions</small>
       </div>
     );
+  },
+} satisfies Story;
+
+export const theme_compatibility: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 16 }}>
+      <ThemeCompatibilityPreview
+        label='Light theme'
+        name='light-theme-dashboard-view'
+        theme='light'
+        highContrast={false}
+      />
+      <ThemeCompatibilityPreview
+        label='Dark theme'
+        name='dark-theme-dashboard-view'
+        theme='dark'
+        highContrast={false}
+      />
+      <ThemeCompatibilityPreview
+        label='Light high contrast'
+        name='light-high-contrast-dashboard-view'
+        theme='light'
+        highContrast
+      />
+      <ThemeCompatibilityPreview
+        label='Dark high contrast'
+        name='dark-high-contrast-dashboard-view'
+        theme='dark'
+        highContrast
+      />
+    </div>
+  ),
+  play: async ({ canvas }) => {
+    for (const label of [
+      'Light theme',
+      'Dark theme',
+      'Light high contrast',
+      'Dark high contrast',
+    ]) {
+      const group = canvas.getByRole('radiogroup', {
+        name: `${label} dashboard view`,
+      });
+
+      await expect(
+        within(group).getByRole('radio', { name: 'List' })
+      ).toBeChecked();
+    }
   },
 } satisfies Story;

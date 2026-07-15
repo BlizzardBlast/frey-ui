@@ -2,13 +2,14 @@ import clsx from 'clsx';
 import React from 'react';
 import Field from '../Field';
 import { useControllableValue } from '../hooks/useControllableState';
+import { computeAriaProps } from '../utils/aria';
 import styles from './segmentedcontrol.module.css';
 
 export type SegmentedControlSize = 'sm' | 'md' | 'lg';
 
 export type SegmentedControlProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
-  'children' | 'defaultValue' | 'onChange'
+  'children' | 'className' | 'defaultValue' | 'onChange' | 'style'
 > & {
   children: React.ReactNode;
   label: string;
@@ -22,6 +23,10 @@ export type SegmentedControlProps = Omit<
   required?: boolean;
   name?: string;
   size?: SegmentedControlSize;
+  className?: string;
+  style?: React.CSSProperties;
+  groupClassName?: string;
+  groupStyle?: React.CSSProperties;
 };
 
 export type SegmentedControlItemProps = {
@@ -87,6 +92,10 @@ const SegmentedControlRoot: SegmentedControlRootComponent = React.forwardRef<
     id,
     className,
     style,
+    groupClassName,
+    groupStyle,
+    'aria-describedby': ariaDescribedBy,
+    'aria-invalid': ariaInvalid,
     ...groupProps
   },
   ref
@@ -127,6 +136,8 @@ const SegmentedControlRoot: SegmentedControlRootComponent = React.forwardRef<
         disabled={disabled}
         required={required}
         id={id}
+        className={className}
+        style={style}
         labelElement='span'
       >
         {({ inputId, labelId, describedBy, hasError }) => (
@@ -136,15 +147,19 @@ const SegmentedControlRoot: SegmentedControlRootComponent = React.forwardRef<
             id={inputId}
             role='radiogroup'
             aria-labelledby={labelId}
-            aria-describedby={describedBy}
-            aria-invalid={hasError || undefined}
+            {...computeAriaProps(
+              hasError,
+              describedBy,
+              ariaDescribedBy,
+              ariaInvalid
+            )}
             aria-disabled={disabled || undefined}
             className={clsx(
               styles.segmented_control,
               SizeClassMap[size],
-              className
+              groupClassName
             )}
-            style={style}
+            style={groupStyle}
           >
             {children}
           </div>
