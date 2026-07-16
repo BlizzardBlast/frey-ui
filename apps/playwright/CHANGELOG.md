@@ -1,5 +1,13 @@
 # @frey-ui/playwright
 
+## 1.0.5
+
+### Patch Changes
+
+- b75a30a: Add an accessible, native radio-backed SegmentedControl with compound items, three sizes, field messaging, Storybook documentation, and browser interaction coverage.
+- Updated dependencies [b75a30a]
+  - @frey-ui/storybook@1.0.8
+
 ## 1.0.4
 
 ### Patch Changes

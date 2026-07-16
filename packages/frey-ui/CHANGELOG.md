@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.1.0
+
+### Minor Changes
+
+- b75a30a: Add an accessible, native radio-backed SegmentedControl with compound items, three sizes, field messaging, Storybook documentation, and browser interaction coverage.
+
 ## 1.0.16
 
 ### Patch Changes
