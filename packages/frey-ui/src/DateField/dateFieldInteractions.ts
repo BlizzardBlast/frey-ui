@@ -279,6 +279,7 @@ type ParseDateFieldPasteOptions = Readonly<{
 }>;
 
 const REGEXP_SPECIAL_CHARACTERS = /[.*+?^${}()|[\]\\]/g;
+const NUMERIC_SEGMENT_CAPTURE = String.raw`([\d−-]+)`;
 
 function escapeRegExp(value: string): string {
   return value.replace(REGEXP_SPECIAL_CHARACTERS, String.raw`\$&`);
@@ -294,7 +295,7 @@ function createLocalizedPastePattern(
       pattern += escapeRegExp(part.value);
       continue;
     }
-    pattern += part.type === 'era' ? '(.+?)' : '([\\d−-]+)';
+    pattern += part.type === 'era' ? '(.+?)' : NUMERIC_SEGMENT_CAPTURE;
     capturedSegments.push(part.type);
   }
   return { expression: new RegExp(`${pattern}$`), capturedSegments };
