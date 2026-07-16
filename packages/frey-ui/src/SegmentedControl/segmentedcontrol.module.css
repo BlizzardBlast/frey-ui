@@ -1,0 +1,131 @@
+.segmented_control {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: var(--frey-space-1);
+  box-sizing: border-box;
+  max-width: 100%;
+  padding: var(--frey-space-1);
+  border: 1px solid var(--frey-color-border);
+  border-radius: var(--frey-radius-lg);
+  background-color: var(--frey-color-surface-subtle);
+  white-space: nowrap;
+}
+
+.segmented_control[aria-invalid='true'] {
+  border-color: var(--frey-color-error);
+}
+
+.segmented_control_sm {
+  --segmented-control-padding: 0.25rem 0.75rem;
+  --segmented-control-font-size: 0.8125rem;
+}
+
+.segmented_control_md {
+  --segmented-control-padding: 0.5rem 1rem;
+  --segmented-control-font-size: 0.875rem;
+}
+
+.segmented_control_lg {
+  --segmented-control-padding: 0.625rem 1.25rem;
+  --segmented-control-font-size: 1rem;
+}
+
+.segmented_control_item {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.segmented_control_input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
+}
+
+.segmented_control_segment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-inline-size: 1.5rem;
+  min-block-size: 1.5rem;
+  padding: var(--segmented-control-padding);
+  border: 1px solid transparent;
+  border-radius: var(--frey-radius-md);
+  background-color: transparent;
+  color: var(--frey-color-text-primary);
+  font-size: var(--segmented-control-font-size);
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.segmented_control_input:not(:checked):not(:disabled)
+  + .segmented_control_segment:hover {
+  background-color: var(--frey-color-surface-subtle-hover);
+  color: var(--frey-color-text-primary);
+}
+
+.segmented_control_input:checked + .segmented_control_segment {
+  border-color: var(--frey-segmented-control-selected-text);
+  background-color: var(--frey-segmented-control-selected-bg);
+  color: var(--frey-segmented-control-selected-text);
+}
+
+.segmented_control_input:focus + .segmented_control_segment {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--frey-segmented-control-focus-ring);
+  outline-offset: 2px;
+}
+
+@supports selector(:focus-visible) {
+  .segmented_control_input:focus:not(:focus-visible)
+    + .segmented_control_segment {
+    outline: none;
+  }
+
+  .segmented_control_input:focus-visible + .segmented_control_segment {
+    outline: 2px solid var(--frey-segmented-control-focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.segmented_control_input:disabled + .segmented_control_segment {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .segmented_control_input:checked + .segmented_control_segment {
+    border-color: Highlight;
+  }
+
+  .segmented_control_input:focus + .segmented_control_segment {
+    outline-color: Highlight;
+  }
+
+  .segmented_control_input:disabled + .segmented_control_segment {
+    color: GrayText;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segmented_control_segment {
+    transition: none;
+  }
+}

@@ -128,6 +128,12 @@ export type {
   RadioOption,
 } from './RadioGroup';
 export { default as RadioGroup } from './RadioGroup';
+export type {
+  SegmentedControlItemProps,
+  SegmentedControlProps,
+  SegmentedControlSize,
+} from './SegmentedControl';
+export { default as SegmentedControl } from './SegmentedControl';
 export type { SelectProps, SelectSize } from './Select';
 export { default as Select } from './Select';
 export type { SkeletonProps, SkeletonShape } from './Skeleton';

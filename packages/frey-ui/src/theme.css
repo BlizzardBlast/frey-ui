@@ -109,6 +109,11 @@
   --frey-button-destructive-hover: var(--frey-palette-red-700);
   --frey-button-destructive-text: var(--frey-palette-white);
 
+  /* SegmentedControl */
+  --frey-segmented-control-selected-bg: var(--frey-palette-purple-700);
+  --frey-segmented-control-selected-text: var(--frey-palette-white);
+  --frey-segmented-control-focus-ring: var(--frey-palette-gray-900);
+
   /* Feedback */
   --frey-color-error: var(--frey-palette-red-600);
   --frey-color-error-bg: var(--frey-palette-red-50);
@@ -173,6 +178,11 @@
   --frey-button-destructive-hover: var(--frey-palette-red-600);
   --frey-button-destructive-text: var(--frey-palette-white);
 
+  /* SegmentedControl */
+  --frey-segmented-control-selected-bg: var(--frey-palette-purple-600);
+  --frey-segmented-control-selected-text: var(--frey-palette-white);
+  --frey-segmented-control-focus-ring: var(--frey-palette-gray-50);
+
   /* Feedback */
   --frey-color-error: var(--frey-palette-red-400);
   --frey-color-error-bg: #450a0a;
@@ -214,6 +224,10 @@
   --frey-button-secondary-text: var(--frey-palette-purple-800);
   --frey-button-ghost-text: var(--frey-palette-purple-800);
 
+  --frey-segmented-control-selected-bg: var(--frey-palette-purple-900);
+  --frey-segmented-control-selected-text: var(--frey-palette-white);
+  --frey-segmented-control-focus-ring: var(--frey-palette-black);
+
   --frey-color-error: var(--frey-palette-red-700);
   --frey-color-success: var(--frey-palette-green-800);
   --frey-color-warning: #b45309; /* darker yellow/amber */
@@ -235,6 +249,10 @@
   --frey-button-secondary-border: var(--frey-palette-purple-300);
   --frey-button-secondary-text: var(--frey-palette-purple-300);
   --frey-button-ghost-text: var(--frey-palette-purple-300);
+
+  --frey-segmented-control-selected-bg: var(--frey-palette-purple-300);
+  --frey-segmented-control-selected-text: var(--frey-palette-black);
+  --frey-segmented-control-focus-ring: var(--frey-palette-white);
 
   --frey-color-error: var(--frey-palette-red-300);
   --frey-color-success: var(--frey-palette-green-300);

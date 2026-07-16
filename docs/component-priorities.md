@@ -34,68 +34,33 @@ What is now covered:
 - Settled expanded panels allow nested focus rings and non-portaled overlays
   to extend beyond their content boundary.
 
-## Recommended Next New Component
-
 ### `SegmentedControl`
 
-`SegmentedControl` is now the strongest next **new** component to build.
+`SegmentedControl` has been implemented and should no longer be treated as the
+next component opportunity.
 
-Why it is the best fit now:
+What is now covered:
 
-- High reuse in settings pages, filters, and dashboards.
-- Can likely reuse patterns from `Tabs` and `RadioGroup`.
-- Lower implementation risk than `DatePicker` or file upload.
+- Compound `SegmentedControl` and `SegmentedControl.Item` API.
+- Native radio semantics with controlled and uncontrolled selection, form
+  participation, arrow-key navigation, and disabled items.
+- Small, medium, and large sizes with visible selected, invalid, and focus
+  states.
+- Storybook scenarios, unit coverage, and browser-level keyboard coverage.
 
-Suggested v1 scope:
-
-- `SegmentedControl`
-- `SegmentedControl.Item`
-
-Suggested v1 behaviors:
-
-- Controlled and uncontrolled value patterns.
-- Keyboard navigation with arrow keys.
-- Disabled item support.
-- Clear selected/unselected and focus-visible states.
-
-Suggested v1 non-goals:
-
-- Multi-row overflow behavior.
-- Icon-only variants.
-- Async-loading options.
-
-Suggested Storybook stories:
-
-- Basic usage.
-- Disabled items.
-- Controlled selection.
-- Settings/filter examples.
-
-Suggested tests:
-
-- Unit tests for selection behavior, keyboard navigation, and disabled items.
-- A11y assertions for role/state semantics and focus visibility.
-
-Implementation note:
-
-- Prefer composing on top of existing `Tabs`/`RadioGroup` interaction patterns
-  instead of introducing a one-off selection model.
-
-## Other Good Ideas
-
-### `SegmentedControl` status
-
-Now promoted to the recommended next new component.
+## Recommended Next New Component
 
 ### `DatePicker`
 
-Best high-demand but higher-complexity form component.
+`DatePicker` is now the strongest next **new** component to build.
 
 - Strong practical value.
 - Significantly more surface area: calendar math, localization, keyboard
   support, and overlay behavior.
 - Better as a deliberate follow-up after `SegmentedControl` unless date input
   is currently blocking product work.
+
+## Other Good Ideas
 
 ### `FileUpload` or `Dropzone`
 
@@ -117,16 +82,13 @@ Best lightweight product-polish addition.
 
 ## Priority Order
 
-1. `SegmentedControl`
-2. `DatePicker`
-3. `FileUpload` or `Dropzone`
-4. `EmptyState`
+1. `DatePicker`
+2. `FileUpload` or `Dropzone`
+3. `EmptyState`
 
 ## Recommendation
 
-If only one thing should happen next, build `SegmentedControl`.
+If only one thing should happen next, build `DatePicker`.
 
-If you want the next net-new component, build `SegmentedControl`.
-
-If you need a higher-demand form surface and can absorb complexity, build
-`DatePicker`.
+If you want the next net-new component and can absorb its calendar,
+localization, and overlay complexity, build `DatePicker`.
