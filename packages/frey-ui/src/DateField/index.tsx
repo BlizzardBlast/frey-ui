@@ -3,13 +3,9 @@ import React, { useEffect, useMemo, useReducer, useRef } from 'react';
 import Field from '../Field';
 import { CloseIcon } from '../Icons/CloseIcon';
 import {
-  addCalendarMonths,
-  addCalendarYears,
-  addIsoDays,
   getCalendarDate,
   isDateWithinConstraints,
   parseDateValue,
-  serializeDateValue,
   validateDateCalendar,
   validateDateConstraints,
 } from '../date/dateEngine';
@@ -17,17 +13,26 @@ import {
   getCalendarEraOptions,
   getDateSegmentLayout,
   getLocaleDirection,
-  normalizeLocalizedDigits,
 } from '../date/dateLocale';
 import type {
   DateCalendar,
   DateSegment,
   DateSegmentLabels,
   DateValue,
+  IsoDate,
 } from '../date/types';
 import { useDateLocale } from '../date/useDateLocale';
 import { useControllableValue } from '../hooks/useControllableState';
-import { DateSegmentInput } from './DateSegmentInput';
+import { DateFieldSegments } from './DateFieldSegments';
+import {
+  createDateDraftEdit,
+  normalizeDateFieldValue,
+  parseDateFieldPaste,
+  resolveDateDraftValue,
+  resolveDateFieldKeyCommand,
+  stepDateDraft,
+  type DateFieldKeyCommand,
+} from './dateFieldInteractions';
 import {
   areValuesEqual,
   createDraft,
@@ -66,13 +71,6 @@ export type DateFieldProps = {
   controlStyle?: React.CSSProperties;
 };
 
-const DEFAULT_SEGMENT_LABELS: Record<DateSegment, string> = {
-  era: 'Era',
-  year: 'Year',
-  month: 'Month',
-  day: 'Day',
-};
-
 export type DateFieldControlProps = Omit<
   DateFieldProps,
   'label' | 'hideLabel' | 'helperText' | 'error' | 'id' | 'className' | 'style'
@@ -87,6 +85,46 @@ export type DateFieldControlProps = Omit<
     event: React.KeyboardEvent<HTMLInputElement>
   ) => void;
 };
+
+function isCommittedDateSelectable(
+  value: DateValue | null,
+  minDate: IsoDate | undefined,
+  maxDate: IsoDate | undefined,
+  isDateUnavailable: ((value: DateValue) => boolean) | undefined
+): boolean {
+  if (value === null) return true;
+  return (
+    isDateWithinConstraints(parseDateValue(value), minDate, maxDate) &&
+    !isDateUnavailable?.(value)
+  );
+}
+
+function hasDateFieldInternalError(
+  committedValue: DateValue | null,
+  required: boolean,
+  draftChanged: boolean,
+  draftValue: DateValue | null | undefined,
+  draftSelectable: boolean,
+  committedSelectable: boolean
+): boolean {
+  return (
+    (!committedValue && required && !draftChanged) ||
+    !committedSelectable ||
+    (draftChanged && draftValue !== null && !draftSelectable)
+  );
+}
+
+function shouldShowClearButton(
+  requested: boolean,
+  required: boolean,
+  disabled: boolean,
+  readOnly: boolean,
+  committedValue: DateValue | null
+): boolean {
+  return (
+    requested && !required && !disabled && !readOnly && committedValue !== null
+  );
+}
 
 type DateFieldControlComponent = React.ForwardRefExoticComponent<
   Readonly<DateFieldControlProps> & React.RefAttributes<HTMLDivElement>
@@ -133,16 +171,11 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
     () => getCalendarEraOptions(resolvedLocale, calendar),
     [calendar, resolvedLocale]
   );
-  const parsedDefaultValue =
-    defaultValue === null
-      ? null
-      : serializeDateValue(parseDateValue(defaultValue, 'defaultValue'));
-  const parsedControlledValue =
-    value === undefined
-      ? undefined
-      : value === null
-        ? null
-        : serializeDateValue(parseDateValue(value, 'value'));
+  const parsedDefaultValue = normalizeDateFieldValue(
+    defaultValue,
+    'defaultValue'
+  );
+  const parsedControlledValue = normalizeDateFieldValue(value, 'value');
   const { minDate, maxDate } = validateDateConstraints(minValue, maxValue);
   const [committedValue, setCommittedValue] =
     useControllableValue<DateValue | null>(
@@ -166,27 +199,38 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
     storedDraft.sourceKey === sourceKey ? storedDraft : baselineDraft;
   const draftChanged = !areValuesEqual(draft.values, baselineDraft.values);
   const draftValue = getDraftValue(draft, resolvedLocale, calendar);
+  const resolvedDraftValue = resolveDateDraftValue({
+    draft,
+    locale: resolvedLocale,
+    calendar,
+    minDate,
+    maxDate,
+    isDateUnavailable,
+  });
   const draftIsoDate =
     typeof draftValue === 'string' ? parseDateValue(draftValue) : undefined;
-  const draftSelectable =
-    draftIsoDate !== undefined &&
-    isDateWithinConstraints(draftIsoDate, minDate, maxDate) &&
-    !isDateUnavailable?.(draftValue as DateValue);
+  const draftSelectable = typeof resolvedDraftValue === 'string';
   const committedDate = committedValue
     ? parseDateValue(committedValue)
     : undefined;
-  const committedSelectable =
-    committedDate === undefined ||
-    (isDateWithinConstraints(committedDate, minDate, maxDate) &&
-      !isDateUnavailable?.(committedValue as DateValue));
+  const committedSelectable = isCommittedDateSelectable(
+    committedValue,
+    minDate,
+    maxDate,
+    isDateUnavailable
+  );
   const referenceCalendarDate = getCalendarDate(
     draftIsoDate ?? committedDate ?? parseDateValue(TEMPLATE_VALUE),
     calendar
   );
-  const hasInternalError =
-    (!committedValue && required && !draftChanged) ||
-    !committedSelectable ||
-    (draftChanged && draftValue !== null && !draftSelectable);
+  const hasInternalError = hasDateFieldInternalError(
+    committedValue,
+    required,
+    draftChanged,
+    draftValue,
+    draftSelectable,
+    committedSelectable
+  );
   const invalid = hasConsumerError || hasInternalError;
   const firstInputRef = useRef<HTMLInputElement>(null);
   const segmentInputRefs = useRef<
@@ -224,85 +268,63 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
 
   function handleSegmentChange(segment: DateSegment, nextValue: string): void {
     if (disabled || readOnly) return;
-    if (segment === 'era') {
-      if (nextValue.length === 0) {
-        applyDraft({
-          ...draft,
-          values: { ...draft.values, era: '' },
-          eraTypeahead: '',
-        });
-        return;
-      }
-      const appendedValue = nextValue.startsWith(draft.values.era)
-        ? nextValue.slice(draft.values.era.length)
-        : nextValue;
-      const typeahead = `${draft.eraTypeahead}${appendedValue}`;
-      const normalizedQuery = typeahead
-        .trim()
-        .toLocaleLowerCase(resolvedLocale);
-      const matchedEras = eraOptions.filter((option) =>
-        option.label
-          .toLocaleLowerCase(resolvedLocale)
-          .startsWith(normalizedQuery)
-      );
-      const matchedEra = matchedEras[0];
-      const nextDraft: DateDraft = {
-        ...draft,
-        eraId: matchedEra?.id ?? draft.eraId,
-        values: {
-          ...draft.values,
-          era: matchedEra?.label ?? nextValue,
-        },
-        eraTypeahead: typeahead,
-      };
-      if (matchedEras.length === 1) {
-        applyDraft(nextDraft);
-      } else {
-        dispatch({ type: 'replace', draft: nextDraft });
-      }
-      return;
-    }
-    const normalizedValue = Array.from(nextValue)
-      .filter((character) => {
-        const normalizedCharacter = normalizeLocalizedDigits(
-          character,
-          resolvedLocale
-        ).replace('−', '-');
-        return segment === 'year'
-          ? /^[0-9-]$/.test(normalizedCharacter)
-          : /^[0-9]$/.test(normalizedCharacter);
-      })
-      .join('');
-    const nextDraft = draftReducer(draft, {
-      type: 'set-segment',
+    const edit = createDateDraftEdit({
+      draft,
       segment,
-      value: normalizedValue,
+      nextValue,
+      locale: resolvedLocale,
+      eraOptions,
     });
-    applyDraft(nextDraft);
+    if (edit.shouldApply) applyDraft(edit.draft);
+    else dispatch({ type: 'replace', draft: edit.draft });
   }
 
   function applyDraft(nextDraft: DateDraft): void {
-    const nextDateValue = getDraftValue(nextDraft, resolvedLocale, calendar);
-
-    if (nextDateValue === null) {
-      setCommittedValue(null);
-      replaceWithCommitted(null);
+    const nextValue = resolveDateDraftValue({
+      draft: nextDraft,
+      locale: resolvedLocale,
+      calendar,
+      minDate,
+      maxDate,
+      isDateUnavailable,
+    });
+    if (nextValue === undefined) {
+      dispatch({ type: 'replace', draft: nextDraft });
       return;
     }
+    setCommittedValue(nextValue);
+    replaceWithCommitted(nextValue);
+  }
 
-    if (typeof nextDateValue === 'string') {
-      const nextDate = parseDateValue(nextDateValue);
-      const selectable =
-        isDateWithinConstraints(nextDate, minDate, maxDate) &&
-        !isDateUnavailable?.(nextDateValue);
-      if (selectable) {
-        setCommittedValue(nextDateValue);
-        replaceWithCommitted(nextDateValue);
+  function executeKeyCommand(
+    command: DateFieldKeyCommand,
+    currentSegment: DateSegment
+  ): void {
+    switch (command.type) {
+      case 'move':
+        if (command.target === currentSegment) return;
+        dispatch({ type: 'set-active', segment: command.target });
+        segmentInputRefs.current[command.target]?.focus();
         return;
+      case 'restore':
+        dispatch({ type: 'replace', draft: baselineDraft });
+        return;
+      case 'clear':
+        handleSegmentChange(currentSegment, '');
+        return;
+      case 'step': {
+        const nextDraft = stepDateDraft({
+          draft,
+          segment: command.segment,
+          amount: command.amount,
+          calendar,
+          locale: resolvedLocale,
+          layout,
+          eraOptions,
+        });
+        if (nextDraft) applyDraft(nextDraft);
       }
     }
-
-    dispatch({ type: 'replace', draft: nextDraft });
   }
 
   function handleSegmentKeyDown(
@@ -311,128 +333,16 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
   ): void {
     onSegmentKeyDown?.(segment, event);
     if (event.defaultPrevented) return;
-
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-      event.preventDefault();
-      const currentIndex = visibleSegments.indexOf(segment);
-      const physicalDirection = event.key === 'ArrowRight' ? 1 : -1;
-      const logicalDirection =
-        direction === 'rtl' ? -physicalDirection : physicalDirection;
-      const nextSegment = visibleSegments[currentIndex + logicalDirection];
-      if (nextSegment) {
-        dispatch({ type: 'set-active', segment: nextSegment });
-        segmentInputRefs.current[nextSegment]?.focus();
-      }
-      return;
-    }
-
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      dispatch({ type: 'replace', draft: baselineDraft });
-      return;
-    }
-
-    if (event.key === 'Backspace' || event.key === 'Delete') {
-      if (!disabled && !readOnly) {
-        event.preventDefault();
-        handleSegmentChange(segment, '');
-      }
-      return;
-    }
-
-    if (
-      (event.key === 'ArrowUp' || event.key === 'ArrowDown') &&
-      !disabled &&
-      !readOnly
-    ) {
-      event.preventDefault();
-      const amount = event.key === 'ArrowUp' ? 1 : -1;
-      if (segment === 'era') {
-        const currentIndex = eraOptions.findIndex(
-          (option) => option.id === draft.eraId
-        );
-        const nextIndex =
-          (currentIndex + amount + eraOptions.length) % eraOptions.length;
-        const nextEra = eraOptions[nextIndex];
-        applyDraft({
-          ...draft,
-          eraId: nextEra.id,
-          values: { ...draft.values, era: nextEra.label },
-          eraTypeahead: '',
-        });
-        return;
-      }
-      const currentValue = getDraftValue(draft, resolvedLocale, calendar);
-      if (typeof currentValue !== 'string') return;
-
-      try {
-        const currentDate = parseDateValue(currentValue);
-        const nextDate =
-          segment === 'day'
-            ? addIsoDays(currentDate, amount)
-            : segment === 'month'
-              ? addCalendarMonths(currentDate, calendar, amount)
-              : addCalendarYears(currentDate, calendar, amount);
-        applyDraft(
-          createDraft(
-            serializeDateValue(nextDate),
-            calendar,
-            resolvedLocale,
-            layout,
-            eraOptions
-          )
-        );
-      } catch {
-        // The supported ISO boundary is a hard stop for segment stepping.
-      }
-    }
-  }
-
-  function getLocalizedPasteDraft(text: string): DateDraft | null {
-    const normalizedText = normalizeLocalizedDigits(
-      text.trim(),
-      resolvedLocale
-    );
-    let pattern = '^';
-    const capturedSegments: DateSegment[] = [];
-    for (const part of layout) {
-      if (part.kind === 'literal') {
-        pattern += part.value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      } else {
-        pattern += part.type === 'era' ? '(.+?)' : '([0-9−-]+)';
-        capturedSegments.push(part.type);
-      }
-    }
-    pattern += '$';
-    const match = new RegExp(pattern).exec(normalizedText);
-    if (!match) return null;
-
-    let nextDraft = draft;
-    for (const [index, segment] of capturedSegments.entries()) {
-      const capturedValue = match[index + 1] as string;
-      if (segment === 'era') {
-        const matchedEra = eraOptions.find(
-          (option) =>
-            option.label.localeCompare(capturedValue, resolvedLocale, {
-              sensitivity: 'base',
-            }) === 0
-        );
-        if (!matchedEra) return null;
-        nextDraft = {
-          ...nextDraft,
-          eraId: matchedEra.id,
-          values: { ...nextDraft.values, era: matchedEra.label },
-          eraTypeahead: '',
-        };
-        continue;
-      }
-      nextDraft = draftReducer(nextDraft, {
-        type: 'set-segment',
-        segment,
-        value: capturedValue,
-      });
-    }
-    return nextDraft;
+    const command = resolveDateFieldKeyCommand({
+      key: event.key,
+      segment,
+      direction,
+      visibleSegments,
+      editable: !disabled && !readOnly,
+    });
+    if (!command) return;
+    event.preventDefault();
+    executeKeyCommand(command, segment);
   }
 
   function handleSegmentPaste(
@@ -441,19 +351,14 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
   ): void {
     if (disabled || readOnly) return;
     const text = event.clipboardData.getData('text');
-    let nextDraft: DateDraft | null = null;
-    try {
-      const isoValue = serializeDateValue(parseDateValue(text, 'pasted value'));
-      nextDraft = createDraft(
-        isoValue,
-        calendar,
-        resolvedLocale,
-        layout,
-        eraOptions
-      );
-    } catch {
-      nextDraft = getLocalizedPasteDraft(text);
-    }
+    const nextDraft = parseDateFieldPaste({
+      text,
+      draft,
+      calendar,
+      locale: resolvedLocale,
+      layout,
+      eraOptions,
+    });
     if (!nextDraft) return;
 
     event.preventDefault();
@@ -466,14 +371,23 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
     firstInputRef.current?.focus();
   }
 
+  function handleInputRef(
+    segment: DateSegment,
+    node: HTMLInputElement | null
+  ): void {
+    if (node) segmentInputRefs.current[segment] = node;
+    if (segment === firstVisibleSegment) firstInputRef.current = node;
+  }
+
   const formValue =
     draftChanged && !draftSelectable ? '' : (committedValue ?? '');
-  const showClear =
-    showClearButton &&
-    !required &&
-    !disabled &&
-    !readOnly &&
-    committedValue !== null;
+  const showClear = shouldShowClearButton(
+    showClearButton,
+    required,
+    disabled,
+    readOnly,
+    committedValue
+  );
 
   return (
     <div
@@ -497,86 +411,24 @@ export const DateFieldControl: DateFieldControlComponent = React.forwardRef<
         aria-describedby={describedBy}
         aria-invalid={invalid || undefined}
       >
-        <span className={styles.segments}>
-          {layout.map((part, index) =>
-            part.kind === 'literal' ? (
-              <span
-                // The localized literal and position form a stable layout key.
-                key={`literal-${index}-${part.value}`}
-                className={styles.separator}
-                aria-hidden='true'
-              >
-                {part.value}
-              </span>
-            ) : (
-              <DateSegmentInput
-                key={part.type}
-                segment={part.type}
-                value={draft.values[part.type]}
-                label={
-                  segmentLabels?.[part.type] ??
-                  DEFAULT_SEGMENT_LABELS[part.type]
-                }
-                tabIndex={draft.activeSegment === part.type ? 0 : -1}
-                disabled={disabled}
-                readOnly={readOnly}
-                required={required && part.type === firstVisibleSegment}
-                invalid={invalid}
-                valueMin={
-                  part.type === 'month' ||
-                  part.type === 'day' ||
-                  part.type === 'era'
-                    ? 1
-                    : undefined
-                }
-                valueMax={
-                  part.type === 'month'
-                    ? referenceCalendarDate.monthsInYear
-                    : part.type === 'day'
-                      ? referenceCalendarDate.daysInMonth
-                      : part.type === 'era'
-                        ? eraOptions.length
-                        : undefined
-                }
-                valueNow={
-                  part.type === 'era'
-                    ? Math.max(
-                        1,
-                        eraOptions.findIndex(
-                          (option) => option.id === draft.eraId
-                        ) + 1
-                      )
-                    : Number.isInteger(
-                          Number(
-                            normalizeLocalizedDigits(
-                              draft.values[part.type],
-                              resolvedLocale
-                            ).replace('−', '-')
-                          )
-                        ) && draft.values[part.type].length > 0
-                      ? Number(
-                          normalizeLocalizedDigits(
-                            draft.values[part.type],
-                            resolvedLocale
-                          ).replace('−', '-')
-                        )
-                      : undefined
-                }
-                valueText={draft.values[part.type] || undefined}
-                inputRef={(node) => {
-                  if (node) segmentInputRefs.current[part.type] = node;
-                  if (part.type === firstVisibleSegment) {
-                    firstInputRef.current = node;
-                  }
-                }}
-                onFocus={(segment) => dispatch({ type: 'set-active', segment })}
-                onChange={handleSegmentChange}
-                onKeyDown={handleSegmentKeyDown}
-                onPaste={handleSegmentPaste}
-              />
-            )
-          )}
-        </span>
+        <DateFieldSegments
+          layout={layout}
+          draft={draft}
+          segmentLabels={segmentLabels}
+          locale={resolvedLocale}
+          calendarDate={referenceCalendarDate}
+          eraOptions={eraOptions}
+          firstVisibleSegment={firstVisibleSegment}
+          disabled={disabled}
+          readOnly={readOnly}
+          required={required}
+          invalid={invalid}
+          onInputRef={handleInputRef}
+          onFocus={(segment) => dispatch({ type: 'set-active', segment })}
+          onChange={handleSegmentChange}
+          onKeyDown={handleSegmentKeyDown}
+          onPaste={handleSegmentPaste}
+        />
 
         {showClear && (
           <button

@@ -22,6 +22,13 @@ import type {
 
 type SegmentValues = Record<DateSegment, string>;
 
+const SEGMENT_MIN_WIDTH: Readonly<Record<DateSegment, number>> = {
+  era: 8,
+  year: 4,
+  month: 2,
+  day: 2,
+};
+
 export type DateDraft = Readonly<{
   sourceKey: string;
   sourceValue: DateValue | null;
@@ -187,6 +194,5 @@ export function getSegmentWidth(
   segment: DateSegment,
   value: string
 ): CSSProperties {
-  const fallback = segment === 'year' ? 4 : segment === 'era' ? 8 : 2;
-  return { width: `${Math.max(value.length, fallback)}ch` };
+  return { width: `${Math.max(value.length, SEGMENT_MIN_WIDTH[segment])}ch` };
 }

@@ -31,12 +31,12 @@ const MIN_VALUE = '0001-01-01';
 const MAX_VALUE = '9999-12-31';
 const MIN_EPOCH_DAY = isoDateToEpochDay(parseDateValue(MIN_VALUE));
 const MAX_EPOCH_DAY = isoDateToEpochDay(parseDateValue(MAX_VALUE));
-const FIXED_MONTH_CALENDARS: readonly DateCalendar[] = [
+const FIXED_MONTH_CALENDARS: ReadonlySet<DateCalendar> = new Set([
   'gregory',
   'buddhist',
   'japanese',
   'roc',
-];
+]);
 const WEEKDAY_INDEX: Readonly<Record<FirstDayOfWeek, number>> = {
   sun: 0,
   mon: 1,
@@ -64,7 +64,7 @@ function getCalendarMonthStart(
 
   // Japanese eras can begin mid-month. The fixed-month calendars therefore
   // use their related ISO month instead of constructing an invalid era date.
-  if (FIXED_MONTH_CALENDARS.includes(calendar)) {
+  if (FIXED_MONTH_CALENDARS.has(calendar)) {
     return parseDateValue(
       serializeDateValue({
         year: calendarDate.relatedYear,
@@ -85,7 +85,7 @@ function isSameCalendarUnit(
 ): boolean {
   const leftCalendarDate = getCalendarDate(left, calendar);
   const rightCalendarDate = getCalendarDate(right, calendar);
-  if (FIXED_MONTH_CALENDARS.includes(calendar)) {
+  if (FIXED_MONTH_CALENDARS.has(calendar)) {
     return (
       leftCalendarDate.relatedYear === rightCalendarDate.relatedYear &&
       (unit === 'year' ||
@@ -117,6 +117,7 @@ function getNextCalendarMonthEpoch(
 }
 
 export type CalendarCellModel = Readonly<{
+  gridKey: string;
   value: DateValue | null;
   calendarDate: CalendarDate | null;
   dayLabel: string;
@@ -192,8 +193,10 @@ export function createCalendarGridModel({
 
   const cells = Array.from({ length: 42 }, (_, index): CalendarCellModel => {
     const epochDay = gridStartEpoch + index;
+    const gridKey = `epoch-${epochDay}`;
     if (epochDay < MIN_EPOCH_DAY || epochDay > MAX_EPOCH_DAY) {
       return {
+        gridKey,
         value: null,
         calendarDate: null,
         dayLabel: '',
@@ -217,6 +220,7 @@ export function createCalendarGridModel({
     const isUnavailable = isDateUnavailable?.(value) ?? false;
     const isOutOfRange = !isDateWithinConstraints(date, minDate, maxDate);
     return {
+      gridKey,
       value,
       calendarDate,
       dayLabel: formatLocalizedNumber(calendarDate.day, resolvedLocale),

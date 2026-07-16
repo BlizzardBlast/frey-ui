@@ -206,6 +206,21 @@ describe('Calendar model', () => {
         .filter((cell) => cell.isOutsideSupportedRange)
         .every((cell) => cell.value === null && !cell.isFocusable)
     ).toBe(true);
+    for (const model of [minimum, maximum]) {
+      expect(new Set(model.cells.map((cell) => cell.gridKey))).toHaveLength(42);
+    }
+  });
+
+  it('assigns every normal grid position a unique epoch-derived key', () => {
+    const model = createCalendarGridModel({
+      focusedValue: '2024-03-20',
+      locale: 'en-US',
+      calendar: 'gregory',
+    });
+    const keys = model.cells.map((cell) => cell.gridKey);
+
+    expect(new Set(keys)).toHaveLength(42);
+    expect(keys.every((key) => /^epoch--?\d+$/.test(key))).toBe(true);
   });
 
   it('builds variable-calendar months immediately before the upper ISO edge', () => {

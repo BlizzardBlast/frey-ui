@@ -11,12 +11,12 @@ import type {
 import { useDateLocale } from '../date/useDateLocale';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 import { useControllableValue } from '../hooks/useControllableState';
+import { resolveCalendarKeyboardCommand } from './calendarInteractions';
 import {
   calendarStateReducer,
   canSelectCalendarCell,
   createCalendarGridModel,
   createCalendarState,
-  getHorizontalDayDelta,
   moveCalendarFocus,
   resolveInitialCalendarFocus,
   type CalendarCellModel,
@@ -25,6 +25,8 @@ import {
   type CalendarStateAction,
 } from './calendarModel';
 import styles from './calendar.module.css';
+
+const CALENDAR_ROW_STARTS = [0, 7, 14, 21, 28, 35] as const;
 
 export type CalendarProps = {
   label: string;
@@ -80,6 +82,16 @@ function getLocalTodayValue(): DateValue {
     month: today.getMonth() + 1,
     day: today.getDate(),
   });
+}
+
+function createCalendarRows(
+  cells: readonly CalendarCellModel[]
+): readonly (readonly CalendarCellModel[])[] {
+  return CALENDAR_ROW_STARTS.map((start) => cells.slice(start, start + 7));
+}
+
+function getCalendarRowKey(row: readonly CalendarCellModel[]): string {
+  return row.map((cell) => cell.gridKey).join('|');
 }
 
 type CalendarDayCellProps = Readonly<{
@@ -338,50 +350,15 @@ const Calendar: CalendarComponent = React.forwardRef<
       cell: CalendarCellModel & Readonly<{ value: DateValue }>
     ) => {
       if (disabled) return;
-      let movement: CalendarFocusMovement | undefined;
-      switch (event.key) {
-        case 'ArrowLeft':
-        case 'ArrowRight':
-          movement = {
-            unit: 'day',
-            amount: getHorizontalDayDelta(event.key, direction),
-          };
-          break;
-        case 'ArrowUp':
-          movement = { unit: 'week', amount: -1 };
-          break;
-        case 'ArrowDown':
-          movement = { unit: 'week', amount: 1 };
-          break;
-        case 'Home':
-          movement = { unit: 'week-start' };
-          break;
-        case 'End':
-          movement = { unit: 'week-end' };
-          break;
-        case 'PageUp':
-          movement = {
-            unit: event.shiftKey ? 'year' : 'month',
-            amount: -1,
-          };
-          break;
-        case 'PageDown':
-          movement = {
-            unit: event.shiftKey ? 'year' : 'month',
-            amount: 1,
-          };
-          break;
-        case 'Enter':
-        case ' ':
-          event.preventDefault();
-          activateCell(cell);
-          return;
-        default:
-          return;
-      }
-
+      const command = resolveCalendarKeyboardCommand(
+        event.key,
+        event.shiftKey,
+        direction
+      );
+      if (!command) return;
       event.preventDefault();
-      moveFocus(movement, true, cell.value);
+      if (command.type === 'activate') activateCell(cell);
+      else moveFocus(command.movement, true, cell.value);
     },
     [activateCell, direction, disabled, moveFocus]
   );
@@ -396,9 +373,7 @@ const Calendar: CalendarComponent = React.forwardRef<
     { unit: 'month', amount: 1 },
     { calendar: resolvedCalendar, firstDayOfWeek: model.firstDayOfWeek }
   );
-  const rows = Array.from({ length: 6 }, (_, rowIndex) =>
-    model.cells.slice(rowIndex * 7, rowIndex * 7 + 7)
-  );
+  const rows = createCalendarRows(model.cells);
 
   return (
     <div
@@ -458,11 +433,11 @@ const Calendar: CalendarComponent = React.forwardRef<
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, rowIndex) => (
-            <tr key={`week-${rowIndex}`}>
-              {row.map((cell, cellIndex) => (
+          {rows.map((row) => (
+            <tr key={getCalendarRowKey(row)}>
+              {row.map((cell) => (
                 <CalendarDayCell
-                  key={cell.value ?? `outside-${rowIndex}-${cellIndex}`}
+                  key={cell.gridKey}
                   cell={cell}
                   onActivate={activateCell}
                   onKeyDown={handleDayKeyDown}
