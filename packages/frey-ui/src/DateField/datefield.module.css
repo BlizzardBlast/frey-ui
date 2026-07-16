@@ -1,0 +1,134 @@
+.control {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 2.5rem;
+  padding-inline: 0.625rem;
+  color: var(--frey-color-text-primary);
+  background: var(--frey-color-surface);
+  border: 1px solid var(--frey-color-border, #d1d5db);
+  border-radius: 0.375rem;
+  box-sizing: border-box;
+}
+
+.control:focus-within {
+  border-color: var(--frey-focus-ring);
+  box-shadow: 0 0 0 2px var(--frey-focus-ring);
+}
+
+.control_invalid {
+  border-color: var(--frey-color-error, #dc2626);
+}
+
+.control_invalid:focus-within {
+  border-color: var(--frey-color-error, #dc2626);
+  box-shadow: 0 0 0 2px var(--frey-color-error, #dc2626);
+}
+
+.control_disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--frey-color-surface-subtle, #f1f1f1);
+}
+
+.control_readonly {
+  background: var(--frey-color-surface-subtle, #f1f1f1);
+}
+
+.segments {
+  display: flex;
+  align-items: center;
+  column-gap: var(--frey-space-1);
+  min-width: 0;
+  flex: 1;
+}
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+.segment {
+  min-width: 1.5ch;
+  padding: 0.125rem;
+  color: inherit;
+  font: inherit;
+  line-height: 1.5;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  border-radius: 0.25rem;
+  outline: none;
+  box-sizing: content-box;
+}
+
+.segment:focus-visible {
+  color: var(--frey-color-text-primary);
+  background: var(--frey-color-surface-subtle, #f1f1f1);
+  outline: 2px solid var(--frey-focus-ring);
+  outline-offset: -2px;
+}
+
+.segment:disabled {
+  cursor: not-allowed;
+}
+
+.segment:read-only {
+  cursor: default;
+}
+
+.separator {
+  color: var(--frey-color-text-secondary, #6b7280);
+  white-space: pre;
+  user-select: none;
+}
+
+.clear_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  padding: 0;
+  color: var(--frey-color-text-secondary, #6b7280);
+  background: transparent;
+  border: 0;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.clear_button:hover {
+  color: var(--frey-color-text-primary);
+  background: var(--frey-color-surface-subtle, #f1f1f1);
+}
+
+.clear_button:focus-visible {
+  outline: 2px solid var(--frey-focus-ring);
+  outline-offset: 1px;
+}
+
+@media (forced-colors: active) {
+  .control {
+    border-color: CanvasText;
+  }
+
+  .segment:focus-visible,
+  .clear_button:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .control,
+  .segment,
+  .clear_button {
+    transition: none;
+  }
+}

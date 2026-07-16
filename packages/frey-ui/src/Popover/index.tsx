@@ -237,7 +237,9 @@ const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
 });
 PopoverTrigger.displayName = 'Popover.Trigger';
 
-export type PopoverContentProps = React.HTMLAttributes<HTMLDivElement>;
+export type PopoverContentProps = React.HTMLAttributes<HTMLDivElement> & {
+  initialFocusRef?: React.RefObject<HTMLElement | null>;
+};
 
 type PopoverContentComponent = React.ForwardRefExoticComponent<
   Readonly<PopoverContentProps> & React.RefAttributes<HTMLDivElement>
@@ -246,7 +248,10 @@ type PopoverContentComponent = React.ForwardRefExoticComponent<
 const PopoverContent: PopoverContentComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<PopoverContentProps>
->(function PopoverContent({ className, style, children, ...props }, ref) {
+>(function PopoverContent(
+  { className, style, children, initialFocusRef, ...props },
+  ref
+) {
   const {
     open,
     idPrefix,
@@ -268,7 +273,7 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
         modal
         returnFocus
         outsideElementsInert={false}
-        initialFocus={0}
+        initialFocus={initialFocusRef ?? 0}
       >
         <div
           id={`${idPrefix}-content`}

@@ -1,13 +1,14 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { IconSvg } from './IconSvg';
-import { CheckIcon, ChevronDownIcon, CloseIcon } from './index';
+import { CalendarIcon, CheckIcon, ChevronDownIcon, CloseIcon } from './index';
 
 describe('Icons', () => {
   it('re-exports all icons from the barrel entry', async () => {
     const icons = await import('./index');
 
     expect(icons.CheckIcon).toBeDefined();
+    expect(icons.CalendarIcon).toBeDefined();
     expect(icons.ChevronDownIcon).toBeDefined();
     expect(icons.CircleCheckIcon).toBeDefined();
     expect(icons.CircleInfoIcon).toBeDefined();
@@ -16,6 +17,14 @@ describe('Icons', () => {
     expect(icons.IconSvg).toBeDefined();
     expect(icons.MinusIcon).toBeDefined();
     expect(icons.TriangleAlertIcon).toBeDefined();
+  });
+
+  it('renders the shared Calendar icon through IconSvg', () => {
+    render(<CalendarIcon title='Open calendar' size='lg' />);
+
+    const icon = screen.getByRole('img', { name: 'Open calendar' });
+    expect(icon).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(icon).toHaveAttribute('width', '20');
   });
 
   it('renders decorative icon as aria-hidden by default', () => {

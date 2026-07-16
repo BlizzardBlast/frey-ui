@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
+  CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
   CircleCheckIcon,
@@ -96,7 +97,7 @@ export const icon_gallery: Story = {
     <div
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+        gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
         gap: 20,
         color: 'var(--frey-color-text-primary, #111827)',
       }}
@@ -116,6 +117,10 @@ export const icon_gallery: Story = {
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
         <MinusIcon {...args} title={args.title ?? 'Minus icon'} />
         <small>MinusIcon</small>
+      </div>
+      <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
+        <CalendarIcon {...args} title={args.title ?? 'Calendar icon'} />
+        <small>CalendarIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
         <CircleXIcon {...args} title={args.title ?? 'Error icon'} />

@@ -1,11 +1,28 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { useRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import ThemeProvider from '../ThemeProvider';
 import { createMockRect } from '../utils/testUtils';
 import Popover from './index';
+
+function InitialFocusPopover(): React.JSX.Element {
+  const initialFocusRef = useRef<HTMLButtonElement>(null);
+
+  return (
+    <Popover>
+      <Popover.Trigger>Open focused popover</Popover.Trigger>
+      <Popover.Content initialFocusRef={initialFocusRef}>
+        <button type='button'>First action</button>
+        <button ref={initialFocusRef} type='button'>
+          Preferred action
+        </button>
+      </Popover.Content>
+    </Popover>
+  );
+}
 
 describe('Popover', () => {
   it('throws when a compound child is rendered outside Popover', () => {
@@ -202,6 +219,21 @@ describe('Popover', () => {
     await user.tab();
     expect(outside).not.toHaveFocus();
     expect(screen.getByText('First action')).toBeInTheDocument();
+  });
+
+  it('can move initial focus to a consumer-provided element ref', async () => {
+    const user = userEvent.setup();
+    render(<InitialFocusPopover />);
+
+    await user.click(
+      screen.getByRole('button', { name: 'Open focused popover' })
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByRole('button', { name: 'Preferred action' })
+      ).toHaveFocus();
+    });
   });
 
   it('applies ThemeProvider theme attributes to the portal container', async () => {
