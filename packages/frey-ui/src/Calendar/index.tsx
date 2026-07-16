@@ -94,6 +94,27 @@ function getCalendarRowKey(row: readonly CalendarCellModel[]): string {
   return row.map((cell) => cell.gridKey).join('|');
 }
 
+type CalendarValueProps = Pick<
+  CalendarProps,
+  'value' | 'defaultValue' | 'defaultFocusedValue' | 'today'
+>;
+
+function validateCalendarValueProps({
+  value,
+  defaultValue,
+  defaultFocusedValue,
+  today,
+}: CalendarValueProps): void {
+  if (value !== undefined && value !== null) parseDateValue(value, 'value');
+  if (defaultValue !== undefined && defaultValue !== null) {
+    parseDateValue(defaultValue, 'defaultValue');
+  }
+  if (defaultFocusedValue !== undefined) {
+    parseDateValue(defaultFocusedValue, 'defaultFocusedValue');
+  }
+  if (today !== undefined) parseDateValue(today, 'today');
+}
+
 type CalendarDayCellProps = Readonly<{
   cell: CalendarCellModel;
   onActivate: (cell: CalendarCellModel) => void;
@@ -194,14 +215,12 @@ const Calendar: CalendarComponent = React.forwardRef<
 ) {
   const resolvedLocale = useDateLocale(locale);
   const resolvedCalendar = validateDateCalendar(calendar);
-  if (value !== undefined && value !== null) parseDateValue(value, 'value');
-  if (defaultValue !== undefined && defaultValue !== null) {
-    parseDateValue(defaultValue, 'defaultValue');
-  }
-  if (defaultFocusedValue !== undefined) {
-    parseDateValue(defaultFocusedValue, 'defaultFocusedValue');
-  }
-  if (today !== undefined) parseDateValue(today, 'today');
+  validateCalendarValueProps({
+    value,
+    defaultValue,
+    defaultFocusedValue,
+    today,
+  });
   validateDateConstraints(minValue, maxValue);
 
   const resolvedToday = today ?? getLocalTodayValue();
