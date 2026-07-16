@@ -1,7 +1,7 @@
 {
   "name": "@frey-ui/storybook",
   "private": true,
-  "version": "1.0.8",
+  "version": "1.0.9",
   "type": "module",
   "publishConfig": {
     "provenance": true
