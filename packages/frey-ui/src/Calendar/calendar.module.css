@@ -1,0 +1,216 @@
+.calendar {
+  box-sizing: border-box;
+  inline-size: min(100%, 24rem);
+  padding: var(--frey-space-3);
+  border: 1px solid var(--frey-color-border-subtle);
+  border-radius: var(--frey-radius-lg);
+  background: var(--frey-color-surface);
+  color: var(--frey-color-text-primary);
+}
+
+.calendar_header {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: var(--frey-space-2);
+  margin-block-end: var(--frey-space-2);
+}
+
+.calendar_heading {
+  margin: 0;
+  overflow: hidden;
+  color: var(--frey-color-text-title);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar_navigation_button {
+  min-inline-size: 3rem;
+  min-block-size: 3rem;
+  padding: 0;
+}
+
+.calendar_previous_icon {
+  transform: rotate(90deg);
+}
+
+.calendar_next_icon {
+  transform: rotate(-90deg);
+}
+
+.calendar[dir='rtl'] .calendar_previous_icon {
+  transform: rotate(-90deg);
+}
+
+.calendar[dir='rtl'] .calendar_next_icon {
+  transform: rotate(90deg);
+}
+
+.calendar_grid {
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.calendar_weekday {
+  block-size: 2rem;
+  padding: 0;
+  color: var(--frey-color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.calendar_weekday abbr {
+  text-decoration: none;
+}
+
+.calendar_cell {
+  padding: 0;
+  text-align: center;
+}
+
+.calendar_day {
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  min-inline-size: 2.5rem;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: var(--frey-radius-full);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.calendar_day::before,
+.calendar_day::after {
+  position: absolute;
+  border-radius: inherit;
+  content: '';
+  pointer-events: none;
+}
+
+.calendar_day::before {
+  inset: 0.125rem;
+  z-index: -2;
+  border: 2px solid transparent;
+  background: transparent;
+}
+
+.calendar_day::after {
+  inset: var(--frey-space-2);
+  z-index: -1;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+}
+
+.calendar_day:hover:not([aria-disabled='true'])::before {
+  background: var(--frey-color-surface-hover);
+}
+
+.calendar_day:focus {
+  outline: none;
+}
+
+.calendar_day:focus::after {
+  outline-color: var(--frey-color-focus-ring);
+}
+
+.calendar_day_adjacent {
+  color: var(--frey-color-text-secondary);
+  font-style: italic;
+}
+
+.calendar_day_selected {
+  border-radius: var(--frey-radius-md);
+  color: var(--frey-calendar-selected-text);
+  font-weight: 700;
+}
+
+.calendar_day_selected::before,
+.calendar_day_selected:hover:not([aria-disabled='true'])::before {
+  background: var(--frey-calendar-selected-bg);
+}
+
+.calendar_day_selected:focus::after {
+  outline-color: var(--frey-calendar-selected-text);
+}
+
+.calendar_day_today::before {
+  border-color: currentcolor;
+}
+
+.calendar_day_unavailable {
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: currentcolor;
+  cursor: not-allowed;
+}
+
+.calendar_day_out_of_range:not(.calendar_day_unavailable) {
+  color: var(--frey-color-text-secondary);
+  cursor: not-allowed;
+}
+
+.calendar[data-disabled='true'] .calendar_day {
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .calendar_day:focus::after {
+    outline-color: Highlight;
+  }
+
+  .calendar_day_selected:focus::after {
+    outline-color: HighlightText;
+  }
+
+  .calendar_day_selected {
+    color: HighlightText;
+    forced-color-adjust: none;
+  }
+
+  .calendar_day_selected::before {
+    border-color: Highlight;
+    background: Highlight;
+    forced-color-adjust: none;
+  }
+
+  .calendar_day_today:not(.calendar_day_selected)::before {
+    border-color: CanvasText;
+  }
+
+  .calendar_day_today.calendar_day_selected::before {
+    border-color: HighlightText;
+  }
+}
+
+@media (max-width: 24rem) {
+  .calendar {
+    padding: var(--frey-space-2);
+  }
+
+  .calendar_day {
+    min-inline-size: 2.25rem;
+  }
+}
+
+@media (pointer: coarse) {
+  .calendar_day,
+  .calendar_navigation_button {
+    min-inline-size: 3rem;
+    min-block-size: 3rem;
+  }
+}

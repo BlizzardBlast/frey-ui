@@ -1,4 +1,5 @@
 export * from './CheckIcon';
+export * from './CalendarIcon';
 export * from './ChevronDownIcon';
 export * from './CircleCheckIcon';
 export * from './CircleInfoIcon';

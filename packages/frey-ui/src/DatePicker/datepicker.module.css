@@ -1,0 +1,24 @@
+.calendar_trigger {
+  flex: 0 0 auto;
+  inline-size: 2rem;
+  block-size: 2rem;
+  min-inline-size: 2rem;
+  padding: 0;
+}
+
+.popover_content {
+  padding: 0;
+  overflow: auto;
+}
+
+.calendar {
+  border: 0;
+}
+
+@media (pointer: coarse) {
+  .calendar_trigger {
+    inline-size: 3rem;
+    block-size: 3rem;
+    min-inline-size: 3rem;
+  }
+}

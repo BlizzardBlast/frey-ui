@@ -43,6 +43,8 @@ export type {
   CardTitleProps,
 } from './Card';
 export { default as Card } from './Card';
+export type { CalendarProps } from './Calendar';
+export { default as Calendar } from './Calendar';
 export type { CheckboxProps, CheckboxSize } from './Checkbox';
 export { default as Checkbox } from './Checkbox';
 export type { ChipElement, ChipProps, Variant } from './Chip';
@@ -61,6 +63,17 @@ export type {
   CommandPaletteTriggerProps,
 } from './CommandPalette';
 export { default as CommandPalette } from './CommandPalette';
+export type { DateFieldProps } from './DateField';
+export { default as DateField } from './DateField';
+export type { DatePickerProps } from './DatePicker';
+export { default as DatePicker } from './DatePicker';
+export type {
+  DateCalendar,
+  DateSegment,
+  DateSegmentLabels,
+  DateValue,
+  FirstDayOfWeek,
+} from './date/types';
 export type {
   DialogBodyProps,
   DialogContentProps,
@@ -100,6 +113,7 @@ export type { GridProps } from './Grid';
 export { default as Grid } from './Grid';
 export type { IconProps, IconSizeToken, IconStrokeToken } from './Icons';
 export {
+  CalendarIcon,
   CheckIcon,
   ChevronDownIcon,
   CircleCheckIcon,

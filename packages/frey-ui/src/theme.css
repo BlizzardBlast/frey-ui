@@ -114,6 +114,10 @@
   --frey-segmented-control-selected-text: var(--frey-palette-white);
   --frey-segmented-control-focus-ring: var(--frey-palette-gray-900);
 
+  /* Calendar */
+  --frey-calendar-selected-bg: var(--frey-palette-purple-700);
+  --frey-calendar-selected-text: var(--frey-palette-white);
+
   /* Feedback */
   --frey-color-error: var(--frey-palette-red-600);
   --frey-color-error-bg: var(--frey-palette-red-50);
@@ -183,6 +187,10 @@
   --frey-segmented-control-selected-text: var(--frey-palette-white);
   --frey-segmented-control-focus-ring: var(--frey-palette-gray-50);
 
+  /* Calendar */
+  --frey-calendar-selected-bg: var(--frey-palette-purple-500);
+  --frey-calendar-selected-text: var(--frey-palette-black);
+
   /* Feedback */
   --frey-color-error: var(--frey-palette-red-400);
   --frey-color-error-bg: #450a0a;
@@ -228,6 +236,9 @@
   --frey-segmented-control-selected-text: var(--frey-palette-white);
   --frey-segmented-control-focus-ring: var(--frey-palette-black);
 
+  --frey-calendar-selected-bg: var(--frey-palette-purple-900);
+  --frey-calendar-selected-text: var(--frey-palette-white);
+
   --frey-color-error: var(--frey-palette-red-700);
   --frey-color-success: var(--frey-palette-green-800);
   --frey-color-warning: #b45309; /* darker yellow/amber */
@@ -253,6 +264,9 @@
   --frey-segmented-control-selected-bg: var(--frey-palette-purple-300);
   --frey-segmented-control-selected-text: var(--frey-palette-black);
   --frey-segmented-control-focus-ring: var(--frey-palette-white);
+
+  --frey-calendar-selected-bg: var(--frey-palette-purple-300);
+  --frey-calendar-selected-text: var(--frey-palette-black);
 
   --frey-color-error: var(--frey-palette-red-300);
   --frey-color-success: var(--frey-palette-green-300);

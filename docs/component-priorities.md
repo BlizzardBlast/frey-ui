@@ -1,6 +1,6 @@
 # Component Priorities
 
-Last reviewed: 2026-07-15
+Last reviewed: 2026-07-16
 
 This note captures the strongest next component opportunities in the current
 Frey UI library based on the exported component surface, Storybook coverage,
@@ -48,17 +48,34 @@ What is now covered:
   states.
 - Storybook scenarios, unit coverage, and browser-level keyboard coverage.
 
-## Recommended Next New Component
+## Date Components
 
-### `DatePicker`
+The staged date-components roadmap is complete and should no longer be treated
+as the next component opportunity.
 
-`DatePicker` is now the strongest next **new** component to build.
+What is now covered:
 
-- Strong practical value.
-- Significantly more surface area: calendar math, localization, keyboard
-  support, and overlay behavior.
-- Better as a deliberate follow-up after `SegmentedControl` unless date input
-  is currently blocking product work.
+1. Internal timezone-free calendar engine and public `DateField`, including
+   Storybook and real-browser keyboard/form coverage.
+2. Public `Calendar` with a fixed localized grid, complete keyboard navigation,
+   constraints, theme tokens, Storybook coverage, and real-browser proof.
+3. Public `DatePicker` composed from the shared `DateField`, `Calendar`, and
+   existing `Popover`, with unified ISO state, focus return, form submission,
+   localized trigger copy, stories, and overlay browser coverage.
+
+The date roadmap adds no new runtime dependency. Public/form values remain
+strict `YYYY-MM-DD` strings. The display layer covers Gregorian, Buddhist,
+Japanese, ROC, Persian, Islamic Civil, and Hebrew calendars across ISO years
+0001-9999.
+
+Release-owner maintenance checks remain:
+
+- Validate Calendar month announcements, day names, and disabled-date feedback
+  with VoiceOver and Safari before publishing. Automated axe and Chromium
+  coverage cannot substitute for that platform-specific screen-reader pass.
+- Refresh checked-in week-start data when regional conventions change.
+- Add new official Japanese era boundaries before an announced era begins;
+  the latest known era otherwise extends provisionally.
 
 ## Other Good Ideas
 
@@ -82,13 +99,12 @@ Best lightweight product-polish addition.
 
 ## Priority Order
 
-1. `DatePicker`
-2. `FileUpload` or `Dropzone`
-3. `EmptyState`
+1. `FileUpload` or `Dropzone`
+2. `EmptyState`
 
 ## Recommendation
 
-If only one thing should happen next, build `DatePicker`.
-
-If you want the next net-new component and can absorb its calendar,
-localization, and overlay complexity, build `DatePicker`.
+If only one component sequence should happen next, build `FileUpload` or
+`Dropzone`. Start with shared file-validation and drag-state utilities, then
+compose them with the existing `Field`, `Alert`, `Progress`, and `Toast`
+surfaces.

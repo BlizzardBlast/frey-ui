@@ -111,6 +111,31 @@ describe('generate-theme-tokens CLI', () => {
     }
   });
 
+  it.each([
+    '#000000',
+    '#3366ff',
+    '#ffffff',
+  ])('emits contrast-safe Calendar selection tokens for %s', (primary) => {
+    const result = runGenerator(['--primary', primary]);
+    const surfaces = ['#ffffff', '#1f2937', '#ffffff', '#000000'];
+    const tokenPairs = [
+      ...result.stdout.matchAll(
+        /--frey-calendar-selected-bg: (#[0-9a-f]{6});\n {2}--frey-calendar-selected-text: (#[0-9a-f]{6});/g
+      ),
+    ];
+
+    expect(result.status).toBe(0);
+    expect(tokenPairs).toHaveLength(4);
+    for (const [index, [, background, foreground]] of tokenPairs.entries()) {
+      expect(
+        contrastRatio(foreground ?? '', background ?? '')
+      ).toBeGreaterThanOrEqual(4.5);
+      expect(
+        contrastRatio(background ?? '', surfaces[index] ?? '')
+      ).toBeGreaterThanOrEqual(3);
+    }
+  });
+
   it('prints to stdout without writing files', () => {
     const tempDirectory = mkdtempSync(path.join(tmpdir(), 'frey-theme-cli-'));
     const beforeEntries = readdirSync(tempDirectory);
