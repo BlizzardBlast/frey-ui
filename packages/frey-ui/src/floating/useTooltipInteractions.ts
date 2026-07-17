@@ -14,6 +14,18 @@ type ModalityManager = {
 };
 
 const modalityManagers = new WeakMap<Document, ModalityManager>();
+const nonTypeableInputTypes = new Set([
+  'button',
+  'checkbox',
+  'color',
+  'file',
+  'hidden',
+  'image',
+  'radio',
+  'range',
+  'reset',
+  'submit',
+]);
 
 function subscribeToModality(ownerDocument: Document): {
   manager: ModalityManager;
@@ -60,12 +72,20 @@ function isFocusVisible(
   element: HTMLElement,
   modalityManager: ModalityManager | null
 ): boolean {
-  if (modalityManager && !modalityManager.keyboard) return false;
-
   try {
     return element.matches(':focus-visible');
   } catch {
-    return true;
+    const type =
+      element.tagName === 'INPUT'
+        ? (element as HTMLInputElement).type
+        : undefined;
+    const contentEditable = element.getAttribute('contenteditable');
+    const typeable =
+      (type !== undefined && !nonTypeableInputTypes.has(type)) ||
+      element.tagName === 'TEXTAREA' ||
+      element.isContentEditable ||
+      (contentEditable !== null && contentEditable !== 'false');
+    return typeable || modalityManager?.keyboard !== false;
   }
 }
 
@@ -96,7 +116,8 @@ export function useTooltipInteractions({
     }
     openTimerRef.current = setTimeout(() => {
       openTimerRef.current = null;
-      latestRef.current.onOpenChange(true);
+      const latest = latestRef.current;
+      if (!latest.open) latest.onOpenChange(true);
     }, current.delay);
   }, [clearOpenTimer]);
   const closeTooltip = React.useCallback(() => {
@@ -112,12 +133,17 @@ export function useTooltipInteractions({
     reference.addEventListener('mouseleave', closeTooltip);
 
     return () => {
+      clearOpenTimer();
       reference.removeEventListener('mouseenter', openTooltip);
       reference.removeEventListener('mouseleave', closeTooltip);
       modalitySubscription.cleanup();
       modalityManagerRef.current = null;
     };
-  }, [closeTooltip, openTooltip, reference]);
+  }, [clearOpenTimer, closeTooltip, openTooltip, reference]);
+
+  React.useEffect(() => {
+    if (open) clearOpenTimer();
+  }, [clearOpenTimer, open]);
 
   React.useEffect(
     () => () => {

@@ -1,3 +1,4 @@
+// biome-ignore-all lint/a11y/noPositiveTabindex: regression coverage must model consumer-authored positive tab order
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React, { useRef } from 'react';
@@ -130,7 +131,41 @@ function InlineInitiallyFocusedScope(): React.JSX.Element {
 describe('FocusScope', () => {
   afterEach(() => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
     document.body.replaceChildren();
+  });
+
+  it('keeps focus guards out of the accessibility tree outside Safari', () => {
+    render(<FocusScopeFixture />);
+
+    const guards = document.querySelectorAll<HTMLElement>(
+      '[data-frey-focus-guard]'
+    );
+    expect(guards).toHaveLength(2);
+    guards.forEach((guard) => {
+      expect(guard.tagName).toBe('SPAN');
+      expect(guard).toHaveAttribute('aria-hidden', 'true');
+      expect(guard).not.toHaveAttribute('role');
+    });
+  });
+
+  it('uses the Safari VoiceOver focus-guard role without hiding the guard', () => {
+    vi.stubGlobal('CSS', { supports: vi.fn(() => true) });
+    vi.spyOn(window.navigator, 'vendor', 'get').mockReturnValue(
+      'Apple Computer, Inc.'
+    );
+
+    render(<FocusScopeFixture />);
+
+    const guards = document.querySelectorAll<HTMLElement>(
+      '[data-frey-focus-guard]'
+    );
+    expect(guards).toHaveLength(2);
+    guards.forEach((guard) => {
+      expect(guard.tagName).toBe('SPAN');
+      expect(guard).toHaveAttribute('role', 'button');
+      expect(guard).not.toHaveAttribute('aria-hidden');
+    });
   });
 
   it('focuses the first tabbable element and loops Tab in both directions', async () => {
@@ -152,6 +187,8 @@ describe('FocusScope', () => {
     expect(first).toHaveFocus();
     await user.tab({ shift: true });
     expect(last).toHaveFocus();
+    await user.tab({ shift: true });
+    expect(first).toHaveFocus();
   });
 
   it('uses a requested initial target and falls back to content with no tabbables', async () => {
@@ -179,6 +216,8 @@ describe('FocusScope', () => {
     render(<FocusScopeFixture>No actions</FocusScopeFixture>);
     const content = screen.getByText('No actions');
     await waitFor(() => expect(content).toHaveFocus());
+    expect(fireEvent.keyDown(content, { key: 'Tab' })).toBe(false);
+    expect(content).toHaveFocus();
     const guards = document.querySelectorAll<HTMLElement>(
       '[data-frey-focus-guard]'
     );
@@ -228,6 +267,56 @@ describe('FocusScope', () => {
         screen.getByRole('radio', { name: 'Selected choice' })
       ).toHaveFocus()
     );
+  });
+
+  it('normalizes radio input types when calculating named groups', async () => {
+    render(
+      <FocusScopeFixture>
+        <input
+          type={'RADIO' as 'radio'}
+          name='normalized-choice'
+          aria-label='Unselected normalized choice'
+        />
+        <input
+          type={'RADIO' as 'radio'}
+          name='normalized-choice'
+          aria-label='Selected normalized choice'
+          defaultChecked
+        />
+      </FocusScopeFixture>
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole('radio', { name: 'Selected normalized choice' })
+      ).toHaveFocus()
+    );
+  });
+
+  it('orders positive tab indexes before the natural tab sequence', async () => {
+    const user = userEvent.setup();
+    render(
+      <FocusScopeFixture>
+        <button type='button' tabIndex={2}>
+          Second positive
+        </button>
+        <button type='button'>Natural order</button>
+        <button type='button' tabIndex={1}>
+          First positive
+        </button>
+      </FocusScopeFixture>
+    );
+
+    const firstPositive = screen.getByRole('button', {
+      name: 'First positive',
+    });
+    await waitFor(() => expect(firstPositive).toHaveFocus());
+    await user.tab();
+    expect(
+      screen.getByRole('button', { name: 'Second positive' })
+    ).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Natural order' })).toHaveFocus();
   });
 
   it('skips hidden and disabled controls and uses the first unchecked named radio', async () => {
@@ -283,6 +372,31 @@ describe('FocusScope', () => {
     await waitFor(() =>
       expect(screen.getByText('Disclosure summary')).toHaveFocus()
     );
+  });
+
+  it('excludes controls hidden inside closed details from focus wrapping', async () => {
+    render(
+      <FocusScopeFixture>
+        <button type='button'>Visible action</button>
+        <details>
+          <summary>Disclosure summary</summary>
+          <button type='button'>Closed disclosure action</button>
+        </details>
+      </FocusScopeFixture>
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Visible action' })
+      ).toHaveFocus()
+    );
+    const beforeGuard = document.querySelector<HTMLElement>(
+      '[data-frey-focus-guard="before"]'
+    );
+    expect(beforeGuard).not.toBeNull();
+    fireEvent.focus(beforeGuard as HTMLElement);
+
+    expect(screen.getByText('Disclosure summary')).toHaveFocus();
   });
 
   it('falls back to focus without options when preventScroll is unsupported', async () => {

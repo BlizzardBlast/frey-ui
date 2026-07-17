@@ -51,6 +51,27 @@ function intersectRects(first: DOMRect, second: DOMRect): DOMRect {
   );
 }
 
+function getInnerClientRect(element: Element): DOMRect {
+  const rect = element.getBoundingClientRect();
+  if (!(element instanceof HTMLElement)) return rect;
+  const hasMeasuredWidth =
+    element.offsetWidth > 0 || element.clientWidth > 0 || rect.width === 0;
+  const hasMeasuredHeight =
+    element.offsetHeight > 0 || element.clientHeight > 0 || rect.height === 0;
+  if (!hasMeasuredWidth || !hasMeasuredHeight) return rect;
+
+  const scaleX = element.offsetWidth > 0 ? rect.width / element.offsetWidth : 1;
+  const scaleY =
+    element.offsetHeight > 0 ? rect.height / element.offsetHeight : 1;
+
+  return new DOMRect(
+    rect.left + element.clientLeft * scaleX,
+    rect.top + element.clientTop * scaleY,
+    Math.max(0, element.clientWidth * scaleX),
+    Math.max(0, element.clientHeight * scaleY)
+  );
+}
+
 function getClippingRect(
   reference: HTMLElement,
   floating: HTMLElement,
@@ -63,10 +84,7 @@ function getClippingRect(
   let clippingRect = getViewportRect(ownerWindow);
 
   clippingElements.forEach((element) => {
-    clippingRect = intersectRects(
-      clippingRect,
-      element.getBoundingClientRect()
-    );
+    clippingRect = intersectRects(clippingRect, getInnerClientRect(element));
   });
   return clippingRect;
 }

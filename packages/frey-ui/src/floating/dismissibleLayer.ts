@@ -1,4 +1,5 @@
 import React from 'react';
+import { isWebKit } from './platform';
 
 export type DismissReason = 'escape' | 'outside-pointer';
 
@@ -20,6 +21,7 @@ type Layer = {
 type LayerManager = {
   layers: Layer[];
   composing: boolean;
+  compositionResetTimer?: ReturnType<typeof setTimeout>;
   cleanupListeners?: () => void;
 };
 
@@ -42,14 +44,50 @@ function isScrollbarPress(
   ownerDocument: Document
 ): boolean {
   const documentElement = ownerDocument.documentElement;
-  if (event.target !== documentElement && event.target !== ownerDocument.body) {
+  if (event.target === documentElement || event.target === ownerDocument.body) {
+    return (
+      event.clientX > documentElement.clientWidth ||
+      event.clientY > documentElement.clientHeight
+    );
+  }
+
+  const ownerWindow = ownerDocument.defaultView;
+  if (!ownerWindow) return false;
+  const target = getEventPath(event).find(
+    (entry): entry is HTMLElement => entry instanceof ownerWindow.HTMLElement
+  );
+  if (!target) return false;
+
+  const style = ownerWindow.getComputedStyle(target);
+  const hasVerticalScrollbar =
+    /^(auto|overlay|scroll)$/.test(style.overflowY) &&
+    (style.overflowY === 'scroll' || target.scrollHeight > target.clientHeight);
+  const hasHorizontalScrollbar =
+    /^(auto|overlay|scroll)$/.test(style.overflowX) &&
+    (style.overflowX === 'scroll' || target.scrollWidth > target.clientWidth);
+  if (!hasVerticalScrollbar && !hasHorizontalScrollbar) {
     return false;
   }
 
-  return (
-    event.clientX > documentElement.clientWidth ||
-    event.clientY > documentElement.clientHeight
-  );
+  const rect = target.getBoundingClientRect();
+  const scaleX = target.offsetWidth > 0 ? rect.width / target.offsetWidth : 1;
+  const scaleY =
+    target.offsetHeight > 0 ? rect.height / target.offsetHeight : 1;
+  const pointerX = event.clientX - rect.left;
+  const pointerY = event.clientY - rect.top;
+  const clientLeft = target.clientLeft * scaleX;
+  const clientTop = target.clientTop * scaleY;
+  const clientRight = clientLeft + target.clientWidth * scaleX;
+  const clientBottom = clientTop + target.clientHeight * scaleY;
+  const verticalScrollbarPress =
+    hasVerticalScrollbar &&
+    (style.direction === 'rtl'
+      ? pointerX < clientLeft
+      : pointerX > clientRight);
+  const horizontalScrollbarPress =
+    hasHorizontalScrollbar && pointerY > clientBottom;
+
+  return verticalScrollbarPress || horizontalScrollbarPress;
 }
 
 function getTopLayer(manager: LayerManager): Layer | undefined {
@@ -60,6 +98,11 @@ function attachManagerListeners(
   ownerDocument: Document,
   manager: LayerManager
 ): () => void {
+  const clearCompositionReset = () => {
+    if (manager.compositionResetTimer === undefined) return;
+    clearTimeout(manager.compositionResetTimer);
+    manager.compositionResetTimer = undefined;
+  };
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key !== 'Escape' || event.isComposing || manager.composing) {
       return;
@@ -88,10 +131,18 @@ function attachManagerListeners(
     onDismiss('outside-pointer', event);
   };
   const handleCompositionStart = () => {
+    clearCompositionReset();
     manager.composing = true;
   };
   const handleCompositionEnd = () => {
-    manager.composing = false;
+    clearCompositionReset();
+    manager.compositionResetTimer = setTimeout(
+      () => {
+        manager.compositionResetTimer = undefined;
+        manager.composing = false;
+      },
+      isWebKit(ownerDocument.defaultView) ? 5 : 0
+    );
   };
 
   ownerDocument.addEventListener('keydown', handleKeyDown);
@@ -100,6 +151,8 @@ function attachManagerListeners(
   ownerDocument.addEventListener('compositionend', handleCompositionEnd);
 
   return () => {
+    clearCompositionReset();
+    manager.composing = false;
     ownerDocument.removeEventListener('keydown', handleKeyDown);
     ownerDocument.removeEventListener('pointerdown', handlePointerDown);
     ownerDocument.removeEventListener(

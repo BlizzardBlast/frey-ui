@@ -1,4 +1,4 @@
-import { fireEvent, renderHook } from '@testing-library/react';
+import { act, fireEvent, renderHook } from '@testing-library/react';
 import React from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useDismissibleLayer } from './dismissibleLayer';
@@ -23,7 +23,9 @@ function createLayerElements(): {
 describe('useDismissibleLayer', () => {
   afterEach(() => {
     document.body.replaceChildren();
+    vi.useRealTimers();
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   it('dismisses the active layer for Escape', () => {
@@ -198,6 +200,72 @@ describe('useDismissibleLayer', () => {
     expect(onDismiss).not.toHaveBeenCalled();
   });
 
+  it('keeps WebKit composition active through the following Escape event', () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('CSS', { supports: vi.fn(() => true) });
+    const elements = createLayerElements();
+    const onDismiss = vi.fn();
+    renderHook(() =>
+      useDismissibleLayer({
+        open: true,
+        ...elements,
+        onDismiss,
+      })
+    );
+
+    fireEvent.compositionStart(document);
+    fireEvent.compositionEnd(document);
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    act(() => vi.advanceTimersByTime(5));
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onDismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps non-WebKit composition active until the next task', () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('CSS', { supports: vi.fn(() => false) });
+    const elements = createLayerElements();
+    const onDismiss = vi.fn();
+    renderHook(() =>
+      useDismissibleLayer({
+        open: true,
+        ...elements,
+        onDismiss,
+      })
+    );
+
+    fireEvent.compositionStart(document);
+    fireEvent.compositionEnd(document);
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    act(() => vi.advanceTimersByTime(0));
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(onDismiss).toHaveBeenCalledTimes(1);
+  });
+
+  it('cancels a pending composition reset after the final layer closes', () => {
+    vi.useFakeTimers();
+    vi.stubGlobal('CSS', { supports: vi.fn(() => true) });
+    const elements = createLayerElements();
+    const { unmount } = renderHook(() =>
+      useDismissibleLayer({
+        open: true,
+        ...elements,
+        onDismiss: vi.fn(),
+      })
+    );
+
+    fireEvent.compositionStart(document);
+    fireEvent.compositionEnd(document);
+    expect(vi.getTimerCount()).toBe(1);
+
+    unmount();
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
   it('ignores presses on the document scrollbar', () => {
     const elements = createLayerElements();
     const onDismiss = vi.fn();
@@ -223,6 +291,180 @@ describe('useDismissibleLayer', () => {
     });
 
     expect(onDismiss).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    {
+      name: 'LTR vertical',
+      clientX: 110,
+      clientY: 50,
+      direction: 'ltr',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 0,
+        clientWidth: 100,
+        offsetHeight: 100,
+        offsetWidth: 120,
+        scrollHeight: 200,
+        scrollWidth: 100,
+      },
+      overflowX: 'hidden',
+      overflowY: 'scroll',
+    },
+    {
+      name: 'automatic vertical',
+      clientX: 110,
+      clientY: 50,
+      direction: 'ltr',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 0,
+        clientWidth: 100,
+        offsetHeight: 100,
+        offsetWidth: 120,
+        scrollHeight: 200,
+        scrollWidth: 100,
+      },
+      overflowX: 'hidden',
+      overflowY: 'auto',
+    },
+    {
+      name: 'RTL vertical',
+      clientX: 10,
+      clientY: 50,
+      direction: 'rtl',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 20,
+        clientWidth: 100,
+        offsetHeight: 100,
+        offsetWidth: 120,
+        scrollHeight: 200,
+        scrollWidth: 100,
+      },
+      overflowX: 'hidden',
+      overflowY: 'scroll',
+    },
+    {
+      name: 'horizontal',
+      clientX: 50,
+      clientY: 110,
+      direction: 'ltr',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 0,
+        clientWidth: 100,
+        offsetHeight: 120,
+        offsetWidth: 100,
+        scrollHeight: 100,
+        scrollWidth: 200,
+      },
+      overflowX: 'scroll',
+      overflowY: 'hidden',
+    },
+    {
+      name: 'automatic horizontal',
+      clientX: 50,
+      clientY: 110,
+      direction: 'ltr',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 0,
+        clientWidth: 100,
+        offsetHeight: 120,
+        offsetWidth: 100,
+        scrollHeight: 100,
+        scrollWidth: 200,
+      },
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    },
+    {
+      name: 'zero-layout-size dual-axis',
+      clientX: 110,
+      clientY: 110,
+      direction: 'ltr',
+      metrics: {
+        clientHeight: 100,
+        clientLeft: 0,
+        clientWidth: 100,
+        offsetHeight: 0,
+        offsetWidth: 0,
+        scrollHeight: 200,
+        scrollWidth: 200,
+      },
+      overflowX: 'scroll',
+      overflowY: 'scroll',
+    },
+  ])('ignores $name scrollbars on nested overflow elements', (scenario) => {
+    const elements = createLayerElements();
+    const scroller = document.createElement('div');
+    scroller.dir = scenario.direction;
+    scroller.style.direction = scenario.direction;
+    scroller.style.overflowX = scenario.overflowX;
+    scroller.style.overflowY = scenario.overflowY;
+    Object.defineProperties(
+      scroller,
+      Object.fromEntries(
+        Object.entries(scenario.metrics).map(([key, value]) => [
+          key,
+          { configurable: true, value },
+        ])
+      )
+    );
+    vi.spyOn(scroller, 'getBoundingClientRect').mockReturnValue({
+      bottom: scenario.metrics.offsetHeight,
+      height: scenario.metrics.offsetHeight,
+      left: 0,
+      right: scenario.metrics.offsetWidth,
+      top: 0,
+      width: scenario.metrics.offsetWidth,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+    document.body.append(scroller);
+    const onDismiss = vi.fn();
+    renderHook(() =>
+      useDismissibleLayer({
+        open: true,
+        ...elements,
+        onDismiss,
+      })
+    );
+
+    fireEvent.pointerDown(scroller, {
+      clientX: scenario.clientX,
+      clientY: scenario.clientY,
+    });
+
+    expect(onDismiss).not.toHaveBeenCalled();
+  });
+
+  it('supports outside dismissal in an owner document without a window', () => {
+    const ownerDocument = document.implementation.createHTMLDocument('');
+    const reference = ownerDocument.createElement('button');
+    const floating = ownerDocument.createElement('div');
+    const outside = ownerDocument.createElement('button');
+    ownerDocument.body.append(reference, floating, outside);
+    const onDismiss = vi.fn();
+    renderHook(() =>
+      useDismissibleLayer({
+        open: true,
+        referenceRef: { current: reference },
+        floatingRef: { current: floating },
+        onDismiss,
+      })
+    );
+
+    outside.dispatchEvent(
+      new PointerEvent('pointerdown', { bubbles: true, composed: true })
+    );
+
+    expect(onDismiss).toHaveBeenCalledWith(
+      'outside-pointer',
+      expect.any(Event)
+    );
   });
 
   it('falls back to target containment when composedPath is unavailable', () => {

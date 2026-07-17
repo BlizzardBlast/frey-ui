@@ -187,6 +187,101 @@ describe('useFloatingPosition', () => {
     });
   });
 
+  it('clips to a scaled overflow ancestor inner client rectangle', async () => {
+    const scroller = document.createElement('div');
+    const reference = document.createElement('button');
+    const floating = document.createElement('div');
+    scroller.style.overflow = 'hidden';
+    scroller.append(reference);
+    document.body.append(scroller, floating);
+    vi.spyOn(scroller, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ x: 50, y: 50, width: 400, height: 400 })
+    );
+    Object.defineProperties(scroller, {
+      clientHeight: { configurable: true, value: 180 },
+      clientLeft: { configurable: true, value: 10 },
+      clientTop: { configurable: true, value: 5 },
+      clientWidth: { configurable: true, value: 160 },
+      offsetHeight: { configurable: true, value: 200 },
+      offsetWidth: { configurable: true, value: 200 },
+    });
+    vi.spyOn(reference, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ x: 350, y: 100, width: 20, height: 20 })
+    );
+    vi.spyOn(floating, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ width: 80, height: 40 })
+    );
+    Object.defineProperties(floating, {
+      offsetHeight: { configurable: true, value: 40 },
+      offsetWidth: { configurable: true, value: 80 },
+    });
+    const { result } = renderHook(() =>
+      useFloatingPosition({
+        open: true,
+        side: 'bottom',
+        alignment: 'center',
+        offset: 8,
+      })
+    );
+
+    act(() => {
+      result.current.setReference(reference);
+      result.current.setFloating(floating);
+    });
+
+    await waitFor(() => {
+      expect(result.current.floatingStyles).toMatchObject({
+        left: 302,
+        top: 128,
+      });
+    });
+  });
+
+  it('uses the bounding rectangle for non-HTML overflow ancestors', async () => {
+    const scroller = document.createElementNS(
+      'http://www.w3.org/2000/svg',
+      'svg'
+    );
+    const reference = document.createElement('button');
+    const floating = document.createElement('div');
+    scroller.style.overflow = 'hidden';
+    scroller.append(reference);
+    document.body.append(scroller, floating);
+    vi.spyOn(scroller, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ x: 100, y: 50, width: 100, height: 200 })
+    );
+    vi.spyOn(reference, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ x: 180, y: 100, width: 20, height: 20 })
+    );
+    vi.spyOn(floating, 'getBoundingClientRect').mockReturnValue(
+      createMockRect({ width: 80, height: 40 })
+    );
+    Object.defineProperties(floating, {
+      offsetHeight: { configurable: true, value: 40 },
+      offsetWidth: { configurable: true, value: 80 },
+    });
+    const { result } = renderHook(() =>
+      useFloatingPosition({
+        open: true,
+        side: 'bottom',
+        alignment: 'center',
+        offset: 8,
+      })
+    );
+
+    act(() => {
+      result.current.setReference(reference);
+      result.current.setFloating(floating);
+    });
+
+    await waitFor(() => {
+      expect(result.current.floatingStyles).toMatchObject({
+        left: 112,
+        top: 128,
+      });
+    });
+  });
+
   it('stays at initial coordinates for elements without an owner window', async () => {
     const detachedDocument = document.implementation.createHTMLDocument('');
     const reference = detachedDocument.createElement('button');

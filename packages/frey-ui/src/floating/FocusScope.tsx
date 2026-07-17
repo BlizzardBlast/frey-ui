@@ -1,4 +1,6 @@
 import React from 'react';
+import { isSafari } from './platform';
+import { getTabbableElements } from './tabbable';
 
 export type FocusScopeProps = {
   children: React.ReactNode;
@@ -18,22 +20,6 @@ const modalAccessibilityManagers = new WeakMap<
   Document,
   ModalAccessibilityManager
 >();
-const focusableSelector = [
-  'a[href]',
-  'area[href]',
-  'button',
-  'input',
-  'select',
-  'textarea',
-  'iframe',
-  'object',
-  'embed',
-  '[contenteditable]:not([contenteditable="false"])',
-  'audio[controls]',
-  'video[controls]',
-  'summary',
-  '[tabindex]',
-].join(',');
 const focusGuardStyle: React.CSSProperties = {
   border: 0,
   clip: 'rect(0 0 0 0)',
@@ -48,57 +34,27 @@ const focusGuardStyle: React.CSSProperties = {
   left: 0,
 };
 
-function isElementDisabled(element: HTMLElement): boolean {
-  return element.matches(':disabled') || element.closest('[inert]') !== null;
-}
+type FocusGuardProps = {
+  position: 'after' | 'before';
+  onFocus: React.FocusEventHandler<HTMLSpanElement>;
+};
 
-function isElementVisible(element: HTMLElement): boolean {
-  let current: HTMLElement | null = element;
-  while (current) {
-    if (current.hidden) return false;
-    const style = current.ownerDocument.defaultView?.getComputedStyle(current);
-    if (style?.display === 'none' || style?.visibility === 'hidden')
-      return false;
-    current = current.parentElement;
-  }
-  return true;
-}
+function FocusGuard({
+  position,
+  onFocus,
+}: Readonly<FocusGuardProps>): React.JSX.Element {
+  const safari =
+    typeof window !== 'undefined' && isSafari(window) ? true : undefined;
 
-function getTabbableElements(content: HTMLElement): HTMLElement[] {
-  const candidates = [
-    ...content.querySelectorAll<HTMLElement>(focusableSelector),
-  ]
-    .filter((element) => element.tabIndex >= 0)
-    .filter((element) => !isElementDisabled(element))
-    .filter(isElementVisible);
-  const radioGroups: HTMLInputElement[][] = [];
-
-  candidates.forEach((element) => {
-    if (!(element instanceof HTMLInputElement) || element.type !== 'radio') {
-      return;
-    }
-    if (!element.name) return;
-    const group = radioGroups.find(
-      ([radio]) => radio.name === element.name && radio.form === element.form
-    );
-    if (group) {
-      group.push(element);
-    } else {
-      radioGroups.push([element]);
-    }
-  });
-
-  const allowedRadios = new Set<HTMLInputElement>();
-  radioGroups.forEach((group) => {
-    allowedRadios.add(group.find((radio) => radio.checked) ?? group[0]);
-  });
-
-  return candidates.filter(
-    (element) =>
-      !(element instanceof HTMLInputElement) ||
-      element.type !== 'radio' ||
-      !element.name ||
-      allowedRadios.has(element)
+  return (
+    <span
+      aria-hidden={safari ? undefined : true}
+      data-frey-focus-guard={position}
+      onFocus={onFocus}
+      role={safari ? 'button' : undefined}
+      style={focusGuardStyle}
+      tabIndex={0}
+    />
   );
 }
 
@@ -109,6 +65,42 @@ function focusElement(element: HTMLElement | null): void {
   } catch {
     element.focus();
   }
+}
+
+function trapTabKey(content: HTMLElement, event: KeyboardEvent): void {
+  if (
+    event.defaultPrevented ||
+    event.key !== 'Tab' ||
+    event.altKey ||
+    event.ctrlKey ||
+    event.metaKey ||
+    !event.target ||
+    !content.contains(event.target as Node)
+  ) {
+    return;
+  }
+
+  const tabbableElements = getTabbableElements(content);
+  const activeElement = content.ownerDocument.activeElement;
+  const currentIndex = tabbableElements.indexOf(activeElement as HTMLElement);
+  let target: HTMLElement;
+
+  if (tabbableElements.length === 0) {
+    target = content;
+  } else if (event.shiftKey) {
+    target =
+      currentIndex > 0
+        ? tabbableElements[currentIndex - 1]
+        : tabbableElements[tabbableElements.length - 1];
+  } else {
+    target =
+      currentIndex >= 0 && currentIndex < tabbableElements.length - 1
+        ? tabbableElements[currentIndex + 1]
+        : tabbableElements[0];
+  }
+
+  event.preventDefault();
+  focusElement(target);
 }
 
 function hideElement(element: Element): () => void {
@@ -228,6 +220,12 @@ export function FocusScope({
     const cleanupOutsideContent = modal
       ? registerModalContent(content)
       : undefined;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      trapTabKey(content, event);
+    };
+    if (modal) {
+      content.ownerDocument.addEventListener('keydown', handleKeyDown);
+    }
     let active = true;
 
     queueMicrotask(() => {
@@ -239,6 +237,7 @@ export function FocusScope({
 
     return () => {
       active = false;
+      content.ownerDocument.removeEventListener('keydown', handleKeyDown);
       cleanupOutsideContent?.();
       if (!restoreFocus) return;
 
@@ -255,23 +254,9 @@ export function FocusScope({
 
   return (
     <>
-      {modal ? (
-        <button
-          data-frey-focus-guard='before'
-          onFocus={focusLast}
-          style={focusGuardStyle}
-          type='button'
-        />
-      ) : null}
+      {modal ? <FocusGuard position='before' onFocus={focusLast} /> : null}
       {children}
-      {modal ? (
-        <button
-          data-frey-focus-guard='after'
-          onFocus={focusFirst}
-          style={focusGuardStyle}
-          type='button'
-        />
-      ) : null}
+      {modal ? <FocusGuard position='after' onFocus={focusFirst} /> : null}
     </>
   );
 }

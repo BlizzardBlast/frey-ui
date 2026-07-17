@@ -1,3 +1,4 @@
+// biome-ignore-all lint/a11y/useSemanticElements: regression coverage must exercise contenteditable focus fallback
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
@@ -8,13 +9,17 @@ function TooltipInteractionFixture({
   open = false,
   delay = 0,
   disabled = false,
+  referenceKey = 'reference',
   label = 'Tooltip trigger',
+  onLayout,
   onOpenChange,
 }: Readonly<{
   open?: boolean;
   delay?: number;
   disabled?: boolean;
+  referenceKey?: string;
   label?: string;
+  onLayout?: () => void;
   onOpenChange: (open: boolean) => void;
 }>): React.JSX.Element {
   const [reference, setReference] = React.useState<HTMLElement | null>(null);
@@ -24,9 +29,13 @@ function TooltipInteractionFixture({
     reference,
     onOpenChange,
   });
+  React.useLayoutEffect(() => {
+    onLayout?.();
+  }, [onLayout]);
 
   return (
     <button
+      key={referenceKey}
       ref={setReference}
       type='button'
       disabled={disabled}
@@ -34,6 +43,52 @@ function TooltipInteractionFixture({
     >
       {label}
     </button>
+  );
+}
+
+function TooltipInputFixture({
+  kind = 'input',
+  onOpenChange,
+}: Readonly<{
+  kind?: 'checkbox' | 'contenteditable' | 'input' | 'textarea';
+  onOpenChange: (open: boolean) => void;
+}>): React.JSX.Element {
+  const [reference, setReference] = React.useState<HTMLElement | null>(null);
+  const referenceProps = useTooltipInteractions({
+    open: false,
+    delay: 0,
+    reference,
+    onOpenChange,
+  });
+
+  if (kind === 'contenteditable') {
+    return (
+      <div
+        ref={setReference}
+        aria-label='Tooltip input'
+        contentEditable
+        role='textbox'
+        tabIndex={0}
+        {...referenceProps}
+      />
+    );
+  }
+  if (kind === 'textarea') {
+    return (
+      <textarea
+        ref={setReference}
+        aria-label='Tooltip input'
+        {...referenceProps}
+      />
+    );
+  }
+  return (
+    <input
+      ref={setReference}
+      aria-label='Tooltip input'
+      type={kind === 'checkbox' ? 'checkbox' : 'text'}
+      {...referenceProps}
+    />
   );
 }
 
@@ -88,7 +143,51 @@ describe('useTooltipInteractions', () => {
     const onOpenChange = vi.fn();
     render(<TooltipInteractionFixture onOpenChange={onOpenChange} />);
     const trigger = screen.getByRole('button');
+    vi.spyOn(trigger, 'matches').mockReturnValue(false);
+
+    fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+    fireEvent.focus(trigger);
+
+    expect(onOpenChange).not.toHaveBeenCalledWith(true);
+  });
+
+  it('opens for pointer-focused text input when the browser reports focus-visible', () => {
+    const onOpenChange = vi.fn();
+    render(<TooltipInputFixture onOpenChange={onOpenChange} />);
+    const trigger = screen.getByRole('textbox', { name: 'Tooltip input' });
     vi.spyOn(trigger, 'matches').mockReturnValue(true);
+
+    fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+    fireEvent.focus(trigger);
+
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+  });
+
+  it.each([
+    'input',
+    'textarea',
+    'contenteditable',
+  ] as const)('falls back to %s focus after pointer input without focus-visible support', (kind) => {
+    const onOpenChange = vi.fn();
+    render(<TooltipInputFixture kind={kind} onOpenChange={onOpenChange} />);
+    const trigger = screen.getByRole('textbox', { name: 'Tooltip input' });
+    vi.spyOn(trigger, 'matches').mockImplementation(() => {
+      throw new Error(':focus-visible is unsupported');
+    });
+
+    fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+    fireEvent.focus(trigger);
+
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+  });
+
+  it('does not treat a checkbox as typeable without focus-visible support', () => {
+    const onOpenChange = vi.fn();
+    render(<TooltipInputFixture kind='checkbox' onOpenChange={onOpenChange} />);
+    const trigger = screen.getByRole('checkbox', { name: 'Tooltip input' });
+    vi.spyOn(trigger, 'matches').mockImplementation(() => {
+      throw new Error(':focus-visible is unsupported');
+    });
 
     fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
     fireEvent.focus(trigger);
@@ -100,7 +199,9 @@ describe('useTooltipInteractions', () => {
     const onOpenChange = vi.fn();
     render(<TooltipInteractionFixture onOpenChange={onOpenChange} />);
     const trigger = screen.getByRole('button');
-    vi.spyOn(trigger, 'matches').mockReturnValue(true);
+    vi.spyOn(trigger, 'matches').mockImplementation(() => {
+      throw new Error(':focus-visible is unsupported');
+    });
 
     fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
     fireEvent.keyDown(document, { ctrlKey: true, key: 'Control' });
@@ -190,6 +291,68 @@ describe('useTooltipInteractions', () => {
 
     expect(firstChange).not.toHaveBeenCalled();
     expect(secondChange).toHaveBeenCalledWith(true);
+  });
+
+  it('does not publish a delayed open after controlled state becomes open', () => {
+    vi.useFakeTimers();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <TooltipInteractionFixture delay={120} onOpenChange={onOpenChange} />
+    );
+    fireEvent.mouseEnter(screen.getByRole('button'));
+
+    rerender(
+      <TooltipInteractionFixture open delay={120} onOpenChange={onOpenChange} />
+    );
+    expect(vi.getTimerCount()).toBe(0);
+    act(() => vi.advanceTimersByTime(120));
+
+    expect(onOpenChange).not.toHaveBeenCalledWith(true);
+  });
+
+  it('rechecks controlled state before passive timer cleanup', () => {
+    vi.useFakeTimers();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <TooltipInteractionFixture delay={120} onOpenChange={onOpenChange} />
+    );
+    fireEvent.mouseEnter(screen.getByRole('button'));
+
+    rerender(
+      <TooltipInteractionFixture
+        open
+        delay={120}
+        onLayout={() => vi.advanceTimersByTime(120)}
+        onOpenChange={onOpenChange}
+      />
+    );
+
+    expect(onOpenChange).not.toHaveBeenCalledWith(true);
+  });
+
+  it('cancels a pending hover timer when the reference element changes', () => {
+    vi.useFakeTimers();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <TooltipInteractionFixture
+        delay={120}
+        referenceKey='first'
+        onOpenChange={onOpenChange}
+      />
+    );
+    fireEvent.mouseEnter(screen.getByRole('button'));
+
+    rerender(
+      <TooltipInteractionFixture
+        delay={120}
+        referenceKey='second'
+        onOpenChange={onOpenChange}
+      />
+    );
+    expect(vi.getTimerCount()).toBe(0);
+    act(() => vi.runAllTimers());
+
+    expect(onOpenChange).not.toHaveBeenCalled();
   });
 
   it('cancels pending hover timers during cleanup', () => {

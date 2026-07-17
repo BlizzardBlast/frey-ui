@@ -187,6 +187,19 @@ test.describe('overlay stories', () => {
     await trigger.click();
     const content = await getControlledOverlay(trigger, page);
     await expect(content).toBeFocused();
+    const focusGuards = page.locator('[data-frey-focus-guard]');
+    await expect(focusGuards).toHaveCount(2);
+    expect(
+      await focusGuards.evaluateAll((guards) =>
+        guards.map((guard) => ({
+          ariaHidden: guard.getAttribute('aria-hidden'),
+          tagName: guard.tagName,
+        }))
+      )
+    ).toEqual([
+      { ariaHidden: 'true', tagName: 'SPAN' },
+      { ariaHidden: 'true', tagName: 'SPAN' },
+    ]);
     await expect
       .poll(() =>
         trigger.evaluate((element) =>
@@ -337,11 +350,16 @@ test.describe('overlay stories', () => {
     page,
   }) => {
     await gotoStory('stories-tooltip--basic-tooltip', page);
+    await page.clock.install();
+    const pauseTime = await page.evaluate(() => Date.now());
+    await page.clock.pauseAt(pauseTime + 1_000);
     const trigger = page.getByRole('button', { name: 'Hover or focus me' });
     const tooltip = page.getByRole('tooltip');
 
     await trigger.hover();
-    expect(await tooltip.count()).toBe(0);
+    await page.clock.runFor(119);
+    await expect(tooltip).toHaveCount(0);
+    await page.clock.runFor(1);
     await expect(tooltip).toBeVisible();
     const tooltipId = await tooltip.getAttribute('id');
     expect(tooltipId).not.toBeNull();
