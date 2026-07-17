@@ -236,6 +236,7 @@ export const controlled_tooltip: Story = {
           content={args.content ?? 'Controlled tooltip'}
           open={resolvedOpen}
           onOpenChange={handleOpenChange}
+          placement='right'
         >
           <Button variant='secondary'>Controlled target</Button>
         </Tooltip>

@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
 import { renderToString } from 'react-dom/server';
@@ -36,6 +36,22 @@ describe('Tooltip', () => {
     );
   });
 
+  it('shows on native hover for a disabled custom trigger', () => {
+    render(
+      <Tooltip asChild content='Disabled hint' delay={0}>
+        <button type='button' disabled>
+          Disabled trigger
+        </button>
+      </Tooltip>
+    );
+
+    fireEvent.mouseEnter(
+      screen.getByRole('button', { name: 'Disabled trigger' })
+    );
+
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Disabled hint');
+  });
+
   it('shows tooltip on focus and hides on blur', async () => {
     const user = userEvent.setup();
 
@@ -69,6 +85,55 @@ describe('Tooltip', () => {
 
     await user.keyboard('{Escape}');
     expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+  });
+
+  it('keeps controlled state source-of-truth and ARIA wiring in sync', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <Tooltip
+        content='Controlled tooltip'
+        open={false}
+        onOpenChange={onOpenChange}
+        delay={0}
+        id='controlled-tooltip'
+      >
+        Controlled trigger
+      </Tooltip>
+    );
+    const trigger = screen.getByRole('button', {
+      name: 'Controlled trigger',
+    });
+
+    await user.hover(trigger);
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    expect(trigger).not.toHaveAttribute('aria-describedby');
+
+    rerender(
+      <Tooltip
+        content='Controlled tooltip'
+        open
+        onOpenChange={onOpenChange}
+        delay={0}
+        id='controlled-tooltip'
+        className='consumer-tooltip'
+        style={{ left: 13, top: 29 }}
+      >
+        Controlled trigger
+      </Tooltip>
+    );
+
+    expect(trigger).toHaveAttribute('aria-describedby', 'controlled-tooltip');
+    expect(screen.getByRole('tooltip')).toHaveAttribute(
+      'id',
+      'controlled-tooltip'
+    );
+    expect(screen.getByRole('tooltip')).toHaveClass('consumer-tooltip');
+    expect(screen.getByRole('tooltip')).toHaveStyle({
+      left: '13px',
+      top: '29px',
+    });
   });
 
   it('repositions when a scroll container scrolls', async () => {
@@ -132,7 +197,7 @@ describe('Tooltip', () => {
 
       await waitFor(() => {
         const top = Number.parseFloat(tooltip.style.top);
-        expect(top).toBeCloseTo(152, 0);
+        expect(top).toBeCloseTo(112, 0);
       });
 
       triggerRect = createMockRect({
@@ -148,7 +213,7 @@ describe('Tooltip', () => {
 
       await waitFor(() => {
         const top = Number.parseFloat(tooltip.style.top);
-        expect(top).toBeCloseTo(112, 0);
+        expect(top).toBeCloseTo(72, 0);
       });
     } finally {
       rectSpy.mockRestore();

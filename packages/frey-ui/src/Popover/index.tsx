@@ -1,19 +1,11 @@
-import {
-  autoUpdate,
-  FloatingFocusManager,
-  type OpenChangeReason,
-  type UseInteractionsReturn,
-  useDismiss,
-  useFloating,
-  useFloatingRootContext,
-  useInteractions,
-} from '@floating-ui/react';
 import clsx from 'clsx';
-import React, { useId, useRef, useState } from 'react';
+import React, { useId } from 'react';
 import {
-  createFloatingMiddleware,
-  toFloatingPlacement,
-} from '../hooks/floatingConfig';
+  type DismissReason,
+  useDismissibleLayer,
+} from '../floating/dismissibleLayer';
+import { FocusScope } from '../floating/FocusScope';
+import { useFloatingPosition } from '../floating/useFloatingPosition';
 import { useControllableValue } from '../hooks/useControllableState';
 import { mergeRefs } from '../utils/mergeRefs';
 import Portal from '../utils/Portal';
@@ -27,12 +19,10 @@ type PopoverContextValue = {
   onOpenChange: (open: boolean) => void;
   idPrefix: string;
   triggerRef: React.RefObject<HTMLElement | null>;
+  floatingRef: React.RefObject<HTMLElement | null>;
   setReference: (node: HTMLElement | null) => void;
   setFloating: (node: HTMLElement | null) => void;
   floatingStyles: React.CSSProperties;
-  floatingContext: ReturnType<typeof useFloating>['context'];
-  getReferenceProps: UseInteractionsReturn['getReferenceProps'];
-  getFloatingProps: UseInteractionsReturn['getFloatingProps'];
 };
 
 const PopoverContext = React.createContext<PopoverContextValue | null>(null);
@@ -72,91 +62,58 @@ const PopoverRoot: PopoverRootComponent = function Popover({
   children,
 }: Readonly<PopoverProps>): React.JSX.Element {
   const idPrefix = useId();
-  const triggerRef = useRef<HTMLElement | null>(null);
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
-    null
-  );
-  const [floatingElement, setFloatingElement] = useState<HTMLElement | null>(
-    null
-  );
   const [currentOpen, handleOpenChange] = useControllableValue<boolean>(
     open,
     defaultOpen,
     onOpenChange
   );
-  const handleFloatingOpenChange = React.useCallback(
-    (nextOpen: boolean, _event?: Event, reason?: OpenChangeReason) => {
-      handleOpenChange(nextOpen);
-
-      if (!nextOpen && reason === 'escape-key') {
-        triggerRef.current?.focus();
-      }
-    },
-    [handleOpenChange]
-  );
-  const floatingRootContext = useFloatingRootContext({
-    open: currentOpen,
-    onOpenChange: handleFloatingOpenChange,
-    elements: {
-      reference: referenceElement,
-      floating: floatingElement,
-    },
-  });
   const {
-    refs,
+    referenceRef: triggerRef,
+    floatingRef,
+    setReference,
+    setFloating,
     floatingStyles,
-    context: floatingContext,
-  } = useFloating({
-    rootContext: floatingRootContext,
-    placement: toFloatingPlacement(placement, 'center'),
-    middleware: createFloatingMiddleware(offset),
-    strategy: 'fixed',
-    transform: false,
-    whileElementsMounted: autoUpdate,
+  } = useFloatingPosition({
+    open: currentOpen,
+    side: placement,
+    alignment: 'center',
+    offset,
   });
-  const dismiss = useDismiss(floatingContext, {
-    enabled: currentOpen,
-    escapeKey: closeOnEscape,
-    outsidePress: closeOnOutsideClick,
+  const handleDismiss = React.useCallback(
+    (reason: DismissReason) => {
+      handleOpenChange(false);
+      if (reason === 'escape') triggerRef.current?.focus();
+    },
+    [handleOpenChange, triggerRef]
+  );
+  useDismissibleLayer({
+    open: currentOpen,
+    referenceRef: triggerRef,
+    floatingRef,
+    closeOnEscape,
+    closeOnOutsidePointerDown: closeOnOutsideClick,
+    onDismiss: handleDismiss,
   });
-  const { getReferenceProps, getFloatingProps } = useInteractions([dismiss]);
-  const setReference = React.useCallback(
-    (node: HTMLElement | null) => {
-      refs.setReference(node);
-      setReferenceElement(node);
-    },
-    [refs]
-  );
-  const setFloating = React.useCallback(
-    (node: HTMLElement | null) => {
-      refs.setFloating(node);
-      setFloatingElement(node);
-    },
-    [refs]
-  );
   const contextValue = React.useMemo(
     () => ({
       open: currentOpen,
       onOpenChange: handleOpenChange,
       idPrefix,
       triggerRef,
+      floatingRef,
       setReference,
       setFloating,
       floatingStyles,
-      floatingContext,
-      getReferenceProps,
-      getFloatingProps,
     }),
     [
       currentOpen,
       handleOpenChange,
       idPrefix,
+      triggerRef,
+      floatingRef,
       setReference,
       setFloating,
       floatingStyles,
-      floatingContext,
-      getReferenceProps,
-      getFloatingProps,
     ]
   );
 
@@ -184,14 +141,8 @@ const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
   { children, asChild = false, onClick, type, ...triggerProps },
   ref
 ) {
-  const {
-    open,
-    onOpenChange,
-    idPrefix,
-    triggerRef,
-    setReference,
-    getReferenceProps,
-  } = usePopoverContext();
+  const { open, onOpenChange, idPrefix, triggerRef, setReference } =
+    usePopoverContext();
   const mergedRef = mergeRefs(
     ref,
     triggerRef,
@@ -203,13 +154,13 @@ const PopoverTrigger: PopoverTriggerComponent = React.forwardRef<
       onOpenChange(!open);
     }
   };
-  const referenceProps = getReferenceProps({
+  const referenceProps: React.HTMLAttributes<HTMLElement> = {
     ...triggerProps,
     onClick: handleClick,
     'aria-haspopup': 'dialog',
     'aria-expanded': open,
     'aria-controls': `${idPrefix}-content`,
-  }) as React.HTMLAttributes<HTMLElement>;
+  };
 
   if (asChild) {
     if (!React.isValidElement(children)) {
@@ -255,25 +206,20 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
   const {
     open,
     idPrefix,
+    triggerRef,
+    floatingRef,
     setFloating,
     floatingStyles,
-    floatingContext,
-    getFloatingProps,
   } = usePopoverContext();
-  const floatingProps = getFloatingProps(
-    props
-  ) as React.HTMLAttributes<HTMLDivElement>;
 
   if (!open) return null;
 
   return (
     <Portal>
-      <FloatingFocusManager
-        context={floatingContext}
-        modal
-        returnFocus
-        outsideElementsInert={false}
-        initialFocus={initialFocusRef ?? 0}
+      <FocusScope
+        contentRef={floatingRef}
+        triggerRef={triggerRef}
+        initialFocusRef={initialFocusRef}
       >
         <div
           id={`${idPrefix}-content`}
@@ -283,11 +229,12 @@ const PopoverContent: PopoverContentComponent = React.forwardRef<
             ...floatingStyles,
             ...style,
           }}
-          {...floatingProps}
+          tabIndex={-1}
+          {...props}
         >
           {children}
         </div>
-      </FloatingFocusManager>
+      </FocusScope>
     </Portal>
   );
 });
