@@ -1,0 +1,1321 @@
+{
+  "/Users/freydarmasurya/Desktop/frey-ui/.changeset/README.md": {
+    "size": 298,
+    "mtime_ns": 1771421363982677202,
+    "word_count": 48,
+    "hash": "5d7c7732b43bf3d7008c9764f34b0a69f85ff86a497fb74f762e3efc43fcdd8c"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.changeset/calm-overlays-float.md": {
+    "size": 158,
+    "mtime_ns": 1784253546890219851,
+    "word_count": 21,
+    "hash": "c8789ac37e3da1e7443b9d8102bb58c3b0b7b7ea57311f05eccbea77d2c9d245"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.changeset/config.json": {
+    "size": 271,
+    "mtime_ns": 1771421360932479016,
+    "word_count": 20,
+    "hash": "55f0d283097db231dd67046390b3d7227ff51f1f167a6b0d8b15d6b6fdf61e1f"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.github/workflows/chromatic.yml": {
+    "size": 1261,
+    "mtime_ns": 1784120165179265463,
+    "word_count": 96,
+    "hash": "6619329aef17a3379f8d6127e8ebbdb7150c56e4ae6bd378a1a157815f93a351"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.github/workflows/ci.yml": {
+    "size": 2206,
+    "mtime_ns": 1784120165179215712,
+    "word_count": 176,
+    "hash": "be1eca9f5e61d6bc610d5654e4949ecde179b80844730931c0875214dace2b7b"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.github/workflows/deploy-github-pages.yml": {
+    "size": 1929,
+    "mtime_ns": 1784120165190329945,
+    "word_count": 169,
+    "hash": "db86f98fa1f9e9b7920239c5a712b29741c124d5bcc77fd18f973c70af2d9697"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.github/workflows/publish.yml": {
+    "size": 1330,
+    "mtime_ns": 1784120165199782627,
+    "word_count": 108,
+    "hash": "f06216655146571530fe5a55cd250e8d9ae0289f25122c7aa1bcf358220e5ba1"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.github/workflows/unit-test.yml": {
+    "size": 1104,
+    "mtime_ns": 1784120165214848008,
+    "word_count": 94,
+    "hash": "aae76e1577b64624ba5b07d44e9de195fdc5359623f939bf0a28b96e2bd002a2"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.vscode/settings.json": {
+    "size": 859,
+    "mtime_ns": 1771658038847564438,
+    "word_count": 57,
+    "hash": "5a0a36f93dc975323258632bf416eac5810cb3e7ff813ac23694566553949b40"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/AGENTS.md": {
+    "size": 3235,
+    "mtime_ns": 1780016930740558165,
+    "word_count": 449,
+    "hash": "8e8347386f0e5a2719a4f166eeab400b5a3573eb14a8ff1f0b53df537ea04b4f"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/CHANGELOG.md": {
+    "size": 370,
+    "mtime_ns": 1775658886105793636,
+    "word_count": 18,
+    "hash": "2d9c1fea865dfe7b623a4e0055b008463f18e1a282246b330532ddbc4ef88ea5"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/README.md": {
+    "size": 1731,
+    "mtime_ns": 1784120165169097527,
+    "word_count": 204,
+    "hash": "d13eceb3b2541f84e3163062a01244607e535b8d3d5f69e4c7ad3ee082f23ece"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/CHANGELOG.md": {
+    "size": 1426,
+    "mtime_ns": 1784249484872673983,
+    "word_count": 172,
+    "hash": "f36aea2e2babe10f6e3f33f25f439cd180bb5c5a23a1b827cd1345052862e5bc"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/README.md": {
+    "size": 1038,
+    "mtime_ns": 1775373838744442025,
+    "word_count": 129,
+    "hash": "d231323197ca2a4a6df31cbb24980d727b691996de89a5f4eeac171aa3b49fee"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/package.json": {
+    "size": 520,
+    "mtime_ns": 1784249484873268235,
+    "word_count": 47,
+    "hash": "b489ce433743b6146263f4c2e37a80a88bfe759c9618194f1c971df6ee2a5733"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/playwright.config.ts": {
+    "size": 1200,
+    "mtime_ns": 1780020056262026378,
+    "word_count": 128
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/serve.json": {
+    "size": 25,
+    "mtime_ns": 1772519163996765130,
+    "word_count": 4,
+    "hash": "d94cf22b54cd47f6d78f66eb1c4fa003b4d560e135bb196aadd9be2ef89f24e5"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/tests/components.spec.ts": {
+    "size": 29510,
+    "mtime_ns": 1784249484873945903,
+    "word_count": 2279
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/tests/focus-geometry.ts": {
+    "size": 5639,
+    "mtime_ns": 1784249484874255738,
+    "word_count": 518
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/tests/overlays.spec.ts": {
+    "size": 26772,
+    "mtime_ns": 1784263794991352366,
+    "word_count": 2135
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/tsconfig.json": {
+    "size": 247,
+    "mtime_ns": 1780373185982535598,
+    "word_count": 20,
+    "hash": "dc349a367e389b12ae108881accf488e9e46ad8942b2560cde9e092f93777209"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/playwright/turbo.json": {
+    "size": 787,
+    "mtime_ns": 1780374230318898868,
+    "word_count": 58,
+    "hash": "478edeb1c4af6e18ece98ef7010d90539a447dbfbca8eac7178736e54f68575b"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.continue/config.yaml": {
+    "size": 82,
+    "mtime_ns": 1775290927127285704,
+    "word_count": 8,
+    "hash": "e63f7faeb9b608b5c4b55870c86acdcbd82f449bd07028fa8870ee93072cc8f2"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.cursor/mcp.json": {
+    "size": 92,
+    "mtime_ns": 1775290927127910410,
+    "word_count": 10,
+    "hash": "ffa32e1aeea6522c2eb0dc7158207076ba4ce24a81e558f23f70f79cdc345d99"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.gemini/settings.json": {
+    "size": 96,
+    "mtime_ns": 1775290927128250242,
+    "word_count": 10,
+    "hash": "f92e40c4462c36df52ecec427179742d1c9d092ed24b2d69c5a937b3edd3be95"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.mcp.json": {
+    "size": 114,
+    "mtime_ns": 1775290927121026933,
+    "word_count": 12,
+    "hash": "8efdd99ddddfd4689bf8c6c02c172134bcaf5cc308cd7e2519d611c1c5f89a88"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.storybook/main.ts": {
+    "size": 3162,
+    "mtime_ns": 1780041183194573529,
+    "word_count": 254
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.storybook/manager-head.html": {
+    "size": 149,
+    "mtime_ns": 1780373351292696108,
+    "word_count": 15,
+    "hash": "d939605432b4fdd6ce36440ace8b51878c411c20a51666ad9e736f734629a28f"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/.storybook/preview.tsx": {
+    "size": 975,
+    "mtime_ns": 1780020056262033045,
+    "word_count": 91
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/CHANGELOG.md": {
+    "size": 2116,
+    "mtime_ns": 1784249484875010115,
+    "word_count": 272,
+    "hash": "c2afd48cba636afde964f600aa66261a42d99942f261316dd529cb4cd109d0eb"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/opencode.json": {
+    "size": 180,
+    "mtime_ns": 1775290927130294569,
+    "word_count": 16,
+    "hash": "17e0516ecfb8a83af160f071dd977f27605b13c067df8f533ba1eb7c4c7ec919"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/package.json": {
+    "size": 1612,
+    "mtime_ns": 1784249484875306908,
+    "word_count": 128,
+    "hash": "52b03161aab97038feacacb807bbd84b288d99bab26b6644474cb02649e7fc28"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Accordion/Accordion.stories.tsx": {
+    "size": 5321,
+    "mtime_ns": 1784104134306938237,
+    "word_count": 476
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Alert/Alert.stories.tsx": {
+    "size": 3367,
+    "mtime_ns": 1780020056262810502,
+    "word_count": 400
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Avatar/Avatar.stories.tsx": {
+    "size": 3185,
+    "mtime_ns": 1780020056262993002,
+    "word_count": 368
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Badge/Badge.stories.tsx": {
+    "size": 2442,
+    "mtime_ns": 1780020056264228501,
+    "word_count": 257
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Box/Box.stories.tsx": {
+    "size": 4915,
+    "mtime_ns": 1780020056264568834,
+    "word_count": 463
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Breadcrumbs/Breadcrumbs.stories.tsx": {
+    "size": 2059,
+    "mtime_ns": 1780020056263974293,
+    "word_count": 164
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Button/Button.stories.tsx": {
+    "size": 5598,
+    "mtime_ns": 1780020056264489084,
+    "word_count": 598
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Calendar/Calendar.stories.tsx": {
+    "size": 13244,
+    "mtime_ns": 1784249484875668409,
+    "word_count": 1331
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Card/Card.stories.tsx": {
+    "size": 1329,
+    "mtime_ns": 1780020056263982751,
+    "word_count": 141
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Checkbox/Checkbox.stories.tsx": {
+    "size": 5789,
+    "mtime_ns": 1780020056265148292,
+    "word_count": 610
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Chip/Chip.stories.tsx": {
+    "size": 3801,
+    "mtime_ns": 1780020056265041875,
+    "word_count": 435
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Combobox/Combobox.stories.tsx": {
+    "size": 6955,
+    "mtime_ns": 1780020056265362167,
+    "word_count": 763
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/CommandPalette/CommandPalette.stories.tsx": {
+    "size": 9255,
+    "mtime_ns": 1780020056267000832,
+    "word_count": 714
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/DateField/DateField.stories.tsx": {
+    "size": 14487,
+    "mtime_ns": 1784249484876231785,
+    "word_count": 1468
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/DatePicker/DatePicker.stories.tsx": {
+    "size": 15216,
+    "mtime_ns": 1784249484876655786,
+    "word_count": 1665
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Dialog/Dialog.stories.tsx": {
+    "size": 4392,
+    "mtime_ns": 1780020056266543708,
+    "word_count": 384
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Drawer/Drawer.stories.tsx": {
+    "size": 5382,
+    "mtime_ns": 1780020056266595499,
+    "word_count": 480
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/DropdownMenu/DropdownMenu.stories.tsx": {
+    "size": 6295,
+    "mtime_ns": 1784271201045964814,
+    "word_count": 558
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Field/Field.stories.tsx": {
+    "size": 6841,
+    "mtime_ns": 1780020056266207125,
+    "word_count": 715
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Flex/Flex.stories.tsx": {
+    "size": 3660,
+    "mtime_ns": 1780020056265940750,
+    "word_count": 368
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Grid/Grid.stories.tsx": {
+    "size": 3613,
+    "mtime_ns": 1780020056266668082,
+    "word_count": 380
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Icons/Icons.stories.tsx": {
+    "size": 5051,
+    "mtime_ns": 1784249484877014663,
+    "word_count": 536
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Introduction.mdx": {
+    "size": 2470,
+    "mtime_ns": 1774921655510932181,
+    "word_count": 358,
+    "hash": "b4038f6ff6406adfc1118b8a145e378b06a3d2919ce11c47df1f9aa25bcc3ab5"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Link/Link.stories.tsx": {
+    "size": 2980,
+    "mtime_ns": 1780020056266820666,
+    "word_count": 332
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Pagination/Pagination.stories.tsx": {
+    "size": 6462,
+    "mtime_ns": 1780020056269051956,
+    "word_count": 685
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Patterns/UsagePatterns.stories.tsx": {
+    "size": 13938,
+    "mtime_ns": 1780020056270405663,
+    "word_count": 1079
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Popover/Popover.stories.tsx": {
+    "size": 5842,
+    "mtime_ns": 1784271208400502943,
+    "word_count": 566
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Progress/Progress.stories.tsx": {
+    "size": 3743,
+    "mtime_ns": 1780020056268629039,
+    "word_count": 432
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/RadioGroup/RadioGroup.stories.tsx": {
+    "size": 7072,
+    "mtime_ns": 1780020056268637623,
+    "word_count": 777
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/SegmentedControl/SegmentedControl.stories.tsx": {
+    "size": 14113,
+    "mtime_ns": 1784127294291768250,
+    "word_count": 1259
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Select/Select.stories.tsx": {
+    "size": 5101,
+    "mtime_ns": 1780020056269025622,
+    "word_count": 543
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Skeleton/Skeleton.stories.tsx": {
+    "size": 3156,
+    "mtime_ns": 1780020056268435498,
+    "word_count": 372
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Spinner/Spinner.stories.tsx": {
+    "size": 2113,
+    "mtime_ns": 1780020056268535831,
+    "word_count": 249
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Stack/Stack.stories.tsx": {
+    "size": 3279,
+    "mtime_ns": 1780020056268533248,
+    "word_count": 326
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Switch/Switch.stories.tsx": {
+    "size": 5666,
+    "mtime_ns": 1780020056270588746,
+    "word_count": 627
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Table/Table.stories.tsx": {
+    "size": 2954,
+    "mtime_ns": 1780020056270245621,
+    "word_count": 225
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Tabs/Tabs.stories.tsx": {
+    "size": 3600,
+    "mtime_ns": 1780020056270248705,
+    "word_count": 326
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/TextInput/TextInput.stories.tsx": {
+    "size": 5568,
+    "mtime_ns": 1780020056270300705,
+    "word_count": 635
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Textarea/Textarea.stories.tsx": {
+    "size": 4607,
+    "mtime_ns": 1780020056270572913,
+    "word_count": 520
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/ThemeProvider/ThemeProvider.stories.tsx": {
+    "size": 3735,
+    "mtime_ns": 1780020056270569121,
+    "word_count": 420
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Toast/Toast.stories.tsx": {
+    "size": 3733,
+    "mtime_ns": 1780020056270239330,
+    "word_count": 378
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/stories/Tooltip/Tooltip.stories.tsx": {
+    "size": 5941,
+    "mtime_ns": 1784271212043868533,
+    "word_count": 626
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/storybookDocsCheck.test.mjs": {
+    "size": 2761,
+    "mtime_ns": 1780020056271254204,
+    "word_count": 244
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/src/vite-env.d.ts": {
+    "size": 38,
+    "mtime_ns": 1771376723504146540,
+    "word_count": 4
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/tsconfig.app.json": {
+    "size": 732,
+    "mtime_ns": 1774838392221793440,
+    "word_count": 54,
+    "hash": "2b75084c3ec35633d6c1860392f8226636b64a4159ecaf3e6901a554f249c2e0"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/tsconfig.json": {
+    "size": 119,
+    "mtime_ns": 1771376723504643081,
+    "word_count": 15,
+    "hash": "87cd8fed0a97109a9f29ff275dc44d57af14b440f3ee6fbf9d48e3c94379d98c"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/tsconfig.node.json": {
+    "size": 810,
+    "mtime_ns": 1774838392222222730,
+    "word_count": 57,
+    "hash": "72c72dfa009de4e9ffeb155afd975cb10dc9f9ce785bbd14072622fa9f0fb107"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/turbo.json": {
+    "size": 2089,
+    "mtime_ns": 1775372559702905890,
+    "word_count": 125,
+    "hash": "9b50c0e7eefef97ea7419dea8b2b74036dc92df2510eaa8171a5d0c32cd72ebc"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/vite.config.ts": {
+    "size": 224,
+    "mtime_ns": 1780041016118884796,
+    "word_count": 23
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/vitest.config.ts": {
+    "size": 770,
+    "mtime_ns": 1780020056272365995,
+    "word_count": 69
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/apps/storybook/vitest.setup.ts": {
+    "size": 561,
+    "mtime_ns": 1771982665286512028,
+    "word_count": 58
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/biome.json": {
+    "size": 980,
+    "mtime_ns": 1784120231953165090,
+    "word_count": 86,
+    "hash": "fbd03f5feacaff3adcc3279113c33ad726798b860e01e6b8b7602f2c80edc648"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/commitlint.config.ts": {
+    "size": 172,
+    "mtime_ns": 1780373364454059077,
+    "word_count": 18
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/docs/component-priorities.md": {
+    "size": 3949,
+    "mtime_ns": 1784249484877462581,
+    "word_count": 530,
+    "hash": "5cc5e7bb388c6ce8c94001b62f8a8af1be5d01e66b8bbfc9d54586c80e98a4ca"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/docs/superpowers/plans/2026-07-16-date-components.md": {
+    "size": 19856,
+    "mtime_ns": 1784249484878009332,
+    "word_count": 2531,
+    "hash": "810a1f2bdbeb6f81351968d0e8f051c639a2c3eb7c109efada6edd90e403662c"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/docs/superpowers/plans/2026-07-16-date-quality-refactor.md": {
+    "size": 5305,
+    "mtime_ns": 1784249484878354542,
+    "word_count": 716,
+    "hash": "67b145603e687338afbac9c3986ba7e1af003821e9f60fa315ee9850fee53ae7"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/package.json": {
+    "size": 1728,
+    "mtime_ns": 1784120786713608978,
+    "word_count": 143,
+    "hash": "d21df1ef58259d93979beae3ae14ecffe288d7a2cdaf1227cb4699f8c924dc32"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/CHANGELOG.md": {
+    "size": 1939,
+    "mtime_ns": 1784249484878676959,
+    "word_count": 256,
+    "hash": "291759b867af440cdc0e5d2ca21d9cf7524d0f09522442a0b26bfe5ca72f8474"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/README.md": {
+    "size": 4073,
+    "mtime_ns": 1784253546888638598,
+    "word_count": 499,
+    "hash": "94396333a169652fc2ee922a073b5ba9e5c4715990be6fae27ecfb3a89b69ea4"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/package.json": {
+    "size": 2292,
+    "mtime_ns": 1784252796544967466,
+    "word_count": 176,
+    "hash": "0635b742b546f87c6da66ddbeac774b354bc33266feacf955a6440de1b3e9274"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/rollup.config.mjs": {
+    "size": 6135,
+    "mtime_ns": 1780023099976878190,
+    "word_count": 466
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Accordion/accordion.mergeRefs-edge.test.tsx": {
+    "size": 838,
+    "mtime_ns": 1780020056273484244,
+    "word_count": 80
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Accordion/accordion.test.tsx": {
+    "size": 16309,
+    "mtime_ns": 1784104141631543487,
+    "word_count": 1110
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Accordion/index.tsx": {
+    "size": 8828,
+    "mtime_ns": 1784104146192343530,
+    "word_count": 752
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Alert/Alert.test.tsx": {
+    "size": 2249,
+    "mtime_ns": 1771417443782737850,
+    "word_count": 204
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Alert/index.tsx": {
+    "size": 2119,
+    "mtime_ns": 1780020056274127077,
+    "word_count": 176
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Avatar/avatar.test.tsx": {
+    "size": 3504,
+    "mtime_ns": 1780040045186231603,
+    "word_count": 346
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Avatar/index.tsx": {
+    "size": 2414,
+    "mtime_ns": 1780020056275312326,
+    "word_count": 243
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Badge/Badge.test.tsx": {
+    "size": 1233,
+    "mtime_ns": 1772089513107459976,
+    "word_count": 117
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Badge/index.tsx": {
+    "size": 1625,
+    "mtime_ns": 1780020056275631659,
+    "word_count": 151
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Box/Box.test.tsx": {
+    "size": 3526,
+    "mtime_ns": 1774838392225213260,
+    "word_count": 239
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Box/index.tsx": {
+    "size": 7016,
+    "mtime_ns": 1780020056277055700,
+    "word_count": 645
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Breadcrumbs/Breadcrumbs.test.tsx": {
+    "size": 2320,
+    "mtime_ns": 1772157798571485324,
+    "word_count": 148
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Breadcrumbs/index.tsx": {
+    "size": 4094,
+    "mtime_ns": 1780020056276046784,
+    "word_count": 320
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Button/Button.test.tsx": {
+    "size": 3690,
+    "mtime_ns": 1784120550296131502,
+    "word_count": 343
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Button/index.tsx": {
+    "size": 3289,
+    "mtime_ns": 1780020056277794657,
+    "word_count": 303
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/calendar.test.tsx": {
+    "size": 13690,
+    "mtime_ns": 1784249484879599421,
+    "word_count": 1060
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/calendarInteractions.test.ts": {
+    "size": 2056,
+    "mtime_ns": 1784249484879897505,
+    "word_count": 255
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/calendarInteractions.ts": {
+    "size": 1292,
+    "mtime_ns": 1784249484880363340,
+    "word_count": 174
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/calendarModel.test.ts": {
+    "size": 13796,
+    "mtime_ns": 1784249484880609215,
+    "word_count": 1121
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/calendarModel.ts": {
+    "size": 12017,
+    "mtime_ns": 1784249484880961466,
+    "word_count": 1101
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Calendar/index.tsx": {
+    "size": 13883,
+    "mtime_ns": 1784249484884298810,
+    "word_count": 1065
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Card/card.test.tsx": {
+    "size": 1765,
+    "mtime_ns": 1774838392225781925,
+    "word_count": 142
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Card/index.tsx": {
+    "size": 2936,
+    "mtime_ns": 1780020056277586824,
+    "word_count": 251
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Checkbox/Checkbox.test.tsx": {
+    "size": 3959,
+    "mtime_ns": 1780039151516597990,
+    "word_count": 366
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Checkbox/checkbox.ref-edge.test.tsx": {
+    "size": 741,
+    "mtime_ns": 1780020056277375241,
+    "word_count": 96
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Checkbox/index.tsx": {
+    "size": 2609,
+    "mtime_ns": 1780020056277884907,
+    "word_count": 217
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Chip/Chip.test.tsx": {
+    "size": 4628,
+    "mtime_ns": 1774838392227585584,
+    "word_count": 463
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Chip/index.tsx": {
+    "size": 3048,
+    "mtime_ns": 1780020056278856490,
+    "word_count": 312
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Combobox/combobox.test.tsx": {
+    "size": 14474,
+    "mtime_ns": 1780020056282219237,
+    "word_count": 1186
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Combobox/index.tsx": {
+    "size": 11704,
+    "mtime_ns": 1780020056280226030,
+    "word_count": 831
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/CommandPalette/commandpalette.test.tsx": {
+    "size": 19497,
+    "mtime_ns": 1780020056282140695,
+    "word_count": 1474
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/CommandPalette/index.tsx": {
+    "size": 21457,
+    "mtime_ns": 1780373140227211475,
+    "word_count": 1683
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/DateFieldSegments.tsx": {
+    "size": 4597,
+    "mtime_ns": 1784249484933672709,
+    "word_count": 401
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/DateSegmentInput.tsx": {
+    "size": 1985,
+    "mtime_ns": 1784249484934651254,
+    "word_count": 163
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/dateFieldInteractions.test.ts": {
+    "size": 11300,
+    "mtime_ns": 1784249484935163631,
+    "word_count": 996
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/dateFieldInteractions.ts": {
+    "size": 9781,
+    "mtime_ns": 1784249484935566632,
+    "word_count": 956
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/dateFieldState.test.ts": {
+    "size": 798,
+    "mtime_ns": 1784249484935810924,
+    "word_count": 94
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/dateFieldState.ts": {
+    "size": 5057,
+    "mtime_ns": 1784249484936084967,
+    "word_count": 494
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/datefield.test.tsx": {
+    "size": 18312,
+    "mtime_ns": 1784249484936908178,
+    "word_count": 1403
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DateField/index.tsx": {
+    "size": 13380,
+    "mtime_ns": 1784249484937216304,
+    "word_count": 1086
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DatePicker/datepicker.test.tsx": {
+    "size": 15145,
+    "mtime_ns": 1784249484938609891,
+    "word_count": 1210
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DatePicker/index.tsx": {
+    "size": 7933,
+    "mtime_ns": 1784249484939171684,
+    "word_count": 545
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Dialog/dialog.ref-edge.test.tsx": {
+    "size": 666,
+    "mtime_ns": 1780020056279748156,
+    "word_count": 65
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Dialog/dialog.test.tsx": {
+    "size": 18783,
+    "mtime_ns": 1780392389981467030,
+    "word_count": 1333
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Dialog/index.tsx": {
+    "size": 11978,
+    "mtime_ns": 1780392624393438017,
+    "word_count": 989
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Drawer/drawer.test.tsx": {
+    "size": 9487,
+    "mtime_ns": 1780020056283336278,
+    "word_count": 685
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Drawer/index.tsx": {
+    "size": 7067,
+    "mtime_ns": 1780020056282003946,
+    "word_count": 575
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DropdownMenu/dropdownmenu.test.tsx": {
+    "size": 18032,
+    "mtime_ns": 1784251899770341992,
+    "word_count": 1325
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/DropdownMenu/index.tsx": {
+    "size": 9572,
+    "mtime_ns": 1784256414047429994,
+    "word_count": 783
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Field/field.test.tsx": {
+    "size": 2259,
+    "mtime_ns": 1774838392230247074,
+    "word_count": 217
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Field/index.tsx": {
+    "size": 2489,
+    "mtime_ns": 1780020056285552443,
+    "word_count": 237
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Flex/Flex.test.tsx": {
+    "size": 1482,
+    "mtime_ns": 1780020056286054817,
+    "word_count": 134
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Flex/index.tsx": {
+    "size": 1416,
+    "mtime_ns": 1780020056285979568,
+    "word_count": 154
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Grid/Grid.test.tsx": {
+    "size": 1517,
+    "mtime_ns": 1780020056285768109,
+    "word_count": 146
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Grid/index.tsx": {
+    "size": 1534,
+    "mtime_ns": 1780020056287054608,
+    "word_count": 161
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CalendarIcon.tsx": {
+    "size": 543,
+    "mtime_ns": 1784249484939474477,
+    "word_count": 60
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CheckIcon.tsx": {
+    "size": 438,
+    "mtime_ns": 1780020056287683358,
+    "word_count": 47
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/ChevronDownIcon.tsx": {
+    "size": 443,
+    "mtime_ns": 1780020056287576941,
+    "word_count": 47
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CircleCheckIcon.tsx": {
+    "size": 484,
+    "mtime_ns": 1780020056287682108,
+    "word_count": 52
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CircleInfoIcon.tsx": {
+    "size": 550,
+    "mtime_ns": 1780020056287674858,
+    "word_count": 57
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CircleXIcon.tsx": {
+    "size": 503,
+    "mtime_ns": 1780020056287792525,
+    "word_count": 56
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/CloseIcon.tsx": {
+    "size": 462,
+    "mtime_ns": 1780020056287693150,
+    "word_count": 51
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/IconSvg.tsx": {
+    "size": 2009,
+    "mtime_ns": 1780020056287706149,
+    "word_count": 215
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/MinusIcon.tsx": {
+    "size": 427,
+    "mtime_ns": 1780020056287655441,
+    "word_count": 45
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/TriangleAlertIcon.tsx": {
+    "size": 555,
+    "mtime_ns": 1780020056288379732,
+    "word_count": 58
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/icons.test.tsx": {
+    "size": 2716,
+    "mtime_ns": 1784249484940085020,
+    "word_count": 240
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Icons/index.ts": {
+    "size": 318,
+    "mtime_ns": 1784249484940650439,
+    "word_count": 40
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Link/Link.test.tsx": {
+    "size": 2126,
+    "mtime_ns": 1772157798575711279,
+    "word_count": 203
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Link/index.tsx": {
+    "size": 1761,
+    "mtime_ns": 1780020056289307690,
+    "word_count": 166
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Pagination/index.tsx": {
+    "size": 6402,
+    "mtime_ns": 1780020056289989231,
+    "word_count": 536
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Pagination/pagination.test.tsx": {
+    "size": 4614,
+    "mtime_ns": 1774921662823635030,
+    "word_count": 462
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Popover/index.tsx": {
+    "size": 6450,
+    "mtime_ns": 1784252890634074562,
+    "word_count": 558
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Popover/popover.test.tsx": {
+    "size": 13958,
+    "mtime_ns": 1784251899769568449,
+    "word_count": 1067
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Progress/index.tsx": {
+    "size": 2524,
+    "mtime_ns": 1780020056290231273,
+    "word_count": 228
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Progress/progress.test.tsx": {
+    "size": 2402,
+    "mtime_ns": 1780020056289821148,
+    "word_count": 212
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/RadioGroup/index.tsx": {
+    "size": 4486,
+    "mtime_ns": 1780020056291768646,
+    "word_count": 308
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/RadioGroup/radiogroup.test.tsx": {
+    "size": 2641,
+    "mtime_ns": 1780020056290807064,
+    "word_count": 261
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/SegmentedControl/index.tsx": {
+    "size": 5833,
+    "mtime_ns": 1784126784991704404,
+    "word_count": 457
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/SegmentedControl/segmentedcontrol.test.tsx": {
+    "size": 14377,
+    "mtime_ns": 1784126498565511223,
+    "word_count": 1008
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Select/index.tsx": {
+    "size": 2663,
+    "mtime_ns": 1780020056291168897,
+    "word_count": 213
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Select/select.test.tsx": {
+    "size": 2584,
+    "mtime_ns": 1774838392234337475,
+    "word_count": 229
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Skeleton/Skeleton.test.tsx": {
+    "size": 2131,
+    "mtime_ns": 1774838392234702807,
+    "word_count": 228
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Skeleton/index.tsx": {
+    "size": 1284,
+    "mtime_ns": 1780020056291616605,
+    "word_count": 132
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Spinner/index.tsx": {
+    "size": 1364,
+    "mtime_ns": 1780020056293284520,
+    "word_count": 135
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Spinner/spinner.test.tsx": {
+    "size": 960,
+    "mtime_ns": 1771543106931858035,
+    "word_count": 103
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Stack/Stack.test.tsx": {
+    "size": 1303,
+    "mtime_ns": 1780020056293377020,
+    "word_count": 121
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Stack/index.tsx": {
+    "size": 1004,
+    "mtime_ns": 1773302911763497475,
+    "word_count": 127
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Switch/Switch.test.tsx": {
+    "size": 4250,
+    "mtime_ns": 1780020056293452770,
+    "word_count": 403
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Switch/index.tsx": {
+    "size": 2565,
+    "mtime_ns": 1780373163603505018,
+    "word_count": 211
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Table/Table.test.tsx": {
+    "size": 3013,
+    "mtime_ns": 1774838392236490925,
+    "word_count": 217
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Table/index.tsx": {
+    "size": 5083,
+    "mtime_ns": 1780020056295215935,
+    "word_count": 407
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Tabs/index.tsx": {
+    "size": 6212,
+    "mtime_ns": 1780020056295285852,
+    "word_count": 542
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Tabs/tabs.edge.test.tsx": {
+    "size": 3364,
+    "mtime_ns": 1780020056294798852,
+    "word_count": 255
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Tabs/tabs.test.tsx": {
+    "size": 5974,
+    "mtime_ns": 1774838392240512909,
+    "word_count": 447
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/TextInput/TextInput.test.tsx": {
+    "size": 3426,
+    "mtime_ns": 1772509949302757076,
+    "word_count": 318
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/TextInput/index.tsx": {
+    "size": 1900,
+    "mtime_ns": 1780020056295295769,
+    "word_count": 158
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Textarea/index.tsx": {
+    "size": 2163,
+    "mtime_ns": 1780020056295695435,
+    "word_count": 173
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Textarea/textarea.test.tsx": {
+    "size": 2126,
+    "mtime_ns": 1771504477235999654,
+    "word_count": 195
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/ThemeProvider/index.tsx": {
+    "size": 2222,
+    "mtime_ns": 1780020056297261684,
+    "word_count": 213
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/ThemeProvider/themeprovider.test.tsx": {
+    "size": 4483,
+    "mtime_ns": 1780020056297480309,
+    "word_count": 352
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Toast/index.tsx": {
+    "size": 6699,
+    "mtime_ns": 1780020056297554059,
+    "word_count": 555
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Toast/toast.test.tsx": {
+    "size": 8197,
+    "mtime_ns": 1780020056298022892,
+    "word_count": 727
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Tooltip/index.tsx": {
+    "size": 3267,
+    "mtime_ns": 1784256570157196340,
+    "word_count": 296
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/Tooltip/tooltip.test.tsx": {
+    "size": 7004,
+    "mtime_ns": 1784252864810331596,
+    "word_count": 585
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/dateEngine.test.ts": {
+    "size": 14111,
+    "mtime_ns": 1784249484942345194,
+    "word_count": 1439
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/dateEngine.ts": {
+    "size": 21925,
+    "mtime_ns": 1784249484942723570,
+    "word_count": 2618
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/dateLocale.test.ts": {
+    "size": 7011,
+    "mtime_ns": 1784249484943020321,
+    "word_count": 613
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/dateLocale.ts": {
+    "size": 9345,
+    "mtime_ns": 1784249484943365989,
+    "word_count": 1025
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/japaneseEraData.ts": {
+    "size": 10433,
+    "mtime_ns": 1784249484943712115,
+    "word_count": 1515
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/types.ts": {
+    "size": 724,
+    "mtime_ns": 1784249484943952199,
+    "word_count": 96
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/useDateLocale.test.tsx": {
+    "size": 974,
+    "mtime_ns": 1784249484944191450,
+    "word_count": 94
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/date/useDateLocale.ts": {
+    "size": 613,
+    "mtime_ns": 1784249484944427534,
+    "word_count": 67
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/FocusScope.test.tsx": {
+    "size": 19268,
+    "mtime_ns": 1784263607664299410,
+    "word_count": 1536
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/FocusScope.tsx": {
+    "size": 7324,
+    "mtime_ns": 1784275766076772707,
+    "word_count": 674
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/autoUpdate.test.ts": {
+    "size": 12100,
+    "mtime_ns": 1784256469688332908,
+    "word_count": 923
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/autoUpdate.ts": {
+    "size": 7196,
+    "mtime_ns": 1784275766077929486,
+    "word_count": 656
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/dismissibleLayer.test.tsx": {
+    "size": 13479,
+    "mtime_ns": 1784275591768092917,
+    "word_count": 1140
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/dismissibleLayer.ts": {
+    "size": 4926,
+    "mtime_ns": 1784275766077453825,
+    "word_count": 415
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/geometry.test.ts": {
+    "size": 4963,
+    "mtime_ns": 1784256478320094735,
+    "word_count": 558
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/geometry.ts": {
+    "size": 7743,
+    "mtime_ns": 1784275766078279566,
+    "word_count": 795
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/platform.ts": {
+    "size": 479,
+    "mtime_ns": 1784262972012071288,
+    "word_count": 53
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/ssr.test.tsx": {
+    "size": 980,
+    "mtime_ns": 1784256482559937533,
+    "word_count": 100
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/tabbable.ts": {
+    "size": 3128,
+    "mtime_ns": 1784263229332220076,
+    "word_count": 288
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/useFloatingPosition.test.tsx": {
+    "size": 9509,
+    "mtime_ns": 1784263712112140721,
+    "word_count": 814
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/useFloatingPosition.ts": {
+    "size": 5805,
+    "mtime_ns": 1784275766078775435,
+    "word_count": 574
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/useTooltipInteractions.test.tsx": {
+    "size": 11211,
+    "mtime_ns": 1784263527234669012,
+    "word_count": 902
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/useTooltipInteractions.ts": {
+    "size": 4989,
+    "mtime_ns": 1784263219391788756,
+    "word_count": 440
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/hooks/__tests__/useControllableState.test.ts": {
+    "size": 2849,
+    "mtime_ns": 1780374289104615606,
+    "word_count": 275
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/hooks/useControllableState.ts": {
+    "size": 765,
+    "mtime_ns": 1780374289104240199,
+    "word_count": 93
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/hooks/useRovingCollection.test.tsx": {
+    "size": 4899,
+    "mtime_ns": 1780020056299017682,
+    "word_count": 358
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/hooks/useRovingCollection.ts": {
+    "size": 4452,
+    "mtime_ns": 1780020056297773725,
+    "word_count": 461
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/index.ts": {
+    "size": 5944,
+    "mtime_ns": 1784249484944997744,
+    "word_count": 709
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/theme/generate-theme-tokens.test.ts": {
+    "size": 4811,
+    "mtime_ns": 1784249484946426248,
+    "word_count": 395
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/types/css-module.d.ts": {
+    "size": 553,
+    "mtime_ns": 1774840613829601059,
+    "word_count": 78
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/types/jest-axe.d.ts": {
+    "size": 196,
+    "mtime_ns": 1773300771191048311,
+    "word_count": 21
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/types/polymorphic.ts": {
+    "size": 379,
+    "mtime_ns": 1780020056285680526,
+    "word_count": 38
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/Portal.test.tsx": {
+    "size": 2819,
+    "mtime_ns": 1774838392244642726,
+    "word_count": 214
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/Portal.tsx": {
+    "size": 1439,
+    "mtime_ns": 1780020056283329070,
+    "word_count": 134
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/aria.ts": {
+    "size": 551,
+    "mtime_ns": 1780020056280596530,
+    "word_count": 52
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/mergeRefs.ts": {
+    "size": 375,
+    "mtime_ns": 1771741983855918466,
+    "word_count": 51
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/slot.test.tsx": {
+    "size": 1680,
+    "mtime_ns": 1774838392244774434,
+    "word_count": 157
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/slot.tsx": {
+    "size": 2538,
+    "mtime_ns": 1780020425221276114,
+    "word_count": 257
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/testUtils.test.ts": {
+    "size": 454,
+    "mtime_ns": 1774838392245164391,
+    "word_count": 48
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/utils/testUtils.ts": {
+    "size": 322,
+    "mtime_ns": 1780020468173507330,
+    "word_count": 52
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/tsconfig.json": {
+    "size": 119,
+    "mtime_ns": 1771473420637259717,
+    "word_count": 15,
+    "hash": "e02c20f4846eae3b023cd6d02f155c1d97f26d411f3c5c63d6a7b899a3cb73d1"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/tsconfig.lib.json": {
+    "size": 883,
+    "mtime_ns": 1771842709759137849,
+    "word_count": 62,
+    "hash": "961b5dc9ad1d2da13a7a81e704f34ff1b25d635ac2d76345db294bfdb58390f1"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/tsconfig.test.json": {
+    "size": 324,
+    "mtime_ns": 1771843205065822594,
+    "word_count": 24,
+    "hash": "83e3b1c7c90704562d3ed2cf8f499e6a8a03d036f0b707fab3335f96394d98b7"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/turbo.json": {
+    "size": 526,
+    "mtime_ns": 1775375446089907561,
+    "word_count": 46,
+    "hash": "addab4d10cd1519eb3ae69606956cbef3bb1e659162eef2404a54eba9ed93017"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/vitest.config.ts": {
+    "size": 834,
+    "mtime_ns": 1780382300897227544,
+    "word_count": 66
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/vitest.setup.ts": {
+    "size": 219,
+    "mtime_ns": 1771473644704423699,
+    "word_count": 20
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/pnpm-workspace.yaml": {
+    "size": 1527,
+    "mtime_ns": 1784271185279485100,
+    "word_count": 121,
+    "hash": "69ef2c241c39f2c2696dd524ed70793629a26d6aa0c362389196fad08f20a706"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/renovate.json": {
+    "size": 690,
+    "mtime_ns": 1780376005643324670,
+    "word_count": 44,
+    "hash": "3c1efb683f5f335a3d4f97265bb5d6adff3aec8041eda7924a35a9c562b662b1"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/scripts/check-storybook-api-coverage.mjs": {
+    "size": 3162,
+    "mtime_ns": 1780373122103786462,
+    "word_count": 295
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/scripts/generate-theme-tokens.mjs": {
+    "size": 12213,
+    "mtime_ns": 1784249484946965916,
+    "word_count": 912
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/scripts/storybookDocsCheck.mjs": {
+    "size": 10738,
+    "mtime_ns": 1780020056263072294,
+    "word_count": 955
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/turbo.json": {
+    "size": 1721,
+    "mtime_ns": 1775372575172457156,
+    "word_count": 99,
+    "hash": "1676cab0aab39f78c1811b2fe019905e3844f004a24fc8e59a42b06c56fc3dd3"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.husky/post-checkout": {
+    "size": 9003,
+    "mtime_ns": 1784275213828879379,
+    "word_count": 1073,
+    "hash": "b9547375bead92a3bffcdb650cd04e920318889d841f0925093d19a49b03587e"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/.husky/post-commit": {
+    "size": 9398,
+    "mtime_ns": 1784275213828503466,
+    "word_count": 1123,
+    "hash": "81e816293ae4bc9ed3cbb43221f30d09d07778c68b5d6436391c66ab81920670"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/graphify-out/memory/query_20260717_075408_how_does_dismissiblelayer_scrollbar_press_detectio.md": {
+    "size": 1231,
+    "mtime_ns": 1784274848329302492,
+    "word_count": 132,
+    "hash": "baf6ff76908554a3c07ecef39f4cd22ad9802e82f7a19c7d1c664d968a5e01d3"
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/pointerEvent.test.ts": {
+    "size": 10190,
+    "mtime_ns": 1784275621128451462,
+    "word_count": 919
+  },
+  "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/pointerEvent.ts": {
+    "size": 4261,
+    "mtime_ns": 1784275693955039003,
+    "word_count": 426
+  }
+}

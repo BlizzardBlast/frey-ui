@@ -102,9 +102,10 @@ function observeReferenceMove(
   update: () => void
 ): Cleanup | undefined {
   const ownerWindow = reference.ownerDocument.defaultView;
-  if (!ownerWindow || typeof ownerWindow.IntersectionObserver === 'undefined') {
+  if (!ownerWindow?.IntersectionObserver) {
     return undefined;
   }
+  const IntersectionObserverConstructor = ownerWindow.IntersectionObserver;
 
   const documentElement = reference.ownerDocument.documentElement;
   let observer: IntersectionObserver | null = null;
@@ -142,7 +143,7 @@ function observeReferenceMove(
     const normalizedThreshold = Math.max(0, Math.min(1, threshold));
     let firstNotification = true;
 
-    observer = new ownerWindow.IntersectionObserver(
+    observer = new IntersectionObserverConstructor(
       (entries) => {
         const entry = entries[0];
         if (!entry) {
@@ -220,9 +221,9 @@ export function autoUpdateFloating(
   ]);
   ancestors.forEach((ancestor) => {
     cleanupCallbacks.push(
-      subscribeShared(ancestor, 'scroll', scheduleUpdate, { passive: true })
+      subscribeShared(ancestor, 'scroll', scheduleUpdate, { passive: true }),
+      subscribeShared(ancestor, 'resize', scheduleUpdate)
     );
-    cleanupCallbacks.push(subscribeShared(ancestor, 'resize', scheduleUpdate));
   });
 
   const visualViewport = ownerWindow.visualViewport;
@@ -230,15 +231,14 @@ export function autoUpdateFloating(
     cleanupCallbacks.push(
       subscribeShared(visualViewport, 'scroll', scheduleUpdate, {
         passive: true,
-      })
-    );
-    cleanupCallbacks.push(
+      }),
       subscribeShared(visualViewport, 'resize', scheduleUpdate)
     );
   }
 
-  if (typeof ownerWindow.ResizeObserver !== 'undefined') {
-    const resizeObserver = new ownerWindow.ResizeObserver(scheduleUpdate);
+  const ResizeObserverConstructor = ownerWindow.ResizeObserver;
+  if (ResizeObserverConstructor !== undefined) {
+    const resizeObserver = new ResizeObserverConstructor(scheduleUpdate);
     resizeObserver.observe(reference);
     resizeObserver.observe(floating);
     cleanupCallbacks.push(() => resizeObserver.disconnect());

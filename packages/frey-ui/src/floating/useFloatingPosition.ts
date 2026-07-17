@@ -119,10 +119,12 @@ export function useFloatingPosition({
 }: UseFloatingPositionOptions): UseFloatingPositionResult {
   const referenceRef = React.useRef<HTMLElement | null>(null);
   const floatingRef = React.useRef<HTMLElement | null>(null);
-  const [reference, setReferenceNode] = React.useState<HTMLElement | null>(
+  const [referenceNode, setReferenceNode] = React.useState<HTMLElement | null>(
     null
   );
-  const [floating, setFloatingNode] = React.useState<HTMLElement | null>(null);
+  const [floatingNode, setFloatingNode] = React.useState<HTMLElement | null>(
+    null
+  );
   const [position, setPosition] = React.useState<FloatingPosition>(() => ({
     x: 0,
     y: 0,
@@ -140,22 +142,22 @@ export function useFloatingPosition({
   }, []);
 
   useClientLayoutEffect(() => {
-    if (!open || !reference || !floating) return;
+    if (!open || !referenceNode || !floatingNode) return;
 
     const update = () => {
-      const ownerWindow = reference.ownerDocument.defaultView;
+      const ownerWindow = referenceNode.ownerDocument.defaultView;
       if (!ownerWindow) return;
 
       const nextPosition = computeFloatingPosition({
-        referenceRect: reference.getBoundingClientRect(),
-        floatingSize: measureFloating(floating),
+        referenceRect: referenceNode.getBoundingClientRect(),
+        floatingSize: measureFloating(floatingNode),
         side,
         alignment,
         offset,
-        clippingRect: getClippingRect(reference, floating, ownerWindow),
+        clippingRect: getClippingRect(referenceNode, floatingNode, ownerWindow),
         collisionPadding: COLLISION_PADDING,
         direction:
-          ownerWindow.getComputedStyle(reference).direction === 'rtl'
+          ownerWindow.getComputedStyle(referenceNode).direction === 'rtl'
             ? 'rtl'
             : 'ltr',
         devicePixelRatio: ownerWindow.devicePixelRatio,
@@ -165,8 +167,8 @@ export function useFloatingPosition({
       );
     };
 
-    return autoUpdateFloating(reference, floating, update);
-  }, [alignment, floating, offset, open, reference, side]);
+    return autoUpdateFloating(referenceNode, floatingNode, update);
+  }, [alignment, floatingNode, offset, open, referenceNode, side]);
 
   const floatingStyles = React.useMemo<React.CSSProperties>(
     () => ({ position: 'fixed', left: position.x, top: position.y }),

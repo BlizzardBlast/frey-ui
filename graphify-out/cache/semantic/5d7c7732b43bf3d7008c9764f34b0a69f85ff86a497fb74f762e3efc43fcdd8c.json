@@ -1,0 +1,92 @@
+{
+  "nodes": [
+    {
+      "id": "_changeset_readme_changesets",
+      "label": "Changesets",
+      "file_type": "concept",
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_changeset_readme_changesets_release_flow",
+      "label": "Changesets Release Flow",
+      "file_type": "rationale",
+      "rationale": "Package changes that require a version bump are recorded in feature branches, merged to main, collected into a version PR, and published after that PR is merged.",
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_changeset_readme_version_pr",
+      "label": "Version PR",
+      "file_type": "concept",
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_changeset_readme_npm",
+      "label": "npm",
+      "file_type": "concept",
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "_changeset_readme_changesets_release_flow",
+      "target": "_changeset_readme_changesets",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_changeset_readme_changesets_release_flow",
+      "target": "_changeset_readme_version_pr",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_changeset_readme_changesets_release_flow",
+      "target": "_changeset_readme_npm",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_changeset_readme_changesets_release_flow",
+      "target": "_github_workflows_publish_release",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".changeset/README.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

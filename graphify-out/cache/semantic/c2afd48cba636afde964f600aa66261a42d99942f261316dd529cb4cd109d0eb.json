@@ -1,0 +1,127 @@
+{
+  "nodes": [
+    {
+      "id": "apps_storybook_changelog_storybook_1_0_9",
+      "label": "Frey UI Storybook 1.0.9",
+      "file_type": "document",
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "apps_storybook_changelog_calendar",
+      "label": "Calendar",
+      "file_type": "concept",
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "apps_storybook_changelog_datefield",
+      "label": "DateField",
+      "file_type": "concept",
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "apps_storybook_changelog_datepicker",
+      "label": "DatePicker",
+      "file_type": "concept",
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "apps_storybook_changelog_segmentedcontrol",
+      "label": "SegmentedControl",
+      "file_type": "concept",
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "apps_storybook_changelog_storybook_1_0_9",
+      "target": "apps_storybook_changelog_calendar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "apps_storybook_changelog_storybook_1_0_9",
+      "target": "apps_storybook_changelog_datefield",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "apps_storybook_changelog_storybook_1_0_9",
+      "target": "apps_storybook_changelog_datepicker",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "apps_storybook_changelog_datepicker",
+      "target": "apps_storybook_changelog_datefield",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "apps_storybook_changelog_datepicker",
+      "target": "apps_storybook_changelog_calendar",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/storybook/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "storybook_date_input_release",
+      "label": "Storybook Date Input Release",
+      "nodes": [
+        "apps_storybook_changelog_calendar",
+        "apps_storybook_changelog_datefield",
+        "apps_storybook_changelog_datepicker",
+        "apps_storybook_changelog_storybook_1_0_9"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "apps/storybook/CHANGELOG.md"
+    }
+  ]
+}

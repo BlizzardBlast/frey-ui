@@ -46,6 +46,9 @@ function FocusGuard({
   const safari =
     typeof window !== 'undefined' && isSafari(window) ? true : undefined;
 
+  // Safari VoiceOver only forwards virtual-cursor focus to a guard exposed as
+  // a button. Keep the non-native span sentinel to avoid native activation
+  // behavior: https://github.com/floating-ui/floating-ui/blob/master/packages/react/src/components/FocusGuard.tsx
   return (
     <span
       aria-hidden={safari ? undefined : true}
@@ -91,7 +94,7 @@ function trapTabKey(content: HTMLElement, event: KeyboardEvent): void {
     target =
       currentIndex > 0
         ? tabbableElements[currentIndex - 1]
-        : tabbableElements[tabbableElements.length - 1];
+        : tabbableElements.slice(-1)[0];
   } else {
     target =
       currentIndex >= 0 && currentIndex < tabbableElements.length - 1
@@ -211,7 +214,7 @@ export function FocusScope({
     const content = contentRef.current;
     if (!content) return;
     const tabbableElements = getTabbableElements(content);
-    focusElement(tabbableElements[tabbableElements.length - 1] ?? content);
+    focusElement(tabbableElements.slice(-1)[0] ?? content);
   }, [contentRef]);
 
   React.useEffect(() => {

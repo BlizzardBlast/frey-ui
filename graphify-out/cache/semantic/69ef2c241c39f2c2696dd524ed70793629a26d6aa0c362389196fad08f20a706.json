@@ -1,0 +1,61 @@
+{
+  "nodes": [
+    {
+      "id": "pnpm_workspace_frey_ui_workspaces",
+      "label": "Frey UI Workspaces",
+      "file_type": "concept",
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pnpm_workspace_dependency_catalog",
+      "label": "pnpm Dependency Catalog",
+      "file_type": "concept",
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "pnpm_workspace_dependency_installation_policy",
+      "label": "Dependency Installation Policy",
+      "file_type": "rationale",
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Ignored install scripts, strict minimum release age, and exact versions constrain dependency installation."
+    }
+  ],
+  "edges": [
+    {
+      "source": "pnpm_workspace_frey_ui_workspaces",
+      "target": "pnpm_workspace_dependency_catalog",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "pnpm_workspace_dependency_installation_policy",
+      "target": "pnpm_workspace_dependency_catalog",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pnpm-workspace.yaml",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

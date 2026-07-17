@@ -171,10 +171,11 @@ function getRelevantOverflow(
   let alignmentSide: keyof Overflow;
 
   if (verticalSide) {
-    alignmentSide =
-      candidate.alignment === (input.direction === 'rtl' ? 'end' : 'start')
-        ? 'right'
-        : 'left';
+    const alignmentUsesRightSide =
+      input.direction === 'rtl'
+        ? candidate.alignment === 'end'
+        : candidate.alignment === 'start';
+    alignmentSide = alignmentUsesRightSide ? 'right' : 'left';
     if (input.referenceRect.width > input.floatingSize.width) {
       alignmentSide = getOppositeOverflowSide(alignmentSide);
     }

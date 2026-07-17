@@ -1,5 +1,6 @@
 import React from 'react';
 import { isWebKit } from './platform';
+import { eventIsInside, isScrollbarPress } from './pointerEvent';
 
 export type DismissReason = 'escape' | 'outside-pointer';
 
@@ -27,71 +28,8 @@ type LayerManager = {
 
 const managers = new WeakMap<Document, LayerManager>();
 
-function getEventPath(event: Event): EventTarget[] {
-  if (typeof event.composedPath === 'function') return event.composedPath();
-  return event.target ? [event.target] : [];
-}
-
-function eventIsInside(event: Event, element: HTMLElement | null): boolean {
-  if (!element) return false;
-  const path = getEventPath(event);
-  if (path.includes(element)) return true;
-  return event.target instanceof Node && element.contains(event.target);
-}
-
-function isScrollbarPress(
-  event: PointerEvent,
-  ownerDocument: Document
-): boolean {
-  const documentElement = ownerDocument.documentElement;
-  if (event.target === documentElement || event.target === ownerDocument.body) {
-    return (
-      event.clientX > documentElement.clientWidth ||
-      event.clientY > documentElement.clientHeight
-    );
-  }
-
-  const ownerWindow = ownerDocument.defaultView;
-  if (!ownerWindow) return false;
-  const target = getEventPath(event).find(
-    (entry): entry is HTMLElement => entry instanceof ownerWindow.HTMLElement
-  );
-  if (!target) return false;
-
-  const style = ownerWindow.getComputedStyle(target);
-  const hasVerticalScrollbar =
-    /^(auto|overlay|scroll)$/.test(style.overflowY) &&
-    (style.overflowY === 'scroll' || target.scrollHeight > target.clientHeight);
-  const hasHorizontalScrollbar =
-    /^(auto|overlay|scroll)$/.test(style.overflowX) &&
-    (style.overflowX === 'scroll' || target.scrollWidth > target.clientWidth);
-  if (!hasVerticalScrollbar && !hasHorizontalScrollbar) {
-    return false;
-  }
-
-  const rect = target.getBoundingClientRect();
-  const scaleX = target.offsetWidth > 0 ? rect.width / target.offsetWidth : 1;
-  const scaleY =
-    target.offsetHeight > 0 ? rect.height / target.offsetHeight : 1;
-  const pointerX = event.clientX - rect.left;
-  const pointerY = event.clientY - rect.top;
-  const clientLeft = target.clientLeft * scaleX;
-  const clientTop = target.clientTop * scaleY;
-  const clientRight = clientLeft + target.clientWidth * scaleX;
-  const clientBottom = clientTop + target.clientHeight * scaleY;
-  const verticalScrollbarPress =
-    hasVerticalScrollbar &&
-    (style.direction === 'rtl'
-      ? pointerX < clientLeft
-      : pointerX > clientRight);
-  const horizontalScrollbarPress =
-    hasHorizontalScrollbar && pointerY > clientBottom;
-
-  return verticalScrollbarPress || horizontalScrollbarPress;
-}
-
 function getTopLayer(manager: LayerManager): Layer | undefined {
-  return manager.layers[manager.layers.length - 1];
+  return manager.layers.slice(-1)[0];
 }
 
 function attachManagerListeners(
@@ -186,12 +124,10 @@ function registerLayer(ownerDocument: Document, layer: Layer): () => void {
   } else {
     activeManager.layers.push(layer);
   }
-  if (!activeManager.cleanupListeners) {
-    activeManager.cleanupListeners = attachManagerListeners(
-      ownerDocument,
-      activeManager
-    );
-  }
+  activeManager.cleanupListeners ??= attachManagerListeners(
+    ownerDocument,
+    activeManager
+  );
 
   return () => {
     const layerIndex = activeManager.layers.lastIndexOf(layer);

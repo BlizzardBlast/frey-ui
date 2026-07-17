@@ -1,0 +1,239 @@
+{
+  "nodes": [
+    {
+      "id": "packages_frey_ui_readme_frey_ui",
+      "label": "Frey UI",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_wcag_2_2_aa",
+      "label": "WCAG 2.2 AA",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_jest_axe",
+      "label": "jest-axe",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_storybook_addon_a11y",
+      "label": "Storybook Addon A11y",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_jsdom",
+      "label": "JSDOM",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_playwright_browser_e2e",
+      "label": "Playwright Browser E2E",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_overlay_focus_management",
+      "label": "Overlay Focus Management",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_public_subpath_imports",
+      "label": "Public Subpath Imports",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_storybook_api_docs",
+      "label": "Storybook API Docs",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_brand_token_generator",
+      "label": "Brand Token Generator",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_readme_accordion_content_animation",
+      "label": "Accordion Content Animation",
+      "file_type": "rationale",
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The wrapper clips only during transitions so settled panels can expose focus rings and non-portaled overlays."
+    }
+  ],
+  "edges": [
+    {
+      "source": "packages_frey_ui_readme_frey_ui",
+      "target": "packages_frey_ui_readme_wcag_2_2_aa",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_wcag_2_2_aa",
+      "target": "packages_frey_ui_readme_jest_axe",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_wcag_2_2_aa",
+      "target": "packages_frey_ui_readme_storybook_addon_a11y",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_jsdom",
+      "target": "packages_frey_ui_readme_playwright_browser_e2e",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_playwright_browser_e2e",
+      "target": "packages_frey_ui_readme_overlay_focus_management",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_frey_ui",
+      "target": "packages_frey_ui_readme_public_subpath_imports",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_frey_ui",
+      "target": "packages_frey_ui_readme_storybook_api_docs",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_frey_ui",
+      "target": "packages_frey_ui_readme_brand_token_generator",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_accordion_content_animation",
+      "target": "packages_frey_ui_readme_overlay_focus_management",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_playwright_browser_e2e",
+      "target": "apps_playwright_readme_playwright_end_to_end_suite",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_readme_accordion_content_animation",
+      "target": "packages_frey_ui_changelog_accordion_content_boundary",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "packages/frey-ui/README.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

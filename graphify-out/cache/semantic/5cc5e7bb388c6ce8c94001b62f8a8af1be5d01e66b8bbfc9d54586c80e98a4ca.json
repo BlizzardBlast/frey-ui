@@ -1,0 +1,305 @@
+{
+  "nodes": [
+    {
+      "id": "docs_component_priorities_commandpalette",
+      "label": "CommandPalette",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Implemented with its compound API and core interaction coverage, so it is no longer a next-component opportunity."
+    },
+    {
+      "id": "docs_component_priorities_accordion_remake",
+      "label": "Accordion remake",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Preserves the public compound API and 200 ms transition while allowing settled expanded content to overflow for focus rings and overlays."
+    },
+    {
+      "id": "docs_component_priorities_segmentedcontrol",
+      "label": "SegmentedControl",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Implemented with native radio semantics, form participation, keyboard navigation, and browser-level coverage."
+    },
+    {
+      "id": "docs_component_priorities_date_components_roadmap",
+      "label": "Date Components Roadmap",
+      "file_type": "rationale",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The staged roadmap is complete, uses no new runtime dependency, and retains strict ISO public values across seven display calendars."
+    },
+    {
+      "id": "docs_component_priorities_datefield",
+      "label": "DateField",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_calendar",
+      "label": "Calendar",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_datepicker",
+      "label": "DatePicker",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_fileupload",
+      "label": "FileUpload",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Recommended as the next high-leverage workflow-oriented form component, beginning with shared file validation and drag-state utilities."
+    },
+    {
+      "id": "docs_component_priorities_dropzone",
+      "label": "Dropzone",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Alternative name and shape for the recommended workflow-oriented upload component."
+    },
+    {
+      "id": "docs_component_priorities_emptystate",
+      "label": "EmptyState",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "A low-risk consistency improvement intended after the higher-leverage interactive upload component."
+    },
+    {
+      "id": "docs_component_priorities_field",
+      "label": "Field",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_alert",
+      "label": "Alert",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_progress",
+      "label": "Progress",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_toast",
+      "label": "Toast",
+      "file_type": "concept",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_component_priorities_release_owner_maintenance_checks",
+      "label": "Release-owner maintenance checks",
+      "file_type": "rationale",
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Publishing still requires VoiceOver and Safari validation, refreshed regional week-start data, and timely Japanese-era boundary updates."
+    }
+  ],
+  "edges": [
+    {
+      "source": "docs_component_priorities_date_components_roadmap",
+      "target": "docs_component_priorities_datefield",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_date_components_roadmap",
+      "target": "docs_component_priorities_calendar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_date_components_roadmap",
+      "target": "docs_component_priorities_datepicker",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_datepicker",
+      "target": "docs_component_priorities_datefield",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_datepicker",
+      "target": "docs_component_priorities_calendar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_fileupload",
+      "target": "docs_component_priorities_dropzone",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_fileupload",
+      "target": "docs_component_priorities_field",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_fileupload",
+      "target": "docs_component_priorities_alert",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_fileupload",
+      "target": "docs_component_priorities_progress",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_fileupload",
+      "target": "docs_component_priorities_toast",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_component_priorities_release_owner_maintenance_checks",
+      "target": "docs_component_priorities_calendar",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "component_priorities_completed_date_components",
+      "label": "Completed Date Components Roadmap",
+      "nodes": [
+        "docs_component_priorities_date_components_roadmap",
+        "docs_component_priorities_datefield",
+        "docs_component_priorities_calendar",
+        "docs_component_priorities_datepicker"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/component-priorities.md"
+    }
+  ]
+}
