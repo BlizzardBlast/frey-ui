@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
+import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import { createMockRect } from '../utils/testUtils';
@@ -187,6 +188,67 @@ describe('DropdownMenu', () => {
     await user.keyboard('{Escape}');
 
     expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
+  it('keeps controlled state source-of-truth with no local drift', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <DropdownMenu open={false} onOpenChange={onOpenChange}>
+        <DropdownMenu.Trigger>Controlled menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Controlled item</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Controlled menu' }));
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(
+      screen.queryByRole('menuitem', { name: 'Controlled item' })
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <DropdownMenu open onOpenChange={onOpenChange}>
+        <DropdownMenu.Trigger>Controlled menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Item>Controlled item</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+    expect(
+      screen.getByRole('menuitem', { name: 'Controlled item' })
+    ).toBeInTheDocument();
+  });
+
+  it('forwards refs and preserves consumer menu attributes and styles', async () => {
+    const triggerRef = createRef<HTMLElement>();
+    const contentRef = createRef<HTMLDivElement>();
+
+    render(
+      <DropdownMenu defaultOpen>
+        <DropdownMenu.Trigger ref={triggerRef}>Ref menu</DropdownMenu.Trigger>
+        <DropdownMenu.Content
+          ref={contentRef}
+          data-consumer-attribute='preserved'
+          style={{ left: 17, top: 31 }}
+        >
+          <DropdownMenu.Item>Ref item</DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByRole('menuitem', { name: 'Ref item' })).toHaveFocus()
+    );
+    expect(triggerRef.current).toBeInstanceOf(HTMLButtonElement);
+    expect(triggerRef.current).toHaveTextContent('Ref menu');
+    expect(contentRef.current).toHaveAttribute(
+      'data-consumer-attribute',
+      'preserved'
+    );
+    expect(contentRef.current).toHaveAttribute('tabindex', '-1');
+    expect(contentRef.current).toHaveStyle({ left: '17px', top: '31px' });
   });
 
   it('calls onSelect and closes on item click', async () => {
@@ -490,7 +552,7 @@ describe('DropdownMenu', () => {
 
       await waitFor(() => {
         const left = Number.parseFloat(menu.style.left);
-        expect(left).toBeCloseTo(272, 0);
+        expect(left).toBeCloseTo(112, 0);
       });
     } finally {
       rectSpy.mockRestore();

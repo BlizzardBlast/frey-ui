@@ -1,17 +1,8 @@
-import {
-  autoUpdate,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useHover,
-  useInteractions,
-} from '@floating-ui/react';
 import clsx from 'clsx';
 import React from 'react';
-import {
-  createFloatingMiddleware,
-  toFloatingPlacement,
-} from '../hooks/floatingConfig';
+import { useDismissibleLayer } from '../floating/dismissibleLayer';
+import { useFloatingPosition } from '../floating/useFloatingPosition';
+import { useTooltipInteractions } from '../floating/useTooltipInteractions';
 import { useControllableValue } from '../hooks/useControllableState';
 import Portal from '../utils/Portal';
 import { Slot } from '../utils/slot';
@@ -55,35 +46,44 @@ function Tooltip({
     defaultOpen,
     onOpenChange
   );
-  const { refs, floatingStyles, context } = useFloating({
+
+  const {
+    referenceRef,
+    floatingRef,
+    setReference,
+    setFloating,
+    floatingStyles,
+  } = useFloatingPosition({
     open: isOpen,
+    side: placement,
+    alignment: 'center',
+    offset,
+  });
+
+  const interactionProps = useTooltipInteractions({
+    open: isOpen,
+    delay,
+    reference: referenceRef.current,
     onOpenChange: setOpen,
-    placement: toFloatingPlacement(placement, 'center'),
-    middleware: createFloatingMiddleware(offset),
-    strategy: 'fixed',
-    transform: false,
-    whileElementsMounted: autoUpdate,
   });
-  const hover = useHover(context, {
-    delay: {
-      open: delay,
-      close: 0,
-    },
-    move: false,
+
+  const handleDismiss = React.useCallback(() => {
+    setOpen(false);
+  }, [setOpen]);
+
+  useDismissibleLayer({
+    open: isOpen,
+    referenceRef,
+    floatingRef,
+    closeOnEscape: true,
+    closeOnOutsidePointerDown: false,
+    onDismiss: handleDismiss,
   });
-  const focus = useFocus(context);
-  const dismiss = useDismiss(context, {
-    escapeKey: true,
-    outsidePress: false,
-  });
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    hover,
-    focus,
-    dismiss,
-  ]);
-  const referenceProps = getReferenceProps({
+
+  const referenceProps: React.HTMLAttributes<HTMLElement> = {
+    ...interactionProps,
     'aria-describedby': isOpen ? tooltipId : undefined,
-  }) as React.HTMLAttributes<HTMLElement>;
+  };
 
   let triggerElement: React.ReactElement;
 
@@ -96,7 +96,7 @@ function Tooltip({
 
     triggerElement = (
       <Slot
-        ref={refs.setReference as React.RefCallback<HTMLElement>}
+        ref={setReference as React.RefCallback<HTMLElement>}
         {...referenceProps}
       >
         {children}
@@ -105,7 +105,7 @@ function Tooltip({
   } else {
     triggerElement = (
       <button
-        ref={refs.setReference as React.Ref<HTMLButtonElement>}
+        ref={setReference as React.Ref<HTMLButtonElement>}
         type='button'
         {...(referenceProps as React.ButtonHTMLAttributes<HTMLButtonElement>)}
       >
@@ -118,11 +118,6 @@ function Tooltip({
     return triggerElement;
   }
 
-  const floatingProps = getFloatingProps({
-    id: tooltipId,
-    role: 'tooltip',
-  }) as React.HTMLAttributes<HTMLDivElement>;
-
   return (
     <>
       {triggerElement}
@@ -130,13 +125,14 @@ function Tooltip({
       {isOpen && (
         <Portal>
           <div
-            ref={refs.setFloating as React.Ref<HTMLDivElement>}
+            ref={setFloating as React.Ref<HTMLDivElement>}
             className={clsx(styles.tooltip, className)}
             style={{
               ...floatingStyles,
               ...style,
             }}
-            {...floatingProps}
+            id={tooltipId}
+            role='tooltip'
           >
             {content}
           </div>

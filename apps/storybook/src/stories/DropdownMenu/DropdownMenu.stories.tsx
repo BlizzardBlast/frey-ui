@@ -200,6 +200,7 @@ export const controlled_menu: Story = {
           {...args}
           open={resolvedOpen}
           onOpenChange={handleOpenChange}
+          placement='left'
         >
           <DropdownMenu.Trigger asChild>
             <Button>Project options</Button>

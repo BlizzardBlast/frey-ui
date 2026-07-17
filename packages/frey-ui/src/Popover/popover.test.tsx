@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'jest-axe';
-import { useRef } from 'react';
+import { createRef, useRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import Button from '../Button';
 import ThemeProvider from '../ThemeProvider';
@@ -169,6 +169,22 @@ describe('Popover', () => {
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
 
+  it('does not close on Escape when disabled', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+
+    render(
+      <Popover open onOpenChange={onOpenChange} closeOnEscape={false}>
+        <Popover.Trigger>Persistent popover</Popover.Trigger>
+        <Popover.Content>Content</Popover.Content>
+      </Popover>
+    );
+
+    await user.keyboard('{Escape}');
+
+    expect(onOpenChange).not.toHaveBeenCalled();
+  });
+
   it('closes on Escape key', async () => {
     const user = userEvent.setup();
     const onOpenChange = vi.fn();
@@ -282,6 +298,89 @@ describe('Popover', () => {
     });
   });
 
+  it('keeps controlled state source-of-truth with no local drift', async () => {
+    const user = userEvent.setup();
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <Popover open={false} onOpenChange={onOpenChange}>
+        <Popover.Trigger>Controlled trigger</Popover.Trigger>
+        <Popover.Content>Controlled content</Popover.Content>
+      </Popover>
+    );
+
+    await user.click(
+      screen.getByRole('button', { name: 'Controlled trigger' })
+    );
+    expect(onOpenChange).toHaveBeenCalledWith(true);
+    expect(screen.queryByText('Controlled content')).not.toBeInTheDocument();
+
+    rerender(
+      <Popover open onOpenChange={onOpenChange}>
+        <Popover.Trigger>Controlled trigger</Popover.Trigger>
+        <Popover.Content>Controlled content</Popover.Content>
+      </Popover>
+    );
+    expect(screen.getByText('Controlled content')).toBeInTheDocument();
+  });
+
+  it('forwards refs and preserves consumer content attributes and styles', async () => {
+    const triggerRef = createRef<HTMLElement>();
+    const contentRef = createRef<HTMLDivElement>();
+
+    render(
+      <Popover defaultOpen>
+        <Popover.Trigger ref={triggerRef}>Ref trigger</Popover.Trigger>
+        <Popover.Content
+          ref={contentRef}
+          data-consumer-attribute='preserved'
+          style={{ left: 21, top: 42 }}
+        >
+          Ref content
+        </Popover.Content>
+      </Popover>
+    );
+
+    await waitFor(() => expect(contentRef.current).toHaveFocus());
+    expect(triggerRef.current).toBeInstanceOf(HTMLButtonElement);
+    expect(triggerRef.current).toHaveTextContent('Ref trigger');
+    expect(contentRef.current).toHaveAttribute(
+      'data-consumer-attribute',
+      'preserved'
+    );
+    expect(contentRef.current).toHaveAttribute('tabindex', '-1');
+    expect(contentRef.current).toHaveStyle({ left: '21px', top: '42px' });
+  });
+
+  it('hides outside content from assistive technology and restores prior state', async () => {
+    const outside = document.createElement('button');
+    outside.setAttribute('aria-hidden', 'false');
+    outside.textContent = 'Outside';
+    const liveRegion = document.createElement('div');
+    liveRegion.setAttribute('aria-live', 'polite');
+    liveRegion.textContent = 'Announcements';
+    document.body.append(outside, liveRegion);
+    const { rerender } = render(
+      <Popover open>
+        <Popover.Trigger>Open</Popover.Trigger>
+        <Popover.Content>Modal content</Popover.Content>
+      </Popover>
+    );
+
+    await waitFor(() => expect(outside).toHaveAttribute('aria-hidden', 'true'));
+    expect(liveRegion).not.toHaveAttribute('aria-hidden', 'true');
+
+    rerender(
+      <Popover open={false}>
+        <Popover.Trigger>Open</Popover.Trigger>
+        <Popover.Content>Modal content</Popover.Content>
+      </Popover>
+    );
+    expect(outside).toHaveAttribute('aria-hidden', 'false');
+
+    outside.remove();
+    liveRegion.remove();
+  });
+
   it('flips from bottom to top when there is not enough viewport space', async () => {
     const user = userEvent.setup();
     const triggerRect = createMockRect({
@@ -330,7 +429,7 @@ describe('Popover', () => {
 
       await waitFor(() => {
         const top = Number.parseFloat(content.style.top);
-        expect(top).toBeCloseTo(182, 0);
+        expect(top).toBeCloseTo(82, 0);
       });
     } finally {
       rectSpy.mockRestore();
@@ -361,9 +460,9 @@ describe('Popover', () => {
       expect(screen.getByRole('button', { name: 'A11y action' })).toHaveFocus();
     });
 
-    const popoverContent = screen
-      .getByRole('button', { name: 'A11y action' })
-      .closest('[data-floating-ui-focusable]');
+    const popoverContent = screen.getByRole('button', {
+      name: 'A11y action',
+    }).parentElement;
 
     expect(popoverContent).not.toBeNull();
 

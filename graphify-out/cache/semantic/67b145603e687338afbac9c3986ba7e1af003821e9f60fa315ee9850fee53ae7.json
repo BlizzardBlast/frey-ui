@@ -1,0 +1,324 @@
+{
+  "nodes": [
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "label": "DateField and Calendar Quality Refactor",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Resolve maintainability findings without public API, observable behavior, dependency, DOM, ARIA, form, locale, arithmetic, styling, or DatePicker integration changes."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefieldinteractions",
+      "label": "dateFieldInteractions",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Pure module owns segment movement, restoration, clearing, stepping, digit normalization, era typeahead, paste parsing, and draft resolution."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendarinteractions",
+      "label": "calendarInteractions",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Pure module maps supported keys to calendar focus movement or activation while Calendar keeps state and rendering ownership."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield",
+      "label": "DateField",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "label": "Calendar",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datepicker",
+      "label": "DatePicker",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_immutable_gridkey",
+      "label": "Immutable gridKey",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Epoch-derived keys replace index-derived React keys for every calendar cell, including cells outside the supported ISO range."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_readonlyset_fixed_months",
+      "label": "ReadonlySet fixed-month calendars",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Replaces the fixed-month calendar array with an immutable set while preserving calendar behavior."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_codefactor",
+      "label": "CodeFactor",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_sonar",
+      "label": "Sonar",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_cognitive_complexity_15",
+      "label": "Cognitive complexity threshold 15",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_p0_p3_self_review_loop",
+      "label": "P0-P3 self-review loop",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Each phase performs at most three severity-graded passes and fixes all P0, P1, and practical P2 findings."
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_repository_gate",
+      "label": "Repository validation gate",
+      "file_type": "concept",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "docs_superpowers_plans_2026_07_16_date_quality_refactor_public_api_preservation",
+      "label": "Public API and behavior preservation",
+      "file_type": "rationale",
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "The refactor must retain public contracts, DOM and ARIA semantics, keyboard interaction, form values, locale behavior, arithmetic, styling, and integration."
+    }
+  ],
+  "edges": [
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_codefactor",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_sonar",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_public_api_preservation",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield_and_calendar_quality_refactor",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefieldinteractions",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendarinteractions",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_immutable_gridkey",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_readonlyset_fixed_months",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datepicker",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datepicker",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefieldinteractions",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_cognitive_complexity_15",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendarinteractions",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_cognitive_complexity_15",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "docs_superpowers_plans_2026_07_16_date_quality_refactor_p0_p3_self_review_loop",
+      "target": "docs_superpowers_plans_2026_07_16_date_quality_refactor_repository_gate",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "date_quality_pure_interaction_refactor",
+      "label": "Pure Interaction Module Refactor",
+      "nodes": [
+        "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefield",
+        "docs_superpowers_plans_2026_07_16_date_quality_refactor_datefieldinteractions",
+        "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendar",
+        "docs_superpowers_plans_2026_07_16_date_quality_refactor_calendarinteractions",
+        "docs_superpowers_plans_2026_07_16_date_quality_refactor_datepicker"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/superpowers/plans/2026-07-16-date-quality-refactor.md"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "nodes": [
+    {
+      "id": "apps_storybook__storybook_manager_head_frey_ui_component_documentation",
+      "label": "Frey UI Component Library Stories and Documentation",
+      "file_type": "concept",
+      "source_file": "apps/storybook/.storybook/manager-head.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "apps_storybook__storybook_manager_head_noindex_robots_policy",
+      "label": "Noindex Robots Policy",
+      "file_type": "rationale",
+      "rationale": "The Storybook manager page is marked noindex so search engines do not index it.",
+      "source_file": "apps/storybook/.storybook/manager-head.html",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "apps_storybook__storybook_manager_head_frey_ui_component_documentation",
+      "target": "apps_storybook__storybook_manager_head_noindex_robots_policy",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "apps/storybook/.storybook/manager-head.html",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "apps_storybook__storybook_manager_head_frey_ui_component_documentation",
+      "target": "apps_storybook__continue_config_storybook_mcp_server",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "apps/storybook/.storybook/manager-head.html",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": []
+}

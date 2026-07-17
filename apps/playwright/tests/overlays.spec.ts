@@ -1,4 +1,4 @@
-import { expect, type Page, test } from '@playwright/test';
+import { expect, type Locator, type Page, test } from '@playwright/test';
 import { getOutlineGeometry } from './focus-geometry.js';
 
 async function gotoStory(storyId: string, page: Page) {
@@ -10,6 +10,61 @@ async function gotoStory(storyId: string, page: Page) {
     'data-theme',
     /^(light|dark)$/
   );
+}
+
+type ElementBox = NonNullable<Awaited<ReturnType<Locator['boundingBox']>>>;
+type OverlaySide = 'top' | 'right' | 'bottom' | 'left';
+
+async function getSettledBox(locator: Locator): Promise<ElementBox> {
+  await expect(locator).toBeVisible();
+  await locator.evaluate(async (element) => {
+    await Promise.all(
+      element.getAnimations().map(async (animation) => {
+        try {
+          await animation.finished;
+        } catch {
+          // A canceled entry animation is already settled for geometry checks.
+        }
+      })
+    );
+  });
+  const box = await locator.boundingBox();
+  expect(box).not.toBeNull();
+  return box as ElementBox;
+}
+
+function expectViewportContainment(
+  box: ElementBox,
+  viewport: Readonly<{ width: number; height: number }>
+): void {
+  expect(box.x).toBeGreaterThanOrEqual(7);
+  expect(box.y).toBeGreaterThanOrEqual(7);
+  expect(box.x + box.width).toBeLessThanOrEqual(viewport.width - 7);
+  expect(box.y + box.height).toBeLessThanOrEqual(viewport.height - 7);
+}
+
+function expectRequestedSide(
+  trigger: ElementBox,
+  overlay: ElementBox,
+  side: OverlaySide
+): void {
+  const gapBySide: Record<OverlaySide, number> = {
+    top: trigger.y - (overlay.y + overlay.height),
+    right: overlay.x - (trigger.x + trigger.width),
+    bottom: overlay.y - (trigger.y + trigger.height),
+    left: trigger.x - (overlay.x + overlay.width),
+  };
+  expect(gapBySide[side]).toBeGreaterThanOrEqual(7);
+  expect(gapBySide[side]).toBeLessThanOrEqual(9);
+}
+
+async function getControlledOverlay(
+  trigger: Locator,
+  page: Page
+): Promise<Locator> {
+  const contentId = await trigger.getAttribute('aria-controls');
+  expect(contentId).not.toBeNull();
+  return page.locator(`[id="${contentId}"]`);
 }
 
 test.describe('overlay stories', () => {
@@ -40,6 +95,183 @@ test.describe('overlay stories', () => {
     await expect(page.getByText('Team Access')).toHaveCount(0);
   });
 
+  test('popover placement variants honor every requested side and viewport padding', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 900, height: 600 });
+    await gotoStory('stories-popover--placement-variants', page);
+
+    for (const side of ['top', 'right', 'bottom', 'left'] as const) {
+      const trigger = page
+        .locator('button')
+        .filter({ hasText: new RegExp(`^${side}$`) });
+      await trigger.click();
+      const overlay = await getControlledOverlay(trigger, page);
+      const [triggerBox, overlayBox] = await Promise.all([
+        getSettledBox(trigger),
+        getSettledBox(overlay),
+      ]);
+
+      expectRequestedSide(triggerBox, overlayBox, side);
+      expectViewportContainment(overlayBox, { width: 900, height: 600 });
+
+      await page.keyboard.press('Escape');
+      await expect(overlay).toHaveCount(0);
+    }
+  });
+
+  test('popover flips away from bottom and right viewport edges', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 480, height: 320 });
+    await gotoStory('stories-popover--placement-variants', page);
+
+    const bottomTrigger = page
+      .locator('button')
+      .filter({ hasText: /^bottom$/ });
+    await bottomTrigger.evaluate((element) => {
+      Object.assign(element.style, {
+        bottom: '4px',
+        left: '210px',
+        position: 'fixed',
+      });
+    });
+    await bottomTrigger.click();
+    const bottomOverlay = await getControlledOverlay(bottomTrigger, page);
+    const [bottomTriggerBox, bottomOverlayBox] = await Promise.all([
+      getSettledBox(bottomTrigger),
+      getSettledBox(bottomOverlay),
+    ]);
+    expectRequestedSide(bottomTriggerBox, bottomOverlayBox, 'top');
+    expectViewportContainment(bottomOverlayBox, { width: 480, height: 320 });
+    await page.keyboard.press('Escape');
+
+    const rightTrigger = page.locator('button').filter({ hasText: /^right$/ });
+    await rightTrigger.evaluate((element) => {
+      Object.assign(element.style, {
+        position: 'fixed',
+        right: '4px',
+        top: '140px',
+      });
+    });
+    await rightTrigger.click();
+    const rightOverlay = await getControlledOverlay(rightTrigger, page);
+    const [rightTriggerBox, rightOverlayBox] = await Promise.all([
+      getSettledBox(rightTrigger),
+      getSettledBox(rightOverlay),
+    ]);
+    expectRequestedSide(rightTriggerBox, rightOverlayBox, 'left');
+    expectViewportContainment(rightOverlayBox, { width: 480, height: 320 });
+  });
+
+  test('popover focus scope hides outside content, traps focus, and restores the trigger', async ({
+    page,
+  }) => {
+    await gotoStory('stories-popover--basic-popover', page);
+    await page.evaluate(() => {
+      const liveRegion = document.createElement('div');
+      liveRegion.id = 'overlay-live-region';
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.textContent = 'Live overlay updates';
+      document.body.append(liveRegion);
+      const outsideButton = document.createElement('button');
+      outsideButton.id = 'popover-outside-target';
+      outsideButton.style.position = 'fixed';
+      outsideButton.style.left = '4px';
+      outsideButton.style.top = '4px';
+      outsideButton.textContent = 'Outside popover target';
+      document.body.append(outsideButton);
+    });
+    const trigger = page.locator('button[aria-haspopup="dialog"]');
+
+    await trigger.click();
+    const content = await getControlledOverlay(trigger, page);
+    await expect(content).toBeFocused();
+    const focusGuards = page.locator('[data-frey-focus-guard]');
+    await expect(focusGuards).toHaveCount(2);
+    expect(
+      await focusGuards.evaluateAll((guards) =>
+        guards.map((guard) => ({
+          ariaHidden: guard.getAttribute('aria-hidden'),
+          tagName: guard.tagName,
+        }))
+      )
+    ).toEqual([
+      { ariaHidden: 'true', tagName: 'SPAN' },
+      { ariaHidden: 'true', tagName: 'SPAN' },
+    ]);
+    await expect
+      .poll(() =>
+        trigger.evaluate((element) =>
+          Boolean(element.closest('[aria-hidden="true"]'))
+        )
+      )
+      .toBe(true);
+    await expect(page.locator('#overlay-live-region')).not.toHaveAttribute(
+      'aria-hidden',
+      'true'
+    );
+
+    await page.keyboard.press('Tab');
+    await expect(content).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(content).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+
+    await trigger.click();
+    await expect(await getControlledOverlay(trigger, page)).toBeVisible();
+    const outsideTarget = page.locator('#popover-outside-target');
+    await outsideTarget.click();
+    await expect(page.getByText('Team Access')).toHaveCount(0);
+    await expect(outsideTarget).toBeFocused();
+    await expect
+      .poll(() =>
+        trigger.evaluate(
+          (element) => element.closest('[aria-hidden="true"]') === null
+        )
+      )
+      .toBe(true);
+  });
+
+  test('nested popovers dismiss and restore focus one top layer at a time', async ({
+    page,
+  }) => {
+    await gotoStory('stories-popover--nested-overlays', page);
+    const parentTrigger = page.getByRole('button', {
+      name: 'Open parent overlay',
+    });
+
+    await parentTrigger.click();
+    const childTrigger = page.getByRole('button', {
+      name: 'Open child overlay',
+    });
+    await childTrigger.click();
+    const childAction = page.getByRole('button', {
+      name: 'Child overlay action',
+    });
+    await expect(childAction).toBeFocused();
+    await expect
+      .poll(() =>
+        childAction.evaluate(
+          (element) => element.closest('[aria-hidden="true"]') === null
+        )
+      )
+      .toBe(true);
+
+    await page.keyboard.press('Escape');
+    await expect(childAction).toHaveCount(0);
+    await expect(
+      page.getByText('Parent overlay', { exact: true })
+    ).toBeVisible();
+    await expect(childTrigger).toBeFocused();
+
+    await page.keyboard.press('Escape');
+    await expect(page.getByText('Parent overlay', { exact: true })).toHaveCount(
+      0
+    );
+    await expect(parentTrigger).toBeFocused();
+  });
+
   test('dropdown menu supports keyboard navigation', async ({ page }) => {
     await gotoStory('stories-dropdownmenu--basic-menu', page);
 
@@ -57,6 +289,50 @@ test.describe('overlay stories', () => {
     await expect(duplicateItem).toHaveCount(0);
   });
 
+  test('dropdown menu traps Tab, hides outside content, and restores focus for both dismissals', async ({
+    page,
+  }) => {
+    await gotoStory('stories-dropdownmenu--basic-menu', page);
+    await page.evaluate(() => {
+      const outsideButton = document.createElement('button');
+      outsideButton.id = 'menu-outside-target';
+      outsideButton.style.position = 'fixed';
+      outsideButton.style.left = '4px';
+      outsideButton.style.top = '4px';
+      outsideButton.textContent = 'Outside menu target';
+      document.body.append(outsideButton);
+    });
+    const trigger = page.locator('button[aria-haspopup="menu"]');
+
+    await trigger.click();
+    const menu = page.getByRole('menu');
+    const rename = page.getByRole('menuitem', { name: 'Rename' });
+    await expect(rename).toBeFocused();
+    await expect
+      .poll(() =>
+        trigger.evaluate((element) =>
+          Boolean(element.closest('[aria-hidden="true"]'))
+        )
+      )
+      .toBe(true);
+
+    for (let index = 0; index < 4; index += 1) {
+      await page.keyboard.press('Tab');
+    }
+    await expect(rename).toBeFocused();
+
+    await page.keyboard.press('Escape');
+    await expect(menu).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+
+    await trigger.click();
+    await expect(page.getByRole('menu')).toBeVisible();
+    const outsideTarget = page.locator('#menu-outside-target');
+    await outsideTarget.click();
+    await expect(page.getByRole('menu')).toHaveCount(0);
+    await expect(outsideTarget).toBeFocused();
+  });
+
   test('tooltip appears on hover and closes on escape', async ({ page }) => {
     await gotoStory('stories-tooltip--basic-tooltip', page);
 
@@ -68,6 +344,145 @@ test.describe('overlay stories', () => {
 
     await page.keyboard.press('Escape');
     await expect(tooltip).toHaveCount(0);
+  });
+
+  test('tooltip preserves delay, hover, keyboard, ARIA, blur, and Escape behavior', async ({
+    page,
+  }) => {
+    await gotoStory('stories-tooltip--basic-tooltip', page);
+    await page.clock.install();
+    const pauseTime = await page.evaluate(() => Date.now());
+    await page.clock.pauseAt(pauseTime + 1_000);
+    const trigger = page.getByRole('button', { name: 'Hover or focus me' });
+    const tooltip = page.getByRole('tooltip');
+
+    await trigger.hover();
+    await page.clock.runFor(119);
+    await expect(tooltip).toHaveCount(0);
+    await page.clock.runFor(1);
+    await expect(tooltip).toBeVisible();
+    const tooltipId = await tooltip.getAttribute('id');
+    expect(tooltipId).not.toBeNull();
+    await expect(trigger).toHaveAttribute(
+      'aria-describedby',
+      tooltipId as string
+    );
+
+    await page.keyboard.press('Escape');
+    await expect(tooltip).toHaveCount(0);
+    await expect(trigger).not.toHaveAttribute('aria-describedby');
+
+    await page.mouse.move(1, 1);
+    await page.keyboard.press('Tab');
+    await expect(trigger).toBeFocused();
+    await expect(tooltip).toBeVisible();
+    await page.keyboard.press('Tab');
+    await expect(tooltip).toHaveCount(0);
+    await expect(trigger).not.toHaveAttribute('aria-describedby');
+  });
+
+  test('tooltip repositions after ancestor scroll and reference movement', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 800, height: 500 });
+    await gotoStory('stories-tooltip--placement-variants', page);
+    const trigger = page.locator('button').filter({ hasText: /^top$/ });
+    const storyRoot = page.locator('#storybook-root');
+    await storyRoot.evaluate((element) => {
+      Object.assign(element.style, {
+        display: 'block',
+        height: '220px',
+        left: '40px',
+        overflow: 'auto',
+        position: 'fixed',
+        top: '40px',
+        width: '360px',
+      });
+    });
+    await trigger.evaluate((element) => {
+      element.style.marginTop = '300px';
+    });
+    await storyRoot.evaluate((element) => {
+      element.scrollTop = 200;
+    });
+    await page.keyboard.press('Tab');
+    const tooltip = page.getByRole('tooltip');
+    await expect(tooltip).toBeVisible();
+
+    await storyRoot.evaluate((element) => {
+      element.scrollTop += 30;
+    });
+    await expect
+      .poll(async () => {
+        const [triggerBox, tooltipBox] = await Promise.all([
+          trigger.boundingBox(),
+          tooltip.boundingBox(),
+        ]);
+        if (!triggerBox || !tooltipBox) return false;
+        const gap = triggerBox.y - (tooltipBox.y + tooltipBox.height);
+        return gap >= 7 && gap <= 9;
+      })
+      .toBe(true);
+
+    const beforeMove = await getSettledBox(tooltip);
+    await trigger.evaluate((element) => {
+      element.style.transform = 'translateX(50px)';
+    });
+    await expect
+      .poll(async () => (await getSettledBox(tooltip)).x - beforeMove.x)
+      .toBeGreaterThan(20);
+    const [movedTrigger, movedTooltip] = await Promise.all([
+      getSettledBox(trigger),
+      getSettledBox(tooltip),
+    ]);
+    expectRequestedSide(movedTrigger, movedTooltip, 'top');
+    expectViewportContainment(movedTooltip, { width: 800, height: 500 });
+  });
+
+  test('popover repositions after page scroll and viewport resize', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 800, height: 500 });
+    await gotoStory('stories-popover--basic-popover', page);
+    const storyRoot = page.locator('#storybook-root');
+    await storyRoot.evaluate((element) => {
+      Object.assign(element.style, {
+        left: '50%',
+        position: 'absolute',
+        top: '700px',
+        transform: 'translateX(-50%)',
+      });
+      document.body.style.minHeight = '1400px';
+      window.scrollTo(0, 500);
+    });
+    const trigger = page.locator('button[aria-haspopup="dialog"]');
+    await trigger.click();
+    const overlay = await getControlledOverlay(trigger, page);
+    await getSettledBox(overlay);
+
+    await page.evaluate(() => window.scrollTo(0, 550));
+    await expect
+      .poll(async () => {
+        const [triggerBox, overlayBox] = await Promise.all([
+          trigger.boundingBox(),
+          overlay.boundingBox(),
+        ]);
+        if (!triggerBox || !overlayBox) return false;
+        const gap = overlayBox.y - (triggerBox.y + triggerBox.height);
+        return gap >= 7 && gap <= 9;
+      })
+      .toBe(true);
+
+    const beforeResize = await getSettledBox(trigger);
+    await page.setViewportSize({ width: 600, height: 500 });
+    await expect
+      .poll(async () => {
+        const triggerBox = await trigger.boundingBox();
+        return triggerBox ? beforeResize.x - triggerBox.x : 0;
+      })
+      .toBeGreaterThan(90);
+    const resizedOverlay = await getSettledBox(overlay);
+    expectViewportContainment(resizedOverlay, { width: 600, height: 500 });
   });
 
   test('drawer opens and closes', async ({ page }) => {
@@ -194,7 +609,9 @@ test.describe('overlay stories', () => {
     await page.keyboard.press('ArrowRight');
     await page.keyboard.press('Enter');
     await expect(dialog).toHaveCount(0);
-    await expect(page.getByText('Current picker ISO: 2024-03-21')).toBeVisible();
+    await expect(
+      page.getByText('Current picker ISO: 2024-03-21')
+    ).toBeVisible();
     await expect(trigger).toBeFocused();
 
     await page.getByRole('button', { name: 'Submit picker date' }).click();
@@ -238,16 +655,19 @@ test.describe('overlay stories', () => {
       .getByRole('group', { name: 'Browser picker date' })
       .locator('button[aria-haspopup="dialog"]');
     await trigger.click();
-    const unavailable = page.locator(
-      'button[data-date-value="2024-03-25"]'
-    );
+    const unavailable = page.locator('button[data-date-value="2024-03-25"]');
     await expect(unavailable).toHaveAttribute('aria-disabled', 'true');
     await unavailable.focus();
     await page.keyboard.press('Enter');
     await expect(page.getByRole('dialog')).toBeVisible();
-    await expect(page.getByText('Current picker ISO: 2024-03-20')).toBeVisible();
+    await expect(
+      page.getByText('Current picker ISO: 2024-03-20')
+    ).toBeVisible();
 
-    await gotoStory('stories-datepicker--required-disabled-and-read-only', page);
+    await gotoStory(
+      'stories-datepicker--required-disabled-and-read-only',
+      page
+    );
     const disabledGroup = page.getByRole('group', { name: 'Disabled date' });
     await expect(
       disabledGroup.locator('button[aria-haspopup="dialog"]')
@@ -276,7 +696,10 @@ test.describe('overlay stories', () => {
   test('date picker smoke-tests Japanese eras, Persian RTL, and a Hebrew leap month', async ({
     page,
   }) => {
-    await gotoStory('stories-datepicker--localized-digits-first-day-and-rtl', page);
+    await gotoStory(
+      'stories-datepicker--localized-digits-first-day-and-rtl',
+      page
+    );
     const persianGroup = page.getByRole('group', {
       name: 'Persian appointment date',
     });
@@ -331,7 +754,9 @@ test.describe('overlay stories', () => {
       const group = page.getByRole('group', { name: label });
       await group.locator('button[aria-haspopup="dialog"]').click();
       const dialog = page.getByRole('dialog', { name: `${label} calendar` });
-      const portal = dialog.locator('xpath=ancestor::*[@data-frey-portal="true"]');
+      const portal = dialog.locator(
+        'xpath=ancestor::*[@data-frey-portal="true"]'
+      );
       await expect(portal).toHaveAttribute('data-frey-theme', theme);
       await expect(portal).toHaveAttribute(
         'data-frey-high-contrast',

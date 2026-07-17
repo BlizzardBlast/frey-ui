@@ -30,7 +30,7 @@ Browser E2E coverage is available via Playwright in `apps/playwright` for real-w
 ### Overlay Focus Management
 
 - `Dialog` uses the native `<dialog>` element and modal behavior.
-- `Popover` and `DropdownMenu` use `FloatingFocusManager` in modal mode.
+- `Popover` and `DropdownMenu` use Frey UI's private modal focus scope.
 - When a `Popover` or `DropdownMenu` is open, keyboard focus is trapped inside the overlay and focus returns to the trigger when it closes.
 
 ## Installation

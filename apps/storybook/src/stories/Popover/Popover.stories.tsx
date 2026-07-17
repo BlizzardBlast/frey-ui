@@ -185,7 +185,12 @@ export const controlled_popover: Story = {
 
     return (
       <div style={{ display: 'grid', gap: 10 }}>
-        <Popover {...args} open={resolvedOpen} onOpenChange={handleOpenChange}>
+        <Popover
+          {...args}
+          open={resolvedOpen}
+          onOpenChange={handleOpenChange}
+          placement='right'
+        >
           <Popover.Trigger asChild>
             <Button>Toggle settings</Button>
           </Popover.Trigger>
@@ -201,4 +206,27 @@ export const controlled_popover: Story = {
   args: {
     placement: 'bottom',
   },
+} satisfies Story;
+
+export const nested_overlays: Story = {
+  render: () => (
+    <Popover>
+      <Popover.Trigger asChild>
+        <Button>Open parent overlay</Button>
+      </Popover.Trigger>
+      <Popover.Content>
+        <div style={{ display: 'grid', gap: 8 }}>
+          <strong>Parent overlay</strong>
+          <Popover>
+            <Popover.Trigger asChild>
+              <Button variant='secondary'>Open child overlay</Button>
+            </Popover.Trigger>
+            <Popover.Content>
+              <button type='button'>Child overlay action</button>
+            </Popover.Content>
+          </Popover>
+        </div>
+      </Popover.Content>
+    </Popover>
+  ),
 } satisfies Story;

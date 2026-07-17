@@ -1,0 +1,129 @@
+{
+  "nodes": [
+    {
+      "id": "packages_frey_ui_changelog_calendar",
+      "label": "Calendar",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_datefield",
+      "label": "DateField",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_datepicker",
+      "label": "DatePicker",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_segmentedcontrol",
+      "label": "SegmentedControl",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_accordion_content_boundary",
+      "label": "Accordion Content Boundary",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_explicit_module_outputs",
+      "label": "Explicit Module Outputs",
+      "file_type": "concept",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "packages_frey_ui_changelog_component_only_exports",
+      "label": "Component-Only Exports",
+      "file_type": "rationale",
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Explicit component-only subpath exports replace wildcard exports to narrow the public package surface."
+    }
+  ],
+  "edges": [
+    {
+      "source": "packages_frey_ui_changelog_datepicker",
+      "target": "packages_frey_ui_changelog_datefield",
+      "relation": "shares_data_with",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_changelog_datepicker",
+      "target": "packages_frey_ui_changelog_calendar",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "packages_frey_ui_changelog_explicit_module_outputs",
+      "target": "packages_frey_ui_changelog_component_only_exports",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/CHANGELOG.md",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "frey_ui_date_input_system",
+      "label": "Frey UI Date Input System",
+      "nodes": [
+        "packages_frey_ui_changelog_calendar",
+        "packages_frey_ui_changelog_datefield",
+        "packages_frey_ui_changelog_datepicker"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "packages/frey-ui/CHANGELOG.md"
+    }
+  ]
+}

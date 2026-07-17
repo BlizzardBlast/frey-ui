@@ -1,0 +1,160 @@
+{
+  "nodes": [
+    {
+      "id": "_github_workflows_deploy_github_pages_storybook_github_pages_publish",
+      "label": "Build and Publish Storybook to GitHub Pages",
+      "file_type": "document",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_github_pages",
+      "label": "GitHub Pages",
+      "file_type": "concept",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_storybook_affected_query",
+      "label": "Storybook Affected Query",
+      "file_type": "concept",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_turborepo",
+      "label": "Turborepo",
+      "file_type": "concept",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_conditional_storybook_deployment",
+      "label": "Conditional Storybook Deployment",
+      "file_type": "rationale",
+      "rationale": "GitHub Pages deployment runs only when Turborepo reports the Storybook package as affected; an unaffected build is explicitly skipped.",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_storybook_static_site",
+      "label": "Storybook Static Site",
+      "file_type": "concept",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    },
+    {
+      "id": "_github_workflows_deploy_github_pages_bitovi_storybook_to_github_pages",
+      "label": "Bitovi Storybook to GitHub Pages Action",
+      "file_type": "concept",
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null
+    }
+  ],
+  "edges": [
+    {
+      "source": "_github_workflows_deploy_github_pages_storybook_github_pages_publish",
+      "target": "_github_workflows_deploy_github_pages_storybook_affected_query",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_deploy_github_pages_storybook_affected_query",
+      "target": "_github_workflows_deploy_github_pages_turborepo",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_deploy_github_pages_conditional_storybook_deployment",
+      "target": "_github_workflows_deploy_github_pages_storybook_affected_query",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_deploy_github_pages_conditional_storybook_deployment",
+      "target": "_github_workflows_deploy_github_pages_bitovi_storybook_to_github_pages",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_deploy_github_pages_conditional_storybook_deployment",
+      "target": "_github_workflows_deploy_github_pages_storybook_static_site",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "_github_workflows_deploy_github_pages_storybook_github_pages_publish",
+      "target": "_github_workflows_deploy_github_pages_github_pages",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "affected_gated_storybook_deployment",
+      "label": "Affected-Gated Storybook Deployment",
+      "nodes": [
+        "_github_workflows_deploy_github_pages_storybook_affected_query",
+        "_github_workflows_deploy_github_pages_conditional_storybook_deployment",
+        "_github_workflows_deploy_github_pages_storybook_static_site",
+        "_github_workflows_deploy_github_pages_github_pages"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/deploy-github-pages.yml"
+    }
+  ]
+}
