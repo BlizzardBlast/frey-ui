@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.2.1
+
+### Patch Changes
+
+- 2fb4c75: Replace Floating UI with Frey UI's private overlay engine while preserving Popover, DropdownMenu, Tooltip, and DatePicker behavior.
+
 ## 1.2.0
 
 ### Minor Changes
