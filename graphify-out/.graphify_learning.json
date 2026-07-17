@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-17T08:55:38.968770+00:00",
+  "generated_at": "2026-07-17T08:57:20.081861+00:00",
   "nodes": {
     "apps_playwright_tests_overlays_spec": {
       "code_fingerprint": "347f37575eab5ad84b615d01d98d78bbc03c114cf3465a89e8860497a9e7e9bf",
@@ -12,7 +12,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "apps/playwright/tests/overlays.spec.ts",
       "status": "tentative",
       "uses": 1
@@ -28,7 +28,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/DropdownMenu/index.tsx",
       "status": "tentative",
       "uses": 1
@@ -44,7 +44,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/floating/dismissibleLayer.ts",
       "status": "tentative",
       "uses": 1
@@ -60,7 +60,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/floating/dismissibleLayer.test.tsx",
       "status": "tentative",
       "uses": 1
@@ -76,7 +76,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/floating/dismissibleLayer.ts",
       "status": "tentative",
       "uses": 1
@@ -92,7 +92,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/floating/pointerEvent.ts",
       "status": "tentative",
       "uses": 1
@@ -108,7 +108,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/floating/pointerEvent.ts",
       "status": "tentative",
       "uses": 1
@@ -124,7 +124,7 @@
           "q": "How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
         }
       ],
-      "score": 0.999013544,
+      "score": 0.998986531,
       "source_file": "packages/frey-ui/src/Tooltip/index.tsx",
       "status": "tentative",
       "uses": 1

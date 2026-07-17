@@ -135,3 +135,5 @@ test-report.junit.xml
 .junit-reports/
 apps/playwright/playwright-report/
 apps/playwright/test-results/
+
+.DS_Store
