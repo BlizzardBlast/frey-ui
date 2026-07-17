@@ -91,10 +91,11 @@ function trapTabKey(content: HTMLElement, event: KeyboardEvent): void {
   if (tabbableElements.length === 0) {
     target = content;
   } else if (event.shiftKey) {
+    const [lastTabbableElement] = tabbableElements.slice(-1);
     target =
       currentIndex > 0
         ? tabbableElements[currentIndex - 1]
-        : tabbableElements.slice(-1)[0];
+        : lastTabbableElement;
   } else {
     target =
       currentIndex >= 0 && currentIndex < tabbableElements.length - 1
@@ -214,7 +215,8 @@ export function FocusScope({
     const content = contentRef.current;
     if (!content) return;
     const tabbableElements = getTabbableElements(content);
-    focusElement(tabbableElements.slice(-1)[0] ?? content);
+    const [lastTabbableElement] = tabbableElements.slice(-1);
+    focusElement(lastTabbableElement ?? content);
   }, [contentRef]);
 
   React.useEffect(() => {

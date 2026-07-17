@@ -1,16 +1,16 @@
 # Graph Report - frey-ui  (2026-07-17)
 
 ## Corpus Check
-- 246 files · ~109,807 words
+- 246 files · ~109,819 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1966 nodes · 3013 edges · 183 communities (109 shown, 74 thin omitted)
+- 1966 nodes · 3008 edges · 181 communities (108 shown, 73 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.79)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `347a263e`
+- Built from commit: `3e071caf`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -103,8 +103,6 @@
 - Segmented Control Stories
 - clsx Stories
 - Calendar Stories
-- field Stories
-- index Stories
 - generate-theme-tokens Stories
 - playwright Stories
 - Calendar Stories
@@ -232,7 +230,7 @@
 - **CI Quality Reporting** — _github_workflows_ci_library_coverage, _github_workflows_ci_codecov_coverage_upload, _github_workflows_ci_codecov_test_results_upload, _github_workflows_ci_test_report_artifact [EXTRACTED 1.00]
 - **Affected-Gated Storybook Deployment** — _github_workflows_deploy_github_pages_storybook_affected_query, _github_workflows_deploy_github_pages_conditional_storybook_deployment, _github_workflows_deploy_github_pages_storybook_static_site, _github_workflows_deploy_github_pages_github_pages [EXTRACTED 1.00]
 
-## Communities (183 total, 74 thin omitted)
+## Communities (181 total, 73 thin omitted)
 
 ### Community 0 - "Date Field Architecture"
 Cohesion: 0.05
@@ -247,8 +245,8 @@ Cohesion: 0.07
 Nodes (48): inputs, outputs, dependsOn, inputs, outputs, cache, dependsOn, persistent (+40 more)
 
 ### Community 3 - "Layout Primitive Components"
-Cohesion: 0.06
-Nodes (31): Box, BoxBaseProps, BoxComponent, BoxElement, BoxProps, ColorToken, ColorValueMap, RadiusToken (+23 more)
+Cohesion: 0.09
+Nodes (21): Box, BoxBaseProps, BoxComponent, BoxElement, BoxProps, ColorToken, ColorValueMap, RadiusToken (+13 more)
 
 ### Community 4 - "Monorepo Build Inputs"
 Cohesion: 0.07
@@ -291,7 +289,7 @@ Cohesion: 0.07
 Nodes (25): OrderedRovingItem, RegisterItemOptions, RovingCollection, RovingItem, sortByDomOrder(), Harness(), HarnessProps, useRovingCollection() (+17 more)
 
 ### Community 14 - "Overlay Focus Scope"
-Cohesion: 0.22
+Cohesion: 0.15
 Nodes (13): focusElement(), FocusGuardProps, focusGuardStyle, FocusScope(), FocusScopeProps, getInitialFocusTarget(), hideElement(), hideOutsideContents() (+5 more)
 
 ### Community 15 - "Dialog Component"
@@ -339,8 +337,8 @@ Cohesion: 0.20
 Nodes (25): createCalendarGridModel(), createUtcPresentationDate(), formatCalendarMonthHeading(), formatDateValue(), formatEraLabel(), formatLocalizedNumber(), FRIDAY_FIRST_REGIONS, getCalendarEraOptions() (+17 more)
 
 ### Community 26 - "Floating Geometry Engine"
-Cohesion: 0.05
-Nodes (47): autoUpdateFloating(), Cleanup, getOverflowAncestors(), getOverflowElements(), getParentElement(), isOverflowElement(), observeReferenceMove(), SharedListener (+39 more)
+Cohesion: 0.13
+Nodes (23): Candidate, CandidateEvaluation, clamp(), computeFloatingPosition(), fits(), FloatingDirection, FloatingPositionInput, getCandidateCoordinates() (+15 more)
 
 ### Community 27 - "Accordion Component"
 Cohesion: 0.08
@@ -367,8 +365,8 @@ Cohesion: 0.13
 Nodes (16): Avatar, AvatarComponent, AvatarProps, AvatarSize, AvatarStatus, SizeClassMap, StatusClassMap, Badge (+8 more)
 
 ### Community 33 - "Floating Auto Update"
-Cohesion: 0.21
-Nodes (9): mergeRefs(), AnyEvent, AnyProps, composeEventHandlers(), EventHandler, isEventHandler(), mergeProps(), Slot (+1 more)
+Cohesion: 0.14
+Nodes (12): autoUpdateFloating(), Cleanup, getOverflowAncestors(), getOverflowElements(), getParentElement(), isOverflowElement(), observeReferenceMove(), SharedListener (+4 more)
 
 ### Community 34 - "Storybook Development Dependencies"
 Cohesion: 0.11
@@ -387,12 +385,12 @@ Cohesion: 0.25
 Nodes (18): buildCss(), contrastingText(), contrastRatio(), contrastSafeSelection(), darken(), DEFAULT_COLORS, hexToRgb(), lighten() (+10 more)
 
 ### Community 38 - "Button and Slot"
-Cohesion: 0.20
-Nodes (8): Button, ButtonBaseProps, ButtonComponent, ButtonProps, ButtonSize, ButtonVariant, SizeClassMap, VariantClassMap
+Cohesion: 0.16
+Nodes (9): Button, ButtonBaseProps, ButtonComponent, ButtonProps, ButtonSize, ButtonVariant, SizeClassMap, VariantClassMap (+1 more)
 
 ### Community 39 - "Dropdown Menu Component"
-Cohesion: 0.11
-Nodes (16): DropdownMenu, DropdownMenuComponent, DropdownMenuContent, DropdownMenuContentComponent, DropdownMenuContentProps, DropdownMenuContext, DropdownMenuContextValue, DropdownMenuItem (+8 more)
+Cohesion: 0.08
+Nodes (25): DropdownMenu, DropdownMenuComponent, DropdownMenuContent, DropdownMenuContentComponent, DropdownMenuContentProps, DropdownMenuContext, DropdownMenuContextValue, DropdownMenuItem (+17 more)
 
 ### Community 40 - "Dismissible Layer Stack"
 Cohesion: 0.20
@@ -431,12 +429,12 @@ Cohesion: 0.52
 Nodes (5): getBrowserLocale(), getServerLocale(), subscribeToLocale(), LocaleProbe(), useDateLocale()
 
 ### Community 49 - "Theme Provider and Portal"
-Cohesion: 0.16
+Cohesion: 0.23
 Nodes (10): FreyTheme, ThemeContext, ThemeContextValue, ThemeProvider(), ThemeProviderProps, useTheme(), InvalidConsumer(), ThemeConsumer() (+2 more)
 
 ### Community 50 - "Floating Position Hook"
-Cohesion: 0.31
-Nodes (9): DropdownMenuRoot(), useDismissibleLayer(), ServerOverlayFixture(), useFloatingPosition(), useControllableValue(), PopoverRoot(), Tooltip(), TooltipPlacement (+1 more)
+Cohesion: 0.15
+Nodes (20): DropdownMenuRoot(), useDismissibleLayer(), FloatingAlignment, FloatingPosition, FloatingSide, ServerOverlayFixture(), getClippingRect(), getInnerClientRect() (+12 more)
 
 ### Community 51 - "Storybook Package Scripts"
 Cohesion: 0.17
@@ -483,8 +481,8 @@ Cohesion: 0.25
 Nodes (7): OrientationClassMap, RadioGroup, RadioGroupComponent, RadioGroupOrientation, RadioGroupProps, RadioOption, options
 
 ### Community 62 - "Select and ARIA"
-Cohesion: 0.25
-Nodes (6): Select, SelectComponent, SelectProps, SelectSize, SizeClassMap, computeAriaProps()
+Cohesion: 0.10
+Nodes (16): FieldProps, FieldRenderProps, Select, SelectComponent, SelectProps, SelectSize, SizeClassMap, ResizeClassMap (+8 more)
 
 ### Community 63 - "Root Package Metadata"
 Cohesion: 0.25
@@ -539,8 +537,8 @@ Cohesion: 0.33
 Nodes (5): SizeClassMap, Switch, SwitchComponent, SwitchProps, SwitchSize
 
 ### Community 76 - "Textarea Component"
-Cohesion: 0.29
-Nodes (5): ResizeClassMap, Textarea, TextareaComponent, TextareaProps, TextareaResize
+Cohesion: 0.18
+Nodes (10): Chip, ChipBaseProps, ChipComponent, ChipElement, ChipElementNode, ChipProps, Variant, VariantClickableMap (+2 more)
 
 ### Community 77 - "CSS Module Types"
 Cohesion: 0.29
@@ -581,10 +579,6 @@ Nodes (5): clsx, dependencies, clsx, tslib, tslib
 ### Community 87 - "Calendar Stories"
 Cohesion: 0.60
 Nodes (5): Calendar, Date Components Roadmap, DateField, DatePicker, Release-owner maintenance checks
-
-### Community 89 - "index Stories"
-Cohesion: 0.50
-Nodes (3): TextInput, TextInputComponent, TextInputProps
 
 ### Community 90 - "generate-theme-tokens Stories"
 Cohesion: 0.50
@@ -651,20 +645,20 @@ Cohesion: 0.50
 Nodes (3): post-checkout script, GRAPHIFY_REBUILD_LOG, PYTHONHASHSEED
 
 ## Knowledge Gaps
-- **861 isolated node(s):** `Answer`, `Outcome`, `Source Nodes`, `FocusScopeProps`, `modalAccessibilityManagers` (+856 more)
+- **861 isolated node(s):** `FocusScopeProps`, `modalAccessibilityManagers`, `focusGuardStyle`, `FocusGuardProps`, `UseDismissibleLayerOptions` (+856 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **74 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **73 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `useControllableValue()` connect `Floating Position Hook` to `Date Field Architecture`, `Command Palette`, `Dropdown Menu Component`, `Segmented Control`, `Switch Component`, `Controllable State Components`, `Roving Focus Collections`, `Combobox Component`, `Dialog Component`, `Popover Overlay Component`, `Accordion Component`, `Calendar Keyboard Interactions`, `Radio Group`?**
-  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `DateCalendar` connect `Calendar Keyboard Interactions` to `Date Field Architecture`, `Date Locale Formatting`, `Avatar and Badge`, `Date Arithmetic Engine`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `useToast()` connect `Alerts Icons Toast` to `Avatar and Badge`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `Answer`, `Outcome`, `Source Nodes` to the rest of the system?**
+- **What connects `FocusScopeProps`, `modalAccessibilityManagers`, `focusGuardStyle` to the rest of the system?**
   _861 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Date Field Architecture` be split into smaller, more focused modules?**
   _Cohesion score 0.054945054945054944 - nodes in this community are weakly interconnected._

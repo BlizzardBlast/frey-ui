@@ -1069,9 +1069,9 @@
     "word_count": 1536
   },
   "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/FocusScope.tsx": {
-    "size": 7324,
-    "mtime_ns": 1784275766076772707,
-    "word_count": 674
+    "size": 7428,
+    "mtime_ns": 1784277762305237295,
+    "word_count": 682
   },
   "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/autoUpdate.test.ts": {
     "size": 12100,
@@ -1089,9 +1089,9 @@
     "word_count": 1140
   },
   "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/dismissibleLayer.ts": {
-    "size": 4926,
-    "mtime_ns": 1784275766077453825,
-    "word_count": 415
+    "size": 4954,
+    "mtime_ns": 1784277762305963704,
+    "word_count": 419
   },
   "/Users/freydarmasurya/Desktop/frey-ui/packages/frey-ui/src/floating/geometry.test.ts": {
     "size": 4963,
@@ -1291,16 +1291,16 @@
     "hash": "1676cab0aab39f78c1811b2fe019905e3844f004a24fc8e59a42b06c56fc3dd3"
   },
   "/Users/freydarmasurya/Desktop/frey-ui/.husky/post-checkout": {
-    "size": 9003,
-    "mtime_ns": 1784275213828879379,
+    "size": 9002,
+    "mtime_ns": 1784277762304547928,
     "word_count": 1073,
-    "hash": "b9547375bead92a3bffcdb650cd04e920318889d841f0925093d19a49b03587e"
+    "hash": "276ebb56e7b6c9c206b4e518f8a9744dc095cd2efeeb6427549dbd542fd4b24e"
   },
   "/Users/freydarmasurya/Desktop/frey-ui/.husky/post-commit": {
-    "size": 9398,
-    "mtime_ns": 1784275213828503466,
+    "size": 9397,
+    "mtime_ns": 1784277762303628230,
     "word_count": 1123,
-    "hash": "81e816293ae4bc9ed3cbb43221f30d09d07778c68b5d6436391c66ab81920670"
+    "hash": "bfb61f7617cc8f5e796fae10e9b162e9229f900d8a9fcee1daa5bc1ca6e11480"
   },
   "/Users/freydarmasurya/Desktop/frey-ui/graphify-out/memory/query_20260717_075408_how_does_dismissiblelayer_scrollbar_press_detectio.md": {
     "size": 1231,

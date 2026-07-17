@@ -925,8 +925,8 @@
     "semantic_hash": "b27fbbb97e13f7630d957274342adaf3"
   },
   "packages/frey-ui/src/floating/FocusScope.tsx": {
-    "mtime": 1784275766.0767727,
-    "ast_hash": "7037a00edefdbf7ee527f446b6d70315",
+    "mtime": 1784277762.3052373,
+    "ast_hash": "9a9364dc131691723929ce8a9c347898",
     "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/autoUpdate.test.ts": {
@@ -945,8 +945,8 @@
     "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/dismissibleLayer.ts": {
-    "mtime": 1784275766.0774539,
-    "ast_hash": "2bf62419c9196b8d7297bd9374256234",
+    "mtime": 1784277762.3059638,
+    "ast_hash": "264024738adfdc42704eead1ce630d8c",
     "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/geometry.test.ts": {
@@ -1245,13 +1245,13 @@
     "semantic_hash": "7b824ec5a5b27b5326468e7474896700"
   },
   ".husky/post-checkout": {
-    "mtime": 1784275213.8288794,
-    "ast_hash": "09cab3f1b3e3f91eb94079a9815eb185",
+    "mtime": 1784277762.304548,
+    "ast_hash": "df02009c3fc0a53067761b5f419a601d",
     "semantic_hash": ""
   },
   ".husky/post-commit": {
-    "mtime": 1784275213.8285034,
-    "ast_hash": "5c0330dbdedda352461fd42f4c4f1802",
+    "mtime": 1784277762.3036282,
+    "ast_hash": "355f0112575a1355be6e50d7cbdaade6",
     "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/pointerEvent.test.ts": {

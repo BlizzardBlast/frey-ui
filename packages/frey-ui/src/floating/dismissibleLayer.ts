@@ -29,7 +29,8 @@ type LayerManager = {
 const managers = new WeakMap<Document, LayerManager>();
 
 function getTopLayer(manager: LayerManager): Layer | undefined {
-  return manager.layers.slice(-1)[0];
+  const [topLayer] = manager.layers.slice(-1);
+  return topLayer;
 }
 
 function attachManagerListeners(

@@ -1,13 +1,18 @@
-# Graph Report - .  (2026-07-17)
+# Graph Report - frey-ui  (2026-07-17)
 
 ## Corpus Check
-- 249 files · ~106,624 words
+- 246 files · ~109,807 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1934 nodes · 2981 edges · 177 communities (104 shown, 73 thin omitted)
+- 1966 nodes · 3013 edges · 183 communities (109 shown, 74 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 32 edges (avg confidence: 0.79)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `347a263e`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - Date Field Architecture
@@ -183,6 +188,11 @@
 - Date Segment Concept
 - First Day Week Type
 - Segmented Control Release
+- Q: How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?
+- post-commit
+- post-checkout
+- platform.ts
+- @storybook/addon-themes
 
 ## God Nodes (most connected - your core abstractions)
 1. `parseDateValue()` - 32 edges
@@ -222,11 +232,11 @@
 - **CI Quality Reporting** — _github_workflows_ci_library_coverage, _github_workflows_ci_codecov_coverage_upload, _github_workflows_ci_codecov_test_results_upload, _github_workflows_ci_test_report_artifact [EXTRACTED 1.00]
 - **Affected-Gated Storybook Deployment** — _github_workflows_deploy_github_pages_storybook_affected_query, _github_workflows_deploy_github_pages_conditional_storybook_deployment, _github_workflows_deploy_github_pages_storybook_static_site, _github_workflows_deploy_github_pages_github_pages [EXTRACTED 1.00]
 
-## Communities (177 total, 73 thin omitted)
+## Communities (183 total, 74 thin omitted)
 
 ### Community 0 - "Date Field Architecture"
-Cohesion: 0.06
-Nodes (62): parseDateValue(), CalendarEraOption, DateSegmentLayoutPart, CalendarDate, DateCalendar, DateSegment, DateSegmentLabels, DateValue (+54 more)
+Cohesion: 0.05
+Nodes (66): DATE_CALENDARS, validateDateCalendar(), validateDateConstraints(), CalendarEraOption, DateSegmentLayoutPart, CalendarDate, DateSegment, DateSegmentLabels (+58 more)
 
 ### Community 1 - "Alerts Icons Toast"
 Cohesion: 0.05
@@ -253,12 +263,12 @@ Cohesion: 0.05
 Nodes (36): CommandPalette, CommandPaletteComponent, CommandPaletteContent, CommandPaletteContentComponent, CommandPaletteContentProps, CommandPaletteContext, CommandPaletteContextValue, CommandPaletteEmpty (+28 more)
 
 ### Community 7 - "Date Arithmetic Engine"
-Cohesion: 0.14
-Nodes (37): resolveInitialCalendarFocus(), addIsoDays(), addIsoMonths(), addIsoYears(), compareIsoDates(), DATE_CALENDARS, epochDayToIsoDate(), fixedFromIso() (+29 more)
+Cohesion: 0.12
+Nodes (53): addClampedCalendarUnit(), createCalendarState(), FIXED_MONTH_CALENDARS, getCalendarMonthStart(), getNextCalendarMonthEpoch(), isSameCalendarUnit(), resolveInitialCalendarFocus(), addCalendarMonths() (+45 more)
 
 ### Community 8 - "Calendar Grid State"
-Cohesion: 0.11
-Nodes (36): addClampedCalendarUnit(), addClampedIsoDays(), CalendarCellModel, CalendarGridModel, calendarStateReducer(), canSelectCalendarCell(), CreateCalendarGridModelOptions, createCalendarState() (+28 more)
+Cohesion: 0.16
+Nodes (17): eventIsInside(), getElementScale(), getEventPath(), getPointerTargetContext(), getScaledClientBounds(), getScrollbarPresence(), hasScrollbar(), isDocumentScrollbarPress() (+9 more)
 
 ### Community 9 - "Biome Formatting Rules"
 Cohesion: 0.05
@@ -281,12 +291,12 @@ Cohesion: 0.07
 Nodes (25): OrderedRovingItem, RegisterItemOptions, RovingCollection, RovingItem, sortByDomOrder(), Harness(), HarnessProps, useRovingCollection() (+17 more)
 
 ### Community 14 - "Overlay Focus Scope"
-Cohesion: 0.11
-Nodes (24): focusElement(), FocusGuard(), FocusGuardProps, focusGuardStyle, FocusScope(), FocusScopeProps, getInitialFocusTarget(), hideElement() (+16 more)
+Cohesion: 0.22
+Nodes (13): focusElement(), FocusGuardProps, focusGuardStyle, FocusScope(), FocusScopeProps, getInitialFocusTarget(), hideElement(), hideOutsideContents() (+5 more)
 
 ### Community 15 - "Dialog Component"
 Cohesion: 0.07
-Nodes (27): Dialog, DialogBody, DialogBodyComponent, DialogBodyProps, DialogComponent, DialogContent, DialogContentComponent, DialogContentProps (+19 more)
+Nodes (28): Dialog, DialogBody, DialogBodyComponent, DialogBodyProps, DialogComponent, DialogContent, DialogContentComponent, DialogContentProps (+20 more)
 
 ### Community 16 - "Breadcrumbs and Links"
 Cohesion: 0.08
@@ -301,8 +311,8 @@ Cohesion: 0.07
 Nodes (29): jest-axe, devDependencies, @biomejs/biome, jest-axe, postcss-modules, rimraf, rollup, @rollup/plugin-commonjs (+21 more)
 
 ### Community 19 - "Popover Overlay Component"
-Cohesion: 0.09
-Nodes (22): Popover, PopoverComponent, PopoverContent, PopoverContentComponent, PopoverContentProps, PopoverContext, PopoverContextValue, PopoverPlacement (+14 more)
+Cohesion: 0.13
+Nodes (13): Popover, PopoverComponent, PopoverContent, PopoverContentComponent, PopoverContentProps, PopoverContext, PopoverContextValue, PopoverPlacement (+5 more)
 
 ### Community 20 - "Table Component"
 Cohesion: 0.07
@@ -325,20 +335,20 @@ Cohesion: 0.12
 Nodes (15): contrastRatio(), expectBalancedDatePartGaps(), parseRgb(), relativeLuminance(), Rgb, BoxGeometry, getBoxGap(), getElementGeometry() (+7 more)
 
 ### Community 25 - "Date Locale Formatting"
-Cohesion: 0.24
-Nodes (23): createCalendarGridModel(), createUtcPresentationDate(), formatCalendarMonthHeading(), formatDateValue(), formatEraLabel(), formatLocalizedNumber(), FRIDAY_FIRST_REGIONS, getCalendarEraOptions() (+15 more)
+Cohesion: 0.20
+Nodes (25): createCalendarGridModel(), createUtcPresentationDate(), formatCalendarMonthHeading(), formatDateValue(), formatEraLabel(), formatLocalizedNumber(), FRIDAY_FIRST_REGIONS, getCalendarEraOptions() (+17 more)
 
 ### Community 26 - "Floating Geometry Engine"
-Cohesion: 0.13
-Nodes (23): Candidate, CandidateEvaluation, clamp(), computeFloatingPosition(), fits(), FloatingDirection, FloatingPositionInput, getCandidateCoordinates() (+15 more)
+Cohesion: 0.05
+Nodes (47): autoUpdateFloating(), Cleanup, getOverflowAncestors(), getOverflowElements(), getParentElement(), isOverflowElement(), observeReferenceMove(), SharedListener (+39 more)
 
 ### Community 27 - "Accordion Component"
 Cohesion: 0.08
 Nodes (19): Accordion, AccordionComponent, AccordionContent, AccordionContentComponent, AccordionContentProps, AccordionContext, AccordionContextValue, AccordionItem (+11 more)
 
 ### Community 28 - "Calendar Keyboard Interactions"
-Cohesion: 0.10
-Nodes (18): CalendarKeyboardCommand, resolveCalendarKeyboardCommand(), resolvePageMovement(), STATIC_MOVEMENTS, CalendarFocusMovement, CalendarState, CalendarStateAction, getHorizontalDayDelta() (+10 more)
+Cohesion: 0.07
+Nodes (37): CalendarKeyboardCommand, resolveCalendarKeyboardCommand(), resolvePageMovement(), STATIC_MOVEMENTS, addClampedIsoDays(), CalendarCellModel, CalendarFocusMovement, CalendarGridModel (+29 more)
 
 ### Community 29 - "Playwright Package Setup"
 Cohesion: 0.09
@@ -357,12 +367,12 @@ Cohesion: 0.13
 Nodes (16): Avatar, AvatarComponent, AvatarProps, AvatarSize, AvatarStatus, SizeClassMap, StatusClassMap, Badge (+8 more)
 
 ### Community 33 - "Floating Auto Update"
-Cohesion: 0.14
-Nodes (12): autoUpdateFloating(), Cleanup, getOverflowAncestors(), getOverflowElements(), getParentElement(), isOverflowElement(), observeReferenceMove(), SharedListener (+4 more)
+Cohesion: 0.21
+Nodes (9): mergeRefs(), AnyEvent, AnyProps, composeEventHandlers(), EventHandler, isEventHandler(), mergeProps(), Slot (+1 more)
 
 ### Community 34 - "Storybook Development Dependencies"
 Cohesion: 0.11
-Nodes (19): devDependencies, @biomejs/biome, @storybook/addon-a11y, @storybook/addon-themes, @types/node, @types/react-dom, vite, @vitejs/plugin-react (+11 more)
+Nodes (19): devDependencies, @biomejs/biome, @storybook/addon-a11y, @storybook/addon-docs, @types/node, @types/react-dom, vite, @vitejs/plugin-react (+11 more)
 
 ### Community 35 - "Library Package Exports"
 Cohesion: 0.11
@@ -377,16 +387,16 @@ Cohesion: 0.25
 Nodes (18): buildCss(), contrastingText(), contrastRatio(), contrastSafeSelection(), darken(), DEFAULT_COLORS, hexToRgb(), lighten() (+10 more)
 
 ### Community 38 - "Button and Slot"
-Cohesion: 0.16
-Nodes (9): Button, ButtonBaseProps, ButtonComponent, ButtonProps, ButtonSize, ButtonVariant, SizeClassMap, VariantClassMap (+1 more)
+Cohesion: 0.20
+Nodes (8): Button, ButtonBaseProps, ButtonComponent, ButtonProps, ButtonSize, ButtonVariant, SizeClassMap, VariantClassMap
 
 ### Community 39 - "Dropdown Menu Component"
 Cohesion: 0.11
 Nodes (16): DropdownMenu, DropdownMenuComponent, DropdownMenuContent, DropdownMenuContentComponent, DropdownMenuContentProps, DropdownMenuContext, DropdownMenuContextValue, DropdownMenuItem (+8 more)
 
 ### Community 40 - "Dismissible Layer Stack"
-Cohesion: 0.18
-Nodes (14): attachManagerListeners(), DismissReason, eventIsInside(), getEventPath(), getTopLayer(), isScrollbarPress(), Layer, LayerManager (+6 more)
+Cohesion: 0.20
+Nodes (9): attachManagerListeners(), DismissReason, getTopLayer(), Layer, LayerManager, LayerOptions, managers, registerLayer() (+1 more)
 
 ### Community 41 - "Root Development Dependencies"
 Cohesion: 0.12
@@ -405,28 +415,28 @@ Cohesion: 0.13
 Nodes (15): Agent Self-Review Loop, CI Parity Installation, Frey UI Monorepo, Git Hook Quality Gates, Node.js 24.16.0, Required Validation Pipeline, Storybook API Coverage Check, Storybook MCP (+7 more)
 
 ### Community 45 - "Controllable State Components"
-Cohesion: 0.15
-Nodes (8): DialogRoot(), DropdownMenuRoot(), useControllableValue(), Pagination, PaginationComponent, PaginationItem, PaginationProps, PopoverRoot()
+Cohesion: 0.22
+Nodes (4): Pagination, PaginationComponent, PaginationItem, PaginationProps
 
 ### Community 46 - "Tooltip Interaction Engine"
-Cohesion: 0.20
-Nodes (12): isFocusVisible(), ModalityManager, modalityManagers, nonTypeableInputTypes, subscribeToModality(), TooltipInputFixture(), TooltipInteractionFixture(), useTooltipInteractions() (+4 more)
+Cohesion: 0.27
+Nodes (9): isFocusVisible(), ModalityManager, modalityManagers, nonTypeableInputTypes, subscribeToModality(), TooltipInputFixture(), TooltipInteractionFixture(), useTooltipInteractions() (+1 more)
 
 ### Community 47 - "Combobox Component"
 Cohesion: 0.15
 Nodes (7): options, Combobox, ComboboxComponent, ComboboxOption, ComboboxProps, ComboboxSize, SizeClassMap
 
 ### Community 48 - "Date Locale Hook"
-Cohesion: 0.22
-Nodes (10): FirstDayOfWeek, getBrowserLocale(), getServerLocale(), subscribeToLocale(), LocaleProbe(), useDateLocale(), DateFieldControl, DateFieldProps (+2 more)
+Cohesion: 0.52
+Nodes (5): getBrowserLocale(), getServerLocale(), subscribeToLocale(), LocaleProbe(), useDateLocale()
 
 ### Community 49 - "Theme Provider and Portal"
-Cohesion: 0.23
+Cohesion: 0.16
 Nodes (10): FreyTheme, ThemeContext, ThemeContextValue, ThemeProvider(), ThemeProviderProps, useTheme(), InvalidConsumer(), ThemeConsumer() (+2 more)
 
 ### Community 50 - "Floating Position Hook"
-Cohesion: 0.23
-Nodes (12): FloatingAlignment, FloatingPosition, FloatingSide, getClippingRect(), getInnerClientRect(), getViewportRect(), intersectRects(), measureFloating() (+4 more)
+Cohesion: 0.31
+Nodes (9): DropdownMenuRoot(), useDismissibleLayer(), ServerOverlayFixture(), useFloatingPosition(), useControllableValue(), PopoverRoot(), Tooltip(), TooltipPlacement (+1 more)
 
 ### Community 51 - "Storybook Package Scripts"
 Cohesion: 0.17
@@ -624,24 +634,40 @@ Nodes (3): sideEffects, **/*.css, **/*.module.css
 Cohesion: 0.67
 Nodes (3): pnpm Dependency Catalog, Dependency Installation Policy, Frey UI Workspaces
 
+### Community 141 - "Storybook Docs Dependency"
+Cohesion: 0.39
+Nodes (8): filterRadioGroups(), focusableSelector, getTabbableElements(), isElementDisabled(), isElementVisible(), isInsideClosedDetails(), isRadio(), sortByTabOrder()
+
+### Community 177 - "Q: How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?"
+Cohesion: 0.40
+Nodes (4): Answer, Outcome, Q: How does dismissibleLayer scrollbar press detection work, and which tests and overlay consumers depend on it?, Source Nodes
+
+### Community 178 - "post-commit"
+Cohesion: 0.40
+Nodes (4): post-commit script, GRAPHIFY_CHANGED, GRAPHIFY_REBUILD_LOG, PYTHONHASHSEED
+
+### Community 179 - "post-checkout"
+Cohesion: 0.50
+Nodes (3): post-checkout script, GRAPHIFY_REBUILD_LOG, PYTHONHASHSEED
+
 ## Knowledge Gaps
-- **854 isolated node(s):** `$schema`, `changelog`, `commit`, `fixed`, `linked` (+849 more)
+- **861 isolated node(s):** `Answer`, `Outcome`, `Source Nodes`, `FocusScopeProps`, `modalAccessibilityManagers` (+856 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **73 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **74 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useControllableValue()` connect `Controllable State Components` to `Date Field Architecture`, `Command Palette`, `Dropdown Menu Component`, `Segmented Control`, `Switch Component`, `Roving Focus Collections`, `Tooltip Interaction Engine`, `Combobox Component`, `Date Locale Hook`, `Dialog Component`, `Popover Overlay Component`, `Accordion Component`, `Calendar Keyboard Interactions`, `Radio Group`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
-- **Why does `DateValue` connect `Date Field Architecture` to `Avatar and Badge`, `Date Arithmetic Engine`, `Calendar Grid State`, `Date Locale Hook`, `Calendar Keyboard Interactions`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `useControllableValue()` connect `Floating Position Hook` to `Date Field Architecture`, `Command Palette`, `Dropdown Menu Component`, `Segmented Control`, `Switch Component`, `Controllable State Components`, `Roving Focus Collections`, `Combobox Component`, `Dialog Component`, `Popover Overlay Component`, `Accordion Component`, `Calendar Keyboard Interactions`, `Radio Group`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **Why does `DateCalendar` connect `Calendar Keyboard Interactions` to `Date Field Architecture`, `Date Locale Formatting`, `Avatar and Badge`, `Date Arithmetic Engine`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `useToast()` connect `Alerts Icons Toast` to `Avatar and Badge`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
-- **What connects `$schema`, `changelog`, `commit` to the rest of the system?**
-  _854 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `Answer`, `Outcome`, `Source Nodes` to the rest of the system?**
+  _861 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Date Field Architecture` be split into smaller, more focused modules?**
-  _Cohesion score 0.05945945945945946 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.054945054945054944 - nodes in this community are weakly interconnected._
 - **Should `Alerts Icons Toast` be split into smaller, more focused modules?**
   _Cohesion score 0.053994732221246705 - nodes in this community are weakly interconnected._
 - **Should `Storybook Turbo Pipeline` be split into smaller, more focused modules?**

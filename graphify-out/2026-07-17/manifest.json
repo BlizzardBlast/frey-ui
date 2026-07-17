@@ -925,9 +925,9 @@
     "semantic_hash": "b27fbbb97e13f7630d957274342adaf3"
   },
   "packages/frey-ui/src/floating/FocusScope.tsx": {
-    "mtime": 1784263243.9777575,
-    "ast_hash": "54fe0f6bd0f471a7e709d96995377590",
-    "semantic_hash": "54fe0f6bd0f471a7e709d96995377590"
+    "mtime": 1784275766.0767727,
+    "ast_hash": "7037a00edefdbf7ee527f446b6d70315",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/autoUpdate.test.ts": {
     "mtime": 1784256469.6883328,
@@ -935,19 +935,19 @@
     "semantic_hash": "ae048c21884fa7dd0acc9c0d225a6317"
   },
   "packages/frey-ui/src/floating/autoUpdate.ts": {
-    "mtime": 1784256465.4559417,
-    "ast_hash": "6172088a12681e87ca35dd344ce8ae47",
-    "semantic_hash": "6172088a12681e87ca35dd344ce8ae47"
+    "mtime": 1784275766.0779295,
+    "ast_hash": "a4a89a16c6238ad96e3b72849954370e",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/dismissibleLayer.test.tsx": {
-    "mtime": 1784263543.237106,
-    "ast_hash": "d79058ae87f3ce9acc200c738fa601a9",
-    "semantic_hash": "d79058ae87f3ce9acc200c738fa601a9"
+    "mtime": 1784275591.7680929,
+    "ast_hash": "db7e0c95cb0de7c980514a43f3ac14b1",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/dismissibleLayer.ts": {
-    "mtime": 1784262972.012721,
-    "ast_hash": "b2a5b83e13cd8908d4f67d523fe79540",
-    "semantic_hash": "b2a5b83e13cd8908d4f67d523fe79540"
+    "mtime": 1784275766.0774539,
+    "ast_hash": "2bf62419c9196b8d7297bd9374256234",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/geometry.test.ts": {
     "mtime": 1784256478.3200948,
@@ -955,9 +955,9 @@
     "semantic_hash": "c3ec01d5c406fbb1db9dc0709cf1950c"
   },
   "packages/frey-ui/src/floating/geometry.ts": {
-    "mtime": 1784256480.0353675,
-    "ast_hash": "4282768e27b88a5e314da6e3e01fcefa",
-    "semantic_hash": "4282768e27b88a5e314da6e3e01fcefa"
+    "mtime": 1784275766.0782795,
+    "ast_hash": "aacd78aa61d08a55617741da4741b650",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/platform.ts": {
     "mtime": 1784262972.0120714,
@@ -980,9 +980,9 @@
     "semantic_hash": "60fbedf62046e38482866988357b2a98"
   },
   "packages/frey-ui/src/floating/useFloatingPosition.ts": {
-    "mtime": 1784263712.1113546,
-    "ast_hash": "5c18714a33ea7c56d8a501c58b3cd73f",
-    "semantic_hash": "5c18714a33ea7c56d8a501c58b3cd73f"
+    "mtime": 1784275766.0787754,
+    "ast_hash": "37582a40927733f29cc95c1ec28a5a25",
+    "semantic_hash": ""
   },
   "packages/frey-ui/src/floating/useTooltipInteractions.test.tsx": {
     "mtime": 1784263527.234669,
@@ -1243,5 +1243,30 @@
     "mtime": 1784271185.279485,
     "ast_hash": "7b824ec5a5b27b5326468e7474896700",
     "semantic_hash": "7b824ec5a5b27b5326468e7474896700"
+  },
+  ".husky/post-checkout": {
+    "mtime": 1784275213.8288794,
+    "ast_hash": "09cab3f1b3e3f91eb94079a9815eb185",
+    "semantic_hash": ""
+  },
+  ".husky/post-commit": {
+    "mtime": 1784275213.8285034,
+    "ast_hash": "5c0330dbdedda352461fd42f4c4f1802",
+    "semantic_hash": ""
+  },
+  "packages/frey-ui/src/floating/pointerEvent.test.ts": {
+    "mtime": 1784275621.1284513,
+    "ast_hash": "16c430019a647e83033a0a48a68475f6",
+    "semantic_hash": ""
+  },
+  "packages/frey-ui/src/floating/pointerEvent.ts": {
+    "mtime": 1784275693.955039,
+    "ast_hash": "cdfc19e8e3dc2c982897e264995446bb",
+    "semantic_hash": ""
+  },
+  "graphify-out/memory/query_20260717_075408_how_does_dismissiblelayer_scrollbar_press_detectio.md": {
+    "mtime": 1784274848.3293025,
+    "ast_hash": "1091f3f6afd264a6aa6be873c705286e",
+    "semantic_hash": ""
   }
 }
