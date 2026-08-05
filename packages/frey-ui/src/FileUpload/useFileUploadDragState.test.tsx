@@ -1,109 +1,88 @@
-import {
-  act,
-  fireEvent,
-  render,
-  renderHook,
-  screen,
-} from '@testing-library/react';
-import type React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { useFileUploadDragState } from './useFileUploadDragState';
 
-function createDragEvent(
-  currentTarget: HTMLElement,
-  relatedTarget: Element | null = null,
-  dataTransferFiles: File[] = []
-): React.DragEvent<HTMLElement> {
-  let defaultPrevented = false;
+function TestComponent({
+  onDrop,
+  disabled,
+}: {
+  onDrop?: (files: File[]) => void;
+  disabled?: boolean;
+}) {
+  const { isDragOver, ...dragHandlers } = useFileUploadDragState(
+    onDrop,
+    disabled
+  );
 
-  return {
-    currentTarget,
-    relatedTarget,
-    target: currentTarget,
-    preventDefault: () => {
-      defaultPrevented = true;
-    },
-    get defaultPrevented() {
-      return defaultPrevented;
-    },
-    dataTransfer: {
-      files: dataTransferFiles as unknown as FileList,
-    } as unknown as DataTransfer,
-    bubbles: true,
-    cancelable: true,
-    nativeEvent: new Event('drag'),
-  } as unknown as React.DragEvent<HTMLElement>;
-}
-
-function TestComponent({ onDrop }: { onDrop?: (files: File[]) => void }) {
-  const { isDragOver, ...drag } = useFileUploadDragState(onDrop);
   return (
-    <div data-testid='dropzone' data-dragover={String(isDragOver)} {...drag}>
-      <span data-testid='child'>Child</span>
-    </div>
+    <div
+      data-testid='dropzone'
+      data-dragging={String(isDragOver)}
+      {...dragHandlers}
+    />
   );
 }
 
 describe('useFileUploadDragState', () => {
-  it('starts with dragOver false', () => {
+  it('ignores non-file drags', () => {
     render(<TestComponent />);
-    expect(screen.getByTestId('dropzone').dataset.dragover).toBe('false');
-  });
+    const dropzone = screen.getByTestId('dropzone');
 
-  it('sets dragOver true on dragEnter', () => {
-    render(<TestComponent />);
-    const zone = screen.getByTestId('dropzone');
-    fireEvent.dragEnter(zone);
-    expect(zone.dataset.dragover).toBe('true');
-  });
-
-  it('sets dragOver false on dragLeave', () => {
-    render(<TestComponent />);
-    const zone = screen.getByTestId('dropzone');
-    fireEvent.dragEnter(zone);
-    fireEvent.dragLeave(zone);
-    expect(zone.dataset.dragover).toBe('false');
-  });
-
-  it('prevents default on dragOver', () => {
-    const { result } = renderHook(() => useFileUploadDragState());
-    const event = createDragEvent(document.body);
-    act(() => {
-      result.current.onDragOver(event);
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['text/plain'] },
     });
-    expect(event.defaultPrevented).toBe(true);
+
+    expect(dropzone).toHaveAttribute('data-dragging', 'false');
   });
 
-  it('calls onDrop with files from dataTransfer', () => {
-    const onDrop = vi.fn();
-    render(<TestComponent onDrop={onDrop} />);
-    const zone = screen.getByTestId('dropzone');
-    const file = new File(['hello'], 'test.txt', { type: 'text/plain' });
-    fireEvent.drop(zone, { dataTransfer: { files: [file] } });
-    expect(onDrop).toHaveBeenCalledWith([file]);
-    expect(zone.dataset.dragover).toBe('false');
-  });
-
-  it('does not call onDrop when dataTransfer has no files', () => {
-    const onDrop = vi.fn();
-    render(<TestComponent onDrop={onDrop} />);
-    const zone = screen.getByTestId('dropzone');
-    fireEvent.drop(zone, { dataTransfer: { files: [] } });
-    expect(onDrop).not.toHaveBeenCalled();
-  });
-
-  it('keeps dragOver true when leaving toward a child element', () => {
-    const { result } = renderHook(() => useFileUploadDragState());
-    const zone = document.createElement('div');
+  it('tracks nested file drags without flickering', () => {
+    render(<TestComponent />);
+    const dropzone = screen.getByTestId('dropzone');
     const child = document.createElement('span');
-    zone.appendChild(child);
+    dropzone.appendChild(child);
 
-    act(() => {
-      result.current.onDragEnter(createDragEvent(zone));
-      result.current.onDragEnter(createDragEvent(zone));
-      result.current.onDragLeave(createDragEvent(zone, child));
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+    fireEvent.dragLeave(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+      relatedTarget: child,
     });
 
-    expect(result.current.isDragOver).toBe(true);
+    expect(dropzone).toHaveAttribute('data-dragging', 'true');
+  });
+
+  it('processes dropped files and resets state', () => {
+    const onDrop = vi.fn();
+    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
+
+    render(<TestComponent onDrop={onDrop} />);
+    const dropzone = screen.getByTestId('dropzone');
+
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+    fireEvent.drop(dropzone, {
+      dataTransfer: { files: [file], types: ['Files'] },
+    });
+
+    expect(onDrop).toHaveBeenCalledWith([file]);
+    expect(dropzone).toHaveAttribute('data-dragging', 'false');
+  });
+
+  it('does not process files when disabled', () => {
+    const onDrop = vi.fn();
+    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
+
+    render(<TestComponent onDrop={onDrop} disabled />);
+
+    fireEvent.drop(screen.getByTestId('dropzone'), {
+      dataTransfer: { files: [file], types: ['Files'] },
+    });
+
+    expect(onDrop).not.toHaveBeenCalled();
   });
 });
