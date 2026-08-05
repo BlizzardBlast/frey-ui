@@ -45,7 +45,7 @@ afterAll(() => {
 });
 
 describe('useObjectUrl', () => {
-  it('creates and revokes object URLs as the file changes', async () => {
+  it('creates and revokes object URLs without exposing a stale URL', async () => {
     const first = new File(['one'], 'first.png', { type: 'image/png' });
     const second = new File(['two'], 'second.png', { type: 'image/png' });
     const { result, rerender, unmount } = renderHook(
@@ -58,6 +58,8 @@ describe('useObjectUrl', () => {
     });
 
     rerender({ file: second });
+
+    expect(result.current).toBeUndefined();
 
     await waitFor(() => {
       expect(revokeObjectURL).toHaveBeenCalledWith('blob:first');
