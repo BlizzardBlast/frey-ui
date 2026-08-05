@@ -62,6 +62,9 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
         icon,
         className,
         style,
+        role,
+        'aria-label': ariaLabel,
+        'aria-labelledby': ariaLabelledBy,
         onDragEnter,
         onDragLeave,
         onDragOver,
@@ -128,6 +131,11 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
           ref={forwardedRef}
           className={clsx(styles.dropzone, className)}
           style={style}
+          role={role ?? 'region'}
+          aria-label={ariaLabel}
+          aria-labelledby={
+            ariaLabelledBy ?? (ariaLabel ? undefined : context.labelId)
+          }
           aria-disabled={context.disabled || undefined}
           data-dragging={context.isDragOver ? true : undefined}
           data-disabled={context.disabled ? true : undefined}
