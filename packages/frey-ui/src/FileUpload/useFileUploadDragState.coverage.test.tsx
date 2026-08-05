@@ -19,7 +19,7 @@ function createDragEvent({
     files: files as unknown as FileList,
     types,
     dropEffect: 'none' as DataTransfer['dropEffect'],
-  } as DataTransfer;
+  } as unknown as DataTransfer;
 
   return {
     preventDefault,
@@ -92,7 +92,11 @@ describe('useFileUploadDragState remaining branches', () => {
     const onFilesDrop = vi.fn();
     const { result, rerender } = renderHook(
       ({ callback }) => useFileUploadDragState(callback),
-      { initialProps: { callback: onFilesDrop as ((files: File[]) => void) | undefined } }
+      {
+        initialProps: {
+          callback: onFilesDrop as ((files: File[]) => void) | undefined,
+        },
+      }
     );
     const emptyEvent = createDragEvent({ files: [], types: ['Files'] });
     const missingFilesEvent = createDragEvent({ types: ['Files'] });
