@@ -75,6 +75,7 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
       {({ inputId, labelId, describedBy, hasError }) => (
         <fieldset
           className={styles.root}
+          disabled={disabled}
           aria-labelledby={labelId}
           aria-describedby={describedBy}
           aria-invalid={hasError || undefined}
