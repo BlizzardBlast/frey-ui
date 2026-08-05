@@ -97,7 +97,7 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
   if (asChild) {
     if (!isComposedElement(children)) {
       throw new Error(
-        'FileUpload.Trigger with asChild expects one non-fragment React element.'
+        'FileUpload.Trigger with asChild expects a single valid React element child; fragments are not supported.'
       );
     }
 
