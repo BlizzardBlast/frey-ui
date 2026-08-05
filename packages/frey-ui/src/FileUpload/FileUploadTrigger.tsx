@@ -22,17 +22,21 @@ type TriggerChildProps = {
   onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
+function isComposedElement(
+  children: React.ReactNode
+): children is React.ReactElement<TriggerChildProps> {
+  return React.isValidElement(children) && children.type !== React.Fragment;
+}
+
 function preventDisabledActivation(event: React.MouseEvent<HTMLElement>): void {
   event.preventDefault();
   event.stopPropagation();
 }
 
-function getAsChildElement(
-  children: React.ReactNode,
+function getComposedChild(
+  child: React.ReactElement<TriggerChildProps>,
   disabled: boolean
 ): React.ReactElement {
-  const child = children as React.ReactElement<TriggerChildProps>;
-
   if (!disabled) {
     return child;
   }
@@ -91,9 +95,9 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
   };
 
   if (asChild) {
-    if (!React.isValidElement(children)) {
+    if (!isComposedElement(children)) {
       throw new Error(
-        'FileUpload.Trigger with asChild expects a single valid React element child.'
+        'FileUpload.Trigger with asChild expects one non-fragment React element.'
       );
     }
 
@@ -104,7 +108,7 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
         ref={ref}
         onClick={handleClick}
       >
-        {getAsChildElement(children, disabled)}
+        {getComposedChild(children, disabled)}
       </Slot>
     );
   }
