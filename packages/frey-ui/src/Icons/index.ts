@@ -5,6 +5,8 @@ export * from './CircleCheckIcon';
 export * from './CircleInfoIcon';
 export * from './CircleXIcon';
 export * from './CloseIcon';
+export * from './FileIcon';
 export * from './IconSvg';
 export * from './MinusIcon';
 export * from './TriangleAlertIcon';
+export * from './UploadIcon';
