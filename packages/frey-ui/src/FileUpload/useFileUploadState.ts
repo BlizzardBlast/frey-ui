@@ -212,9 +212,7 @@ export function useFileUploadState(
 
   const removeFile = useCallback(
     (file: File) => {
-      removeFileAt(
-        filesRef.current.findIndex((currentFile) => currentFile === file)
-      );
+      removeFileAt(filesRef.current.indexOf(file));
     },
     [removeFileAt]
   );
