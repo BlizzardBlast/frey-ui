@@ -78,8 +78,7 @@ function TestComponent(props: Record<string, unknown>) {
         onClick={() => state.removeFileAt(0)}
       />
       <button type='reset'>Reset</button>
-      <div
-        role='region'
+      <section
         aria-label='Dropzone'
         data-testid='dropzone'
         onDrop={state.onDrop}
