@@ -22,6 +22,22 @@ type FileUploadItemComponent = React.ForwardRefExoticComponent<
   Readonly<FileUploadItemProps> & React.RefAttributes<HTMLLIElement>
 >;
 
+function getFileIndex(
+  file: File | undefined,
+  fileIndex: number | undefined,
+  files: ReadonlyArray<File>
+): number {
+  if (fileIndex !== undefined) {
+    return fileIndex;
+  }
+
+  if (!file) {
+    return -1;
+  }
+
+  return files.indexOf(file);
+}
+
 export const FileUploadItem: FileUploadItemComponent = React.forwardRef<
   HTMLLIElement,
   Readonly<FileUploadItemProps>
@@ -39,9 +55,11 @@ export const FileUploadItem: FileUploadItemComponent = React.forwardRef<
 ) {
   const context = useFileUploadContext();
   const currentFile = file ?? context.files[0];
-  const currentIndex =
-    fileIndex ??
-    (currentFile ? context.files.indexOf(currentFile) : -1);
+  const currentIndex = getFileIndex(
+    currentFile,
+    fileIndex,
+    context.files
+  );
 
   if (!currentFile || currentIndex < 0) {
     return null;
