@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+type ObjectUrlState = {
+  file: File;
+  url: string;
+};
+
 export function isPreviewableImage(file: File | undefined): boolean {
   return Boolean(
     file?.type.startsWith('image/') && file.type !== 'image/svg+xml'
@@ -10,7 +15,7 @@ export function useObjectUrl(
   file: File | undefined,
   enabled = true
 ): string | undefined {
-  const [url, setUrl] = useState<string>();
+  const [objectUrl, setObjectUrl] = useState<ObjectUrlState>();
 
   useEffect(() => {
     if (
@@ -20,7 +25,7 @@ export function useObjectUrl(
       typeof URL.createObjectURL !== 'function' ||
       typeof URL.revokeObjectURL !== 'function'
     ) {
-      setUrl(undefined);
+      setObjectUrl(undefined);
       return;
     }
 
@@ -29,20 +34,20 @@ export function useObjectUrl(
     try {
       nextUrl = URL.createObjectURL(file);
     } catch {
-      setUrl(undefined);
+      setObjectUrl(undefined);
       return;
     }
 
-    setUrl(nextUrl);
+    setObjectUrl({ file, url: nextUrl });
 
     return () => {
-      try {
-        URL.revokeObjectURL(nextUrl);
-      } catch {
-        // Object URL cleanup is best effort in constrained browser environments.
-      }
+      URL.revokeObjectURL(nextUrl);
     };
   }, [enabled, file]);
 
-  return url;
+  if (!enabled || objectUrl?.file !== file) {
+    return undefined;
+  }
+
+  return objectUrl.url;
 }
