@@ -4,6 +4,13 @@ import { Button, FileUpload } from 'frey-ui';
 import { useState } from 'react';
 import { expect, within } from 'storybook/test';
 
+const STRING_TYPE = 'string';
+const BOOLEAN_TYPE = 'boolean';
+const NUMBER_TYPE = 'number';
+const NONE_DEFAULT = 'None';
+const FALSE_DEFAULT = 'false';
+const PDF_MIME_TYPE = 'application/pdf';
+
 const meta: Meta<FileUploadProps> = {
   component: FileUpload,
   parameters: {
@@ -29,47 +36,47 @@ const meta: Meta<FileUploadProps> = {
       control: { type: 'text' },
       description: 'Accessible field label.',
       table: {
-        type: { summary: 'string' },
+        type: { summary: STRING_TYPE },
         defaultValue: { summary: 'Required' },
       },
     },
     hideLabel: {
-      control: { type: 'boolean' },
+      control: { type: BOOLEAN_TYPE },
       description: 'Visually hides the field label.',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
       },
     },
     helperText: {
       control: { type: 'text' },
       description: 'Additional guidance displayed below the field.',
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'None' },
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     error: {
       control: { type: 'text' },
       description: 'External validation error shown instead of rejections.',
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'None' },
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     required: {
-      control: { type: 'boolean' },
+      control: { type: BOOLEAN_TYPE },
       description: 'Marks the file input as required while empty.',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
       },
     },
     id: {
       control: { type: 'text' },
       description: 'Stable identifier for the field and file input.',
       table: {
-        type: { summary: 'string' },
+        type: { summary: STRING_TYPE },
         defaultValue: { summary: 'Generated' },
       },
     },
@@ -77,16 +84,16 @@ const meta: Meta<FileUploadProps> = {
       control: { type: 'text' },
       description: 'Name submitted by the native file input.',
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'None' },
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     className: {
       control: { type: 'text' },
       description: 'Additional class name for the field wrapper.',
       table: {
-        type: { summary: 'string' },
-        defaultValue: { summary: 'None' },
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     style: {
@@ -94,7 +101,7 @@ const meta: Meta<FileUploadProps> = {
       description: 'Inline styles for the field wrapper.',
       table: {
         type: { summary: 'CSSProperties' },
-        defaultValue: { summary: 'None' },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     value: {
@@ -102,7 +109,7 @@ const meta: Meta<FileUploadProps> = {
       description: 'Controlled selected files.',
       table: {
         type: { summary: 'File[]' },
-        defaultValue: { summary: 'None' },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     defaultValue: {
@@ -118,7 +125,7 @@ const meta: Meta<FileUploadProps> = {
       description: 'Called whenever the selected files change.',
       table: {
         type: { summary: '(files: File[]) => void' },
-        defaultValue: { summary: 'None' },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     onFilesRejected: {
@@ -126,55 +133,55 @@ const meta: Meta<FileUploadProps> = {
       description: 'Called with structured details for rejected files.',
       table: {
         type: { summary: '(rejected: FileUploadRejected[]) => void' },
-        defaultValue: { summary: 'None' },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
     disabled: {
-      control: { type: 'boolean' },
+      control: { type: BOOLEAN_TYPE },
       description: 'Disables browsing, dropping, and removal.',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
       },
     },
     accept: {
       control: { type: 'text' },
       description: 'Accepted MIME types or file extensions.',
       table: {
-        type: { summary: 'string' },
+        type: { summary: STRING_TYPE },
         defaultValue: { summary: 'Any file' },
       },
     },
     maxSize: {
-      control: { type: 'number' },
+      control: { type: NUMBER_TYPE },
       description: 'Maximum file size in bytes.',
       table: {
-        type: { summary: 'number' },
+        type: { summary: NUMBER_TYPE },
         defaultValue: { summary: 'Unlimited' },
       },
     },
     minSize: {
-      control: { type: 'number' },
+      control: { type: NUMBER_TYPE },
       description: 'Minimum file size in bytes.',
       table: {
-        type: { summary: 'number' },
+        type: { summary: NUMBER_TYPE },
         defaultValue: { summary: '0' },
       },
     },
     maxFiles: {
-      control: { type: 'number' },
+      control: { type: NUMBER_TYPE },
       description: 'Maximum number of selected files.',
       table: {
-        type: { summary: 'number' },
+        type: { summary: NUMBER_TYPE },
         defaultValue: { summary: 'Unlimited' },
       },
     },
     multiple: {
-      control: { type: 'boolean' },
+      control: { type: BOOLEAN_TYPE },
       description: 'Allows more than one selected file.',
       table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
       },
     },
     validate: {
@@ -182,7 +189,7 @@ const meta: Meta<FileUploadProps> = {
       description: 'Custom validation function returning an error or null.',
       table: {
         type: { summary: '(file: File) => string | null' },
-        defaultValue: { summary: 'None' },
+        defaultValue: { summary: NONE_DEFAULT },
       },
     },
   },
@@ -240,7 +247,7 @@ export const MultipleFiles: Story = {
     defaultValue: [
       previewFile,
       new File(['Quarterly report'], 'quarterly-report.pdf', {
-        type: 'application/pdf',
+        type: PDF_MIME_TYPE,
         lastModified: 2,
       }),
     ],
@@ -306,9 +313,7 @@ export const Controlled: Story = {
   render: function ControlledFileUpload(args) {
     const [files, setFiles] = useState<File[]>([]);
 
-    return (
-      <FileUpload {...args} value={files} onValueChange={setFiles} />
-    );
+    return <FileUpload {...args} value={files} onValueChange={setFiles} />;
   },
 };
 
@@ -335,7 +340,7 @@ export const Disabled: Story = {
     disabled: true,
     defaultValue: [
       new File(['Locked'], 'locked-document.pdf', {
-        type: 'application/pdf',
+        type: PDF_MIME_TYPE,
       }),
     ],
   },
@@ -348,7 +353,7 @@ export const LongFilename: Story = {
       new File(
         ['Long filename'],
         'final-approved-quarterly-financial-report-with-appendices-and-supporting-evidence.pdf',
-        { type: 'application/pdf' }
+        { type: PDF_MIME_TYPE }
       ),
     ],
   },
