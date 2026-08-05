@@ -11,7 +11,7 @@ import {
 } from './fileValidation';
 
 export type FileUploadDropzoneProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
+  React.HTMLAttributes<HTMLElement>,
   'children'
 > & {
   children?: React.ReactNode;
@@ -21,7 +21,7 @@ export type FileUploadDropzoneProps = Omit<
 };
 
 type FileUploadDropzoneComponent = React.ForwardRefExoticComponent<
-  Readonly<FileUploadDropzoneProps> & React.RefAttributes<HTMLDivElement>
+  Readonly<FileUploadDropzoneProps> & React.RefAttributes<HTMLElement>
 >;
 
 function getConstraintDescription(
@@ -53,7 +53,7 @@ function getConstraintDescription(
 }
 
 export const FileUploadDropzone: FileUploadDropzoneComponent =
-  React.forwardRef<HTMLDivElement, Readonly<FileUploadDropzoneProps>>(
+  React.forwardRef<HTMLElement, Readonly<FileUploadDropzoneProps>>(
     function FileUploadDropzone(
       {
         children,
@@ -62,7 +62,6 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
         icon,
         className,
         style,
-        role,
         'aria-label': ariaLabel,
         'aria-labelledby': ariaLabelledBy,
         onDragEnter,
@@ -85,39 +84,35 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
         context.isMultiple
       );
 
-      const handleDragEnter: React.DragEventHandler<HTMLDivElement> = (
-        event
-      ) => {
+      const handleDragEnter: React.DragEventHandler<HTMLElement> = (event) => {
         onDragEnter?.(event);
 
         if (!event.defaultPrevented) {
           context.onDragEnter(event);
         }
       };
-      const handleDragLeave: React.DragEventHandler<HTMLDivElement> = (
-        event
-      ) => {
+      const handleDragLeave: React.DragEventHandler<HTMLElement> = (event) => {
         onDragLeave?.(event);
 
         if (!event.defaultPrevented) {
           context.onDragLeave(event);
         }
       };
-      const handleDragOver: React.DragEventHandler<HTMLDivElement> = (event) => {
+      const handleDragOver: React.DragEventHandler<HTMLElement> = (event) => {
         onDragOver?.(event);
 
         if (!event.defaultPrevented) {
           context.onDragOver(event);
         }
       };
-      const handleDragEnd: React.DragEventHandler<HTMLDivElement> = (event) => {
+      const handleDragEnd: React.DragEventHandler<HTMLElement> = (event) => {
         onDragEnd?.(event);
 
         if (!event.defaultPrevented) {
           context.onDragEnd(event);
         }
       };
-      const handleDrop: React.DragEventHandler<HTMLDivElement> = (event) => {
+      const handleDrop: React.DragEventHandler<HTMLElement> = (event) => {
         onDrop?.(event);
 
         if (!event.defaultPrevented) {
@@ -126,12 +121,11 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
       };
 
       return (
-        <div
+        <section
           {...dropzoneProps}
           ref={forwardedRef}
           className={clsx(styles.dropzone, className)}
           style={style}
-          role={role ?? 'region'}
           aria-label={ariaLabel}
           aria-labelledby={
             ariaLabelledBy ?? (ariaLabel ? undefined : context.labelId)
@@ -173,7 +167,7 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
               </FileUploadTrigger>
             </>
           )}
-        </div>
+        </section>
       );
     }
   );
