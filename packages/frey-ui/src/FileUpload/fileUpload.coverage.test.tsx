@@ -318,6 +318,6 @@ describe('FileUpload remaining component branches', () => {
     expect(trigger).toBeDisabled();
     expect(trigger).toHaveAttribute('type', 'submit');
     expect(trigger).toHaveAttribute('aria-describedby', 'custom-description');
-    expect(trigger).toHaveAttribute('aria-invalid', 'false');
+    expect(trigger).not.toHaveAttribute('aria-invalid');
   });
 });
