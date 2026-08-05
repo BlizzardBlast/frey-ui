@@ -10,6 +10,7 @@ describe('FileUpload.Trigger asChild validation', () => {
           <FileUpload.Trigger asChild>
             <>
               <span>Attach file</span>
+              <span aria-hidden='true'>+</span>
             </>
           </FileUpload.Trigger>
         </FileUpload>
