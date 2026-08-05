@@ -5,10 +5,7 @@ import { UploadIcon } from '../Icons';
 import styles from './fileUpload.module.css';
 import { useFileUploadContext } from './FileUploadContext';
 import { FileUploadTrigger } from './FileUploadTrigger';
-import {
-  formatAcceptedTypes,
-  formatFileSize,
-} from './fileValidation';
+import { formatAcceptedTypes, formatFileSize } from './fileValidation';
 
 export type FileUploadDropzoneProps = Omit<
   React.HTMLAttributes<HTMLElement>,
@@ -23,6 +20,8 @@ export type FileUploadDropzoneProps = Omit<
 type FileUploadDropzoneComponent = React.ForwardRefExoticComponent<
   Readonly<FileUploadDropzoneProps> & React.RefAttributes<HTMLElement>
 >;
+
+type DragHandler = React.DragEventHandler<HTMLElement>;
 
 function getConstraintDescription(
   accept: string | undefined,
@@ -52,6 +51,27 @@ function getConstraintDescription(
   return multiple ? 'Select one or more files' : 'Select one file';
 }
 
+function getDefaultHeading(isDragOver: boolean, isMultiple: boolean): string {
+  if (isDragOver) {
+    return isMultiple ? 'Drop files to add' : 'Drop the file to add';
+  }
+
+  return isMultiple ? 'Drag and drop files here' : 'Drag and drop a file here';
+}
+
+function composeDragHandler(
+  externalHandler: DragHandler | undefined,
+  internalHandler: DragHandler
+): DragHandler {
+  return (event) => {
+    externalHandler?.(event);
+
+    if (!event.defaultPrevented) {
+      internalHandler(event);
+    }
+  };
+}
+
 export const FileUploadDropzone: FileUploadDropzoneComponent =
   React.forwardRef<HTMLElement, Readonly<FileUploadDropzoneProps>>(
     function FileUploadDropzone(
@@ -74,51 +94,27 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
       forwardedRef
     ) {
       const context = useFileUploadContext();
-      const defaultHeading = context.isDragOver
-        ? `Drop ${context.isMultiple ? 'files' : 'the file'} to add`
-        : `Drag and drop ${context.isMultiple ? 'files' : 'a file'} here`;
+      const defaultHeading = getDefaultHeading(
+        context.isDragOver,
+        context.isMultiple
+      );
       const defaultDescription = getConstraintDescription(
         context.accept,
         context.maxSize,
         context.maxFiles,
         context.isMultiple
       );
-
-      const handleDragEnter: React.DragEventHandler<HTMLElement> = (event) => {
-        onDragEnter?.(event);
-
-        if (!event.defaultPrevented) {
-          context.onDragEnter(event);
-        }
-      };
-      const handleDragLeave: React.DragEventHandler<HTMLElement> = (event) => {
-        onDragLeave?.(event);
-
-        if (!event.defaultPrevented) {
-          context.onDragLeave(event);
-        }
-      };
-      const handleDragOver: React.DragEventHandler<HTMLElement> = (event) => {
-        onDragOver?.(event);
-
-        if (!event.defaultPrevented) {
-          context.onDragOver(event);
-        }
-      };
-      const handleDragEnd: React.DragEventHandler<HTMLElement> = (event) => {
-        onDragEnd?.(event);
-
-        if (!event.defaultPrevented) {
-          context.onDragEnd(event);
-        }
-      };
-      const handleDrop: React.DragEventHandler<HTMLElement> = (event) => {
-        onDrop?.(event);
-
-        if (!event.defaultPrevented) {
-          context.onDrop(event);
-        }
-      };
+      const handleDragEnter = composeDragHandler(
+        onDragEnter,
+        context.onDragEnter
+      );
+      const handleDragLeave = composeDragHandler(
+        onDragLeave,
+        context.onDragLeave
+      );
+      const handleDragOver = composeDragHandler(onDragOver, context.onDragOver);
+      const handleDragEnd = composeDragHandler(onDragEnd, context.onDragEnd);
+      const handleDrop = composeDragHandler(onDrop, context.onDrop);
 
       return (
         <section
