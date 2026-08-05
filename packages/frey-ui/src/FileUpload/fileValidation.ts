@@ -197,7 +197,7 @@ function formatList(values: ReadonlyArray<string>): string {
   }
 
   if (values.length === 1) {
-    return values[0] ?? '';
+    return values.join('');
   }
 
   if (values.length === 2) {
