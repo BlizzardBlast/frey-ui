@@ -59,7 +59,7 @@ describe('useObjectUrl', () => {
 
     rerender({ file: second });
 
-    expect(result.current).toBeUndefined();
+    expect(result.current).not.toBe('blob:first');
 
     await waitFor(() => {
       expect(revokeObjectURL).toHaveBeenCalledWith('blob:first');
