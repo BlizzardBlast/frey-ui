@@ -40,11 +40,11 @@ export const FileUploadList: FileUploadListComponent = React.forwardRef<
 
   return (
     <ul
+      {...listProps}
       ref={forwardedRef}
       className={clsx(styles.list, className)}
       style={style}
       aria-label={ariaLabel}
-      {...listProps}
     >
       {context.files.map((file, index) => {
         const keyBase = getFileKeyBase(file);
