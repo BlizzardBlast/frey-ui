@@ -78,7 +78,12 @@ function TestComponent(props: Record<string, unknown>) {
         onClick={() => state.removeFileAt(0)}
       />
       <button type='reset'>Reset</button>
-      <div data-testid='dropzone' onDrop={state.onDrop} />
+      <div
+        role='region'
+        aria-label='Dropzone'
+        data-testid='dropzone'
+        onDrop={state.onDrop}
+      />
       <span data-testid='files'>
         {state.files.map((file) => file.name).join(',')}
       </span>
