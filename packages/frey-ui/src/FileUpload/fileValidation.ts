@@ -1,7 +1,17 @@
+export type FileUploadRejectionCode =
+  | 'file-invalid-type'
+  | 'file-too-small'
+  | 'file-too-large'
+  | 'too-many-files'
+  | 'custom';
+
 export type FileUploadRejected = {
   file: File;
+  code: FileUploadRejectionCode;
   reason: string;
 };
+
+export type FileValidationError = Omit<FileUploadRejected, 'file'>;
 
 export type FileValidationRule = {
   accept?: string;
@@ -12,7 +22,7 @@ export type FileValidationRule = {
   validate?: (file: File) => string | null;
 };
 
-type AcceptSpec = {
+export type AcceptSpec = {
   mimeTypes: ReadonlyArray<string>;
   extensions: ReadonlyArray<string>;
 };
@@ -34,7 +44,7 @@ export function parseAccept(accept: string | undefined): AcceptSpec {
     if (part.startsWith('.')) {
       extensions.push(part.toLowerCase());
     } else {
-      mimeTypes.push(part);
+      mimeTypes.push(part.toLowerCase());
     }
   }
 
@@ -52,12 +62,12 @@ function matchMime(fileType: string, pattern: string): boolean {
   const [type, subtype] = normalizedPattern.split('/');
   const [fileTypePart, fileSubtype] = normalizedFileType.split('/');
 
-  if (type !== fileTypePart) {
+  if (!type || !subtype || type !== fileTypePart) {
     return false;
   }
 
   if (subtype === '*') {
-    return true;
+    return Boolean(fileSubtype);
   }
 
   return subtype === fileSubtype;
@@ -78,36 +88,24 @@ export function matchesAccept(file: File, accept: string): boolean {
 
   const fileName = file.name.toLowerCase();
   const fileType = file.type.trim().toLowerCase();
-  const extensionMatch = fileName.match(/\.[^.]+$/);
-  const fileExtension = extensionMatch?.[0] ?? '';
 
-  for (const mime of mimeTypes) {
-    if (matchMime(fileType, mime)) {
-      return true;
-    }
-  }
-
-  if (extensions.includes(fileExtension)) {
+  if (mimeTypes.some((mime) => matchMime(fileType, mime))) {
     return true;
   }
 
-  return false;
+  return extensions.some((extension) => fileName.endsWith(extension));
 }
 
-export function validateFile(
+export function getFileValidationError(
   file: File,
   rule: FileValidationRule,
   currentFiles: ReadonlyArray<File>
-): string | null {
-  if (rule.validate) {
-    const custom = rule.validate(file);
-    if (custom) {
-      return custom;
-    }
-  }
-
+): FileValidationError | null {
   if (rule.multiple === false && currentFiles.length > 0) {
-    return 'Only one file is allowed';
+    return {
+      code: 'too-many-files',
+      reason: 'Only one file is allowed',
+    };
   }
 
   if (
@@ -115,26 +113,55 @@ export function validateFile(
     rule.maxFiles > 0 &&
     currentFiles.length >= rule.maxFiles
   ) {
-    return 'Maximum number of files reached';
+    return {
+      code: 'too-many-files',
+      reason: 'Maximum number of files reached',
+    };
   }
 
   if (typeof rule.minSize === 'number' && file.size < rule.minSize) {
-    return 'File is too small';
+    return {
+      code: 'file-too-small',
+      reason: 'File is too small',
+    };
   }
 
   if (typeof rule.maxSize === 'number' && file.size > rule.maxSize) {
-    return 'File is too large';
+    return {
+      code: 'file-too-large',
+      reason: 'File is too large',
+    };
   }
 
   if (rule.accept && !matchesAccept(file, rule.accept)) {
-    return 'File type is not allowed';
+    return {
+      code: 'file-invalid-type',
+      reason: 'File type is not allowed',
+    };
+  }
+
+  const customReason = rule.validate?.(file);
+
+  if (customReason) {
+    return {
+      code: 'custom',
+      reason: customReason,
+    };
   }
 
   return null;
 }
 
+export function validateFile(
+  file: File,
+  rule: FileValidationRule,
+  currentFiles: ReadonlyArray<File>
+): string | null {
+  return getFileValidationError(file, rule, currentFiles)?.reason ?? null;
+}
+
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) {
+  if (!Number.isFinite(bytes) || bytes <= 0) {
     return '0 B';
   }
 
@@ -149,4 +176,57 @@ export function formatFileSize(bytes: number): string {
 
   const decimals = unitIndex === 0 ? 0 : 1;
   return `${Number(size.toFixed(decimals))} ${units[unitIndex]}`;
+}
+
+export function formatFileType(file: File): string {
+  const fileName = file.name.trim();
+  const extensionIndex = fileName.lastIndexOf('.');
+
+  if (extensionIndex > -1 && extensionIndex < fileName.length - 1) {
+    return fileName.slice(extensionIndex + 1).toUpperCase();
+  }
+
+  const subtype = file.type.split('/')[1]?.split('+')[0];
+
+  return subtype ? subtype.toUpperCase() : 'FILE';
+}
+
+function formatList(values: ReadonlyArray<string>): string {
+  if (values.length === 0) {
+    return '';
+  }
+
+  if (values.length === 1) {
+    return values[0] ?? '';
+  }
+
+  if (values.length === 2) {
+    return `${values[0]} or ${values[1]}`;
+  }
+
+  return `${values.slice(0, -1).join(', ')}, or ${values[values.length - 1]}`;
+}
+
+export function formatAcceptedTypes(accept: string | undefined): string {
+  if (!accept) {
+    return '';
+  }
+
+  const labels = accept
+    .split(',')
+    .map((part) => part.trim().toLowerCase())
+    .filter(Boolean)
+    .map((part) => {
+      if (part.startsWith('.')) {
+        return part.slice(1).toUpperCase();
+      }
+
+      if (part.endsWith('/*')) {
+        return `${part.slice(0, -2)} files`;
+      }
+
+      return part.split('/')[1]?.split('+')[0]?.toUpperCase() ?? part;
+    });
+
+  return formatList([...new Set(labels)]);
 }
