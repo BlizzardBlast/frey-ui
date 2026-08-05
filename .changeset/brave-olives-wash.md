@@ -2,4 +2,4 @@
 'frey-ui': minor
 ---
 
-Add `FileUpload` component with compound API (`FileUpload.Dropzone`, `FileUpload.List`, `FileUpload.Item`), `useFileUploadState` hook, validation utilities, drag-and-drop support, and Storybook stories.
+Add a redesigned `FileUpload` with polished default dropzone and file rows, `FileUpload.Trigger` composition, safe image previews, structured rejection details, improved drag-and-drop behavior, and stronger accessibility.
