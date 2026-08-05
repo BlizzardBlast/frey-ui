@@ -53,28 +53,27 @@ describe('matchesAccept', () => {
 });
 
 describe('getFileValidationError', () => {
-  it.each([
+  it.each(
     [
-      { maxSize: 1 },
-      new File(['xx'], 'large.txt', { type: 'text/plain' }),
-      'file-too-large',
-    ],
-    [
-      { minSize: 2 },
-      new File(['x'], 'small.txt', { type: 'text/plain' }),
-      'file-too-small',
-    ],
-    [
-      { accept: 'image/*' },
-      new File(['x'], 'file.txt', { type: 'text/plain' }),
-      'file-invalid-type',
-    ],
-  ] satisfies Array<[FileValidationRule, File, string]>) (
-    'returns a structured error for built-in rules',
-    (rule, file, code) => {
-      expect(getFileValidationError(file, rule, [])?.code).toBe(code);
-    }
-  );
+      [
+        { maxSize: 1 },
+        new File(['xx'], 'large.txt', { type: 'text/plain' }),
+        'file-too-large',
+      ],
+      [
+        { minSize: 2 },
+        new File(['x'], 'small.txt', { type: 'text/plain' }),
+        'file-too-small',
+      ],
+      [
+        { accept: 'image/*' },
+        new File(['x'], 'file.txt', { type: 'text/plain' }),
+        'file-invalid-type',
+      ],
+    ] satisfies Array<[FileValidationRule, File, string]>
+  )('returns a structured error for built-in rules', (rule, file, code) => {
+    expect(getFileValidationError(file, rule, [])?.code).toBe(code);
+  });
 
   it('runs custom validation after built-in validation', () => {
     const file = new File(['x'], 'file.txt', { type: 'text/plain' });
