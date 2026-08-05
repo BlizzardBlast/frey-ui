@@ -45,7 +45,7 @@ export function useObjectUrl(
     };
   }, [enabled, file]);
 
-  if (!enabled || objectUrl?.file !== file) {
+  if (!enabled || !objectUrl || objectUrl.file !== file) {
     return undefined;
   }
 
