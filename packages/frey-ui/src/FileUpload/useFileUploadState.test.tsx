@@ -153,18 +153,14 @@ describe('useFileUploadState', () => {
     );
   });
 
-  it('restores the native input when every selected file is rejected', () => {
+  it('restores the existing single file when a replacement is rejected', () => {
     const existing = new File(['image'], 'existing.png', {
       type: 'image/png',
     });
     const invalid = new File(['text'], 'invalid.txt', { type: 'text/plain' });
 
     render(
-      <TestComponent
-        multiple
-        accept='image/*'
-        defaultValue={[existing]}
-      />
+      <TestComponent accept='image/*' defaultValue={[existing]} />
     );
 
     const input = screen.getByTestId('input') as HTMLInputElement;
