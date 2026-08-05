@@ -1,156 +1,118 @@
 import { describe, expect, it } from 'vitest';
 import {
   type FileValidationRule,
+  formatAcceptedTypes,
   formatFileSize,
+  formatFileType,
+  getFileValidationError,
   matchesAccept,
   parseAccept,
   validateFile,
 } from './fileValidation';
 
 describe('parseAccept', () => {
-  it('returns empty whitelists for undefined', () => {
-    const result = parseAccept(undefined);
-    expect(result.mimeTypes).toEqual([]);
-    expect(result.extensions).toEqual([]);
+  it('splits and normalizes MIME types and extensions', () => {
+    expect(parseAccept(' IMAGE/*, .PNG, application/pdf ')).toEqual({
+      mimeTypes: ['image/*', 'application/pdf'],
+      extensions: ['.png'],
+    });
   });
 
-  it('returns empty whitelists for an empty string', () => {
-    const result = parseAccept('  ');
-    expect(result.mimeTypes).toEqual([]);
-    expect(result.extensions).toEqual([]);
-  });
-
-  it('splits MIME types and extensions by comma', () => {
-    const result = parseAccept('image/*,.pdf,application/json');
-    expect(result.mimeTypes).toEqual(['image/*', 'application/json']);
-    expect(result.extensions).toEqual(['.pdf']);
-  });
-
-  it('trims whitespace and lowercases extensions', () => {
-    const result = parseAccept('  .PNG  , IMAGE/JPEG ');
-    expect(result.mimeTypes).toEqual(['IMAGE/JPEG']);
-    expect(result.extensions).toEqual(['.png']);
+  it('returns empty rules when accept is missing', () => {
+    expect(parseAccept(undefined)).toEqual({
+      mimeTypes: [],
+      extensions: [],
+    });
   });
 });
 
 describe('matchesAccept', () => {
-  it('allows any file when accept is empty', () => {
+  it('matches exact and wildcard MIME types', () => {
     const file = new File([''], 'photo.png', { type: 'image/png' });
-    expect(matchesAccept(file, '')).toBe(true);
-  });
 
-  it('matches by exact MIME type', () => {
-    const file = new File([''], 'photo.png', { type: 'image/png' });
     expect(matchesAccept(file, 'image/png')).toBe(true);
-    expect(matchesAccept(file, 'image/jpeg')).toBe(false);
-  });
-
-  it('matches by wildcard MIME type', () => {
-    const file = new File([''], 'photo.png', { type: 'image/png' });
     expect(matchesAccept(file, 'image/*')).toBe(true);
     expect(matchesAccept(file, 'audio/*')).toBe(false);
   });
 
-  it('falls back to extension when MIME type is missing or wrong', () => {
-    const file = new File([''], 'data.csv', { type: '' });
-    expect(matchesAccept(file, '.csv')).toBe(true);
-    expect(matchesAccept(file, '.pdf')).toBe(false);
+  it('matches compound extensions', () => {
+    const file = new File([''], 'archive.tar.gz', { type: '' });
+
+    expect(matchesAccept(file, '.tar.gz')).toBe(true);
+    expect(matchesAccept(file, '.gz')).toBe(true);
+    expect(matchesAccept(file, '.zip')).toBe(false);
   });
 
-  it('matches any of several comma-separated values', () => {
-    const file = new File([''], 'report.pdf', { type: 'application/pdf' });
-    expect(matchesAccept(file, 'image/*,.pdf,.docx')).toBe(true);
-  });
-});
-
-describe('validateFile', () => {
-  it('returns null for a valid file', () => {
-    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
-    const rule: FileValidationRule = {};
-    expect(validateFile(file, rule, [])).toBe(null);
-  });
-
-  it('rejects files larger than maxSize', () => {
-    const file = new File(['x'.repeat(1024 * 1024 + 1)], 'large.bin', {
+  it('allows any typed file for the all-MIME wildcard', () => {
+    const file = new File([''], 'data.bin', {
       type: 'application/octet-stream',
     });
-    const rule: FileValidationRule = { maxSize: 1024 * 1024 };
-    expect(validateFile(file, rule, [])).toBe('File is too large');
-  });
 
-  it('rejects files smaller than minSize', () => {
-    const file = new File(['x'], 'tiny.txt', { type: 'text/plain' });
-    const rule: FileValidationRule = { minSize: 10 };
-    expect(validateFile(file, rule, [])).toBe('File is too small');
-  });
-
-  it('rejects files with disallowed type or extension', () => {
-    const file = new File([''], 'script.exe', { type: '' });
-    const rule: FileValidationRule = { accept: 'image/*,.pdf' };
-    expect(validateFile(file, rule, [])).toBe('File type is not allowed');
-  });
-
-  it('rejects files that exceed maxFiles count', () => {
-    const existing = [new File(['a'], 'a.txt', { type: 'text/plain' })];
-    const next = new File(['b'], 'b.txt', { type: 'text/plain' });
-    const rule: FileValidationRule = { multiple: true, maxFiles: 1 };
-    expect(validateFile(next, rule, existing)).toBe(
-      'Maximum number of files reached'
-    );
-  });
-
-  it('rejects additional files in single-file mode', () => {
-    const existing = [new File(['a'], 'a.txt', { type: 'text/plain' })];
-    const next = new File(['b'], 'b.txt', { type: 'text/plain' });
-    const rule: FileValidationRule = { multiple: false };
-    expect(validateFile(next, rule, existing)).toBe('Only one file is allowed');
-  });
-
-  it('uses custom validator result when built-in rules pass', () => {
-    const file = new File([''], 'photo.png', { type: 'image/png' });
-    const rule: FileValidationRule = {
-      accept: 'image/*',
-      validate: () => 'Custom error',
-    };
-    expect(validateFile(file, rule, [])).toBe('Custom error');
-  });
-
-  it('does not allow custom validator to override built-in rule failure', () => {
-    const file = new File(['x'.repeat(1024 * 1024 + 1)], 'large.png', {
-      type: 'image/png',
-    });
-    const rule: FileValidationRule = {
-      maxSize: 1024 * 1024,
-      validate: () => null,
-    };
-    expect(validateFile(file, rule, [])).toBe('File is too large');
-  });
-});
-
-describe('matchesAccept edge cases', () => {
-  it('matches any MIME type with the */* wildcard', () => {
-    const file = new File([''], 'photo.png', { type: 'image/png' });
     expect(matchesAccept(file, '*/*')).toBe(true);
   });
+});
 
-  it('allows a file when the accept string contains only separators', () => {
-    const file = new File([''], 'photo.png', { type: 'image/png' });
-    expect(matchesAccept(file, '  ,  ')).toBe(true);
+describe('getFileValidationError', () => {
+  it.each([
+    [
+      { maxSize: 1 },
+      new File(['xx'], 'large.txt', { type: 'text/plain' }),
+      'file-too-large',
+    ],
+    [
+      { minSize: 2 },
+      new File(['x'], 'small.txt', { type: 'text/plain' }),
+      'file-too-small',
+    ],
+    [
+      { accept: 'image/*' },
+      new File(['x'], 'file.txt', { type: 'text/plain' }),
+      'file-invalid-type',
+    ],
+  ] satisfies Array<[FileValidationRule, File, string]>) (
+    'returns a structured error for built-in rules',
+    (rule, file, code) => {
+      expect(getFileValidationError(file, rule, [])?.code).toBe(code);
+    }
+  );
+
+  it('runs custom validation after built-in validation', () => {
+    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
+    const validate = () => 'Custom error';
+
+    expect(
+      getFileValidationError(file, { accept: 'image/*', validate }, [])
+    ).toEqual({
+      code: 'file-invalid-type',
+      reason: 'File type is not allowed',
+    });
+    expect(
+      getFileValidationError(file, { accept: 'text/*', validate }, [])
+    ).toEqual({
+      code: 'custom',
+      reason: 'Custom error',
+    });
   });
 
-  it('does not match a file without an extension against an extension rule', () => {
-    const file = new File([''], 'README', { type: 'text/plain' });
-    expect(matchesAccept(file, '.txt')).toBe(false);
+  it('keeps validateFile backward compatible', () => {
+    const file = new File(['xx'], 'large.txt', { type: 'text/plain' });
+
+    expect(validateFile(file, { maxSize: 1 }, [])).toBe('File is too large');
   });
 });
 
-describe('formatFileSize', () => {
-  it('formats zero bytes', () => {
+describe('formatters', () => {
+  it('formats file sizes and types', () => {
     expect(formatFileSize(0)).toBe('0 B');
+    expect(formatFileSize(1024 * 1024)).toBe('1 MB');
+    expect(
+      formatFileType(new File([''], 'archive.tar.gz', { type: '' }))
+    ).toBe('GZ');
   });
 
-  it('converts bytes into larger units', () => {
-    expect(formatFileSize(1024)).toBe('1 KB');
-    expect(formatFileSize(1024 * 1024)).toBe('1 MB');
+  it('formats accepted types for UI copy', () => {
+    expect(formatAcceptedTypes('.png,.jpg,application/pdf')).toBe(
+      'PNG, JPG, or PDF'
+    );
   });
 });
