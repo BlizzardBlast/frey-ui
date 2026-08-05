@@ -139,15 +139,6 @@ export function useFileUploadState(
       let currentFiles = isMultiple ? [...filesRef.current] : [];
 
       for (const file of incoming) {
-        if (!isMultiple && accepted.length > 0) {
-          nextRejected.push({
-            file,
-            code: 'too-many-files',
-            reason: 'Only one file is allowed',
-          });
-          continue;
-        }
-
         const validationError = getFileValidationError(
           file,
           validationRule,
@@ -175,8 +166,9 @@ export function useFileUploadState(
       if (accepted.length > 0) {
         filesRef.current = currentFiles;
         setFiles(currentFiles);
-        syncInputFiles(currentFiles);
       }
+
+      syncInputFiles(currentFiles);
     },
     [
       disabled,
@@ -190,13 +182,16 @@ export function useFileUploadState(
   const removeFileAt = useCallback(
     (index: number) => {
       const currentFiles = filesRef.current;
+      const removedFile = currentFiles[index];
 
-      if (disabled || index < 0 || index >= currentFiles.length) {
+      if (disabled || !removedFile) {
         return;
       }
 
-      const nextFiles = [...currentFiles];
-      const [removedFile] = nextFiles.splice(index, 1) as [File];
+      const nextFiles = [
+        ...currentFiles.slice(0, index),
+        ...currentFiles.slice(index + 1),
+      ];
 
       filesRef.current = nextFiles;
       setFiles(nextFiles);
@@ -252,18 +247,31 @@ export function useFileUploadState(
       return;
     }
 
+    let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
     const handleReset = () => {
       filesRef.current = defaultValue;
       setRejected([]);
       setStatusMessage('');
       setFiles(defaultValue);
-      syncInputFiles(defaultValue);
+
+      if (resetTimer !== undefined) {
+        clearTimeout(resetTimer);
+      }
+
+      resetTimer = setTimeout(() => {
+        syncInputFiles(defaultValue);
+      }, 0);
     };
 
     form.addEventListener('reset', handleReset);
 
     return () => {
       form.removeEventListener('reset', handleReset);
+
+      if (resetTimer !== undefined) {
+        clearTimeout(resetTimer);
+      }
     };
   }, [defaultValue, setFiles, syncInputFiles]);
 
