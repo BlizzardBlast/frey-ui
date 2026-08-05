@@ -33,10 +33,14 @@ beforeEach(() => {
 afterAll(() => {
   if (originalCreateObjectURL) {
     Object.defineProperty(URL, 'createObjectURL', originalCreateObjectURL);
+  } else {
+    Reflect.deleteProperty(URL, 'createObjectURL');
   }
 
   if (originalRevokeObjectURL) {
     Object.defineProperty(URL, 'revokeObjectURL', originalRevokeObjectURL);
+  } else {
+    Reflect.deleteProperty(URL, 'revokeObjectURL');
   }
 });
 
