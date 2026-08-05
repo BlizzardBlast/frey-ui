@@ -163,12 +163,15 @@ export function useFileUploadState(
         onFilesRejected?.(nextRejected);
       }
 
+      const nextFiles =
+        accepted.length > 0 ? currentFiles : filesRef.current;
+
       if (accepted.length > 0) {
-        filesRef.current = currentFiles;
-        setFiles(currentFiles);
+        filesRef.current = nextFiles;
+        setFiles(nextFiles);
       }
 
-      syncInputFiles(currentFiles);
+      syncInputFiles(nextFiles);
     },
     [
       disabled,
