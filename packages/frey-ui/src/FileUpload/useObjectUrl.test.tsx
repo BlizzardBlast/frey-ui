@@ -75,6 +75,17 @@ describe('useObjectUrl', () => {
     expect(result.current).toBeUndefined();
     expect(createObjectURL).not.toHaveBeenCalled();
   });
+
+  it('falls back when object URL creation throws', () => {
+    createObjectURL.mockReset();
+    createObjectURL.mockImplementationOnce(() => {
+      throw new Error('Object URLs are unavailable');
+    });
+    const file = new File(['one'], 'first.png', { type: 'image/png' });
+    const { result } = renderHook(() => useObjectUrl(file));
+
+    expect(result.current).toBeUndefined();
+  });
 });
 
 describe('isPreviewableImage', () => {
