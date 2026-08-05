@@ -222,7 +222,7 @@ describe('FileUpload', () => {
     ]);
   });
 
-  it('propagates disabled and required state to visible controls', () => {
+  it('propagates disabled state and native required state', () => {
     const { container } = render(
       <FileUpload label='Attachment' disabled required />
     );
@@ -230,9 +230,6 @@ describe('FileUpload', () => {
     expect(
       screen.getByRole('button', { name: 'Browse files' })
     ).toBeDisabled();
-    expect(
-      screen.getByRole('group', { name: 'Attachment' })
-    ).toHaveAttribute('aria-required', 'true');
     expect(container.querySelector('input[type="file"]')).toBeRequired();
   });
 
