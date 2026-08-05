@@ -34,9 +34,11 @@ export const FileUploadList: FileUploadListComponent = React.forwardRef<
       React.isValidElement(child) && child.type === FileUploadItem
   );
   const keyOccurrences = new Map<string, number>();
-  const ariaLabel =
-    listProps['aria-label'] ??
-    (listProps['aria-labelledby'] ? undefined : 'Selected files');
+  let accessibleLabel = listProps['aria-label'];
+
+  if (!accessibleLabel && !listProps['aria-labelledby']) {
+    accessibleLabel = 'Selected files';
+  }
 
   return (
     <ul
@@ -44,7 +46,7 @@ export const FileUploadList: FileUploadListComponent = React.forwardRef<
       ref={forwardedRef}
       className={clsx(styles.list, className)}
       style={style}
-      aria-label={ariaLabel}
+      aria-label={accessibleLabel}
     >
       {context.files.map((file, index) => {
         const keyBase = getFileKeyBase(file);
