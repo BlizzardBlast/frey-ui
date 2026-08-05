@@ -46,23 +46,18 @@ export function useFileUploadDragState(
 
   const handleDragLeave: React.DragEventHandler<HTMLElement> = useCallback(
     (event) => {
-      if (disabled || !isDragOver) {
+      if (disabled || dragCounterRef.current === 0) {
         return;
       }
 
       event.preventDefault();
       dragCounterRef.current -= 1;
 
-      const relatedTarget = event.relatedTarget;
-      const isMovingWithinDropzone =
-        relatedTarget instanceof Node &&
-        event.currentTarget.contains(relatedTarget);
-
-      if (dragCounterRef.current <= 0 || !isMovingWithinDropzone) {
+      if (dragCounterRef.current === 0) {
         resetDragState();
       }
     },
-    [disabled, isDragOver, resetDragState]
+    [disabled, resetDragState]
   );
 
   const handleDragOver: React.DragEventHandler<HTMLElement> = useCallback(
