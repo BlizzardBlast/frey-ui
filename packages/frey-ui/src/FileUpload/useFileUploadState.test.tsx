@@ -1,4 +1,11 @@
-import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { useFileUploadState } from './useFileUploadState';
 
@@ -146,6 +153,34 @@ describe('useFileUploadState', () => {
     );
   });
 
+  it('restores the native input when every selected file is rejected', () => {
+    const existing = new File(['image'], 'existing.png', {
+      type: 'image/png',
+    });
+    const invalid = new File(['text'], 'invalid.txt', { type: 'text/plain' });
+
+    render(
+      <TestComponent
+        multiple
+        accept='image/*'
+        defaultValue={[existing]}
+      />
+    );
+
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    (input as unknown as { _files?: FileListMock })._files = new FileListMock([
+      invalid,
+    ]);
+
+    fireEvent.change(input);
+
+    expect(screen.getByTestId('files')).toHaveTextContent('existing.png');
+    expect(screen.getByTestId('rejected')).toHaveTextContent(
+      'file-invalid-type:File type is not allowed'
+    );
+    expect(Array.from(input.files ?? [])).toEqual([existing]);
+  });
+
   it('removes only one occurrence of the same File object', () => {
     const file = new File(['x'], 'duplicate.txt', { type: 'text/plain' });
     const onValueChange = vi.fn();
@@ -163,7 +198,7 @@ describe('useFileUploadState', () => {
     expect(onValueChange).toHaveBeenCalledWith([file]);
   });
 
-  it('resets uncontrolled state to defaultValue with the form', () => {
+  it('resets uncontrolled state and the native input to defaultValue', async () => {
     const defaultFile = new File(['a'], 'default.txt', {
       type: 'text/plain',
     });
@@ -176,6 +211,8 @@ describe('useFileUploadState', () => {
       />
     );
 
+    const input = screen.getByTestId('input') as HTMLInputElement;
+
     fireEvent.drop(screen.getByTestId('dropzone'), {
       dataTransfer: { files: [nextFile], types: ['Files'] },
     });
@@ -185,7 +222,10 @@ describe('useFileUploadState', () => {
 
     fireEvent.reset(screen.getByTestId('form'));
 
-    expect(screen.getByTestId('files')).toHaveTextContent('default.txt');
+    await waitFor(() => {
+      expect(screen.getByTestId('files')).toHaveTextContent('default.txt');
+      expect(Array.from(input.files ?? [])).toEqual([defaultFile]);
+    });
   });
 
   it('continues to work when DataTransfer construction fails', () => {
