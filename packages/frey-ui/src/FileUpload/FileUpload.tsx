@@ -78,7 +78,6 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
           aria-labelledby={labelId}
           aria-describedby={describedBy}
           aria-invalid={hasError || undefined}
-          aria-required={isRequired || undefined}
         >
           <input
             id={inputId}
