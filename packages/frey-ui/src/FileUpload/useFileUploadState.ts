@@ -129,7 +129,7 @@ export function useFileUploadState(
 
   const processFiles = useCallback(
     (incoming: File[]) => {
-      if (disabled || incoming.length === 0) {
+      if (disabled) {
         return;
       }
 
@@ -196,16 +196,13 @@ export function useFileUploadState(
       }
 
       const nextFiles = [...currentFiles];
-      const [removedFile] = nextFiles.splice(index, 1);
+      const [removedFile] = nextFiles.splice(index, 1) as [File];
 
       filesRef.current = nextFiles;
       setFiles(nextFiles);
       setRejected([]);
       syncInputFiles(nextFiles);
-
-      if (removedFile) {
-        setStatusMessage(`${removedFile.name} removed`);
-      }
+      setStatusMessage(`${removedFile.name} removed`);
     },
     [disabled, setFiles, syncInputFiles]
   );
