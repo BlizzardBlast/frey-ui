@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FileIcon } from '../Icons';
 import styles from './fileUpload.module.css';
 import { useFileUploadContext } from './FileUploadContext';
@@ -41,11 +41,10 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
   const currentFile = file ?? context.files[0];
   const canPreview = isPreviewableImage(currentFile);
   const objectUrl = useObjectUrl(currentFile, canPreview);
-  const [hasImageError, setHasImageError] = useState(false);
-
-  useEffect(() => {
-    setHasImageError(false);
-  }, [objectUrl]);
+  const [failedObjectUrl, setFailedObjectUrl] = useState<string>();
+  const hasImageError = Boolean(
+    objectUrl && failedObjectUrl === objectUrl
+  );
 
   if (!currentFile) {
     return null;
@@ -71,7 +70,7 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
           decoding={imageProps?.decoding ?? 'async'}
           onError={(event) => {
             imageProps?.onError?.(event);
-            setHasImageError(true);
+            setFailedObjectUrl(objectUrl);
           }}
         />
       ) : (
