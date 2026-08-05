@@ -91,7 +91,7 @@ export function useFileUploadState(
       maxSize,
       minSize,
       maxFiles,
-      multiple,
+      multiple: multiple === true,
       validate,
     }),
     [accept, maxSize, minSize, maxFiles, multiple, validate]
