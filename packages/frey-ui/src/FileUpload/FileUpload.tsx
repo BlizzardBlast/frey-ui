@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import type React from 'react';
+import { useRef } from 'react';
 import Field from '../Field';
 import styles from './fileUpload.module.css';
 import { FileUploadContext } from './FileUploadContext';
@@ -72,9 +73,8 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
       labelElement='span'
     >
       {({ inputId, labelId, describedBy, hasError }) => (
-        <div
+        <fieldset
           className={styles.root}
-          role='group'
           aria-labelledby={labelId}
           aria-describedby={describedBy}
           aria-invalid={hasError || undefined}
@@ -98,7 +98,6 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
             aria-labelledby={labelId}
             aria-describedby={describedBy}
             aria-invalid={hasError || undefined}
-            aria-required={isRequired || undefined}
           />
 
           <FileUploadContext.Provider
@@ -128,7 +127,7 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
           >
             {state.statusMessage}
           </span>
-        </div>
+        </fieldset>
       )}
     </Field>
   );
