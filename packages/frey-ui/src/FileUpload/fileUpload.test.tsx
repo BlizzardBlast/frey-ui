@@ -1,252 +1,296 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { describe, expect, it, vi } from 'vitest';
+import Button from '../Button';
 import { FileUpload } from './index';
 
 describe('FileUpload', () => {
-  it('renders a labeled dropzone and hidden file input', () => {
-    render(
-      <FileUpload label='Attachments'>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
-      </FileUpload>
-    );
+  it('renders a polished default composition', () => {
+    const { container } = render(<FileUpload label='Attachments' />);
 
     expect(
-      screen.getByRole('button', { name: 'Attachments' })
+      screen.getByRole('group', { name: 'Attachments' })
     ).toBeInTheDocument();
-    expect(screen.getByLabelText('Attachments')).toBeInTheDocument();
+    expect(
+      screen.getByText('Drag and drop a file here')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Browse files' })
+    ).toBeInTheDocument();
+
+    const input = container.querySelector('input[type="file"]');
+    expect(input?.getAttribute('aria-labelledby')).toContain('-label');
   });
 
-  it('adds files when they are dropped onto the dropzone', () => {
+  it('adds dropped files and renders their metadata', () => {
     const onValueChange = vi.fn();
+    const file = new File(['hello'], 'greeting.txt', {
+      type: 'text/plain',
+      lastModified: 123,
+    });
+
     render(
       <FileUpload label='Attachments' onValueChange={onValueChange}>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
+        <FileUpload.Dropzone data-testid='dropzone' />
+        <FileUpload.List />
       </FileUpload>
     );
 
-    const dropzone = screen.getByRole('button', { name: 'Attachments' });
-    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
-    fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
+    fireEvent.drop(screen.getByTestId('dropzone'), {
+      dataTransfer: { files: [file], types: ['Files'] },
+    });
 
     expect(onValueChange).toHaveBeenCalledWith([file]);
-  });
-
-  it('renders selected files in the list', () => {
-    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
-    render(
-      <FileUpload label='Attachments' value={[file]}>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
-        <FileUpload.List>
-          <FileUpload.Item />
-        </FileUpload.List>
-      </FileUpload>
-    );
-
     expect(screen.getByRole('listitem')).toHaveTextContent('greeting.txt');
+    expect(screen.getByRole('listitem')).toHaveTextContent('TXT · 5 B');
+    expect(screen.getByRole('status')).toHaveTextContent('1 file added');
   });
 
-  it('removes a selected file when the remove button is activated', () => {
-    const onValueChange = vi.fn();
-    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
-    render(
-      <FileUpload
-        label='Attachments'
-        value={[file]}
-        onValueChange={onValueChange}
-      >
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
-        <FileUpload.List>
-          <FileUpload.Item />
-        </FileUpload.List>
-      </FileUpload>
-    );
-
-    const removeButton = screen.getByRole('button', { name: /remove/i });
-    fireEvent.click(removeButton);
-
-    expect(onValueChange).toHaveBeenCalledWith([]);
-  });
-
-  it('is disabled when disabled is true', () => {
-    render(
-      <FileUpload label='Attachments' disabled>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
-      </FileUpload>
-    );
-
-    const dropzone = screen.getByRole('button', { name: 'Attachments' });
-    expect(dropzone).toBeDisabled();
-  });
-
-  it('has no accessibility violations', async () => {
-    const { container } = render(
-      <FileUpload label='Attachments'>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
-      </FileUpload>
-    );
-    const results = await axe(container);
-    expect(results).toHaveNoViolations();
-  });
-
-  it('throws when a compound child is used outside FileUpload', () => {
-    expect(() => render(<FileUpload.Dropzone />)).toThrow(
-      'must be rendered inside <FileUpload>'
-    );
-  });
-
-  it('opens the file dialog when the dropzone is clicked', () => {
-    const onClick = vi.fn();
-    const { container } = render(
-      <FileUpload label='Attachments'>
-        <FileUpload.Dropzone onClick={onClick}>Upload</FileUpload.Dropzone>
-      </FileUpload>
-    );
-
-    const dropzone = screen.getByRole('button', { name: 'Attachments' });
+  it('opens the file dialog through the default trigger', () => {
+    const { container } = render(<FileUpload label='Attachments' />);
     const input = container.querySelector(
       'input[type="file"]'
     ) as HTMLInputElement;
     const clickSpy = vi.spyOn(input, 'click');
 
-    fireEvent.click(dropzone);
+    fireEvent.click(screen.getByRole('button', { name: 'Browse files' }));
 
-    expect(onClick).toHaveBeenCalledTimes(1);
     expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('displays a validation error for rejected files', () => {
-    render(
-      <FileUpload label='Attachments' accept='image/*'>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
+  it('supports an asChild trigger', () => {
+    const { container } = render(
+      <FileUpload label='Attachment'>
+        <FileUpload.Trigger asChild>
+          <Button variant='secondary'>Attach file</Button>
+        </FileUpload.Trigger>
       </FileUpload>
     );
+    const input = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    const clickSpy = vi.spyOn(input, 'click');
 
-    const dropzone = screen.getByRole('button', { name: 'Attachments' });
-    const file = new File(['x'], 'script.exe', { type: '' });
-    fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
+    fireEvent.click(screen.getByRole('button', { name: 'Attach file' }));
 
-    expect(screen.getByText('File type is not allowed')).toBeInTheDocument();
+    expect(clickSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('uses the error prop when provided', () => {
-    render(
-      <FileUpload label='Attachments' error='Custom error'>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
+  it('respects prevented trigger clicks', () => {
+    const onClick = vi.fn((event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
+    });
+    const { container } = render(
+      <FileUpload label='Attachment'>
+        <FileUpload.Trigger onClick={onClick}>Attach file</FileUpload.Trigger>
       </FileUpload>
     );
+    const input = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    const clickSpy = vi.spyOn(input, 'click');
 
-    expect(screen.getByText('Custom error')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Attach file' }));
+
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(clickSpy).not.toHaveBeenCalled();
   });
 
-  it('renders custom dropzone and item children', () => {
+  it('composes consumer and internal drop handlers', () => {
+    const onDrop = vi.fn();
     const onValueChange = vi.fn();
-    const file = new File(['x'], 'custom.txt', { type: 'text/plain' });
+    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
+
+    render(
+      <FileUpload label='Attachments' onValueChange={onValueChange}>
+        <FileUpload.Dropzone data-testid='dropzone' onDrop={onDrop} />
+      </FileUpload>
+    );
+
+    fireEvent.drop(screen.getByTestId('dropzone'), {
+      dataTransfer: { files: [file], types: ['Files'] },
+    });
+
+    expect(onDrop).toHaveBeenCalledTimes(1);
+    expect(onValueChange).toHaveBeenCalledWith([file]);
+  });
+
+  it('allows a consumer to prevent internal drop handling', () => {
+    const onValueChange = vi.fn();
+    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
+
+    render(
+      <FileUpload label='Attachments' onValueChange={onValueChange}>
+        <FileUpload.Dropzone
+          data-testid='dropzone'
+          onDrop={(event) => event.preventDefault()}
+        />
+      </FileUpload>
+    );
+
+    fireEvent.drop(screen.getByTestId('dropzone'), {
+      dataTransfer: { files: [file], types: ['Files'] },
+    });
+
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('removes one duplicate file at a time and returns focus to the trigger', () => {
+    const onValueChange = vi.fn();
+    const file = new File(['x'], 'duplicate.txt', { type: 'text/plain' });
+
     render(
       <FileUpload
         label='Attachments'
-        value={[file]}
+        multiple
+        value={[file, file]}
         onValueChange={onValueChange}
-      >
-        <FileUpload.Dropzone>Custom dropzone</FileUpload.Dropzone>
+      />
+    );
+
+    const trigger = screen.getByRole('button', { name: 'Browse files' });
+    const removeButtons = screen.getAllByRole('button', {
+      name: 'Remove duplicate.txt',
+    });
+
+    fireEvent.click(removeButtons[0]);
+
+    expect(onValueChange).toHaveBeenCalledWith([file]);
+    expect(trigger).toHaveFocus();
+  });
+
+  it('renders custom item content', () => {
+    const file = new File(['x'], 'custom.txt', { type: 'text/plain' });
+
+    render(
+      <FileUpload label='Attachments' value={[file]}>
         <FileUpload.List>
           <FileUpload.Item>
-            {(currentFile, onRemove) => (
-              <div>
-                <span data-testid='custom-name'>{currentFile.name}</span>
-                <button type='button' onClick={onRemove}>
-                  Remove
-                </button>
-              </div>
+            {(currentFile) => (
+              <span data-testid='custom-item'>{currentFile.name}</span>
             )}
           </FileUpload.Item>
         </FileUpload.List>
       </FileUpload>
     );
 
-    expect(screen.getByText('Custom dropzone')).toBeInTheDocument();
-    expect(screen.getByTestId('custom-name')).toHaveTextContent('custom.txt');
-
-    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
-    expect(onValueChange).toHaveBeenCalledWith([]);
+    expect(screen.getByTestId('custom-item')).toHaveTextContent('custom.txt');
   });
 
-  it('renders an item with no file as null', () => {
+  it('does not render an empty list', () => {
     render(
       <FileUpload label='Attachments'>
-        <FileUpload.Item />
+        <FileUpload.List data-testid='file-list' />
       </FileUpload>
     );
 
-    expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('file-list')).not.toBeInTheDocument();
   });
 
-  it('uses an item template inside the list', () => {
-    const file = new File(['x'], 'template.txt', { type: 'text/plain' });
+  it('displays deduplicated rejection messages with structured details', () => {
+    const onFilesRejected = vi.fn();
+    const first = new File(['x'], 'first.exe', { type: '' });
+    const second = new File(['x'], 'second.exe', { type: '' });
+
     render(
-      <FileUpload label='Attachments' value={[file]}>
-        <FileUpload.Dropzone />
-        <FileUpload.List>
-          <FileUpload.Item />
-        </FileUpload.List>
+      <FileUpload
+        label='Attachments'
+        accept='image/*'
+        multiple
+        onFilesRejected={onFilesRejected}
+      >
+        <FileUpload.Dropzone data-testid='dropzone' />
       </FileUpload>
     );
 
-    expect(screen.getByRole('listitem')).toHaveTextContent('template.txt');
+    fireEvent.drop(screen.getByTestId('dropzone'), {
+      dataTransfer: { files: [first, second], types: ['Files'] },
+    });
+
+    expect(screen.getAllByText('File type is not allowed')).toHaveLength(1);
+    expect(onFilesRejected).toHaveBeenCalledWith([
+      {
+        file: first,
+        code: 'file-invalid-type',
+        reason: 'File type is not allowed',
+      },
+      {
+        file: second,
+        code: 'file-invalid-type',
+        reason: 'File type is not allowed',
+      },
+    ]);
   });
 
-  it('applies dragover styles on drag enter', () => {
+  it('propagates disabled and required state to visible controls', () => {
+    const { container } = render(
+      <FileUpload label='Attachment' disabled required />
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Browse files' })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole('group', { name: 'Attachment' })
+    ).toHaveAttribute('aria-required', 'true');
+    expect(container.querySelector('input[type="file"]')).toBeRequired();
+  });
+
+  it('focuses the trigger when native validation fails', () => {
+    const { container } = render(
+      <FileUpload label='Attachment' required />
+    );
+    const trigger = screen.getByRole('button', { name: 'Browse files' });
+    const input = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    fireEvent.invalid(input);
+
+    expect(trigger).toHaveFocus();
+  });
+
+  it('marks the dropzone as dragging only for file payloads', () => {
     render(
       <FileUpload label='Attachments'>
-        <FileUpload.Dropzone>Drop files here</FileUpload.Dropzone>
+        <FileUpload.Dropzone data-testid='dropzone' />
       </FileUpload>
     );
+    const dropzone = screen.getByTestId('dropzone');
 
-    const dropzone = screen.getByRole('button', { name: 'Attachments' });
-    fireEvent.dragEnter(dropzone);
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['text/plain'] },
+    });
+    expect(dropzone).not.toHaveAttribute('data-dragging');
 
-    expect(dropzone.className).toMatch(/dragover/);
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+    expect(dropzone).toHaveAttribute('data-dragging', 'true');
   });
 
-  it('marks the input as required only when required and empty', () => {
+  it('throws when a compound child is used outside FileUpload', () => {
+    expect(() =>
+      render(<FileUpload.Trigger>Upload</FileUpload.Trigger>)
+    ).toThrow('must be rendered inside <FileUpload>');
+  });
+
+  it('has no accessibility violations in default and populated states', async () => {
+    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
     const { container, rerender } = render(
-      <FileUpload label='Attachments' required>
-        <FileUpload.Dropzone />
-      </FileUpload>
+      <FileUpload label='Attachments' helperText='Up to 5 MB' />
     );
 
-    const input = container.querySelector('input[type="file"]');
-    expect(input).toBeRequired();
+    expect(await axe(container)).toHaveNoViolations();
 
-    const file = new File(['x'], 'file.txt', { type: 'text/plain' });
     rerender(
-      <FileUpload label='Attachments' required value={[file]}>
-        <FileUpload.Dropzone />
-      </FileUpload>
+      <FileUpload
+        label='Attachments'
+        helperText='Up to 5 MB'
+        value={[file]}
+      />
     );
 
-    expect(input).not.toBeRequired();
-  });
-
-  it('uses plural wording in the default dropzone when multiple is true', () => {
-    render(
-      <FileUpload label='Attachments' multiple>
-        <FileUpload.Dropzone />
-      </FileUpload>
-    );
-
-    expect(screen.getByText(/drag files here/i)).toBeInTheDocument();
-  });
-
-  it('renders files with the default item when the list has no item child', () => {
-    const file = new File(['x'], 'default.txt', { type: 'text/plain' });
-    render(
-      <FileUpload label='Attachments' value={[file]}>
-        <FileUpload.Dropzone />
-        <FileUpload.List />
-      </FileUpload>
-    );
-
-    expect(screen.getByRole('listitem')).toHaveTextContent('default.txt');
+    expect(await axe(container)).toHaveNoViolations();
   });
 });
