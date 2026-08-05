@@ -10,13 +10,13 @@ export type UseFileUploadDragStateReturn = {
 };
 
 function hasFilePayload(event: React.DragEvent<HTMLElement>): boolean {
-  const { dataTransfer } = event;
+  const types = event.dataTransfer?.types;
 
-  if (dataTransfer.types.length === 0) {
-    return dataTransfer.files.length > 0;
+  if (!types || types.length === 0) {
+    return Boolean(event.dataTransfer?.files?.length);
   }
 
-  return Array.from(dataTransfer.types).includes('Files');
+  return Array.from(types).includes('Files');
 }
 
 export function useFileUploadDragState(
@@ -81,13 +81,13 @@ export function useFileUploadDragState(
       event.preventDefault();
       resetDragState();
 
-      const { files } = event.dataTransfer;
+      const droppedFiles = event.dataTransfer?.files;
 
-      if (files.length === 0) {
+      if (!droppedFiles || droppedFiles.length === 0) {
         return;
       }
 
-      onFilesDrop?.(Array.from(files));
+      onFilesDrop?.(Array.from(droppedFiles));
     },
     [disabled, onFilesDrop, resetDragState]
   );
