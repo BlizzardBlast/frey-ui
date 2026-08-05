@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { Children, cloneElement, Fragment } from 'react';
+import React, { Children, cloneElement } from 'react';
 import styles from './fileUpload.module.css';
 import { useFileUploadContext } from './FileUploadContext';
 import { FileUploadItem, type FileUploadItemProps } from './FileUploadItem';
@@ -53,9 +53,7 @@ export const FileUploadList: FileUploadListComponent = React.forwardRef<
         const key = `${keyBase}-${occurrence}`;
 
         return itemTemplate ? (
-          <Fragment key={key}>
-            {cloneElement(itemTemplate, { file, fileIndex: index })}
-          </Fragment>
+          cloneElement(itemTemplate, { file, fileIndex: index, key })
         ) : (
           <FileUploadItem key={key} file={file} fileIndex={index} />
         );
