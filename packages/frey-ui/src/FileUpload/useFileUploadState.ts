@@ -3,9 +3,11 @@ import { useControllableValue } from '../hooks/useControllableState';
 import {
   type FileUploadRejected,
   type FileValidationRule,
-  validateFile,
+  getFileValidationError,
 } from './fileValidation';
 import { useFileUploadDragState } from './useFileUploadDragState';
+
+const EMPTY_FILES: File[] = [];
 
 export type UseFileUploadStateOptions = FileValidationRule & {
   value?: File[];
@@ -18,23 +20,48 @@ export type UseFileUploadStateOptions = FileValidationRule & {
 export type UseFileUploadStateReturn = {
   files: File[];
   rejected: FileUploadRejected[];
+  statusMessage: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
   onInputChange: React.ChangeEventHandler<HTMLInputElement>;
   openFileDialog: () => void;
   removeFile: (file: File) => void;
+  removeFileAt: (index: number) => void;
+  clearFiles: () => void;
   isDragOver: boolean;
   onDragEnter: React.DragEventHandler<HTMLElement>;
   onDragLeave: React.DragEventHandler<HTMLElement>;
   onDragOver: React.DragEventHandler<HTMLElement>;
+  onDragEnd: React.DragEventHandler<HTMLElement>;
   onDrop: React.DragEventHandler<HTMLElement>;
 };
+
+function getSelectionMessage(
+  acceptedCount: number,
+  rejectedCount: number
+): string {
+  const parts: string[] = [];
+
+  if (acceptedCount > 0) {
+    parts.push(
+      `${acceptedCount} ${acceptedCount === 1 ? 'file' : 'files'} added`
+    );
+  }
+
+  if (rejectedCount > 0) {
+    parts.push(
+      `${rejectedCount} ${rejectedCount === 1 ? 'file was' : 'files were'} rejected`
+    );
+  }
+
+  return parts.join('. ');
+}
 
 export function useFileUploadState(
   options: UseFileUploadStateOptions
 ): UseFileUploadStateReturn {
   const {
     value,
-    defaultValue = [],
+    defaultValue = EMPTY_FILES,
     onValueChange,
     onFilesRejected,
     disabled: disabledProp,
@@ -52,7 +79,10 @@ export function useFileUploadState(
     onValueChange
   );
   const [rejected, setRejected] = useState<FileUploadRejected[]>([]);
+  const [statusMessage, setStatusMessage] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const filesRef = useRef(files);
+  filesRef.current = files;
   const disabled = Boolean(disabledProp);
 
   const validationRule = useMemo<FileValidationRule>(
@@ -67,13 +97,33 @@ export function useFileUploadState(
     [accept, maxSize, minSize, maxFiles, multiple, validate]
   );
 
-  const syncInputFiles = useCallback((nextFiles: File[]) => {
-    if (inputRef.current && typeof DataTransfer !== 'undefined') {
+  const syncInputFiles = useCallback((nextFiles: File[]): boolean => {
+    const input = inputRef.current;
+
+    if (!input) {
+      return false;
+    }
+
+    if (nextFiles.length === 0) {
+      input.value = '';
+      return true;
+    }
+
+    if (typeof DataTransfer === 'undefined') {
+      return false;
+    }
+
+    try {
       const dataTransfer = new DataTransfer();
+
       for (const file of nextFiles) {
         dataTransfer.items.add(file);
       }
-      inputRef.current.files = dataTransfer.files;
+
+      input.files = dataTransfer.files;
+      return true;
+    } catch {
+      return false;
     }
   }, []);
 
@@ -86,49 +136,106 @@ export function useFileUploadState(
       const accepted: File[] = [];
       const nextRejected: FileUploadRejected[] = [];
       const isMultiple = validationRule.multiple === true;
-      let currentFiles = isMultiple ? [...files] : [];
+      let currentFiles = isMultiple ? [...filesRef.current] : [];
 
       for (const file of incoming) {
-        const reason = validateFile(file, validationRule, currentFiles);
-        if (reason) {
-          nextRejected.push({ file, reason });
+        if (!isMultiple && accepted.length > 0) {
+          nextRejected.push({
+            file,
+            code: 'too-many-files',
+            reason: 'Only one file is allowed',
+          });
+          continue;
+        }
+
+        const validationError = getFileValidationError(
+          file,
+          validationRule,
+          currentFiles
+        );
+
+        if (validationError) {
+          nextRejected.push({ file, ...validationError });
           continue;
         }
 
         currentFiles = isMultiple ? [...currentFiles, file] : [file];
         accepted.push(file);
-
-        if (!isMultiple) {
-          break;
-        }
       }
 
       setRejected(nextRejected);
-      onFilesRejected?.(nextRejected);
+      setStatusMessage(
+        getSelectionMessage(accepted.length, nextRejected.length)
+      );
+
+      if (nextRejected.length > 0) {
+        onFilesRejected?.(nextRejected);
+      }
 
       if (accepted.length > 0) {
+        filesRef.current = currentFiles;
         setFiles(currentFiles);
         syncInputFiles(currentFiles);
       }
     },
-    [disabled, files, validationRule, setFiles, onFilesRejected, syncInputFiles]
+    [
+      disabled,
+      onFilesRejected,
+      setFiles,
+      syncInputFiles,
+      validationRule,
+    ]
+  );
+
+  const removeFileAt = useCallback(
+    (index: number) => {
+      const currentFiles = filesRef.current;
+
+      if (disabled || index < 0 || index >= currentFiles.length) {
+        return;
+      }
+
+      const nextFiles = [...currentFiles];
+      const [removedFile] = nextFiles.splice(index, 1);
+
+      filesRef.current = nextFiles;
+      setFiles(nextFiles);
+      setRejected([]);
+      syncInputFiles(nextFiles);
+
+      if (removedFile) {
+        setStatusMessage(`${removedFile.name} removed`);
+      }
+    },
+    [disabled, setFiles, syncInputFiles]
   );
 
   const removeFile = useCallback(
     (file: File) => {
-      const next = files.filter((f) => f !== file);
-      setFiles(next);
-      syncInputFiles(next);
+      removeFileAt(
+        filesRef.current.findIndex((currentFile) => currentFile === file)
+      );
     },
-    [files, setFiles, syncInputFiles]
+    [removeFileAt]
   );
+
+  const clearFiles = useCallback(() => {
+    filesRef.current = [];
+    setFiles([]);
+    setRejected([]);
+    setStatusMessage('Files cleared');
+    syncInputFiles([]);
+  }, [setFiles, syncInputFiles]);
 
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const inputFiles = event.currentTarget.files;
-      if (inputFiles && inputFiles.length > 0) {
-        processFiles(Array.from(inputFiles));
+
+      if (!inputFiles || inputFiles.length === 0) {
+        return;
       }
+
+      processFiles(Array.from(inputFiles));
     },
     [processFiles]
   );
@@ -143,15 +250,40 @@ export function useFileUploadState(
     syncInputFiles(files);
   }, [files, syncInputFiles]);
 
-  const drag = useFileUploadDragState(processFiles);
+  useEffect(() => {
+    const form = inputRef.current?.form;
+
+    if (!form) {
+      return;
+    }
+
+    const handleReset = () => {
+      filesRef.current = defaultValue;
+      setRejected([]);
+      setStatusMessage('');
+      setFiles(defaultValue);
+      syncInputFiles(defaultValue);
+    };
+
+    form.addEventListener('reset', handleReset);
+
+    return () => {
+      form.removeEventListener('reset', handleReset);
+    };
+  }, [defaultValue, setFiles, syncInputFiles]);
+
+  const drag = useFileUploadDragState(processFiles, disabled);
 
   return {
     files,
     rejected,
+    statusMessage,
     inputRef,
     onInputChange,
     openFileDialog,
     removeFile,
+    removeFileAt,
+    clearFiles,
     ...drag,
   };
 }
