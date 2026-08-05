@@ -99,6 +99,7 @@ export function useFileUploadDragState(
   }, [disabled, resetDragState]);
 
   useEffect(() => {
+    /* v8 ignore next 3 -- React effects do not execute during SSR. */
     if (typeof window === 'undefined') {
       return;
     }
