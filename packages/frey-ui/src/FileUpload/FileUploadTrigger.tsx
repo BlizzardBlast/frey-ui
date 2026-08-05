@@ -29,7 +29,6 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
     type,
     'aria-describedby': ariaDescribedBy,
     'aria-invalid': ariaInvalid,
-    'aria-required': ariaRequired,
     ...triggerProps
   },
   forwardedRef
@@ -56,7 +55,6 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
     'aria-controls': context.inputId,
     'aria-describedby': ariaDescribedBy ?? context.describedBy,
     'aria-invalid': (ariaInvalid ?? context.hasError) || undefined,
-    'aria-required': (ariaRequired ?? context.isRequired) || undefined,
     'aria-disabled': disabled || undefined,
     'data-disabled': disabled ? true : undefined,
   };
