@@ -115,6 +115,11 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
       const handleDragOver = composeDragHandler(onDragOver, context.onDragOver);
       const handleDragEnd = composeDragHandler(onDragEnd, context.onDragEnd);
       const handleDrop = composeDragHandler(onDrop, context.onDrop);
+      let accessibleLabelledBy = ariaLabelledBy;
+
+      if (!accessibleLabelledBy && !ariaLabel) {
+        accessibleLabelledBy = context.labelId;
+      }
 
       return (
         <section
@@ -123,9 +128,7 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
           className={clsx(styles.dropzone, className)}
           style={style}
           aria-label={ariaLabel}
-          aria-labelledby={
-            ariaLabelledBy ?? (ariaLabel ? undefined : context.labelId)
-          }
+          aria-labelledby={accessibleLabelledBy}
           aria-disabled={context.disabled || undefined}
           data-dragging={context.isDragOver ? true : undefined}
           data-disabled={context.disabled ? true : undefined}
