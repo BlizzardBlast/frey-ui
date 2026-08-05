@@ -35,6 +35,8 @@ export type {
   ButtonVariant,
 } from './Button';
 export { default as Button } from './Button';
+export type { CalendarProps } from './Calendar';
+export { default as Calendar } from './Calendar';
 export type {
   CardContentProps,
   CardFooterProps,
@@ -43,8 +45,6 @@ export type {
   CardTitleProps,
 } from './Card';
 export { default as Card } from './Card';
-export type { CalendarProps } from './Calendar';
-export { default as Calendar } from './Calendar';
 export type { CheckboxProps, CheckboxSize } from './Checkbox';
 export { default as Checkbox } from './Checkbox';
 export type { ChipElement, ChipProps, Variant } from './Chip';
@@ -67,13 +67,6 @@ export type { DateFieldProps } from './DateField';
 export { default as DateField } from './DateField';
 export type { DatePickerProps } from './DatePicker';
 export { default as DatePicker } from './DatePicker';
-export type {
-  DateCalendar,
-  DateSegment,
-  DateSegmentLabels,
-  DateValue,
-  FirstDayOfWeek,
-} from './date/types';
 export type {
   DialogBodyProps,
   DialogContentProps,
@@ -105,8 +98,22 @@ export type {
   DropdownMenuTriggerProps,
 } from './DropdownMenu';
 export { default as DropdownMenu } from './DropdownMenu';
+export type {
+  DateCalendar,
+  DateSegment,
+  DateSegmentLabels,
+  DateValue,
+  FirstDayOfWeek,
+} from './date/types';
 export type { FieldProps, FieldRenderProps } from './Field';
 export { default as Field } from './Field';
+export type {
+  FileUploadDropzoneProps,
+  FileUploadItemProps,
+  FileUploadListProps,
+  FileUploadProps,
+} from './FileUpload';
+export { FileUpload } from './FileUpload';
 export type { FlexProps } from './Flex';
 export { default as Flex } from './Flex';
 export type { GridProps } from './Grid';
