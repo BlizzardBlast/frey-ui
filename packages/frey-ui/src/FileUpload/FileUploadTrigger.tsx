@@ -17,6 +17,37 @@ type FileUploadTriggerComponent = React.ForwardRefExoticComponent<
   Readonly<FileUploadTriggerProps> & React.RefAttributes<HTMLElement>
 >;
 
+type TriggerChildProps = {
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+};
+
+function preventDisabledActivation(event: React.MouseEvent<HTMLElement>): void {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+function getAsChildElement(
+  children: React.ReactNode,
+  disabled: boolean
+): React.ReactElement {
+  const child = children as React.ReactElement<TriggerChildProps>;
+
+  if (!disabled) {
+    return child;
+  }
+
+  const disabledProps: TriggerChildProps = {
+    onClick: preventDisabledActivation,
+  };
+
+  if (child.type === 'button') {
+    disabledProps.disabled = true;
+  }
+
+  return React.cloneElement(child, disabledProps);
+}
+
 export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
   HTMLElement,
   Readonly<FileUploadTriggerProps>
@@ -73,7 +104,7 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
         ref={ref}
         onClick={handleClick}
       >
-        {children}
+        {getAsChildElement(children, disabled)}
       </Slot>
     );
   }
