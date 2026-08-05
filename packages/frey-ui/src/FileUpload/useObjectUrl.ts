@@ -24,11 +24,23 @@ export function useObjectUrl(
       return;
     }
 
-    const nextUrl = URL.createObjectURL(file);
+    let nextUrl: string;
+
+    try {
+      nextUrl = URL.createObjectURL(file);
+    } catch {
+      setUrl(undefined);
+      return;
+    }
+
     setUrl(nextUrl);
 
     return () => {
-      URL.revokeObjectURL(nextUrl);
+      try {
+        URL.revokeObjectURL(nextUrl);
+      } catch {
+        // Object URL cleanup is best effort in constrained browser environments.
+      }
     };
   }, [enabled, file]);
 
