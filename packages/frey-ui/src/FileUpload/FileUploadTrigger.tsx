@@ -20,6 +20,7 @@ type FileUploadTriggerComponent = React.ForwardRefExoticComponent<
 type TriggerChildProps = {
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLElement>;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
 };
 
 function isComposedElement(
@@ -35,21 +36,28 @@ function preventDisabledActivation(event: React.MouseEvent<HTMLElement>): void {
 
 function getComposedChild(
   child: React.ReactElement<TriggerChildProps>,
-  disabled: boolean
+  disabled: boolean,
+  type: React.ButtonHTMLAttributes<HTMLButtonElement>['type'] | undefined
 ): React.ReactElement {
-  if (!disabled) {
+  const composedProps: TriggerChildProps = {};
+
+  if (child.type === 'button') {
+    composedProps.type = child.props.type ?? type ?? 'button';
+  }
+
+  if (disabled) {
+    composedProps.onClick = preventDisabledActivation;
+
+    if (child.type === 'button') {
+      composedProps.disabled = true;
+    }
+  }
+
+  if (Object.keys(composedProps).length === 0) {
     return child;
   }
 
-  const disabledProps: TriggerChildProps = {
-    onClick: preventDisabledActivation,
-  };
-
-  if (child.type === 'button') {
-    disabledProps.disabled = true;
-  }
-
-  return React.cloneElement(child, disabledProps);
+  return React.cloneElement(child, composedProps);
 }
 
 export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
@@ -83,6 +91,7 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
       return;
     }
 
+    event.preventDefault();
     context.openFileDialog();
   };
 
@@ -108,7 +117,7 @@ export const FileUploadTrigger: FileUploadTriggerComponent = React.forwardRef<
         ref={ref}
         onClick={handleClick}
       >
-        {getComposedChild(children, disabled)}
+        {getComposedChild(children, disabled, type)}
       </Slot>
     );
   }
