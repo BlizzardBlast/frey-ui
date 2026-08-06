@@ -88,11 +88,15 @@ describe('EmptyState', () => {
       'data-layout',
       'compact'
     );
-    expect(screen.getByTestId('empty-state')).toHaveStyle({ minHeight: 240 });
+    expect(screen.getByTestId('empty-state')).toHaveStyle({
+      minHeight: '240px',
+    });
     expect(screen.getByTestId('description')).toHaveClass(
       'custom-description'
     );
-    expect(screen.getByTestId('description')).toHaveStyle({ maxWidth: 320 });
+    expect(screen.getByTestId('description')).toHaveStyle({
+      maxWidth: '320px',
+    });
   });
 
   it('has no accessibility violations', async () => {
