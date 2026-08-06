@@ -32,6 +32,7 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
   const objectUrl = useObjectUrl(currentFile, canPreview);
   const [failedObjectUrl, setFailedObjectUrl] = useState<string>();
   const hasImageError = Boolean(objectUrl && failedObjectUrl === objectUrl);
+  const displaysImage = Boolean(objectUrl && !hasImageError);
 
   if (!currentFile) {
     return null;
@@ -44,10 +45,10 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
       ref={forwardedRef}
       className={clsx(styles.preview, className)}
       style={style}
-      data-preview={canPreview && !hasImageError ? 'image' : 'file'}
+      data-preview={displaysImage ? 'image' : 'file'}
       {...previewProps}
     >
-      {objectUrl && !hasImageError ? (
+      {displaysImage ? (
         <img
           {...imageProps}
           src={objectUrl}
