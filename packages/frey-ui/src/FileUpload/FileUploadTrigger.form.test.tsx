@@ -11,6 +11,7 @@ describe('FileUpload.Trigger asChild form semantics', () => {
       <form onSubmit={onSubmit}>
         <FileUpload label='Attachment'>
           <FileUpload.Trigger asChild>
+            {/* biome-ignore lint/a11y/useButtonType: This fixture verifies that FileUpload.Trigger supplies the missing type. */}
             <button>Browse files</button>
           </FileUpload.Trigger>
         </FileUpload>
@@ -61,6 +62,7 @@ describe('FileUpload.Trigger asChild form semantics', () => {
       <form onReset={onReset}>
         <FileUpload label='Attachment'>
           <FileUpload.Trigger asChild type='reset'>
+            {/* biome-ignore lint/a11y/useButtonType: This fixture verifies that FileUpload.Trigger forwards its type. */}
             <button>Browse files</button>
           </FileUpload.Trigger>
         </FileUpload>
