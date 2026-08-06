@@ -1,5 +1,12 @@
 # @frey-ui/storybook
 
+## 1.0.12
+
+### Patch Changes
+
+- Updated dependencies [cdc881c]
+  - frey-ui@1.4.0
+
 ## 1.0.11
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # frey-ui
 
+## 1.4.0
+
+### Minor Changes
+
+- cdc881c: Add a compound `EmptyState` component with centered and compact layouts, semantic title element selection, optional descriptions and actions, and consumer-provided icon or illustration content.
+
 ## 1.3.0
 
 ### Minor Changes
