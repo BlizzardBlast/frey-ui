@@ -1,13 +1,17 @@
 import type React from 'react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import Field from '../Field';
 import styles from './fileUpload.module.css';
-import { FileUploadContext } from './FileUploadContext';
+import {
+  FileUploadContext,
+  type FileUploadContextValue,
+} from './FileUploadContext';
 import { FileUploadDropzone } from './FileUploadDropzone';
 import { FileUploadList } from './FileUploadList';
 import type { FileUploadRejected } from './fileValidation';
 import {
   type UseFileUploadStateOptions,
+  type UseFileUploadStateReturn,
   useFileUploadState,
 } from './useFileUploadState';
 
@@ -26,12 +30,165 @@ export type FileUploadProps = UseFileUploadStateOptions & {
 
 type FileUploadRootComponent = React.FC<Readonly<FileUploadProps>>;
 
+type FileUploadControlProps = {
+  children?: React.ReactNode;
+  state: UseFileUploadStateReturn;
+  inputId: string;
+  labelId: string;
+  describedBy?: string;
+  hasError: boolean;
+  isRequired: boolean;
+  disabled: boolean;
+  isMultiple: boolean;
+  name?: string;
+  accept?: string;
+  maxSize?: number;
+  maxFiles?: number;
+  triggerRef: React.RefObject<HTMLElement | null>;
+};
+
 function summarizeRejections(
   rejected: ReadonlyArray<FileUploadRejected>
 ): string | undefined {
   const reasons = [...new Set(rejected.map((item) => item.reason))];
 
   return reasons.length > 0 ? reasons.join('. ') : undefined;
+}
+
+function FileUploadControl({
+  children,
+  state,
+  inputId,
+  labelId,
+  describedBy,
+  hasError,
+  isRequired,
+  disabled,
+  isMultiple,
+  name,
+  accept,
+  maxSize,
+  maxFiles,
+  triggerRef,
+}: Readonly<FileUploadControlProps>) {
+  const {
+    files,
+    rejected,
+    statusMessage,
+    inputRef,
+    onInputChange,
+    openFileDialog,
+    removeFile,
+    removeFileAt,
+    clearFiles,
+    isDragOver,
+    onDragEnter,
+    onDragLeave,
+    onDragOver,
+    onDragEnd,
+    onDrop,
+  } = state;
+  const contextValue = useMemo<FileUploadContextValue>(
+    () => ({
+      files,
+      rejected,
+      statusMessage,
+      inputRef,
+      onInputChange,
+      openFileDialog,
+      removeFile,
+      removeFileAt,
+      clearFiles,
+      isDragOver,
+      onDragEnter,
+      onDragLeave,
+      onDragOver,
+      onDragEnd,
+      onDrop,
+      inputId,
+      labelId,
+      describedBy,
+      hasError,
+      isRequired,
+      disabled,
+      isMultiple,
+      accept,
+      maxSize,
+      maxFiles,
+      triggerRef,
+    }),
+    [
+      accept,
+      clearFiles,
+      describedBy,
+      disabled,
+      files,
+      hasError,
+      inputId,
+      inputRef,
+      isDragOver,
+      isMultiple,
+      isRequired,
+      labelId,
+      maxFiles,
+      maxSize,
+      onDragEnd,
+      onDragEnter,
+      onDragLeave,
+      onDragOver,
+      onDrop,
+      onInputChange,
+      openFileDialog,
+      rejected,
+      removeFile,
+      removeFileAt,
+      statusMessage,
+      triggerRef,
+    ]
+  );
+
+  return (
+    <>
+      <input
+        id={inputId}
+        name={name}
+        type='file'
+        ref={inputRef}
+        onChange={onInputChange}
+        onInvalid={(event) => {
+          event.preventDefault();
+          triggerRef.current?.focus();
+        }}
+        accept={accept}
+        multiple={isMultiple}
+        disabled={disabled}
+        required={isRequired && files.length === 0}
+        className={styles.input}
+        tabIndex={-1}
+        aria-labelledby={labelId}
+        aria-describedby={describedBy}
+        aria-invalid={hasError || undefined}
+      />
+
+      <FileUploadContext.Provider value={contextValue}>
+        {children ?? (
+          <>
+            <FileUploadDropzone />
+            <FileUploadList />
+          </>
+        )}
+      </FileUploadContext.Provider>
+
+      <span
+        className={styles.visuallyHidden}
+        role='status'
+        aria-live='polite'
+        aria-atomic='true'
+      >
+        {statusMessage}
+      </span>
+    </>
+  );
 }
 
 export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
@@ -51,13 +208,8 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
   const triggerRef = useRef<HTMLElement | null>(null);
   const disabled = Boolean(stateOptions.disabled);
   const isRequired = Boolean(required);
+  const isMultiple = stateOptions.multiple === true;
   const fieldError = error ?? summarizeRejections(state.rejected);
-  const defaultChildren = (
-    <>
-      <FileUploadDropzone />
-      <FileUploadList />
-    </>
-  );
 
   return (
     <Field
@@ -80,54 +232,23 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
           aria-describedby={describedBy}
           aria-invalid={hasError || undefined}
         >
-          <input
-            id={inputId}
-            name={name}
-            type='file'
-            ref={state.inputRef}
-            onChange={state.onInputChange}
-            onInvalid={(event) => {
-              event.preventDefault();
-              triggerRef.current?.focus();
-            }}
-            accept={stateOptions.accept}
-            multiple={stateOptions.multiple}
+          <FileUploadControl
+            state={state}
+            inputId={inputId}
+            labelId={labelId}
+            describedBy={describedBy}
+            hasError={hasError}
+            isRequired={isRequired}
             disabled={disabled}
-            required={isRequired && state.files.length === 0}
-            className={styles.input}
-            tabIndex={-1}
-            aria-labelledby={labelId}
-            aria-describedby={describedBy}
-            aria-invalid={hasError || undefined}
-          />
-
-          <FileUploadContext.Provider
-            value={{
-              ...state,
-              inputId,
-              labelId,
-              describedBy,
-              hasError,
-              isRequired,
-              disabled,
-              isMultiple: stateOptions.multiple === true,
-              accept: stateOptions.accept,
-              maxSize: stateOptions.maxSize,
-              maxFiles: stateOptions.maxFiles,
-              triggerRef,
-            }}
+            isMultiple={isMultiple}
+            name={name}
+            accept={stateOptions.accept}
+            maxSize={stateOptions.maxSize}
+            maxFiles={stateOptions.maxFiles}
+            triggerRef={triggerRef}
           >
-            {children ?? defaultChildren}
-          </FileUploadContext.Provider>
-
-          <span
-            className={styles.visuallyHidden}
-            role='status'
-            aria-live='polite'
-            aria-atomic='true'
-          >
-            {state.statusMessage}
-          </span>
+            {children}
+          </FileUploadControl>
         </fieldset>
       )}
     </Field>
