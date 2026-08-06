@@ -58,7 +58,7 @@
   box-shadow: var(--frey-shadow-sm, 0 1px 2px rgb(0 0 0 / 5%));
 }
 
-.dropzone[data-dragging='true'] {
+.dropzone[data-dragging='true']:not([data-disabled='true']) {
   border-color: var(--frey-color-primary, #9333ea);
   background-color: color-mix(
     in srgb,
@@ -70,13 +70,15 @@
 }
 
 .dropzone[data-invalid='true'],
-.dropzone[data-invalid='true']:hover:not([data-disabled='true']) {
+.dropzone[data-invalid='true']:hover:not([data-disabled='true']),
+.dropzone[data-invalid='true'][data-dragging='true'] {
   border-color: var(--frey-color-error, #dc2626);
   background-color: color-mix(
     in srgb,
     var(--frey-color-error, #dc2626) 6%,
     var(--frey-color-surface, #ffffff)
   );
+  box-shadow: none;
 }
 
 .dropzone[data-disabled='true'] {
