@@ -290,8 +290,7 @@
     padding: var(--frey-space-3, 0.75rem);
   }
 
-  .dropzone[data-state='replace'][data-default-content='true']
-    .dropzoneAction {
+  .dropzone[data-state='replace'][data-default-content='true'] .dropzoneAction {
     grid-column: 1 / -1;
     width: 100%;
   }

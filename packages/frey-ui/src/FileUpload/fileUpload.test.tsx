@@ -62,7 +62,9 @@ describe('FileUpload', () => {
     const dropzone = screen.getByTestId('dropzone');
     expect(dropzone).toHaveAttribute('data-state', 'append');
     expect(screen.getByText('Add more files')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Add files' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Add files' })
+    ).toBeInTheDocument();
 
     fireEvent.dragEnter(dropzone, {
       dataTransfer: { files: [], types: ['Files'] },

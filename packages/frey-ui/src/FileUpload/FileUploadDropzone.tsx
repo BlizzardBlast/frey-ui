@@ -153,10 +153,7 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
   forwardedRef
 ) {
   const context = useFileUploadContext();
-  const visualState = getVisualState(
-    context.files.length,
-    context.isMultiple
-  );
+  const visualState = getVisualState(context.files.length, context.isMultiple);
   const defaultHeading = getDefaultHeading(
     context.isDragOver,
     visualState,
@@ -219,7 +216,9 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
       aria-label={ariaLabel}
       aria-labelledby={accessibleLabelledBy}
       data-state={visualState}
-      data-default-content={resolvedChildren === defaultContent ? true : undefined}
+      data-default-content={
+        resolvedChildren === defaultContent ? true : undefined
+      }
       data-dragging={context.isDragOver ? true : undefined}
       data-disabled={context.disabled ? true : undefined}
       data-invalid={context.hasError ? true : undefined}
