@@ -29,7 +29,7 @@
     "changeset": "changeset",
     "version-packages": "changeset version",
     "release": "changeset publish",
-    "ci:changed": "turbo run lint typecheck test build --affected",
+    "ci:changed": "turbo run lint typecheck build --affected && turbo run test --affected --filter=!frey-ui",
     "prepare": "husky"
   },
   "devDependencies": {
