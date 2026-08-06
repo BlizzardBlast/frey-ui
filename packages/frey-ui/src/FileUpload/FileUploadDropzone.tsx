@@ -22,6 +22,18 @@ type FileUploadDropzoneComponent = React.ForwardRefExoticComponent<
 >;
 
 type DragHandler = React.DragEventHandler<HTMLElement>;
+type FileUploadVisualState = 'empty' | 'replace' | 'append';
+
+function getVisualState(
+  fileCount: number,
+  multiple: boolean
+): FileUploadVisualState {
+  if (fileCount === 0) {
+    return 'empty';
+  }
+
+  return multiple ? 'append' : 'replace';
+}
 
 function getConstraintDescription(
   accept: string | undefined,
@@ -51,12 +63,58 @@ function getConstraintDescription(
   return multiple ? 'Select one or more files' : 'Select one file';
 }
 
-function getDefaultHeading(isDragOver: boolean, isMultiple: boolean): string {
+function getDefaultHeading(
+  isDragOver: boolean,
+  visualState: FileUploadVisualState,
+  isMultiple: boolean
+): string {
   if (isDragOver) {
+    if (visualState === 'replace') {
+      return 'Drop the file to replace';
+    }
+
+    if (visualState === 'append') {
+      return 'Drop files to add';
+    }
+
     return isMultiple ? 'Drop files to add' : 'Drop the file to add';
   }
 
+  if (visualState === 'replace') {
+    return 'Drop a new file to replace';
+  }
+
+  if (visualState === 'append') {
+    return 'Add more files';
+  }
+
   return isMultiple ? 'Drag and drop files here' : 'Drag and drop a file here';
+}
+
+function getDefaultDescription(
+  visualState: FileUploadVisualState,
+  accept: string | undefined,
+  maxSize: number | undefined,
+  maxFiles: number | undefined,
+  isMultiple: boolean
+): string {
+  if (visualState === 'replace') {
+    return 'The current file remains until a valid replacement is selected';
+  }
+
+  return getConstraintDescription(accept, maxSize, maxFiles, isMultiple);
+}
+
+function getDefaultActionLabel(visualState: FileUploadVisualState): string {
+  if (visualState === 'replace') {
+    return 'Replace file';
+  }
+
+  if (visualState === 'append') {
+    return 'Add files';
+  }
+
+  return 'Browse files';
 }
 
 function composeDragHandler(
@@ -95,21 +153,29 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
   forwardedRef
 ) {
   const context = useFileUploadContext();
-  const defaultHeading = getDefaultHeading(
-    context.isDragOver,
+  const visualState = getVisualState(
+    context.files.length,
     context.isMultiple
   );
-  const defaultDescription = getConstraintDescription(
+  const defaultHeading = getDefaultHeading(
+    context.isDragOver,
+    visualState,
+    context.isMultiple
+  );
+  const defaultDescription = getDefaultDescription(
+    visualState,
     context.accept,
     context.maxSize,
     context.maxFiles,
     context.isMultiple
   );
+  const defaultActionLabel = getDefaultActionLabel(visualState);
   const handleDragEnter = composeDragHandler(onDragEnter, context.onDragEnter);
   const handleDragLeave = composeDragHandler(onDragLeave, context.onDragLeave);
   const handleDragOver = composeDragHandler(onDragOver, context.onDragOver);
   const handleDragEnd = composeDragHandler(onDragEnd, context.onDragEnd);
   const handleDrop = composeDragHandler(onDrop, context.onDrop);
+  const hasDefaultContent = children === undefined || children === null;
   let accessibleLabelledBy = ariaLabelledBy;
 
   if (!accessibleLabelledBy && !ariaLabel) {
@@ -124,6 +190,8 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
       style={style}
       aria-label={ariaLabel}
       aria-labelledby={accessibleLabelledBy}
+      data-state={visualState}
+      data-default-content={hasDefaultContent ? true : undefined}
       data-dragging={context.isDragOver ? true : undefined}
       data-disabled={context.disabled ? true : undefined}
       data-invalid={context.hasError ? true : undefined}
@@ -150,8 +218,13 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
           </span>
 
           <FileUploadTrigger asChild>
-            <Button variant='secondary' size='sm' disabled={context.disabled}>
-              Browse files
+            <Button
+              variant='secondary'
+              size='sm'
+              disabled={context.disabled}
+              className={styles.dropzoneAction}
+            >
+              {defaultActionLabel}
             </Button>
           </FileUploadTrigger>
         </>
