@@ -30,8 +30,8 @@ export type FileUploadProps = UseFileUploadStateOptions & {
 
 type FileUploadRootComponent = React.FC<Readonly<FileUploadProps>>;
 
-type FileUploadControlProps = {
-  children?: React.ReactNode;
+type FileUploadProviderProps = {
+  children: React.ReactNode;
   state: UseFileUploadStateReturn;
   inputId: string;
   labelId: string;
@@ -40,7 +40,6 @@ type FileUploadControlProps = {
   isRequired: boolean;
   disabled: boolean;
   isMultiple: boolean;
-  name?: string;
   accept?: string;
   maxSize?: number;
   maxFiles?: number;
@@ -55,7 +54,7 @@ function summarizeRejections(
   return reasons.length > 0 ? reasons.join('. ') : undefined;
 }
 
-function FileUploadControl({
+function FileUploadProvider({
   children,
   state,
   inputId,
@@ -65,46 +64,14 @@ function FileUploadControl({
   isRequired,
   disabled,
   isMultiple,
-  name,
   accept,
   maxSize,
   maxFiles,
   triggerRef,
-}: Readonly<FileUploadControlProps>) {
-  const {
-    files,
-    rejected,
-    statusMessage,
-    inputRef,
-    onInputChange,
-    openFileDialog,
-    removeFile,
-    removeFileAt,
-    clearFiles,
-    isDragOver,
-    onDragEnter,
-    onDragLeave,
-    onDragOver,
-    onDragEnd,
-    onDrop,
-  } = state;
+}: Readonly<FileUploadProviderProps>) {
   const contextValue = useMemo<FileUploadContextValue>(
     () => ({
-      files,
-      rejected,
-      statusMessage,
-      inputRef,
-      onInputChange,
-      openFileDialog,
-      removeFile,
-      removeFileAt,
-      clearFiles,
-      isDragOver,
-      onDragEnter,
-      onDragLeave,
-      onDragOver,
-      onDragEnd,
-      onDrop,
+      ...state,
       inputId,
       labelId,
       describedBy,
@@ -119,75 +86,24 @@ function FileUploadControl({
     }),
     [
       accept,
-      clearFiles,
       describedBy,
       disabled,
-      files,
       hasError,
       inputId,
-      inputRef,
-      isDragOver,
       isMultiple,
       isRequired,
       labelId,
       maxFiles,
       maxSize,
-      onDragEnd,
-      onDragEnter,
-      onDragLeave,
-      onDragOver,
-      onDrop,
-      onInputChange,
-      openFileDialog,
-      rejected,
-      removeFile,
-      removeFileAt,
-      statusMessage,
+      state,
       triggerRef,
     ]
   );
 
   return (
-    <>
-      <input
-        id={inputId}
-        name={name}
-        type='file'
-        ref={inputRef}
-        onChange={onInputChange}
-        onInvalid={(event) => {
-          event.preventDefault();
-          triggerRef.current?.focus();
-        }}
-        accept={accept}
-        multiple={isMultiple}
-        disabled={disabled}
-        required={isRequired && files.length === 0}
-        className={styles.input}
-        tabIndex={-1}
-        aria-labelledby={labelId}
-        aria-describedby={describedBy}
-        aria-invalid={hasError || undefined}
-      />
-
-      <FileUploadContext.Provider value={contextValue}>
-        {children ?? (
-          <>
-            <FileUploadDropzone />
-            <FileUploadList />
-          </>
-        )}
-      </FileUploadContext.Provider>
-
-      <span
-        className={styles.visuallyHidden}
-        role='status'
-        aria-live='polite'
-        aria-atomic='true'
-      >
-        {statusMessage}
-      </span>
-    </>
+    <FileUploadContext.Provider value={contextValue}>
+      {children}
+    </FileUploadContext.Provider>
   );
 }
 
@@ -210,6 +126,12 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
   const isRequired = Boolean(required);
   const isMultiple = stateOptions.multiple === true;
   const fieldError = error ?? summarizeRejections(state.rejected);
+  const defaultChildren = (
+    <>
+      <FileUploadDropzone />
+      <FileUploadList />
+    </>
+  );
 
   return (
     <Field
@@ -232,7 +154,28 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
           aria-describedby={describedBy}
           aria-invalid={hasError || undefined}
         >
-          <FileUploadControl
+          <input
+            id={inputId}
+            name={name}
+            type='file'
+            ref={state.inputRef}
+            onChange={state.onInputChange}
+            onInvalid={(event) => {
+              event.preventDefault();
+              triggerRef.current?.focus();
+            }}
+            accept={stateOptions.accept}
+            multiple={stateOptions.multiple}
+            disabled={disabled}
+            required={isRequired && state.files.length === 0}
+            className={styles.input}
+            tabIndex={-1}
+            aria-labelledby={labelId}
+            aria-describedby={describedBy}
+            aria-invalid={hasError || undefined}
+          />
+
+          <FileUploadProvider
             state={state}
             inputId={inputId}
             labelId={labelId}
@@ -241,14 +184,22 @@ export const FileUploadRoot: FileUploadRootComponent = function FileUploadRoot({
             isRequired={isRequired}
             disabled={disabled}
             isMultiple={isMultiple}
-            name={name}
             accept={stateOptions.accept}
             maxSize={stateOptions.maxSize}
             maxFiles={stateOptions.maxFiles}
             triggerRef={triggerRef}
           >
-            {children}
-          </FileUploadControl>
+            {children ?? defaultChildren}
+          </FileUploadProvider>
+
+          <span
+            className={styles.visuallyHidden}
+            role='status'
+            aria-live='polite'
+            aria-atomic='true'
+          >
+            {state.statusMessage}
+          </span>
         </fieldset>
       )}
     </Field>
