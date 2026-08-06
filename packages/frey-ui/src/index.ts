@@ -105,6 +105,16 @@ export type {
   DateValue,
   FirstDayOfWeek,
 } from './date/types';
+export type {
+  EmptyStateActionsProps,
+  EmptyStateDescriptionProps,
+  EmptyStateIconProps,
+  EmptyStateLayout,
+  EmptyStateProps,
+  EmptyStateTitleElement,
+  EmptyStateTitleProps,
+} from './EmptyState';
+export { default as EmptyState } from './EmptyState';
 export type { FieldProps, FieldRenderProps } from './Field';
 export { default as Field } from './Field';
 export type {

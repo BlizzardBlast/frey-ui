@@ -15,21 +15,24 @@ or the library changes its support policy.
 
 Do the next work in this order:
 
-1. Build `EmptyState` as the next small component.
-2. Build a staged `DataTable` as the next major product-oriented component.
-3. Add package-consumer contract tests for published root and subpath imports.
-4. Expand critical browser tests from Chromium to Firefox and WebKit.
-5. Improve adoption documentation and maintain a generated component-status
+1. Build a staged `DataTable` as the next major product-oriented component.
+2. Add package-consumer contract tests for published root and subpath imports.
+3. Expand critical browser tests from Chromium to Firefox and WebKit.
+4. Improve adoption documentation and maintain a generated component-status
    inventory.
 
-The immediate answer to "what should be made next?" is `EmptyState`. It is a
-small, reusable completion of the existing component set. The next substantial
-feature after that should be a deliberately scoped `DataTable`.
+The immediate answer to "what should be made next?" is a deliberately scoped
+`DataTable`. `EmptyState`, the previous small-component recommendation, is now
+implemented and available for the table's loading and empty-state composition.
 
 ## Recently Completed
 
 The previous component-focused roadmap is now substantially complete.
 
+- `EmptyState` is implemented with compound composition, centered and compact
+  layouts, semantic title element selection, optional descriptions and actions,
+  consumer-provided icon or illustration content, stories, and accessibility
+  coverage.
 - The duplicate push-only unit-test workflow has been removed. `ci.yml` now owns
   the authoritative library coverage and JUnit uploads, preserves both reports
   as workflow artifacts, runs documentation checks, and avoids executing the
@@ -52,50 +55,6 @@ These items should be maintained, but they are no longer candidates for the
 next new feature.
 
 ## Priority 0: Complete the Core Product Surface
-
-### Next small component: `EmptyState`
-
-`EmptyState` is the best next component because it fills a common gap across
-internal applications without adding complex state management. It composes
-naturally with `Table`, `Card`, `CommandPalette`, `FileUpload`, `Button`, and
-layout primitives.
-
-Suggested v1 API:
-
-- `EmptyState`
-- `EmptyState.Icon`
-- `EmptyState.Title`
-- `EmptyState.Description`
-- `EmptyState.Actions`
-
-Suggested behavior and design constraints:
-
-- Support centered and compact layouts.
-- Allow consumers to choose the title element without tying visual size to a
-  fixed heading level.
-- Do not apply `alert` or `status` semantics by default; most empty states are
-  static content rather than live announcements.
-- Support one or more actions without requiring them.
-- Reuse existing spacing, typography, color, icon, and button tokens.
-- Keep illustrations consumer-provided rather than adding an illustration
-  runtime or asset system in v1.
-
-Suggested stories:
-
-- First-use state with a primary action.
-- No search results with a clear-filters action.
-- Empty table or collection.
-- Compact empty state inside a card.
-- Read-only empty state without actions.
-- Long localized title and description.
-
-Suggested tests:
-
-- Semantic title rendering.
-- Optional description and actions.
-- Consumer-provided icon or illustration content.
-- Custom class and style forwarding.
-- Accessible action names and axe coverage.
 
 ### Next major component: staged `DataTable`
 
