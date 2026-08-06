@@ -81,9 +81,7 @@ describe('EmptyState', () => {
       </EmptyState>
     );
 
-    expect(screen.getByTestId('empty-state')).toHaveClass(
-      'custom-empty-state'
-    );
+    expect(screen.getByTestId('empty-state')).toHaveClass('custom-empty-state');
     expect(screen.getByTestId('empty-state')).toHaveAttribute(
       'data-layout',
       'compact'
@@ -91,9 +89,7 @@ describe('EmptyState', () => {
     expect(screen.getByTestId('empty-state')).toHaveStyle({
       minHeight: '240px',
     });
-    expect(screen.getByTestId('description')).toHaveClass(
-      'custom-description'
-    );
+    expect(screen.getByTestId('description')).toHaveClass('custom-description');
     expect(screen.getByTestId('description')).toHaveStyle({
       maxWidth: '320px',
     });

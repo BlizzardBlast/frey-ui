@@ -1,12 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { EmptyStateProps } from 'frey-ui';
-import {
-  Button,
-  Card,
-  CircleInfoIcon,
-  EmptyState,
-  FileIcon,
-} from 'frey-ui';
+import { Button, Card, CircleInfoIcon, EmptyState, FileIcon } from 'frey-ui';
 
 type EmptyStateStoryProps = Pick<EmptyStateProps, 'layout'>;
 

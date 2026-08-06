@@ -99,6 +99,13 @@ export type {
 } from './DropdownMenu';
 export { default as DropdownMenu } from './DropdownMenu';
 export type {
+  DateCalendar,
+  DateSegment,
+  DateSegmentLabels,
+  DateValue,
+  FirstDayOfWeek,
+} from './date/types';
+export type {
   EmptyStateActionsProps,
   EmptyStateDescriptionProps,
   EmptyStateIconProps,
@@ -108,13 +115,6 @@ export type {
   EmptyStateTitleProps,
 } from './EmptyState';
 export { default as EmptyState } from './EmptyState';
-export type {
-  DateCalendar,
-  DateSegment,
-  DateSegmentLabels,
-  DateValue,
-  FirstDayOfWeek,
-} from './date/types';
 export type { FieldProps, FieldRenderProps } from './Field';
 export { default as Field } from './Field';
 export type {

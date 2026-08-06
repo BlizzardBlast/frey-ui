@@ -19,10 +19,7 @@ type EmptyStateRootComponent = React.ForwardRefExoticComponent<
 const EmptyStateRoot: EmptyStateRootComponent = React.forwardRef<
   HTMLDivElement,
   Readonly<EmptyStateProps>
->(function EmptyState(
-  { className, layout = 'centered', ...props },
-  ref
-) {
+>(function EmptyState({ className, layout = 'centered', ...props }, ref) {
   return (
     <div
       {...props}
