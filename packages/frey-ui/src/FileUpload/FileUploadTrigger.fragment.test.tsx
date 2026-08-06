@@ -8,6 +8,7 @@ describe('FileUpload.Trigger asChild validation', () => {
       render(
         <FileUpload label='Attachment'>
           <FileUpload.Trigger asChild>
+            {/** biome-ignore lint/complexity/noUselessFragments: intentional */}
             <>
               <span>Attach file</span>
               <span aria-hidden='true'>+</span>
