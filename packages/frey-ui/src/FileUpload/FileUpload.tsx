@@ -1,13 +1,13 @@
 import type React from 'react';
 import { useMemo, useRef } from 'react';
 import Field from '../Field';
-import styles from './fileUpload.module.css';
 import {
   FileUploadContext,
   type FileUploadContextValue,
 } from './FileUploadContext';
 import { FileUploadDropzone } from './FileUploadDropzone';
 import { FileUploadList } from './FileUploadList';
+import styles from './fileUpload.module.css';
 import type { FileUploadRejected } from './fileValidation';
 import {
   type UseFileUploadStateOptions,

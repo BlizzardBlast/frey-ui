@@ -1,6 +1,6 @@
 import type React from 'react';
-import { FileUploadRoot } from './FileUpload';
 import type { FileUploadProps } from './FileUpload';
+import { FileUploadRoot } from './FileUpload';
 import { FileUploadDropzone } from './FileUploadDropzone';
 import { FileUploadItem } from './FileUploadItem';
 import { FileUploadList } from './FileUploadList';
@@ -23,7 +23,6 @@ const FileUpload: FileUploadComponent = Object.assign(FileUploadRoot, {
   Preview: FileUploadPreview,
 });
 
-export { FileUpload };
 export type { FileUploadProps } from './FileUpload';
 export type { FileUploadDropzoneProps } from './FileUploadDropzone';
 export type { FileUploadItemProps } from './FileUploadItem';
@@ -36,3 +35,4 @@ export type {
   FileValidationError,
   FileValidationRule,
 } from './fileValidation';
+export { FileUpload };

@@ -163,8 +163,7 @@ export function useFileUploadState(
         onFilesRejected?.(nextRejected);
       }
 
-      const nextFiles =
-        accepted.length > 0 ? currentFiles : filesRef.current;
+      const nextFiles = accepted.length > 0 ? currentFiles : filesRef.current;
 
       if (accepted.length > 0) {
         filesRef.current = nextFiles;
@@ -173,13 +172,7 @@ export function useFileUploadState(
 
       syncInputFiles(nextFiles);
     },
-    [
-      disabled,
-      onFilesRejected,
-      setFiles,
-      syncInputFiles,
-      validationRule,
-    ]
+    [disabled, onFilesRejected, setFiles, syncInputFiles, validationRule]
   );
 
   const removeFileAt = useCallback(

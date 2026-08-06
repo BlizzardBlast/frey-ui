@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
 import { CloseIcon } from '../Icons';
-import styles from './fileUpload.module.css';
-import { FileUploadPreview } from './FileUploadPreview';
 import { useFileUploadContext } from './FileUploadContext';
+import { FileUploadPreview } from './FileUploadPreview';
+import styles from './fileUpload.module.css';
 import { formatFileSize, formatFileType } from './fileValidation';
 
 export type FileUploadItemProps = Omit<
@@ -42,24 +42,12 @@ export const FileUploadItem: FileUploadItemComponent = React.forwardRef<
   HTMLLIElement,
   Readonly<FileUploadItemProps>
 >(function FileUploadItem(
-  {
-    file,
-    fileIndex,
-    preview = true,
-    children,
-    className,
-    style,
-    ...itemProps
-  },
+  { file, fileIndex, preview = true, children, className, style, ...itemProps },
   forwardedRef
 ) {
   const context = useFileUploadContext();
   const currentFile = file ?? context.files[0];
-  const currentIndex = getFileIndex(
-    currentFile,
-    fileIndex,
-    context.files
-  );
+  const currentIndex = getFileIndex(currentFile, fileIndex, context.files);
 
   if (!currentFile || currentIndex < 0) {
     return null;

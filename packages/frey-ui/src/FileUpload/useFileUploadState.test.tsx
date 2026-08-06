@@ -159,9 +159,7 @@ describe('useFileUploadState', () => {
     });
     const invalid = new File(['text'], 'invalid.txt', { type: 'text/plain' });
 
-    render(
-      <TestComponent accept='image/*' defaultValue={[existing]} />
-    );
+    render(<TestComponent accept='image/*' defaultValue={[existing]} />);
 
     const input = screen.getByTestId('input') as HTMLInputElement;
     (input as unknown as { _files?: FileListMock })._files = new FileListMock([
@@ -200,12 +198,7 @@ describe('useFileUploadState', () => {
     });
     const nextFile = new File(['b'], 'next.txt', { type: 'text/plain' });
 
-    render(
-      <TestComponent
-        multiple
-        defaultValue={[defaultFile]}
-      />
-    );
+    render(<TestComponent multiple defaultValue={[defaultFile]} />);
 
     const input = screen.getByTestId('input') as HTMLInputElement;
 
@@ -235,9 +228,7 @@ describe('useFileUploadState', () => {
       }
     );
     const onValueChange = vi.fn();
-    const { result } = renderHook(() =>
-      useFileUploadState({ onValueChange })
-    );
+    const { result } = renderHook(() => useFileUploadState({ onValueChange }));
     const file = new File(['x'], 'file.txt', { type: 'text/plain' });
 
     act(() => {

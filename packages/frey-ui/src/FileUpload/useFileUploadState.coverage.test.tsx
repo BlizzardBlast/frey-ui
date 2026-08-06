@@ -7,10 +7,7 @@ function createInputChangeEvent(
 ): React.ChangeEvent<HTMLInputElement> {
   return {
     currentTarget: {
-      files:
-        files === null
-          ? null
-          : (files as unknown as FileList),
+      files: files === null ? null : (files as unknown as FileList),
     },
   } as React.ChangeEvent<HTMLInputElement>;
 }
@@ -23,9 +20,7 @@ describe('useFileUploadState remaining branches', () => {
   it('announces plural accepted files', () => {
     const first = new File(['a'], 'first.txt', { type: 'text/plain' });
     const second = new File(['b'], 'second.txt', { type: 'text/plain' });
-    const { result } = renderHook(() =>
-      useFileUploadState({ multiple: true })
-    );
+    const { result } = renderHook(() => useFileUploadState({ multiple: true }));
 
     act(() => {
       result.current.onInputChange(createInputChangeEvent([first, second]));
@@ -78,9 +73,7 @@ describe('useFileUploadState remaining branches', () => {
 
   it('ignores missing and empty input file lists', () => {
     const onValueChange = vi.fn();
-    const { result } = renderHook(() =>
-      useFileUploadState({ onValueChange })
-    );
+    const { result } = renderHook(() => useFileUploadState({ onValueChange }));
 
     act(() => {
       result.current.onInputChange(createInputChangeEvent(null));
@@ -204,9 +197,7 @@ describe('useFileUploadState remaining branches', () => {
     });
     expect(enabledClick).toHaveBeenCalledTimes(1);
 
-    const disabled = renderHook(() =>
-      useFileUploadState({ disabled: true })
-    );
+    const disabled = renderHook(() => useFileUploadState({ disabled: true }));
     const disabledInput = document.createElement('input');
     const disabledClick = vi.spyOn(disabledInput, 'click');
     disabled.result.current.inputRef.current = disabledInput;

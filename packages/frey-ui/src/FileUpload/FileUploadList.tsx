@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { Children, cloneElement } from 'react';
-import styles from './fileUpload.module.css';
 import { useFileUploadContext } from './FileUploadContext';
 import { FileUploadItem, type FileUploadItemProps } from './FileUploadItem';
+import styles from './fileUpload.module.css';
 
 export type FileUploadListProps = React.HTMLAttributes<HTMLUListElement> & {
   children?: React.ReactNode;

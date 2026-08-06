@@ -93,9 +93,7 @@ describe('useObjectUrl', () => {
 describe('isPreviewableImage', () => {
   it('accepts raster images and excludes SVG', () => {
     expect(
-      isPreviewableImage(
-        new File(['x'], 'image.png', { type: 'image/png' })
-      )
+      isPreviewableImage(new File(['x'], 'image.png', { type: 'image/png' }))
     ).toBe(true);
     expect(
       isPreviewableImage(

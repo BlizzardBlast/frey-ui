@@ -201,10 +201,10 @@ type Story = StoryObj<FileUploadProps>;
 const previewFile = new File(
   [
     Uint8Array.from([
-      137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0,
-      0, 1, 0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 13, 73,
-      68, 65, 84, 8, 215, 99, 248, 207, 192, 240, 31, 0, 5, 0, 1, 255, 137,
-      153, 61, 29, 0, 0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130,
+      137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1,
+      0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 13, 73, 68, 65, 84,
+      8, 215, 99, 248, 207, 192, 240, 31, 0, 5, 0, 1, 255, 137, 153, 61, 29, 0,
+      0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130,
     ]),
   ],
   'profile-photo.png',
@@ -214,7 +214,8 @@ const previewFile = new File(
 export const Default: Story = {
   args: {
     label: 'Attachments',
-    helperText: 'Files are selected locally and are not uploaded automatically.',
+    helperText:
+      'Files are selected locally and are not uploaded automatically.',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

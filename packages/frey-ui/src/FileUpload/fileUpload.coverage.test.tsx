@@ -206,9 +206,7 @@ describe('FileUpload remaining component branches', () => {
       </FileUpload>
     );
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Remove custom item' })
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Remove custom item' }));
     expect(onValueChange).toHaveBeenCalledWith([]);
   });
 
@@ -289,7 +287,9 @@ describe('FileUpload remaining component branches', () => {
         <FileUpload.Preview />
       </FileUpload>
     );
-    expect(screen.queryByText('Icon', { selector: 'title' })).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Icon', { selector: 'title' })
+    ).not.toBeInTheDocument();
   });
 
   it('validates asChild content and supports trigger overrides', () => {

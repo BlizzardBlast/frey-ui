@@ -11,9 +11,7 @@ describe('FileUpload', () => {
     expect(
       screen.getByRole('group', { name: 'Attachments' })
     ).toBeInTheDocument();
-    expect(
-      screen.getByText('Drag and drop a file here')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Drag and drop a file here')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Browse files' })
     ).toBeInTheDocument();
@@ -227,16 +225,12 @@ describe('FileUpload', () => {
       <FileUpload label='Attachment' disabled required />
     );
 
-    expect(
-      screen.getByRole('button', { name: 'Browse files' })
-    ).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Browse files' })).toBeDisabled();
     expect(container.querySelector('input[type="file"]')).toBeRequired();
   });
 
   it('focuses the trigger when native validation fails', () => {
-    const { container } = render(
-      <FileUpload label='Attachment' required />
-    );
+    const { container } = render(<FileUpload label='Attachment' required />);
     const trigger = screen.getByRole('button', { name: 'Browse files' });
     const input = container.querySelector(
       'input[type="file"]'
@@ -281,11 +275,7 @@ describe('FileUpload', () => {
     expect(await axe(container)).toHaveNoViolations();
 
     rerender(
-      <FileUpload
-        label='Attachments'
-        helperText='Up to 5 MB'
-        value={[file]}
-      />
+      <FileUpload label='Attachments' helperText='Up to 5 MB' value={[file]} />
     );
 
     expect(await axe(container)).toHaveNoViolations();

@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { FileIcon } from '../Icons';
-import styles from './fileUpload.module.css';
 import { useFileUploadContext } from './FileUploadContext';
+import styles from './fileUpload.module.css';
 import { isPreviewableImage, useObjectUrl } from './useObjectUrl';
 
 export type FileUploadPreviewProps = Omit<
@@ -12,10 +12,7 @@ export type FileUploadPreviewProps = Omit<
   file?: File;
   alt?: string;
   fallback?: React.ReactNode;
-  imageProps?: Omit<
-    React.ImgHTMLAttributes<HTMLImageElement>,
-    'src' | 'alt'
-  >;
+  imageProps?: Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt'>;
 };
 
 type FileUploadPreviewComponent = React.ForwardRefExoticComponent<
@@ -26,15 +23,7 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
   HTMLSpanElement,
   Readonly<FileUploadPreviewProps>
 >(function FileUploadPreview(
-  {
-    file,
-    alt = '',
-    fallback,
-    imageProps,
-    className,
-    style,
-    ...previewProps
-  },
+  { file, alt = '', fallback, imageProps, className, style, ...previewProps },
   forwardedRef
 ) {
   const context = useFileUploadContext();
@@ -42,9 +31,7 @@ export const FileUploadPreview: FileUploadPreviewComponent = React.forwardRef<
   const canPreview = isPreviewableImage(currentFile);
   const objectUrl = useObjectUrl(currentFile, canPreview);
   const [failedObjectUrl, setFailedObjectUrl] = useState<string>();
-  const hasImageError = Boolean(
-    objectUrl && failedObjectUrl === objectUrl
-  );
+  const hasImageError = Boolean(objectUrl && failedObjectUrl === objectUrl);
 
   if (!currentFile) {
     return null;

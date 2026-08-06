@@ -41,24 +41,18 @@ describe('file validation remaining branches', () => {
     const file = new File(['x'], 'file.txt', { type: 'text/plain' });
     const existing = [file];
 
-    expect(
-      getFileValidationError(file, { multiple: false }, existing)
-    ).toEqual({
-      code: 'too-many-files',
-      reason: 'Only one file is allowed',
-    });
+    expect(getFileValidationError(file, { multiple: false }, existing)).toEqual(
+      {
+        code: 'too-many-files',
+        reason: 'Only one file is allowed',
+      }
+    );
     expect(
       getFileValidationError(file, { multiple: true }, existing)
     ).toBeNull();
-    expect(
-      getFileValidationError(file, { maxFiles: 0 }, existing)
-    ).toBeNull();
-    expect(
-      getFileValidationError(file, { maxFiles: 2 }, existing)
-    ).toBeNull();
-    expect(
-      getFileValidationError(file, { maxFiles: 1 }, existing)
-    ).toEqual({
+    expect(getFileValidationError(file, { maxFiles: 0 }, existing)).toBeNull();
+    expect(getFileValidationError(file, { maxFiles: 2 }, existing)).toBeNull();
+    expect(getFileValidationError(file, { maxFiles: 1 }, existing)).toEqual({
       code: 'too-many-files',
       reason: 'Maximum number of files reached',
     });
@@ -121,9 +115,7 @@ describe('file validation remaining branches', () => {
     expect(formatAcceptedTypes(' , ')).toBe('');
     expect(formatAcceptedTypes('.png')).toBe('PNG');
     expect(formatAcceptedTypes('.png,.jpg')).toBe('PNG or JPG');
-    expect(formatAcceptedTypes('.png,.jpg,.pdf')).toBe(
-      'PNG, JPG, or PDF'
-    );
+    expect(formatAcceptedTypes('.png,.jpg,.pdf')).toBe('PNG, JPG, or PDF');
     expect(formatAcceptedTypes('image/*')).toBe('image files');
     expect(formatAcceptedTypes('application/ld+json')).toBe('LD');
     expect(formatAcceptedTypes('custom')).toBe('custom');
