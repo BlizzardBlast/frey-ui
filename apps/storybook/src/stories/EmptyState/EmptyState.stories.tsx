@@ -116,7 +116,7 @@ export const compact_in_card: Story = {
         <Card.Title>Recent exports</Card.Title>
       </Card.Header>
       <Card.Content>
-        <EmptyState layout='compact'>
+        <EmptyState layout='compact' style={{ padding: 0 }}>
           <EmptyState.Title as='h4'>No exports available</EmptyState.Title>
           <EmptyState.Description>
             Completed exports will appear here for 30 days.
