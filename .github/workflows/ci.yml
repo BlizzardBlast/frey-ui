@@ -30,10 +30,16 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Run affected-package checks
-        run: pnpm turbo run lint typecheck test build --affected
+      - name: Run affected lint, type checking, and builds
+        run: pnpm turbo run lint typecheck build --affected
 
-      - name: Run library coverage
+      - name: Run affected non-library tests
+        run: pnpm turbo run test --affected --filter=!frey-ui
+
+      - name: Check documentation coverage
+        run: pnpm docs:check
+
+      - name: Run library tests with coverage
         run: pnpm test:coverage
 
       - name: Upload LCOV coverage to Codecov
@@ -41,6 +47,7 @@ jobs:
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
           files: packages/frey-ui/coverage/lcov.info
           flags: frey-ui
           name: frey-ui-coverage
@@ -52,6 +59,7 @@ jobs:
         uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          disable_search: true
           files: packages/frey-ui/test-report.junit.xml
           flags: frey-ui-tests
           name: frey-ui-test-results
@@ -63,6 +71,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: frey-ui-test-reports
+          if-no-files-found: error
           path: |
             packages/frey-ui/coverage/lcov.info
             packages/frey-ui/test-report.junit.xml

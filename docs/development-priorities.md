@@ -15,12 +15,11 @@ or the library changes its support policy.
 
 Do the next work in this order:
 
-1. Consolidate the duplicate unit-test and coverage workflow.
-2. Build `EmptyState` as the next small component.
-3. Build a staged `DataTable` as the next major product-oriented component.
-4. Add package-consumer contract tests for published root and subpath imports.
-5. Expand critical browser tests from Chromium to Firefox and WebKit.
-6. Improve adoption documentation and maintain a generated component-status
+1. Build `EmptyState` as the next small component.
+2. Build a staged `DataTable` as the next major product-oriented component.
+3. Add package-consumer contract tests for published root and subpath imports.
+4. Expand critical browser tests from Chromium to Firefox and WebKit.
+5. Improve adoption documentation and maintain a generated component-status
    inventory.
 
 The immediate answer to "what should be made next?" is `EmptyState`. It is a
@@ -31,6 +30,10 @@ feature after that should be a deliberately scoped `DataTable`.
 
 The previous component-focused roadmap is now substantially complete.
 
+- The duplicate push-only unit-test workflow has been removed. `ci.yml` now owns
+  the authoritative library coverage and JUnit uploads, preserves both reports
+  as workflow artifacts, runs documentation checks, and avoids executing the
+  `frey-ui` tests once without coverage and then again with coverage.
 - `CommandPalette` is implemented with compound composition, filtering,
   keyboard navigation, grouped actions, disabled items, empty results, and
   focus return.
@@ -48,31 +51,7 @@ The previous component-focused roadmap is now substantially complete.
 These items should be maintained, but they are no longer candidates for the
 next new feature.
 
-## Priority 0: Remove Avoidable Maintenance Cost
-
-### Consolidate CI coverage workflows
-
-The repository currently runs library coverage in `.github/workflows/ci.yml`
-and also has a separate push-only `.github/workflows/unit-test.yml`. This
-creates duplicated installation and test work on pushes to `main`.
-
-Recommended change:
-
-- Keep coverage and JUnit upload in `ci.yml`.
-- Delete `unit-test.yml` after confirming that branch protection does not still
-  require its old check name.
-- Keep one authoritative Codecov configuration for coverage and test results.
-- Preserve the uploaded `lcov.info` and JUnit XML artifacts for debugging.
-
-Definition of done:
-
-- A pull request runs lint, type checking, tests, coverage, build, and required
-  documentation checks once.
-- A push to `main` does not repeat the same unit coverage job through another
-  workflow.
-- Required-check settings reference only workflows that still exist.
-
-## Priority 1: Complete the Core Product Surface
+## Priority 0: Complete the Core Product Surface
 
 ### Next small component: `EmptyState`
 
@@ -159,7 +138,7 @@ Do not start with a kitchen-sink grid. Deliver it in stages.
 Use real consumer requirements to decide whether those features belong in Frey
 UI later or should remain application concerns.
 
-## Priority 2: Harden the Published Package Contract
+## Priority 1: Harden the Published Package Contract
 
 ### Add package-consumer smoke tests
 
@@ -194,7 +173,7 @@ Preferred direction:
 
 This work should happen before the component count grows much further.
 
-## Priority 3: Enforce Browser and Accessibility Claims
+## Priority 2: Enforce Browser and Accessibility Claims
 
 ### Add Firefox and WebKit smoke projects
 
@@ -229,7 +208,7 @@ announcement behavior, especially:
 Record the tested browser, operating system, assistive technology, component,
 and result so the check is repeatable rather than anecdotal.
 
-## Priority 4: Improve Adoption and Maintenance Visibility
+## Priority 3: Improve Adoption and Maintenance Visibility
 
 ### Generate a component-status inventory
 
