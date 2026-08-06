@@ -1,5 +1,11 @@
 # @frey-ui/playwright
 
+## 1.0.8
+
+### Patch Changes
+
+- @frey-ui/storybook@1.0.11
+
 ## 1.0.7
 
 ### Patch Changes
