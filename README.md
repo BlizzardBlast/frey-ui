@@ -39,12 +39,12 @@ For install, usage, API, accessibility details, and theming docs, see:
 
 - [`packages/frey-ui/README.md`](./packages/frey-ui/README.md)
 
-## Roadmap Progress
+## Development Priorities
 
-Roadmap and component status evolve quickly.
+Library status and priorities evolve quickly.
 
-- For package-level roadmap notes, see [`packages/frey-ui/README.md`](./packages/frey-ui/README.md).
-- For the current recommended next components, see [`docs/component-priorities.md`](./docs/component-priorities.md).
+- For package-level usage and support notes, see [`packages/frey-ui/README.md`](./packages/frey-ui/README.md).
+- For the current library-wide roadmap and recommended next work, see [`docs/development-priorities.md`](./docs/development-priorities.md).
 - For the latest implemented component APIs and usage, see Storybook.
 
 ## Storybook
