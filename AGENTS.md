@@ -51,7 +51,7 @@ pnpm build
 ## Supporting Workflows
 
 - `pnpm docs:check`: runs `scripts/check-storybook-api-coverage.mjs` to verify exported components are covered by Storybook stories and flag cast-wrapper usage (`as unknown as React.ComponentType`).
-- `pnpm ci:changed`: runs affected-package `lint`, `typecheck`, `test`, and `build`.
+- `pnpm ci:changed`: runs affected-package `lint`, `typecheck`, and `build`, plus affected tests outside `frey-ui`; use `pnpm test:coverage` as the authoritative `frey-ui` test run.
 - `pnpm storybook`: runs Storybook locally for `@frey-ui/storybook`.
 - `pnpm build:storybook`: builds static Storybook output for `@frey-ui/storybook`.
 - `pnpm playwright:install`: installs Chromium for Playwright tests in `apps/playwright`.
