@@ -1,371 +1,429 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { FileUploadProps } from 'frey-ui';
-import { FileUpload } from 'frey-ui';
+import { Button, FileUpload } from 'frey-ui';
 import { useState } from 'react';
 import { expect, within } from 'storybook/test';
+
+const STRING_TYPE = 'string';
+const BOOLEAN_TYPE = 'boolean';
+const NUMBER_TYPE = 'number';
+const NONE_DEFAULT = 'None';
+const FALSE_DEFAULT = 'false';
+const PDF_MIME_TYPE = 'application/pdf';
 
 const meta: Meta<FileUploadProps> = {
   component: FileUpload,
   parameters: {
     layout: 'centered',
   },
-  argTypes: {
-    children: {
-      control: false,
-      description: 'Compound FileUpload children (Dropzone, List, Item)',
-      table: {
-        type: {
-          summary: 'ReactNode',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    label: {
-      control: { type: 'text' },
-      description: 'Accessible label for the file upload',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    hideLabel: {
-      control: { type: 'boolean' },
-      description: 'Visually hide the label',
-      table: {
-        type: {
-          summary: 'boolean',
-        },
-        defaultValue: {
-          summary: 'false',
-        },
-      },
-    },
-    helperText: {
-      control: { type: 'text' },
-      description: 'Helper text below the file upload',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    error: {
-      control: { type: 'text' },
-      description: 'Error message to display',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    required: {
-      control: { type: 'boolean' },
-      description: 'Whether the file upload is required',
-      table: {
-        type: {
-          summary: 'boolean',
-        },
-        defaultValue: {
-          summary: 'false',
-        },
-      },
-    },
-    id: {
-      control: { type: 'text' },
-      description: 'Id for the file input and accessible label',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    name: {
-      control: { type: 'text' },
-      description: 'Name attribute for the hidden file input',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    className: {
-      control: { type: 'text' },
-      description: 'Additional class names applied to the field wrapper',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    style: {
-      control: { type: 'object' },
-      description: 'Inline styles applied to the field wrapper',
-      table: {
-        type: {
-          summary: 'CSSProperties',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    value: {
-      control: false,
-      description: 'Controlled array of selected files',
-      table: {
-        type: {
-          summary: 'File[]',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    defaultValue: {
-      control: false,
-      description: 'Uncontrolled default array of selected files',
-      table: {
-        type: {
-          summary: 'File[]',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    onValueChange: {
-      action: 'value changed',
-      description: 'Called when the selected files change',
-      table: {
-        type: {
-          summary: '(files: File[]) => void',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    onFilesRejected: {
-      action: 'files rejected',
-      description: 'Called when files fail validation',
-      table: {
-        type: {
-          summary: '(rejected: { file: File; reason: string }[]) => void',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    accept: {
-      control: { type: 'text' },
-      description: 'Accepted MIME types or file extensions',
-      table: {
-        type: {
-          summary: 'string',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    multiple: {
-      control: { type: 'boolean' },
-      description: 'Whether multiple files can be selected',
-      table: {
-        type: {
-          summary: 'boolean',
-        },
-        defaultValue: {
-          summary: 'false',
-        },
-      },
-    },
-    maxFiles: {
-      control: { type: 'number' },
-      description: 'Maximum number of files allowed',
-      table: {
-        type: {
-          summary: 'number',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    maxSize: {
-      control: { type: 'number' },
-      description: 'Maximum file size in bytes',
-      table: {
-        type: {
-          summary: 'number',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    minSize: {
-      control: { type: 'number' },
-      description: 'Minimum file size in bytes',
-      table: {
-        type: {
-          summary: 'number',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    validate: {
-      control: false,
-      description: 'Custom validator that returns a rejection reason or null',
-      table: {
-        type: {
-          summary: '(file: File) => string | null',
-        },
-        defaultValue: {
-          summary: 'None',
-        },
-      },
-    },
-    disabled: {
-      control: { type: 'boolean' },
-      description: 'Whether the file upload is disabled',
-      table: {
-        type: {
-          summary: 'boolean',
-        },
-        defaultValue: {
-          summary: 'false',
-        },
-      },
-    },
-  },
   decorators: [
     (Story) => (
-      <div style={{ width: 320 }}>
+      <div style={{ width: 'min(36rem, 90vw)' }}>
         <Story />
       </div>
     ),
   ],
+  argTypes: {
+    children: {
+      control: false,
+      description: 'Custom compound component composition.',
+      table: {
+        type: { summary: 'ReactNode' },
+        defaultValue: { summary: 'Default dropzone and file list' },
+      },
+    },
+    label: {
+      control: { type: 'text' },
+      description: 'Accessible field label.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: 'Required' },
+      },
+    },
+    hideLabel: {
+      control: { type: BOOLEAN_TYPE },
+      description: 'Visually hides the field label.',
+      table: {
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
+      },
+    },
+    helperText: {
+      control: { type: 'text' },
+      description: 'Additional guidance displayed below the field.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    error: {
+      control: { type: 'text' },
+      description: 'External validation error shown instead of rejections.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    required: {
+      control: { type: BOOLEAN_TYPE },
+      description: 'Marks the file input as required while empty.',
+      table: {
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
+      },
+    },
+    id: {
+      control: { type: 'text' },
+      description: 'Stable identifier for the field and file input.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: 'Generated' },
+      },
+    },
+    name: {
+      control: { type: 'text' },
+      description: 'Name submitted by the native file input.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    className: {
+      control: { type: 'text' },
+      description: 'Additional class name for the field wrapper.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    style: {
+      control: { type: 'object' },
+      description: 'Inline styles for the field wrapper.',
+      table: {
+        type: { summary: 'CSSProperties' },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    value: {
+      control: false,
+      description: 'Controlled selected files.',
+      table: {
+        type: { summary: 'File[]' },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    defaultValue: {
+      control: false,
+      description: 'Initial files for uncontrolled usage.',
+      table: {
+        type: { summary: 'File[]' },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    onValueChange: {
+      action: 'value changed',
+      description: 'Called whenever the selected files change.',
+      table: {
+        type: { summary: '(files: File[]) => void' },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    onFilesRejected: {
+      action: 'files rejected',
+      description: 'Called with structured details for rejected files.',
+      table: {
+        type: { summary: '(rejected: FileUploadRejected[]) => void' },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+    disabled: {
+      control: { type: BOOLEAN_TYPE },
+      description: 'Disables browsing, dropping, and removal.',
+      table: {
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
+      },
+    },
+    accept: {
+      control: { type: 'text' },
+      description: 'Accepted MIME types or file extensions.',
+      table: {
+        type: { summary: STRING_TYPE },
+        defaultValue: { summary: 'Any file' },
+      },
+    },
+    maxSize: {
+      control: { type: NUMBER_TYPE },
+      description: 'Maximum file size in bytes.',
+      table: {
+        type: { summary: NUMBER_TYPE },
+        defaultValue: { summary: 'Unlimited' },
+      },
+    },
+    minSize: {
+      control: { type: NUMBER_TYPE },
+      description: 'Minimum file size in bytes.',
+      table: {
+        type: { summary: NUMBER_TYPE },
+        defaultValue: { summary: '0' },
+      },
+    },
+    maxFiles: {
+      control: { type: NUMBER_TYPE },
+      description: 'Maximum number of selected files.',
+      table: {
+        type: { summary: NUMBER_TYPE },
+        defaultValue: { summary: 'Unlimited' },
+      },
+    },
+    multiple: {
+      control: { type: BOOLEAN_TYPE },
+      description: 'Allows more than one selected file.',
+      table: {
+        type: { summary: BOOLEAN_TYPE },
+        defaultValue: { summary: FALSE_DEFAULT },
+      },
+    },
+    validate: {
+      control: false,
+      description: 'Custom validation function returning an error or null.',
+      table: {
+        type: { summary: '(file: File) => string | null' },
+        defaultValue: { summary: NONE_DEFAULT },
+      },
+    },
+  },
 } satisfies Meta<FileUploadProps>;
 
 export default meta;
 type Story = StoryObj<FileUploadProps>;
 
-const defaultRender = (args: FileUploadProps) => (
-  <FileUpload {...args}>
-    <FileUpload.Dropzone />
-    <FileUpload.List>
-      <FileUpload.Item />
-    </FileUpload.List>
-  </FileUpload>
+const previewFile = new File(
+  [
+    Uint8Array.from([
+      137, 80, 78, 71, 13, 10, 26, 10, 0, 0, 0, 13, 73, 72, 68, 82, 0, 0, 0, 1,
+      0, 0, 0, 1, 8, 6, 0, 0, 0, 31, 21, 196, 137, 0, 0, 0, 13, 73, 68, 65, 84,
+      8, 215, 99, 248, 207, 192, 240, 31, 0, 5, 0, 1, 255, 137, 153, 61, 29, 0,
+      0, 0, 0, 73, 69, 78, 68, 174, 66, 96, 130,
+    ]),
+  ],
+  'profile-photo.png',
+  { type: 'image/png', lastModified: 1 }
 );
 
-export const basic_file_upload: Story = {
-  args: {
-    label: 'Upload',
-  },
-  render: defaultRender,
-} satisfies Story;
+const reportFile = new File(['Quarterly report'], 'quarterly-report.pdf', {
+  type: PDF_MIME_TYPE,
+  lastModified: 2,
+});
 
-export const multiple_files: Story = {
+export const Default: Story = {
   args: {
-    label: 'Upload files',
+    label: 'Attachment',
+    helperText:
+      'Files are selected locally and are not uploaded automatically.',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Attachment' });
+
+    await expect(dropzone).toHaveAttribute('data-state', 'empty');
+    await expect(
+      canvas.getByRole('button', { name: 'Browse files' })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText('Drag and drop a file here')
+    ).toBeInTheDocument();
+  },
+};
+
+export const SelectedSingleFile: Story = {
+  args: {
+    label: 'Attachment',
+    defaultValue: [previewFile],
+    helperText:
+      'Files are selected locally and are not uploaded automatically.',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Attachment' });
+
+    await expect(dropzone).toHaveAttribute('data-state', 'replace');
+    await expect(
+      canvas.getByRole('button', { name: 'Replace file' })
+    ).toBeInTheDocument();
+    await expect(canvas.getByText('profile-photo.png')).toBeInTheDocument();
+  },
+};
+
+export const ImagePreview: Story = {
+  args: {
+    label: 'Profile picture',
+    accept: 'image/png,image/jpeg',
+    maxSize: 2 * 1024 * 1024,
+    defaultValue: [previewFile],
+  },
+};
+
+export const MultipleFiles: Story = {
+  args: {
+    label: 'Project files',
     multiple: true,
+    maxFiles: 5,
+    maxSize: 5 * 1024 * 1024,
+    accept: 'image/*,.pdf,.docx',
+    defaultValue: [previewFile, reportFile],
   },
-  render: defaultRender,
-} satisfies Story;
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Project files' });
 
-export const with_validation: Story = {
-  args: {
-    label: 'Upload images',
-    accept: 'image/*',
-    maxSize: 1024 * 1024,
-    maxFiles: 3,
+    await expect(dropzone).toHaveAttribute('data-state', 'append');
+    await expect(
+      canvas.getByRole('button', { name: 'Add files' })
+    ).toBeInTheDocument();
   },
-  render: defaultRender,
-} satisfies Story;
+};
 
-export const disabled: Story = {
+export const AtMaximumFiles: Story = {
   args: {
-    label: 'Disabled upload',
-    disabled: true,
+    label: 'Project files',
+    multiple: true,
+    maxFiles: 2,
+    accept: 'image/*,.pdf',
+    defaultValue: [previewFile, reportFile],
+    helperText: 'Remove a file before selecting another one.',
   },
-  render: defaultRender,
-} satisfies Story;
+};
 
-export const with_error: Story = {
+export const TriggerOnly: Story = {
   args: {
-    label: 'Upload',
-    error: 'Please upload a valid file.',
-  },
-  render: defaultRender,
-} satisfies Story;
-
-export const with_files: Story = {
-  args: {
-    label: 'Attachments',
+    label: 'Attachment',
+    hideLabel: true,
   },
   render: (args) => (
-    <FileUpload
-      {...args}
-      defaultValue={[new File(['hello'], 'hello.txt', { type: 'text/plain' })]}
-    >
-      <FileUpload.Dropzone />
+    <FileUpload {...args}>
+      <FileUpload.Trigger asChild>
+        <Button variant='secondary'>Attach file</Button>
+      </FileUpload.Trigger>
+      <FileUpload.List />
+    </FileUpload>
+  ),
+};
+
+export const CustomComposition: Story = {
+  args: {
+    label: 'Design assets',
+    accept: 'image/*',
+    multiple: true,
+    maxFiles: 3,
+  },
+  render: (args) => (
+    <FileUpload {...args}>
+      <FileUpload.Dropzone
+        heading='Add design assets'
+        description='Drop images here or browse from your device'
+      />
       <FileUpload.List>
-        <FileUpload.Item />
+        <FileUpload.Item>
+          {(file, onRemove) => (
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                gap: 12,
+              }}
+            >
+              <span>{file.name}</span>
+              <Button variant='ghost' size='sm' onClick={onRemove}>
+                Remove
+              </Button>
+            </div>
+          )}
+        </FileUpload.Item>
       </FileUpload.List>
     </FileUpload>
   ),
-} satisfies Story;
+};
 
-export const controlled: Story = {
-  render: function ControlledFileUpload(args: FileUploadProps) {
+export const Controlled: Story = {
+  args: {
+    label: 'Controlled files',
+    multiple: true,
+  },
+  render: function ControlledFileUpload(args) {
     const [files, setFiles] = useState<File[]>([]);
 
-    return (
-      <FileUpload {...args} value={files} onValueChange={setFiles}>
-        <FileUpload.Dropzone />
-        <FileUpload.List>
-          <FileUpload.Item />
-        </FileUpload.List>
-      </FileUpload>
-    );
+    return <FileUpload {...args} value={files} onValueChange={setFiles} />;
   },
-} satisfies Story;
+};
 
-export const renders_dropzone: Story = {
+export const ReplacementError: Story = {
   args: {
-    label: 'Upload',
+    label: 'Profile picture',
+    accept: 'image/png,image/jpeg',
+    defaultValue: [previewFile],
+    error: 'Choose a PNG or JPEG image smaller than 2 MB.',
   },
-  render: defaultRender,
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const dropzone = canvas.getByRole('button', { name: 'Upload' });
+};
 
-    expect(dropzone).toBeInTheDocument();
+export const ValidationError: Story = {
+  args: {
+    label: 'Identity document',
+    accept: '.pdf',
+    maxSize: 1024 * 1024,
+    error: 'Upload a PDF smaller than 1 MB.',
   },
-} satisfies Story;
+};
+
+export const Required: Story = {
+  args: {
+    label: 'Supporting document',
+    required: true,
+    helperText: 'A supporting document is required.',
+  },
+};
+
+export const DisabledEmpty: Story = {
+  args: {
+    label: 'Locked attachment',
+    disabled: true,
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    label: 'Locked attachment',
+    disabled: true,
+    defaultValue: [
+      new File(['Locked'], 'locked-document.pdf', {
+        type: PDF_MIME_TYPE,
+      }),
+    ],
+  },
+};
+
+export const LongFilename: Story = {
+  args: {
+    label: 'Long filename',
+    defaultValue: [
+      new File(
+        ['Long filename'],
+        'final-approved-quarterly-financial-report-with-appendices-and-supporting-evidence.pdf',
+        { type: PDF_MIME_TYPE }
+      ),
+    ],
+  },
+};
+
+export const NarrowContainer: Story = {
+  args: {
+    label: 'Attachment',
+    defaultValue: [previewFile],
+  },
+  render: (args) => (
+    <div style={{ width: '20rem', maxWidth: '80vw' }}>
+      <FileUpload {...args} />
+    </div>
+  ),
+};

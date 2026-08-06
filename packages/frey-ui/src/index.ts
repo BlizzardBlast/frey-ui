@@ -111,7 +111,13 @@ export type {
   FileUploadDropzoneProps,
   FileUploadItemProps,
   FileUploadListProps,
+  FileUploadPreviewProps,
   FileUploadProps,
+  FileUploadRejected,
+  FileUploadRejectionCode,
+  FileUploadTriggerProps,
+  FileValidationError,
+  FileValidationRule,
 } from './FileUpload';
 export { FileUpload } from './FileUpload';
 export type { FlexProps } from './Flex';
@@ -127,8 +133,10 @@ export {
   CircleInfoIcon,
   CircleXIcon,
   CloseIcon,
+  FileIcon,
   MinusIcon,
   TriangleAlertIcon,
+  UploadIcon,
 } from './Icons';
 export type { LinkColor, LinkProps, LinkUnderline } from './Link';
 export { default as Link } from './Link';
