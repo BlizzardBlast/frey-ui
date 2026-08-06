@@ -1,0 +1,46 @@
+name: Sonar issue diagnostic
+
+on:
+  push:
+    branches:
+      - agent/file-upload-remake
+    paths:
+      - .github/workflows/sonar-issue-diagnostic.yml
+
+permissions:
+  contents: read
+
+jobs:
+  list-sonar-issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch PR issues
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://sonarcloud.io/api/issues/search?componentKeys=BlizzardBlast_frey-ui&pullRequest=92&issueStatuses=OPEN%2CCONFIRMED&sinceLeakPeriod=true&ps=500'
+          http_code="$(curl --silent --show-error --location --output /tmp/sonar.json --write-out '%{http_code}' "$url")"
+          echo "HTTP $http_code"
+          if [[ "$http_code" != '200' ]]; then
+            cat /tmp/sonar.json
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/sonar.json').read_text())
+          issues = payload.get('issues', [])
+          print(f"ISSUE_COUNT={len(issues)}")
+          for issue in issues:
+              component = issue.get('component', '')
+              path = component.split(':', 1)[-1]
+              line = issue.get('line') or issue.get('textRange', {}).get('startLine') or '-'
+              print('\t'.join([
+                  issue.get('severity', '-'),
+                  issue.get('rule', '-'),
+                  path,
+                  str(line),
+                  issue.get('message', '-').replace('\t', ' ').replace('\n', ' '),
+              ]))
+          PY
