@@ -73,6 +73,7 @@ export function useFileUploadState(
     validate,
   } = options;
 
+  const isControlled = value !== undefined;
   const [files, setFiles] = useControllableValue<File[]>(
     value,
     defaultValue,
@@ -127,6 +128,21 @@ export function useFileUploadState(
     }
   }, []);
 
+  const proposeFiles = useCallback(
+    (nextFiles: File[]) => {
+      setFiles(nextFiles);
+
+      if (isControlled) {
+        syncInputFiles(filesRef.current);
+        return;
+      }
+
+      filesRef.current = nextFiles;
+      syncInputFiles(nextFiles);
+    },
+    [isControlled, setFiles, syncInputFiles]
+  );
+
   const processFiles = useCallback(
     (incoming: File[]) => {
       if (disabled) {
@@ -163,16 +179,20 @@ export function useFileUploadState(
         onFilesRejected?.(nextRejected);
       }
 
-      const nextFiles = accepted.length > 0 ? currentFiles : filesRef.current;
-
       if (accepted.length > 0) {
-        filesRef.current = nextFiles;
-        setFiles(nextFiles);
+        proposeFiles(currentFiles);
+        return;
       }
 
-      syncInputFiles(nextFiles);
+      syncInputFiles(filesRef.current);
     },
-    [disabled, onFilesRejected, setFiles, syncInputFiles, validationRule]
+    [
+      disabled,
+      onFilesRejected,
+      proposeFiles,
+      syncInputFiles,
+      validationRule,
+    ]
   );
 
   const removeFileAt = useCallback(
@@ -189,13 +209,11 @@ export function useFileUploadState(
         ...currentFiles.slice(index + 1),
       ];
 
-      filesRef.current = nextFiles;
-      setFiles(nextFiles);
+      proposeFiles(nextFiles);
       setRejected([]);
-      syncInputFiles(nextFiles);
       setStatusMessage(`${removedFile.name} removed`);
     },
-    [disabled, setFiles, syncInputFiles]
+    [disabled, proposeFiles]
   );
 
   const removeFile = useCallback(
@@ -206,12 +224,14 @@ export function useFileUploadState(
   );
 
   const clearFiles = useCallback(() => {
-    filesRef.current = [];
-    setFiles([]);
+    if (disabled) {
+      return;
+    }
+
+    proposeFiles([]);
     setRejected([]);
     setStatusMessage('Files cleared');
-    syncInputFiles([]);
-  }, [setFiles, syncInputFiles]);
+  }, [disabled, proposeFiles]);
 
   const onInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -246,17 +266,20 @@ export function useFileUploadState(
     let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
     const handleReset = () => {
-      filesRef.current = defaultValue;
       setRejected([]);
       setStatusMessage('');
-      setFiles(defaultValue);
+
+      if (!isControlled) {
+        filesRef.current = defaultValue;
+        setFiles(defaultValue);
+      }
 
       if (resetTimer !== undefined) {
         clearTimeout(resetTimer);
       }
 
       resetTimer = setTimeout(() => {
-        syncInputFiles(defaultValue);
+        syncInputFiles(isControlled ? filesRef.current : defaultValue);
       }, 0);
     };
 
@@ -269,7 +292,7 @@ export function useFileUploadState(
         clearTimeout(resetTimer);
       }
     };
-  }, [defaultValue, setFiles, syncInputFiles]);
+  }, [defaultValue, isControlled, setFiles, syncInputFiles]);
 
   const {
     isDragOver,
