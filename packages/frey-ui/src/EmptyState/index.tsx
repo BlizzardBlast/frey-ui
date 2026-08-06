@@ -25,10 +25,10 @@ const EmptyStateRoot: EmptyStateRootComponent = React.forwardRef<
 ) {
   return (
     <div
+      {...props}
       ref={ref}
       className={clsx(styles.empty_state, styles[layout], className)}
       data-layout={layout}
-      {...props}
     />
   );
 });
