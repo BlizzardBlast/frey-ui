@@ -1,25 +1,11 @@
 import type React from 'react';
-import { FileUploadRoot, type FileUploadProps } from './FileUpload';
-import {
-  FileUploadDropzone,
-  type FileUploadDropzoneProps,
-} from './FileUploadDropzone';
-import {
-  FileUploadItem,
-  type FileUploadItemProps,
-} from './FileUploadItem';
-import {
-  FileUploadList,
-  type FileUploadListProps,
-} from './FileUploadList';
-import {
-  FileUploadPreview,
-  type FileUploadPreviewProps,
-} from './FileUploadPreview';
-import {
-  FileUploadTrigger,
-  type FileUploadTriggerProps,
-} from './FileUploadTrigger';
+import { FileUploadRoot } from './FileUpload';
+import type { FileUploadProps } from './FileUpload';
+import { FileUploadDropzone } from './FileUploadDropzone';
+import { FileUploadItem } from './FileUploadItem';
+import { FileUploadList } from './FileUploadList';
+import { FileUploadPreview } from './FileUploadPreview';
+import { FileUploadTrigger } from './FileUploadTrigger';
 
 type FileUploadComponent = React.FC<Readonly<FileUploadProps>> & {
   Dropzone: typeof FileUploadDropzone;
@@ -38,14 +24,12 @@ const FileUpload: FileUploadComponent = Object.assign(FileUploadRoot, {
 });
 
 export { FileUpload };
-export type {
-  FileUploadDropzoneProps,
-  FileUploadItemProps,
-  FileUploadListProps,
-  FileUploadPreviewProps,
-  FileUploadProps,
-  FileUploadTriggerProps,
-};
+export type { FileUploadProps } from './FileUpload';
+export type { FileUploadDropzoneProps } from './FileUploadDropzone';
+export type { FileUploadItemProps } from './FileUploadItem';
+export type { FileUploadListProps } from './FileUploadList';
+export type { FileUploadPreviewProps } from './FileUploadPreview';
+export type { FileUploadTriggerProps } from './FileUploadTrigger';
 export type {
   FileUploadRejected,
   FileUploadRejectionCode,
