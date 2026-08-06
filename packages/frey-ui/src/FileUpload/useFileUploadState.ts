@@ -186,13 +186,7 @@ export function useFileUploadState(
 
       syncInputFiles(filesRef.current);
     },
-    [
-      disabled,
-      onFilesRejected,
-      proposeFiles,
-      syncInputFiles,
-      validationRule,
-    ]
+    [disabled, onFilesRejected, proposeFiles, syncInputFiles, validationRule]
   );
 
   const removeFileAt = useCallback(

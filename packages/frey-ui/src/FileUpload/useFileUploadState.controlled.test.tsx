@@ -215,7 +215,9 @@ describe('useFileUploadState controlled synchronization', () => {
       expect(Array.from(input.files ?? [])).toEqual([controlled]);
     });
 
-    (input as unknown as { _files?: FileListMock })._files = new FileListMock([]);
+    (input as unknown as { _files?: FileListMock })._files = new FileListMock(
+      []
+    );
     fireEvent.reset(screen.getByTestId('form'));
 
     await waitFor(() => {
