@@ -30,6 +30,16 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Diagnose SonarCloud PR issues
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -uo pipefail
+          url='https://sonarcloud.io/api/issues/search?componentKeys=BlizzardBlast_frey-ui&pullRequest=92&issueStatuses=OPEN%2CCONFIRMED&sinceLeakPeriod=true&ps=500'
+          http_code="$(curl --silent --show-error --location --output /tmp/sonar.json --write-out '%{http_code}' "$url")"
+          echo "SONAR_HTTP=$http_code"
+          cat /tmp/sonar.json | python3 -c "import json,sys; p=json.load(sys.stdin); issues=p.get('issues', []); print(f'SONAR_ISSUE_COUNT={len(issues)}'); [print(chr(9).join([i.get('severity','-'), i.get('rule','-'), i.get('component','').split(':',1)[-1], str(i.get('line') or i.get('textRange',{}).get('startLine') or '-'), i.get('message','-').replace(chr(9),' ').replace(chr(10),' ')])) for i in issues]"
+
       - name: Run affected-package checks
         run: pnpm turbo run lint typecheck test build --affected
 
