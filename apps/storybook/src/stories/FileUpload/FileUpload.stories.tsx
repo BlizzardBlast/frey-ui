@@ -211,21 +211,47 @@ const previewFile = new File(
   { type: 'image/png', lastModified: 1 }
 );
 
+const reportFile = new File(['Quarterly report'], 'quarterly-report.pdf', {
+  type: PDF_MIME_TYPE,
+  lastModified: 2,
+});
+
 export const Default: Story = {
   args: {
-    label: 'Attachments',
+    label: 'Attachment',
     helperText:
       'Files are selected locally and are not uploaded automatically.',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Attachment' });
 
+    await expect(dropzone).toHaveAttribute('data-state', 'empty');
     await expect(
       canvas.getByRole('button', { name: 'Browse files' })
     ).toBeInTheDocument();
     await expect(
       canvas.getByText('Drag and drop a file here')
     ).toBeInTheDocument();
+  },
+};
+
+export const SelectedSingleFile: Story = {
+  args: {
+    label: 'Attachment',
+    defaultValue: [previewFile],
+    helperText:
+      'Files are selected locally and are not uploaded automatically.',
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Attachment' });
+
+    await expect(dropzone).toHaveAttribute('data-state', 'replace');
+    await expect(
+      canvas.getByRole('button', { name: 'Replace file' })
+    ).toBeInTheDocument();
+    await expect(canvas.getByText('profile-photo.png')).toBeInTheDocument();
   },
 };
 
@@ -245,13 +271,27 @@ export const MultipleFiles: Story = {
     maxFiles: 5,
     maxSize: 5 * 1024 * 1024,
     accept: 'image/*,.pdf,.docx',
-    defaultValue: [
-      previewFile,
-      new File(['Quarterly report'], 'quarterly-report.pdf', {
-        type: PDF_MIME_TYPE,
-        lastModified: 2,
-      }),
-    ],
+    defaultValue: [previewFile, reportFile],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const dropzone = canvas.getByRole('region', { name: 'Project files' });
+
+    await expect(dropzone).toHaveAttribute('data-state', 'append');
+    await expect(
+      canvas.getByRole('button', { name: 'Add files' })
+    ).toBeInTheDocument();
+  },
+};
+
+export const AtMaximumFiles: Story = {
+  args: {
+    label: 'Project files',
+    multiple: true,
+    maxFiles: 2,
+    accept: 'image/*,.pdf',
+    defaultValue: [previewFile, reportFile],
+    helperText: 'Remove a file before selecting another one.',
   },
 };
 
@@ -318,6 +358,15 @@ export const Controlled: Story = {
   },
 };
 
+export const ReplacementError: Story = {
+  args: {
+    label: 'Profile picture',
+    accept: 'image/png,image/jpeg',
+    defaultValue: [previewFile],
+    error: 'Choose a PNG or JPEG image smaller than 2 MB.',
+  },
+};
+
 export const ValidationError: Story = {
   args: {
     label: 'Identity document',
@@ -332,6 +381,13 @@ export const Required: Story = {
     label: 'Supporting document',
     required: true,
     helperText: 'A supporting document is required.',
+  },
+};
+
+export const DisabledEmpty: Story = {
+  args: {
+    label: 'Locked attachment',
+    disabled: true,
   },
 };
 
@@ -358,4 +414,16 @@ export const LongFilename: Story = {
       ),
     ],
   },
+};
+
+export const NarrowContainer: Story = {
+  args: {
+    label: 'Attachment',
+    defaultValue: [previewFile],
+  },
+  render: (args) => (
+    <div style={{ width: '20rem', maxWidth: '80vw' }}>
+      <FileUpload {...args} />
+    </div>
+  ),
 };
