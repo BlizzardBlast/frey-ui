@@ -129,7 +129,6 @@ export const FileUploadDropzone: FileUploadDropzoneComponent =
           style={style}
           aria-label={ariaLabel}
           aria-labelledby={accessibleLabelledBy}
-          aria-disabled={context.disabled || undefined}
           data-dragging={context.isDragOver ? true : undefined}
           data-disabled={context.disabled ? true : undefined}
           data-invalid={context.hasError ? true : undefined}
