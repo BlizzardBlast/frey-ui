@@ -127,9 +127,9 @@ pnpm theme:tokens -- --primary "#0f62fe" --success "#198038" --warning "#f1c21b"
 
 Then load the generated CSS after `frey-ui/theme.css` in your application so your brand tokens override defaults.
 
-## Roadmap Notes
+## Development Priorities
 
-- Additional upcoming components are tracked through repository roadmap/issues, Storybook coverage, and [`docs/component-priorities.md`](../../docs/component-priorities.md).
+- Current component, quality, packaging, accessibility, documentation, and release priorities are tracked in [`docs/development-priorities.md`](../../docs/development-priorities.md).
 - Accordion content animation: height changes remain animated. The transition wrapper clips content only while opening or closing; once expanded, nested focus rings and non-portaled overlays may extend beyond the panel.
 
 ## License
