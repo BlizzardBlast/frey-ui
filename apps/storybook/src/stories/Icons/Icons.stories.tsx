@@ -7,9 +7,11 @@ import {
   CircleInfoIcon,
   CircleXIcon,
   CloseIcon,
+  FileIcon,
   type IconProps,
   MinusIcon,
   TriangleAlertIcon,
+  UploadIcon,
 } from 'frey-ui';
 
 type IconStoryProps = Pick<
@@ -121,6 +123,14 @@ export const icon_gallery: Story = {
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
         <CalendarIcon {...args} title={args.title ?? 'Calendar icon'} />
         <small>CalendarIcon</small>
+      </div>
+      <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
+        <FileIcon {...args} title={args.title ?? 'File icon'} />
+        <small>FileIcon</small>
+      </div>
+      <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
+        <UploadIcon {...args} title={args.title ?? 'Upload icon'} />
+        <small>UploadIcon</small>
       </div>
       <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
         <CircleXIcon {...args} title={args.title ?? 'Error icon'} />
