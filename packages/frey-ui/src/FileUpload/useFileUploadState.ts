@@ -278,18 +278,48 @@ export function useFileUploadState(
     };
   }, [defaultValue, setFiles, syncInputFiles]);
 
-  const drag = useFileUploadDragState(processFiles, disabled);
+  const {
+    isDragOver,
+    onDragEnter,
+    onDragLeave,
+    onDragOver,
+    onDragEnd,
+    onDrop,
+  } = useFileUploadDragState(processFiles, disabled);
 
-  return {
-    files,
-    rejected,
-    statusMessage,
-    inputRef,
-    onInputChange,
-    openFileDialog,
-    removeFile,
-    removeFileAt,
-    clearFiles,
-    ...drag,
-  };
+  return useMemo(
+    () => ({
+      files,
+      rejected,
+      statusMessage,
+      inputRef,
+      onInputChange,
+      openFileDialog,
+      removeFile,
+      removeFileAt,
+      clearFiles,
+      isDragOver,
+      onDragEnter,
+      onDragLeave,
+      onDragOver,
+      onDragEnd,
+      onDrop,
+    }),
+    [
+      clearFiles,
+      files,
+      isDragOver,
+      onDragEnd,
+      onDragEnter,
+      onDragLeave,
+      onDragOver,
+      onDrop,
+      onInputChange,
+      openFileDialog,
+      rejected,
+      removeFile,
+      removeFileAt,
+      statusMessage,
+    ]
+  );
 }
