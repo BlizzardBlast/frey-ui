@@ -5,19 +5,70 @@ import Button from '../Button';
 import { FileUpload } from './index';
 
 describe('FileUpload', () => {
-  it('renders a polished default composition', () => {
-    const { container } = render(<FileUpload label='Attachments' />);
+  it('renders a polished empty single-file composition', () => {
+    const { container } = render(<FileUpload label='Attachment' />);
 
     expect(
-      screen.getByRole('group', { name: 'Attachments' })
+      screen.getByRole('group', { name: 'Attachment' })
     ).toBeInTheDocument();
     expect(screen.getByText('Drag and drop a file here')).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Browse files' })
     ).toBeInTheDocument();
 
+    const dropzone = screen.getByRole('region', { name: 'Attachment' });
+    expect(dropzone).toHaveAttribute('data-state', 'empty');
+    expect(dropzone).toHaveAttribute('data-default-content', 'true');
+
     const input = container.querySelector('input[type="file"]');
     expect(input?.getAttribute('aria-labelledby')).toContain('-label');
+  });
+
+  it('uses compact replacement copy after a single file is selected', () => {
+    const file = new File(['hello'], 'greeting.txt', { type: 'text/plain' });
+
+    render(<FileUpload label='Attachment' value={[file]} />);
+
+    const dropzone = screen.getByRole('region', { name: 'Attachment' });
+    expect(dropzone).toHaveAttribute('data-state', 'replace');
+    expect(screen.getByText('Drop a new file to replace')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'The current file remains until a valid replacement is selected'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Replace file' })
+    ).toBeInTheDocument();
+
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+
+    expect(screen.getByText('Drop the file to replace')).toBeInTheDocument();
+  });
+
+  it('uses append copy when multiple files are already selected', () => {
+    const selected = new File(['selected'], 'selected.txt', {
+      type: 'text/plain',
+    });
+
+    render(
+      <FileUpload label='Attachments' multiple value={[selected]}>
+        <FileUpload.Dropzone data-testid='dropzone' />
+      </FileUpload>
+    );
+
+    const dropzone = screen.getByTestId('dropzone');
+    expect(dropzone).toHaveAttribute('data-state', 'append');
+    expect(screen.getByText('Add more files')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Add files' })).toBeInTheDocument();
+
+    fireEvent.dragEnter(dropzone, {
+      dataTransfer: { files: [], types: ['Files'] },
+    });
+
+    expect(screen.getByText('Drop files to add')).toBeInTheDocument();
   });
 
   it('adds dropped files and renders their metadata', () => {
@@ -42,6 +93,13 @@ describe('FileUpload', () => {
     expect(screen.getByRole('listitem')).toHaveTextContent('greeting.txt');
     expect(screen.getByRole('listitem')).toHaveTextContent('TXT · 5 B');
     expect(screen.getByRole('status')).toHaveTextContent('1 file added');
+    expect(screen.getByTestId('dropzone')).toHaveAttribute(
+      'data-state',
+      'replace'
+    );
+    expect(
+      screen.getByRole('button', { name: 'Replace file' })
+    ).toBeInTheDocument();
   });
 
   it('opens the file dialog through the default trigger', () => {
@@ -146,7 +204,7 @@ describe('FileUpload', () => {
       />
     );
 
-    const trigger = screen.getByRole('button', { name: 'Browse files' });
+    const trigger = screen.getByRole('button', { name: 'Add files' });
     const removeButtons = screen.getAllByRole('button', {
       name: 'Remove duplicate.txt',
     });
@@ -258,6 +316,7 @@ describe('FileUpload', () => {
       dataTransfer: { files: [], types: ['Files'] },
     });
     expect(dropzone).toHaveAttribute('data-dragging', 'true');
+    expect(screen.getByText('Drop the file to add')).toBeInTheDocument();
   });
 
   it('throws when a compound child is used outside FileUpload', () => {
