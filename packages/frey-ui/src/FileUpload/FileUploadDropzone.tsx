@@ -175,12 +175,40 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
   const handleDragOver = composeDragHandler(onDragOver, context.onDragOver);
   const handleDragEnd = composeDragHandler(onDragEnd, context.onDragEnd);
   const handleDrop = composeDragHandler(onDrop, context.onDrop);
-  const hasDefaultContent = children === undefined || children === null;
   let accessibleLabelledBy = ariaLabelledBy;
 
   if (!accessibleLabelledBy && !ariaLabel) {
     accessibleLabelledBy = context.labelId;
   }
+
+  const defaultContent = (
+    <>
+      <span className={styles.dropzoneIcon} aria-hidden='true'>
+        {icon ?? <UploadIcon size='xl' />}
+      </span>
+
+      <span className={styles.dropzoneCopy}>
+        <span className={styles.dropzoneHeading}>
+          {heading ?? defaultHeading}
+        </span>
+        <span className={styles.dropzoneDescription}>
+          {description ?? defaultDescription}
+        </span>
+      </span>
+
+      <FileUploadTrigger asChild>
+        <Button
+          variant='secondary'
+          size='sm'
+          disabled={context.disabled}
+          className={styles.dropzoneAction}
+        >
+          {defaultActionLabel}
+        </Button>
+      </FileUploadTrigger>
+    </>
+  );
+  const resolvedChildren = children ?? defaultContent;
 
   return (
     <section
@@ -191,7 +219,7 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
       aria-label={ariaLabel}
       aria-labelledby={accessibleLabelledBy}
       data-state={visualState}
-      data-default-content={hasDefaultContent ? true : undefined}
+      data-default-content={resolvedChildren === defaultContent ? true : undefined}
       data-dragging={context.isDragOver ? true : undefined}
       data-disabled={context.disabled ? true : undefined}
       data-invalid={context.hasError ? true : undefined}
@@ -202,33 +230,7 @@ export const FileUploadDropzone: FileUploadDropzoneComponent = React.forwardRef<
       onDragEnd={handleDragEnd}
       onDrop={handleDrop}
     >
-      {children ?? (
-        <>
-          <span className={styles.dropzoneIcon} aria-hidden='true'>
-            {icon ?? <UploadIcon size='xl' />}
-          </span>
-
-          <span className={styles.dropzoneCopy}>
-            <span className={styles.dropzoneHeading}>
-              {heading ?? defaultHeading}
-            </span>
-            <span className={styles.dropzoneDescription}>
-              {description ?? defaultDescription}
-            </span>
-          </span>
-
-          <FileUploadTrigger asChild>
-            <Button
-              variant='secondary'
-              size='sm'
-              disabled={context.disabled}
-              className={styles.dropzoneAction}
-            >
-              {defaultActionLabel}
-            </Button>
-          </FileUploadTrigger>
-        </>
-      )}
+      {resolvedChildren}
     </section>
   );
 });
