@@ -64,9 +64,14 @@ export type EmptyStateTitleElement =
   | 'p'
   | 'div';
 
+type EmptyStateTitleBaseProps = {
+  className?: string;
+  style?: React.CSSProperties;
+};
+
 export type EmptyStateTitleProps<
   Element extends EmptyStateTitleElement = 'h3',
-> = PolymorphicComponentProps<Element>;
+> = PolymorphicComponentProps<Element, EmptyStateTitleBaseProps>;
 
 type EmptyStateTitleComponent = (<
   Element extends EmptyStateTitleElement = 'h3',
