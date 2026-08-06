@@ -99,6 +99,16 @@ export type {
 } from './DropdownMenu';
 export { default as DropdownMenu } from './DropdownMenu';
 export type {
+  EmptyStateActionsProps,
+  EmptyStateDescriptionProps,
+  EmptyStateIconProps,
+  EmptyStateLayout,
+  EmptyStateProps,
+  EmptyStateTitleElement,
+  EmptyStateTitleProps,
+} from './EmptyState';
+export { default as EmptyState } from './EmptyState';
+export type {
   DateCalendar,
   DateSegment,
   DateSegmentLabels,
