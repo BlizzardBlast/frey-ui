@@ -43,7 +43,7 @@ catalog:
   jest-axe: ^11.0.0
   jsdom: 30.0.1
   magic-string: 1.1.0
-  postcss: 8.5.25
+  postcss: 8.5.28
   postcss-modules: 9.0.1
   react: 19.2.8
   react-dom: 19.2.8
