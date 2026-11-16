@@ -36,19 +36,27 @@ Use its actual `ColorToken`, `RadiusToken` and `SpaceToken` unions rather
 than passing CSS variable names or invented token strings as typed props.
 Do not forbid justified layout-specific CSS or isolated test fixtures.
 
-## Verified component contracts (quick reference)
+## Component API discovery without a duplicate catalog
 
-| Component | Usage rule |
-| --- | --- |
-| `Button` | `variant`: `primary`, `secondary`, `ghost`, `destructive`; `size`: `sm`, `md`, `lg`. Supports `loading` and `asChild`; native button defaults to `type="button"`. |
-| `TextInput` | Requires `label` and internally uses `Field` for labels, errors and helper text. Do **not** nest it inside another `Field` to add a label. |
-| `Field` | For custom controls, the render callback supplies `inputId`, `labelId`, `describedBy` and `hasError`; wire these to the control. |
-| `Switch` | Requires `label`; supports `checked`/`defaultChecked` and `size` of `sm`, `md`, `lg`. Already supplies switch semantics and keyboard handling. |
-| `Card` | Compound API: `Card.Header`, `Card.Title`, `Card.Content`, `Card.Footer`. `Card.Title` renders an `h3`; ensure surrounding heading hierarchy is correct. |
+The code and Storybook already document props and variants. A second hand-written
+API table would become stale as components evolve, so **look up contracts when
+needed** instead of copying lists of supported values into this guide:
 
-These examples reflect current implementation, not exhaustive API tables.
-Update this summary alongside source and Storybook when contracts change;
-TypeScript source wins if any text becomes stale.
+- For action buttons and links, read `packages/frey-ui/src/Button/index.tsx`
+  and the matching `Button.stories.tsx`. Verify the public import and any
+  polymorphic behavior before using it.
+- For labeled inputs and validation, inspect `TextInput/index.tsx` and
+  `Field/index.tsx`. `TextInput` already composes `Field`; use the
+  `Field` render API only for custom controls requiring explicit associations.
+- For selection and grouped content, read the matching source and stories for
+  `Switch`, `Card`, and related components instead of inferring a variant
+  or nesting contract from another library.
+- For complex flows, inspect `Patterns/Usage Patterns` stories in addition
+  to individual components to verify state handling and composition.
+
+When adding or changing an API, update source, exported types, relevant stories
+and tests in the same PR. This file needs changing **only if the authoritative
+source locations or lookup workflow change**, not every time a prop changes.
 
 ## Composition, accessibility, verification
 
