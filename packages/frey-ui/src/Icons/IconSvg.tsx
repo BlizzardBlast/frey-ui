@@ -85,7 +85,7 @@ export function IconSvg({
       style={style}
       {...getA11yProps(title)}
     >
-      <title>{trimmedTitle ?? 'Icon'}</title>
+      {trimmedTitle ? <title>{trimmedTitle}</title> : null}
       {children}
     </svg>
   );

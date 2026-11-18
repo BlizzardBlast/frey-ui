@@ -153,7 +153,6 @@ export const icon_gallery: Story = {
   args: {
     size: 'lg',
     strokeWidth: 'regular',
-    title: 'Icon',
   },
 } satisfies Story;
 

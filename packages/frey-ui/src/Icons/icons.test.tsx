@@ -32,14 +32,22 @@ describe('Icons', () => {
 
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg?.querySelector('title')).toBeNull();
+  });
+
+  it('treats a whitespace-only title as decorative', () => {
+    const { container } = render(<CloseIcon title='   ' />);
+
+    const svg = container.querySelector('svg');
+    expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg?.querySelector('title')).toBeNull();
   });
 
   it('renders accessible icon when title is provided', () => {
     render(<ChevronDownIcon title='Open options' />);
 
-    expect(
-      screen.getByRole('img', { name: 'Open options' })
-    ).toBeInTheDocument();
+    const svg = screen.getByRole('img', { name: 'Open options' });
+    expect(svg.querySelector('title')).toHaveTextContent('Open options');
   });
 
   it('supports named size and stroke tokens', () => {
