@@ -32,6 +32,7 @@ describe('Icons', () => {
 
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg).not.toHaveAttribute('aria-label');
     expect(svg?.querySelector('title')).toBeNull();
   });
 
@@ -40,6 +41,7 @@ describe('Icons', () => {
 
     const svg = container.querySelector('svg');
     expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg).not.toHaveAttribute('aria-label');
     expect(svg?.querySelector('title')).toBeNull();
   });
 
@@ -47,6 +49,9 @@ describe('Icons', () => {
     render(<ChevronDownIcon title='Open options' />);
 
     const svg = screen.getByRole('img', { name: 'Open options' });
+    expect(svg).toHaveAttribute('role', 'img');
+    expect(svg).toHaveAttribute('aria-label', 'Open options');
+    expect(svg).not.toHaveAttribute('aria-hidden');
     expect(svg.querySelector('title')).toHaveTextContent('Open options');
   });
 
