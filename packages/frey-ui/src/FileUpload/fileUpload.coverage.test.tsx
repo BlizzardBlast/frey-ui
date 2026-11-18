@@ -277,19 +277,22 @@ describe('FileUpload remaining component branches', () => {
 
     rerender(
       <FileUpload label='Attachment' value={[file]}>
-        <FileUpload.Preview />
+        <FileUpload.Preview data-testid='default-preview' />
       </FileUpload>
     );
-    expect(screen.getByText('Icon', { selector: 'title' })).toBeInTheDocument();
+    const preview = screen.getByTestId('default-preview');
+    expect(preview).toHaveAttribute('data-preview', 'file');
+    const fileIcon = preview.querySelector('svg');
+    expect(fileIcon).not.toBeNull();
+    expect(fileIcon).toHaveAttribute('aria-hidden', 'true');
+    expect(fileIcon?.querySelector('title')).toBeNull();
 
     rerender(
       <FileUpload label='Attachment'>
-        <FileUpload.Preview />
+        <FileUpload.Preview data-testid='default-preview' />
       </FileUpload>
     );
-    expect(
-      screen.queryByText('Icon', { selector: 'title' })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('default-preview')).not.toBeInTheDocument();
   });
 
   it('validates asChild content and supports trigger overrides', () => {

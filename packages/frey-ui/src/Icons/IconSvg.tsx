@@ -43,21 +43,6 @@ function resolveStrokeWidth(strokeWidth: IconStrokeToken | number | undefined) {
   return IconStrokeWidthMap[strokeWidth ?? 'regular'];
 }
 
-function getA11yProps(title?: string) {
-  const trimmedTitle = title?.trim();
-
-  if (trimmedTitle) {
-    return {
-      role: 'img' as const,
-      'aria-label': trimmedTitle,
-    };
-  }
-
-  return {
-    'aria-hidden': 'true' as const,
-  };
-}
-
 export function IconSvg({
   size,
   strokeWidth,
@@ -83,9 +68,11 @@ export function IconSvg({
       strokeLinejoin='round'
       className={clsx(styles.icon_svg, className)}
       style={style}
-      {...getA11yProps(title)}
+      role='img'
+      aria-label={trimmedTitle || undefined}
+      aria-hidden={trimmedTitle ? undefined : true}
     >
-      <title>{trimmedTitle ?? 'Icon'}</title>
+      {trimmedTitle ? <title>{trimmedTitle}</title> : null}
       {children}
     </svg>
   );

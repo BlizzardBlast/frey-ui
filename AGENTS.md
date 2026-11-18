@@ -84,16 +84,25 @@ Exit criteria:
 - No new regressions introduced by the latest edits.
 - Required validation commands pass in the documented order.
 
-## Agent Instructions for UI Components (Storybook MCP)
+## Agent Instructions for UI Components
 
-When working on UI components, stories, or component docs, always use the `storybook-mcp` tools as the source of truth.
+Before changing components, styles, stories, or example UI, read
+[`docs/agent-design-system.md`](docs/agent-design-system.md) and inspect only
+the relevant source-of-truth files linked there.
 
-- **CRITICAL:** Never hallucinate component properties.
-- Query `list-all-documentation` first to list available documented components.
-- Query `get-documentation` for the specific component to confirm all supported properties, types, and examples.
-- Only use properties that are explicitly documented.
-- Query `get-storybook-story-instructions` before creating or updating stories so you follow current project conventions.
-- Validate changes by running `run-story-tests`.
+- **CRITICAL:** Never invent component names, props, variants, tokens or imports.
+- Source and exported TypeScript types define supported APIs; `theme.css`
+  defines tokens; Storybook documents and demonstrates current component usage.
+- If `storybook-mcp` is available, use `list-all-documentation`, then
+  `get-documentation` for affected components. Before updating stories, use
+  `get-storybook-story-instructions` and validate using `run-story-tests`.
+- If MCP is unavailable, read component source and local Storybook stories
+  directly; don't claim a tool was used or block a necessary source review.
+- If a token/component/variant is missing, describe the gap. Do not silently
+  substitute a semantically different variant or invent a local imitation.
+  Keep source, Storybook and agent guidance synchronized when adding an API.
+- Run `pnpm docs:check` and relevant local tests/checks; disclose any skipped
+  checks. Avoid unnecessary CI runs for documentation changes.
 
 ## Git Hook/Commit Expectations
 

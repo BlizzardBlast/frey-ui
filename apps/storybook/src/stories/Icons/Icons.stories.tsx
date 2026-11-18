@@ -153,8 +153,44 @@ export const icon_gallery: Story = {
   args: {
     size: 'lg',
     strokeWidth: 'regular',
-    title: 'Icon',
   },
+} satisfies Story;
+
+/**
+ * Isolated examples for the accessible-label contract. Unlike icon_gallery,
+ * this story does not inject default title props into decorative icons.
+ */
+export const decorative_and_informative: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Icons whose meaning is fully conveyed by adjacent visible text are decorative and need no accessible title. Icons conveying additional information need an explicit accessible name.',
+      },
+    },
+  },
+  render: () => (
+    <div
+      style={{
+        display: 'grid',
+        gap: 16,
+        color: 'var(--frey-color-text-primary, #111827)',
+      }}
+    >
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <FileIcon size='lg' />
+        <span>Attached file</span>
+      </div>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <CalendarIcon size='lg' />
+        <span>Calendar</span>
+      </div>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <CircleInfoIcon size='lg' title='Additional information' />
+        <span>Informative icon with an accessible title</span>
+      </div>
+    </div>
+  ),
 } satisfies Story;
 
 export const size_variants: Story = {
