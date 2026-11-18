@@ -58,6 +58,39 @@ When adding or changing an API, update source, exported types, relevant stories
 and tests in the same PR. This file needs changing **only if the authoritative
 source locations or lookup workflow change**, not every time a prop changes.
 
+## Iconography: deliberate selection and visual review
+
+The shared icons live under `packages/frey-ui/src/Icons/`. Read
+`IconSvg.tsx` for the existing size, stroke and accessible-title contracts,
+and `apps/storybook/src/stories/Icons/Icons.stories.tsx` for the gallery and
+size examples. Those files are the source of truth; do not copy their token
+values into this guide or add a second icon abstraction by default.
+
+- Choose for meaning before appearance. Prefer simple, recognizable shapes
+  that support nearby copy; do not add icons as decoration or use an
+  unfamiliar symbol as the sole label of an important action.
+- Keep a deliberate, quiet outlined visual language. Reuse the existing
+  family instead of mixing libraries, and avoid stretching a vaguely related
+  icon to represent a missing concept. If a new icon is justified, review its
+  form and semantics alongside the existing set before adding it.
+- Evaluate at actual rendered sizes **in context**, not just enlarged SVGs.
+  Check optical weight, curve and corner treatment, alignment, internal
+  whitespace and whether small details survive at the intended size.
+  Consistent geometry is a starting point, not a substitute for visual review.
+- Use semantic color and verify visibility against the real light, dark and
+  high-contrast surfaces. An icon's SVG dimensions are **not** the tap target:
+  interactive wrappers own the hit area, focus, keyboard behavior and name.
+- Treat an icon as decorative when adjacent text already names the action;
+  omit its `title` prop in that case. Supply a meaningful `title` when
+  the graphic itself communicates independent information. Review the
+  surrounding control's accessible name rather than adding redundant labels.
+- Check changed icons together in Storybook and in the consuming component,
+  including compact layouts. Source-level tests cannot certify optical
+  polish, visual contrast or assistive-technology behavior by themselves.
+
+Design rationale:
+https://blog.streamlinehq.com/what-makes-icons-feel-professional/
+
 ## Composition, accessibility, verification
 
 - Use the existing `Patterns/Usage Patterns` stories for forms, async
