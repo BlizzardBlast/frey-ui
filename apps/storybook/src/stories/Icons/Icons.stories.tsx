@@ -165,7 +165,7 @@ export const decorative_and_informative: Story = {
     docs: {
       description: {
         story:
-          'Icons beside visible text are decorative and have no SVG title or accessible name. An informative icon has an explicit title and accessible name.',
+          'Icons whose meaning is fully conveyed by adjacent visible text are decorative and need no accessible title. Icons conveying additional information need an explicit accessible name.',
       },
     },
   },
